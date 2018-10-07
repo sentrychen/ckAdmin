@@ -7,20 +7,21 @@ $params = array_merge(
 );
 
 return [
-    'id' => 'app-backend',//应用id，必须唯一
+    'id' => 'app-admin',//应用id，必须唯一
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'backend\controllers',//控制器命名空间
     'language' => 'zh-CN',//默认语言
     'timeZone' => 'Asia/Shanghai',//默认时区
     'bootstrap' => ['log'],
     'modules' => [],
+    'homeUrl' => '/admin',
     'components' => [
         'user' => [
             'identityClass' => backend\models\User::className(),
             'enableAutoLogin' => false,
-            'identityCookie' => ['name' => '_backend_identity'],
-            'idParam' => '__backend__id',
-            'returnUrlParam' => '_backend_returnUrl',
+            'identityCookie' => ['name' => '_admin_identity'],
+            'idParam' => '__admin__id',
+            'returnUrlParam' => '_admin_returnUrl',
         ],
         'session' => [
             'timeout' => 1440,//session过期时间，单位为秒
@@ -45,8 +46,8 @@ return [
                         'yii\debug\Module::checkAccess',
                     ],
                     'message' => [
-                        'to' => ['admin@feehi.com', 'liufee@126.com'],//此处修改成自己接收错误的邮箱
-                        'subject' => '来自 Feehi CMS 后台的新日志消息',
+                        'to' => ['230784@qq.com'],//此处修改成自己接收错误的邮箱
+                        'subject' => '来自 onetop 后台的新日志消息',
                     ],
                 ],
             ],
@@ -55,7 +56,12 @@ return [
             'errorAction' => 'site/error',
         ],
         'request' => [
-            'csrfParam' =>'_csrf_backend',
+            'csrfParam' =>'_csrf_admin',
+            'baseUrl' => '/admin',
+        ],
+        'urlManager' => [
+            'enablePrettyUrl' => true,
+            'showScriptName' => false
         ],
         'i18n' => [
             'translations' => [//多语言包设置
@@ -81,6 +87,7 @@ return [
         ],
         'assetManager' => [
             'linkAssets' => false,//若为unix like系统这里可以修改成true则创建css js文件软链接到assets而不是拷贝css js到assets目录
+            'forceCopy' => true,
             'bundles' => [
                 backend\assets\AppAsset::className() => [
                     'sourcePath' => '@backend/web/static',
@@ -92,6 +99,7 @@ return [
                         'f' => 'js/plugins/layer/laydate/theme/default/laydate.css',
                         'g' => 'css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css',
                         'h' => 'css/plugins/toastr/toastr.min.css',
+                        'i' => 'css/admin.css',
 
                     ],
                     'js' => [

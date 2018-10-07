@@ -110,7 +110,7 @@ $this->title = yii::t('app', 'Backend Manage System');
                         <select onchange="location.href=this.options[this.selectedIndex].value;">
                             <option
                                 <?php if (yii::$app->language == 'zh-CN') {
-                                echo 'selected';
+                                    echo 'selected';
                                 } ?> value="<?= Url::to(['site/language', 'lang' => 'zh-CN']) ?>">简体中文
                             </option>
                             <option
@@ -248,7 +248,7 @@ $this->title = yii::t('app', 'Backend Manage System');
             </div>
         </div>
     </div>
-<?php $this->endBody() ?>
+    <?php $this->endBody() ?>
 </body>
 <script>
     function reloadIframe() {

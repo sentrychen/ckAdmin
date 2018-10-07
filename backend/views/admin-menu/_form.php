@@ -35,7 +35,7 @@ if ($parent_id != '') {
                 $disabledOptions = [];
                 if(!$model->getIsNewRecord()){
                     $disabledOptions[$model->id] = ['disabled' => true];
-                    $familyTree = new FamilyTree(Menu::getMenus(Menu::FRONTEND_TYPE));
+                    $familyTree = new FamilyTree(Menu::getMenus(Menu::ADMIN_TYPE));
                     $descendants = $familyTree->getDescendants($model->id);
                     $descendants = ArrayHelper::getColumn($descendants, 'id');
                     foreach ($descendants as $descendant){
@@ -43,7 +43,7 @@ if ($parent_id != '') {
                     }
                 }
                 ?>
-                <?= $form->field($model, 'parent_id')->label(yii::t('app', 'Parent Menu Name'))->dropDownList(Menu::getMenusName(Menu::FRONTEND_TYPE), ['options' => $disabledOptions]) ?>
+                <?= $form->field($model, 'parent_id')->label(yii::t('app', 'Parent Menu Name'))->dropDownList(Menu::getMenusName(Menu::ADMIN_TYPE), ['options' => $disabledOptions]) ?>
                 <div class="hr-line-dashed"></div>
                 <?= $form->field($model, 'name')->textInput(['maxlength' => 64]) ?>
                 <div class="hr-line-dashed"></div>

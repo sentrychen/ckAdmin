@@ -25,7 +25,7 @@ class Menu extends \common\models\Menu
     public static function getBackendMenu()
     {
         $model = new self();
-        $menus = $model->find()->where(['is_display' => self::DISPLAY_YES, 'type' => self::BACKEND_TYPE])->orderBy("sort asc")->asArray()->all();
+        $menus = $model->find()->where(['is_display' => self::DISPLAY_YES, 'type' => self::ADMIN_TYPE])->orderBy("sort asc")->asArray()->all();
         $permissions = yii::$app->getAuthManager()->getPermissionsByUser(yii::$app->getUser()->getId());
         $permissions = array_keys($permissions);
 
@@ -139,7 +139,7 @@ EOF;
      */
     public static function getAncectorsByMenuId($id)
     {
-        $menus = self::_getMenus(self::BACKEND_TYPE);
+        $menus = self::_getMenus(self::ADMIN_TYPE);
         $familyTree = new FamilyTree($menus);
         return $familyTree->getAncectors($id);
     }
@@ -152,7 +152,7 @@ EOF;
      */
     public static function getDescendantsByMenuId($id)
     {
-        $menus = self::_getMenus(self::BACKEND_TYPE);
+        $menus = self::_getMenus(self::ADMIN_TYPE);
         $familyTree = new FamilyTree($menus);
         return $familyTree->getDescendants($id);
     }

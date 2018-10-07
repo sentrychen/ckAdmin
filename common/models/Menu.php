@@ -31,8 +31,8 @@ use yii\behaviors\TimestampBehavior;
  */
 class Menu extends \yii\db\ActiveRecord
 {
-    const BACKEND_TYPE = 0;
-    const FRONTEND_TYPE = 1;
+    const ADMIN_TYPE = 0;
+    const AGENT_TYPE = 1;
 
     const DISPLAY_YES = 1;
     const DISPLAY_NO = 0;
@@ -76,7 +76,7 @@ class Menu extends \yii\db\ActiveRecord
     public function scenarios()
     {
         return [
-            'backend' => [
+            'agent' => [
                 'parent_id',
                 'name',
                 'url',
@@ -89,7 +89,7 @@ class Menu extends \yii\db\ActiveRecord
                 'created_at',
                 'updated_at',
             ],
-            'frontend' => [
+            'admin' => [
                 'parent_id',
                 'name',
                 'url',
@@ -195,6 +195,12 @@ class Menu extends \yii\db\ActiveRecord
                 return false;
             }
         }
+    }
+
+    public function beforeSave($insert)
+    {
+        $this->type = $this->scenario=='agent'?self::AGENT_TYPE : self::ADMIN_TYPE;
+        return parent::beforeSave($insert);
     }
 
     /**

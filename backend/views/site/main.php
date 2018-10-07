@@ -17,8 +17,8 @@ use yii\helpers\Url;
     <div class="col-sm-3">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <span class="label label-success pull-right"><?= Yii::t('app', 'Month') ?></span>
-                <h5><?= yii::t('app', 'Articles') ?></h5>
+                <span class="label label-primary pull-right"><?= Yii::t('app', 'Today') ?></span>
+                <h5>新增用户</h5>
             </div>
             <div class="ibox-content openContab" href="<?=Url::to(['article/index'])?>" title="<?=yii::t('app', 'Articles')?>" style="cursor: pointer">
                 <h1 class="no-margins"><?= $statics['ARTICLE'][0] ?></h1>
@@ -30,8 +30,8 @@ use yii\helpers\Url;
     <div class="col-sm-3">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <span class="label label-info pull-right"><?= Yii::t('app', 'Today') ?></span>
-                <h5><?= yii::t('app', 'Comments') ?></h5>
+                <span class="label label-success pull-right"><?= Yii::t('app', 'Month') ?></span>
+                <h5>新增代理</h5>
             </div>
             <div class="ibox-content openContab" href="<?=Url::to(['comment/index'])?>" title="<?=yii::t('app', 'Comments')?>" style="cursor: pointer">
                 <h1 class="no-margins"><?= $statics['COMMENT'][0] ?></h1>
@@ -43,11 +43,11 @@ use yii\helpers\Url;
     <div class="col-sm-3">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <span class="label label-primary pull-right"><?= Yii::t('app', 'Month') ?></span>
-                <h5><?= yii::t('app', 'Users') ?></h5>
+                <span class="label label-primary pull-right"><?= Yii::t('app', 'Today') ?></span>
+                <h5>存款</h5>
             </div>
             <div class="ibox-content openContab" href="<?=Url::to(['user/index'])?>" title="<?=yii::t('app', 'Users')?>" style="cursor: pointer">
-                <h1 class="no-margins"><?= $statics['USER'][0] ?></h1>
+                <h1 class="no-margins">$ <?= $statics['USER'][0] ?></h1>
                 <div class="stat-percent font-bold text-navy"><?= $statics['USER'][1] ?>% <i class="fa fa-level-up"></i></div>
                 <small><?= yii::t('app', 'Total') ?></small>
             </div>
@@ -56,17 +56,18 @@ use yii\helpers\Url;
     <div class="col-sm-3">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <span class="label label-success pull-right"><?= Yii::t('app', 'Month') ?></span>
-                <h5><?= yii::t('app', 'Friendly Links') ?></h5>
+                <span class="label label-success pull-right"><?= Yii::t('app', 'Today') ?></span>
+                <h5>取款</h5>
             </div>
             <div class="ibox-content openContab" href="<?=Url::to(['friendly-link/index'])?>" title="<?=yii::t('app', 'Friendly Links')?>" style="cursor: pointer">
-                <h1 class="no-margins"><?= $statics['FRIEND_LINK'][0] ?></h1>
+                <h1 class="no-margins">$ <?= $statics['FRIEND_LINK'][0] ?></h1>
                 <div class="stat-percent font-bold text-info"><?= $statics['FRIEND_LINK'][1] ?>% <i class="fa fa-level-up"></i></div>
                 <small><?= yii::t('app', 'Total') ?></small>
             </div>
         </div>
     </div>
 </div>
+<!--
 <div class="row">
     <div class="col-sm-6">
         <div>
@@ -167,11 +168,11 @@ use yii\helpers\Url;
                         <span><?= Yii::t('app', 'Memory Usage') ?></span>
                         <small class="pull-right">
                             <?php if (PHP_OS == 'Linux') {
-                                echo $status['MEM']['NUM'];
-                            } else {
-                                echo yii::t('app', 'Only supported linux system');
-                            }
-                            ?>
+    echo $status['MEM']['NUM'];
+} else {
+    echo yii::t('app', 'Only supported linux system');
+}
+?>
                         </small>
                     </div>
                     <div class="progress progress-small">
@@ -182,25 +183,17 @@ use yii\helpers\Url;
                         <span><?= Yii::t('app', 'Real Memory Usage') ?></span>
                         <small class="pull-right">
                             <?php if (PHP_OS == 'Linux') {
-                                echo $status['REAL_MEM']['NUM'];
-                            } else {
-                                echo yii::t('app', 'Only supported linux system');
-                            }
-                            ?>
+    echo $status['REAL_MEM']['NUM'];
+} else {
+    echo yii::t('app', 'Only supported linux system');
+}
+?>
                         </small>
                     </div>
                     <div class="progress progress-small">
                         <div style="width: <?= $status['REAL_MEM']['PERCENTAGE'] ?>;" class="progress-bar progress-bar<?=$status['REAL_MEM']['PERCENTAGE']>80 ? '-danger' : ''?>"></div>
                     </div>
-                    <!--
-                    <div>
-                        <span>CPU</span>
-                        <small class="pull-right">20 GB</small>
-                    </div>
-                    <div class="progress progress-small">
-                        <div style="width: 50%;" class="progress-bar"></div>
-                    </div>
-                    -->
+
                     <div>
                         <span><?= Yii::t('app', 'Disk Usage') ?></span>
                         <small class="pull-right"><?= $status['DISK_SPACE']['NUM'] ?></small>
@@ -227,8 +220,8 @@ use yii\helpers\Url;
                 <div>
                     <div class="feed-activity-list">
                         <?php
-                        foreach ($comments as $comment) {
-                            ?>
+foreach ($comments as $comment) {
+    ?>
                             <div class="feed-element">
                                 <a class="pull-left"><img alt="image" class="img-circle" src="https://secure.gravatar.com/avatar/<?= md5($comment->email) ?>?s=50"></a>
                                 <div class="media-body ">
@@ -247,23 +240,23 @@ use yii\helpers\Url;
             </div>
         </div>
     </div>
-
+-->
 </div>
 <?php JsBlock::begin() ?>
 <script>
-$(document).ready(function () {
-    $.ajax({
-        dataType:"jsonp",
-        url:"//api.feehi.com/cms/notify",
-        success:function (dataAll) {
-            data = dataAll.rows;
-            $("#notify").empty();
-            for(var index in data){
-                var label = '';
-                if( data[index].label ){
-                    label = data[index].label;
-                }
-                $("#notify").append("\
+    $(document).ready(function () {
+        $.ajax({
+            dataType:"jsonp",
+            url:"//api.feehi.com/cms/notify",
+            success:function (dataAll) {
+                data = dataAll.rows;
+                $("#notify").empty();
+                for(var index in data){
+                    var label = '';
+                    if( data[index].label ){
+                        label = data[index].label;
+                    }
+                    $("#notify").append("\
                     <li class=\"list-group-item\"> \
                         <p>\
                             <a target='_blank' class='pull-left' href=\" " + data[index].href +" \"> " + data[index].title + " </a>\
@@ -271,14 +264,14 @@ $(document).ready(function () {
                             <small class=\"block text-muted pull-right\">" + data[index].createdAt + "</small> \
                         </p> \
                     </li>"
-                );
+                    );
+                }
+            },
+            error:function (data) {
+                $("#notify").empty();
+                $("#notify").append("<li class='list-group-item'>Connect error</li>");
             }
-        },
-        error:function (data) {
-            $("#notify").empty();
-            $("#notify").append("<li class='list-group-item'>Connect error</li>");
-        }
-    });
-})
+        });
+    })
 </script>
 <?php JsBlock::end() ?>

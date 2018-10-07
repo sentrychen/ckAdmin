@@ -5,11 +5,12 @@
  * Email: job@feehi.com
  * Created at: 2017-03-15 21:16
  */
+
 namespace backend\controllers;
 
 use backend\actions\ViewAction;
 use yii\data\ArrayDataProvider;
-use frontend\models\Menu;
+use backend\models\Menu;
 use backend\actions\CreateAction;
 use backend\actions\UpdateAction;
 use backend\actions\IndexAction;
@@ -17,9 +18,9 @@ use backend\actions\DeleteAction;
 use backend\actions\SortAction;
 
 /**
- * FrontendMenu controller
+ * AgentMenu controller
  */
-class FrontendMenuController extends \yii\web\Controller
+class AgentMenuController extends \yii\web\Controller
 {
 
     public function actions()
@@ -28,7 +29,8 @@ class FrontendMenuController extends \yii\web\Controller
             'index' => [
                 'class' => IndexAction::className(),
                 'data' => function(){
-                    $data = Menu::getMenus(Menu::FRONTEND_TYPE);
+
+                    $data = Menu::getMenus(Menu::AGENT_TYPE);
                     $dataProvider = new ArrayDataProvider([
                         'allModels' => $data,
                         'pagination' => [
@@ -43,17 +45,17 @@ class FrontendMenuController extends \yii\web\Controller
             'view-layer' => [
                 'class' => ViewAction::className(),
                 'modelClass' => Menu::className(),
-                'scenario' => 'frontend',
+                'scenario' => 'agent',
             ],
             'create' => [
                 'class' => CreateAction::className(),
                 'modelClass' => Menu::className(),
-                'scenario' => 'frontend',
+                'scenario' => 'agent',
             ],
             'update' => [
                 'class' => UpdateAction::className(),
                 'modelClass' => Menu::className(),
-                'scenario' => 'frontend',
+                'scenario' => 'agent',
             ],
             'delete' => [
                 'class' => DeleteAction::className(),
@@ -62,7 +64,7 @@ class FrontendMenuController extends \yii\web\Controller
             'sort' => [
                 'class' => SortAction::className(),
                 'modelClass' => Menu::className(),
-                'scenario' => 'frontend',
+                'scenario' => 'agent',
             ],
         ];
     }
