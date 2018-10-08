@@ -35,6 +35,23 @@ class Constants
         return self::getItems($items, $key);
     }
 
+    const AGENT_OPENED = 0;
+    const AGENT_CLOSE_REG = 1;
+    const AGENT_CLOSE_LOGIN = 2;
+    const AGENT_CLOSED = 9;
+
+    public static function getAgentStatusItems($key = null)
+    {
+        $items = [
+            self::AGENT_OPENED => '开放代理',
+            self::AGENT_CLOSE_REG => '关闭代理注册',
+            self::AGENT_CLOSE_LOGIN => '关闭代理登陆',
+            self::AGENT_CLOSED => '关闭代理',
+
+        ];
+        return self::getItems($items, $key);
+    }
+
     const COMMENT_INITIAL = 0;
     const COMMENT_PUBLISH = 1;
     const COMMENT_RUBISSH = 2;
