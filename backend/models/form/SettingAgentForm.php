@@ -8,34 +8,23 @@
 
 namespace backend\models\form;
 
-use yii;
 use common\models\Options;
 
 class SettingAgentForm extends \common\models\Options
 {
-    public $website_title;
+    public $agent_status;  //代理状态，0：正常代理，1：关闭代理注册，2：关闭代理登陆，9：停止代理
 
-    public $website_email;
+    public $agent_max_level;   //最大代理层级
 
-    public $website_language;
+    public $agent_max_rebate;     //最大占成
 
-    public $website_icp;
+    public $agent_default_rebate;   //默认占成
 
-    public $website_statics_script;
+    public $agent_backend_url;     //代理后台网址
 
-    public $website_status;
+    public $agent_user_reg_url;     //用户注册网址
 
-    public $website_timezone;
-
-    public $website_comment;
-
-    public $website_comment_need_verify;
-
-    public $website_url;
-
-    public $seo_keywords;
-
-    public $seo_description;
+    public $agent_reg_url;          //代理注册网址
 
 
     /**
@@ -44,18 +33,13 @@ class SettingAgentForm extends \common\models\Options
     public function attributeLabels()
     {
         return [
-            'website_title' => yii::t('app', 'Website Title'),
-            'website_email' => yii::t('app', 'Website Email'),
-            'website_language' => yii::t('app', 'Website Language'),
-            'website_icp' => yii::t('app', 'Icp Sn'),
-            'website_statics_script' => yii::t('app', 'Statics Script'),
-            'website_status' => yii::t('app', 'Website Status'),
-            'website_timezone' => yii::t('app', 'Website Timezone'),
-            'website_comment' => yii::t('app', 'Open Comment'),
-            'website_comment_need_verify' => yii::t('app', 'Open Comment Verify'),
-            'website_url' => yii::t('app', 'Website Url'),
-            'seo_keywords' => yii::t('app', 'Seo Keywords'),
-            'seo_description' => yii::t('app', 'Seo Description'),
+            'agent_status' => '代理状态',
+            'agent_max_level' => '最大代理层级',
+            'agent_max_rebate' => '最大占成',
+            'agent_default_rebate' => '默认占成',
+            'agent_backend_url' => '代理后台网址',
+            'agent_user_reg_url' => '用户注册网址',
+            'agent_reg_url' => '代理注册网址'
         ];
     }
 
@@ -67,27 +51,23 @@ class SettingAgentForm extends \common\models\Options
         return [
             [
                 [
-                    'website_title',
-                    'website_email',
-                    'website_language',
-                    'website_icp',
-                    'website_statics_script',
-                    'website_timezone',
-                    'website_url',
-                    'seo_keywords',
-                    'seo_description'
+                    'agent_backend_url',
+                    'agent_user_reg_url',
+                    'agent_reg_url'
                 ],
-                'string'
+                'url'
             ],
-            [['website_status', 'website_comment', 'website_comment_need_verify'], 'integer'],
+            [['agent_status', 'agent_max_level'], 'integer'],
+            [['agent_max_rebate', 'agent_default_rebate'], 'double', 'min' => 0, 'max' => 100],
+            ['agent_default_rebate', 'compare', 'compareAttribute' => 'agent_max_rebate', 'operator' => '<='],
         ];
     }
 
     /**
-     * 填充网站配置
+     * 填充代理配置
      *
      */
-    public function getWebsiteSetting()
+    public function getAgentSetting()
     {
         $names = $this->getNames();
         foreach ($names as $name) {
@@ -102,11 +82,11 @@ class SettingAgentForm extends \common\models\Options
 
 
     /**
-     * 写入网站配置到数据库
+     * 写入代理配置到数据库
      *
      * @return bool
      */
-    public function setWebsiteConfig()
+    public function setAgentConfig()
     {
         $names = $this->getNames();
         foreach ($names as $name) {

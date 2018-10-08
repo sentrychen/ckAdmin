@@ -10,6 +10,7 @@ namespace backend\controllers;
 
 use yii;
 use backend\models\form\SettingWebsiteForm;
+use backend\models\form\SettingAgentForm;
 use backend\models\form\SettingSmtpForm;
 use common\models\Options;
 use common\libs\Constants;
@@ -60,6 +61,34 @@ class SettingController extends \yii\web\Controller
 
         $model->getWebsiteSetting();
         return $this->render('website', [
+            'model' => $model
+        ]);
+
+    }
+
+    /**
+     * 代理设置
+     *
+     * @return string
+     */
+    public function actionAgent()
+    {
+        $model = new SettingAgentForm();
+        if (yii::$app->getRequest()->getIsPost()) {
+            if ($model->load(yii::$app->getRequest()->post()) && $model->validate() && $model->setAgentConfig()) {
+                yii::$app->getSession()->setFlash('success', yii::t('app', 'Success'));
+            } else {
+                $errors = $model->getErrors();
+                $err = '';
+                foreach ($errors as $v) {
+                    $err .= $v[0] . '<br>';
+                }
+                yii::$app->getSession()->setFlash('error', $err);
+            }
+        }
+
+        $model->getAgentSetting();
+        return $this->render('agent', [
             'model' => $model
         ]);
 

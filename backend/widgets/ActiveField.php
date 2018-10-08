@@ -8,13 +8,11 @@
 
 namespace backend\widgets;
 
-use feehi\cdn\DummyTarget;
 use yii;
 use yii\helpers\Html;
 
 class ActiveField extends \yii\widgets\ActiveField
 {
-
     public $options = [
         'class' => 'form-group'
     ];
@@ -25,7 +23,7 @@ class ActiveField extends \yii\widgets\ActiveField
 
     public $size = '10';
 
-    public $template = "{label}\n<div class=\"col-sm-{size}\">{input}\n{error}</div>\n{hint}";
+    public $template = "{label}\n<div class=\"col-sm-{size}\">{input}\n{hint}\n{error}</div>";
 
     public $errorOptions = [
         'class' => 'help-block m-b-none'
@@ -189,6 +187,24 @@ class ActiveField extends \yii\widgets\ActiveField
                     </li>";
         };
         return parent::checkboxList($items, $options);
+    }
+
+    public function textInput($options = [])
+    {
+        if (isset($options['beforeAddon']) || isset($options['afterAddon'])) {
+            $this->parts['{beforeAddon}'] = '';
+            $this->parts['{afterAddon}'] = '';
+            $this->template = "{label}\n<div class=\"col-sm-{size}\"><div class=\"input-group\">{beforeAddon}{input}{afterAddon}</div>\n{hint}\n{error}</div>";
+            if (isset($options['beforeAddon'])) {
+                $this->parts['{beforeAddon}'] = html::tag('div', $options['beforeAddon'], ['class' => 'input-group-addon']);
+                unset($options['beforeAddon']);
+            }
+            if (isset($options['afterAddon'])) {
+                $this->parts['{afterAddon}'] = html::tag('div', $options['afterAddon'], ['class' => 'input-group-addon']);
+                unset($options['afterAddon']);
+            }
+        }
+        return parent::textInput($options);
     }
 
     /**
