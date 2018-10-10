@@ -8,8 +8,8 @@
 
 namespace common\libs;
 
+use InvalidArgumentException;
 use yii;
-use yii\base\InvalidParamException;
 
 class Constants
 {
@@ -48,6 +48,18 @@ class Constants
             self::AGENT_CLOSE_LOGIN => '关闭代理登陆',
             self::AGENT_CLOSED => '关闭代理',
 
+        ];
+        return self::getItems($items, $key);
+    }
+
+    const XIMA_ONE_SIDED = 1;
+    const XIMA_TWO_SIDED = 2;
+
+    public static function getXimaTypes($key = null)
+    {
+        $items = [
+            self::XIMA_ONE_SIDED => '单边',
+            self::XIMA_TWO_SIDED => '双边'
         ];
         return self::getItems($items, $key);
     }
@@ -155,7 +167,7 @@ class Constants
             if (key_exists($key, $items)) {
                 return $items[$key];
             }
-            throw new InvalidParamException( 'Unknown key:' . $key );
+            throw new InvalidArgumentException('Unknown key:' . $key);
         }
         return $items;
     }

@@ -19,7 +19,7 @@ use common\widgets\JsBlock;
 use frontend\models\Menu;
 use yii\helpers\ArrayHelper;
 
-$this->title = "Frontend Menus";
+$this->title = "后台菜单";
 $parent_id = yii::$app->getRequest()->get('parent_id', '');
 if ($parent_id != '') {
     $model->parent_id = $parent_id;

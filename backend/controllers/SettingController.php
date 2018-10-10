@@ -8,6 +8,7 @@
 
 namespace backend\controllers;
 
+use backend\models\form\SettingGameForm;
 use yii;
 use backend\models\form\SettingWebsiteForm;
 use backend\models\form\SettingAgentForm;
@@ -89,6 +90,34 @@ class SettingController extends \yii\web\Controller
 
         $model->getAgentSetting();
         return $this->render('agent', [
+            'model' => $model
+        ]);
+
+    }
+
+    /**
+     * 游戏设置
+     *
+     * @return string
+     */
+    public function actionGame()
+    {
+        $model = new SettingGameForm();
+        if (yii::$app->getRequest()->getIsPost()) {
+            if ($model->load(yii::$app->getRequest()->post()) && $model->validate() && $model->setGameConfig()) {
+                yii::$app->getSession()->setFlash('success', yii::t('app', 'Success'));
+            } else {
+                $errors = $model->getErrors();
+                $err = '';
+                foreach ($errors as $v) {
+                    $err .= $v[0] . '<br>';
+                }
+                yii::$app->getSession()->setFlash('error', $err);
+            }
+        }
+
+        $model->getGameSetting();
+        return $this->render('game', [
             'model' => $model
         ]);
 

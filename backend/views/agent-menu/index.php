@@ -24,8 +24,8 @@ use yii\helpers\Url;
 use backend\grid\CheckboxColumn;
 use backend\grid\ActionColumn;
 
-$this->title = "Backend Menus";
-$this->params['breadcrumbs'][] = yii::t('app', 'Backend Menus');
+$this->title = "代理菜单";
+$this->params['breadcrumbs'][] = '代理菜单';
 ?>
 <div class="row">
     <div class="col-sm-12">

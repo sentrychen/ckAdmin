@@ -8,8 +8,8 @@
 use yii\helpers\Url;
 
 $this->params['breadcrumbs'] = [
-    ['label' => yii::t('app', 'Backend Menus'), 'url' => Url::to(['index'])],
-    ['label' => yii::t('app', 'Create') . yii::t('app', 'Backend Menus')],
+    ['label' => '代理菜单', 'url' => Url::to(['index'])],
+    ['label' => yii::t('app', 'Create') . '代理菜单'],
 ];
 /**
  * @var $model backend\models\Menu

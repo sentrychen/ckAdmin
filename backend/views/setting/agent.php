@@ -31,6 +31,12 @@ $this->params['breadcrumbs'][] = '代理设置';
                 <div class="hr-line-dashed"></div>
                 <?= $form->field($model, 'agent_default_rebate')->textInput(['afterAddon' => '%']) ?>
                 <div class="hr-line-dashed"></div>
+                <?= $form->field($model, 'agent_xima_status')->radioList(Constants::getYesNoItems()) ?>
+                <div class="hr-line-dashed"></div>
+                <?= $form->field($model, 'agent_xima_type')->radioList(Constants::getXimaTypes()) ?>
+                <div class="hr-line-dashed"></div>
+                <?= $form->field($model, 'agent_xima_rate')->textInput(['afterAddon' => '%']) ?>
+                <div class="hr-line-dashed"></div>
                 <?= $form->field($model, 'agent_backend_url') ?>
                 <div class="hr-line-dashed"></div>
                 <?= $form->field($model, 'agent_user_reg_url') ?>
