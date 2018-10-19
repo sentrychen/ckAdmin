@@ -1,0 +1,5 @@
+.logo-name {
+    background: url('../img/logo.png') no-repeat center;
+    -webkit-background-size: 300px;
+    background-size: 300px 69px;
+}

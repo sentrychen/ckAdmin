@@ -54,7 +54,7 @@ class LoginForm extends Model
             'avatar' => yii::t('app', 'Avatar'),
             'created_at' => yii::t('app', 'Created At'),
             'updated_at' => yii::t('app', 'Updated At'),
-            'rememberMe' => yii::t('frontend', 'Remember Me'),
+            'rememberMe' => yii::t('agent', 'Remember Me'),
         ];
     }
 

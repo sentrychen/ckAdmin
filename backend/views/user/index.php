@@ -14,7 +14,7 @@
 
 use backend\grid\DateColumn;
 use backend\grid\GridView;
-use frontend\models\User;
+use agent\models\User;
 use yii\helpers\Html;
 use backend\widgets\Bar;
 use backend\grid\CheckboxColumn;

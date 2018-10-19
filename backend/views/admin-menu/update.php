@@ -12,7 +12,7 @@ $this->params['breadcrumbs'] = [
     ['label' => yii::t('app', 'Update') . '后台菜单'],
 ];
 /**
- * @var $model frontend\models\Menu
+ * @var $model agent\models\Menu
  */
 ?>
 <?= $this->render('_form', [

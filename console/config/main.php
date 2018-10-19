@@ -30,21 +30,21 @@ return [
     'controllerMap'=>[
         'serve' => [
             'class' => yii\console\controllers\ServeController::className(),
-            'docroot' => '@frontend/web',
+            'docroot' => '@agent/web',
         ],
         'swoole' => [
             'class' => \feehi\console\SwooleController::className(),
             'rootDir' => str_replace('console/config', '', __DIR__ ),//yii2项目根路径
-            'app' => 'frontend',//app目录地址
+            'app' => 'agent',//app目录地址
                         'host' => '127.0.0.1',//监听地址
                         'port' => 9999,//监听端口
                         'swooleConfig' => [//标准的swoole配置项都可以再此加入
                 'reactor_num' => 2,
                 'worker_num' => 4,
                 'daemonize' => true,
-                'log_file' => __DIR__ . '/../../frontend/runtime/logs/swoole.log',
+                            'log_file' => __DIR__ . '/../../agent/runtime/logs/swoole.log',
                 'log_level' => 0,
-                'pid_file' => __DIR__ . '/../../frontend/runtime/server.pid',
+                            'pid_file' => __DIR__ . '/../../agent/runtime/server.pid',
             ],
         ],
         'swoole-backend' => [

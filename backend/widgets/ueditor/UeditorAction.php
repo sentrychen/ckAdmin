@@ -113,7 +113,7 @@ class UeditorAction extends yii\base\Action
             "imageUrlPrefix" => yii::$app->params['site']['url'],
         ];
         $this->config = $this->config + $default + $CONFIG;
-        $this->uploadPath = Yii::getAlias('@frontend/web/uploads');
+        $this->uploadPath = Yii::getAlias('@agent/web/uploads');
         if (! is_array($this->thumbnail)) {
             $this->thumbnail = false;
         }
@@ -497,7 +497,7 @@ class UeditorAction extends yii\base\Action
         }
         $handle = opendir($path);
         //baseUrl用于兼容使用alias的二级目录部署方式
-        $baseUrl = str_replace(yii::getAlias('@frontend/web'), '', yii::getAlias('@ueditor'));
+        $baseUrl = str_replace(yii::getAlias('@agent/web'), '', yii::getAlias('@ueditor'));
         while (false !== ($file = readdir($handle))) {
             if ($file != '.' && $file != '..') {
                 $path2 = $path . $file;

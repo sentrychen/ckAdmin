@@ -110,7 +110,7 @@ class Feehi extends Component
         }
     }
 
-    public static function frontendInit()
+    public static function agentInit()
     {
         if (! yii::$app->feehi->website_status) {
             yii::$app->catchAll = ['site/offline'];
@@ -120,7 +120,7 @@ class Feehi extends Component
         if (! isset(yii::$app->params['site']['url']) || empty(yii::$app->params['site']['url'])) {
             yii::$app->params['site']['url'] = yii::$app->request->getHostInfo();
         }
-        if(isset(yii::$app->session['view'])) yii::$app->viewPath = yii::getAlias('@frontend/view') . yii::$app->session['view'];
+        if (isset(yii::$app->session['view'])) yii::$app->viewPath = yii::getAlias('@agent/view') . yii::$app->session['view'];
 
         yii::configure(yii::$app->getUrlManager(), [
             'rules' => array_merge(yii::$app->getUrlManager()->rules, Category::getUrlRules())

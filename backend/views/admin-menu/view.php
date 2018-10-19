@@ -8,7 +8,7 @@
 use common\libs\Constants;
 use yii\widgets\DetailView;
 
-/** @var $model frontend\models\Menu */
+/** @var $model agent\models\Menu */
 ?>
 <?=DetailView::widget([
     'model' => $model,

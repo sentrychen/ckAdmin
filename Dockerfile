@@ -70,11 +70,11 @@ RUN ./configure --prefix=/usr/local/nginx --conf-path=/etc/nginx/nginx.conf --er
      && sed -i "64a             fastcgi_param  SCRIPT_FILENAME  \$document_root\$fastcgi_script_name;" /etc/nginx/nginx.conf \
      && sed -i "64a             fastcgi_index  index.php;" /etc/nginx/nginx.conf \
      && sed -i "64a             fastcgi_pass   127.0.0.1:9000;" /etc/nginx/nginx.conf \
-     && sed -i "64a             root           html/frontend/web;" /etc/nginx/nginx.conf \
+     && sed -i "64a             root           html/agent/web;" /etc/nginx/nginx.conf \
      && sed -i "64a             location ~ \.php$ {" /etc/nginx/nginx.conf \
      && sed -i "3a daemon off;" /etc/nginx/nginx.conf \
      && echo "<?php phpinfo()?>" > /usr/local/nginx/html/index.php \
-     && sed -i '45s/html;/html\/frontend\/web;/g' /etc/nginx/nginx.conf \
+     && sed -i '45s/html;/html\/agent\/web;/g' /etc/nginx/nginx.conf \
      && sed -i '46s/index  index.html index.htm;/index  index.php index.html index.htm;/g' /etc/nginx/nginx.conf \
      && sed -i "46a try_files \$uri \$uri/ /index.php?\$args;" /etc/nginx/nginx.conf
 
@@ -98,7 +98,7 @@ RUN echo -e "#!/bin/sh \n\
         sleep 5s \n\
         /usr/bin/mysql --connect-expired-password -e \"set password=password('\$MYSQL_PASSWORD');update mysql.user set host='%' where user='root' && host='localhost';flush privileges;create database cms DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;\" \n\
         echo -e \"[client] \\\n  password=\"\${MYSQL_PASSWORD}\" \\\n user=root\" > ~/.my.cnf \n\
-        /usr/local/php/bin/php /usr/local/nginx/html/yii migrate/up --interactive=0 frontendUri=//localhost \n\
+        /usr/local/php/bin/php /usr/local/nginx/html/yii migrate/up --interactive=0 agentUri=//localhost \n\
     else \n\
         rm -rf /var/lib/mysql/mysql.sock.locl \n\
         /usr/sbin/mysqld \n\

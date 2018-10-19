@@ -35,11 +35,11 @@ return [
             'backend/runtime',
             'backend/web/assets',
             'backend/web/uploads',
-            'frontend/runtime',
-            'frontend/web/assets',
-            'frontend/web/uploads',
-            'frontend/web/admin/assets',
-            'frontend/web/admin/uploads',
+            'agent/runtime',
+            'agent/web/assets',
+            'agent/web/uploads',
+            'agent/web/admin/assets',
+            'agent/web/admin/uploads',
             'api/runtime',
         ],
         'setExecutable' => [
@@ -48,7 +48,7 @@ return [
         ],
         'setCookieValidationKey' => [
             'backend/config/main-local.php',
-            'frontend/config/main-local.php',
+            'agent/config/main-local.php',
         ],
     ],
     'Production' => [
@@ -57,11 +57,11 @@ return [
             'backend/runtime',
             'backend/web/assets',
             'backend/web/uploads',
-            'frontend/runtime',
-            'frontend/web/assets',
-            'frontend/web/uploads',
-            'frontend/web/admin/assets',
-            'frontend/web/admin/uploads',
+            'agent/runtime',
+            'agent/web/assets',
+            'agent/web/uploads',
+            'agent/web/admin/assets',
+            'agent/web/admin/uploads',
             'api/runtime',
         ],
         'setExecutable' => [
@@ -69,7 +69,7 @@ return [
         ],
         'setCookieValidationKey' => [
             'backend/config/main-local.php',
-            'frontend/config/main-local.php',
+            'agent/config/main-local.php',
         ],
     ],
 ];

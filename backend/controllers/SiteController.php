@@ -8,15 +8,17 @@
 
 namespace backend\controllers;
 
+use common\libs\Constants;
+use common\models\Daily;
+use common\models\Platform;
+use backend\models\Message;
+use common\models\Notice;
+use common\models\UserDeposit;
+use common\models\UserWithdraw;
 use yii;
 use Exception;
-use common\models\Comment;
+
 use backend\models\form\LoginForm;
-use common\libs\ServerInfo;
-use backend\models\Article as ArticleModel;
-use backend\models\Comment as BackendComment;
-use common\models\FriendlyLink;
-use frontend\models\User;
 use yii\base\UserException;
 use yii\db\Query;
 use yii\filters\AccessControl;
@@ -78,7 +80,15 @@ class SiteController extends \yii\web\Controller
      */
     public function actionIndex()
     {
-        return $this->renderPartial('index');
+
+        $counts = [
+            'AMOUNT' => Platform::getToalAvailableAmount(),
+            'DESPOSIT' => UserDeposit::getUncheckedCount(),
+            'WITHDRAW' => UserWithdraw::getUncheckedCount(),
+            'MESSAGE' => Message::getUnreads(10),
+            'NOTICE' => Notice::getRecentNoticeS(6, Notice::OBJ_ADMIN)
+        ];
+        return $this->renderPartial('index', ['counts' => $counts]);
     }
 
     /**
@@ -88,95 +98,15 @@ class SiteController extends \yii\web\Controller
      */
     public function actionMain()
     {
-        switch (yii::$app->getDb()->driverName) {
-            case "mysql":
-                $dbInfo = 'MySQL ' . (new Query())->select('version()')->one()['version()'];
-                break;
-            case "pgsql":
-                $dbInfo = (new Query())->select('version()')->one()['version'];
-                break;
-            default:
-                $dbInfo = "Unknown";
-        }
-        $info = [
-            'OPERATING_ENVIRONMENT' => PHP_OS . ' ' . $_SERVER['SERVER_SOFTWARE'],
-            'PHP_RUN_MODE' => php_sapi_name(),
-            'DB_INFO' => $dbInfo,
-            'PROGRAM_VERSION' => "1.0",
-            'UPLOAD_MAX_FILESIZE' => ini_get('upload_max_filesize'),
-            'MAX_EXECUTION_TIME' => ini_get('max_execution_time') . "s"
-        ];
-        $obj = new ServerInfo();
-        $serverInfo = $obj->getinfo();
-        error_reporting(E_ALL);
-        $status = [
-            'DISK_SPACE' => [
-                'NUM' => ceil( $serverInfo['diskTotal'] - $serverInfo['freeSpace'] ) . 'G' . ' / ' . ceil($serverInfo['diskTotal']) . 'G',
-                'PERCENTAGE' => (floatval($serverInfo['diskTotal']) != 0) ? round(($serverInfo['diskTotal'] - $serverInfo['freeSpace']) / $serverInfo['diskTotal'] * 100, 2) : 0,
-            ],
-            'MEM' => [
-                'NUM' => $serverInfo["UsedMemory"] . ' / ' . $serverInfo['TotalMemory'],
-                'PERCENTAGE' => $serverInfo["memPercent"],
-            ],
-            'REAL_MEM' => [
-                'NUM' => $serverInfo["memRealUsed"] . "(Cached {$serverInfo['CachedMemory']})" . ' / ' . $serverInfo['TotalMemory'],
-                'PERCENTAGE' => $serverInfo['memRealPercent'] . '%',
-            ],
-        ];
-        $temp = [
-            'ARTICLE' => ArticleModel::find()->where(['type' => ArticleModel::ARTICLE])->count('id'),
-            'COMMENT' => Comment::find()->count('id'),
-            'USER' => User::find()->count('id'),
-            'FRIEND_LINK' => FriendlyLink::find()->count('id'),
-        ];
-        $statics = [
-            'ARTICLE' => [
-                $temp['ARTICLE'],
-                $temp['ARTICLE'] == 0 ? 0 :
-                number_format(ArticleModel::find()->where([
-                        'between',
-                        'created_at',
-                        strtotime(date('Y-m-01')),
-                        strtotime(date('Y-m-01 23:59:59') . " +1 month -1 day")
-                    ])->count('id') / $temp['ARTICLE'] * 100, 2)
-            ],
-            'COMMENT' => [
-                $temp['COMMENT'],
-                $temp['COMMENT'] == 0 ? 0 :
-                number_format(Comment::find()->where([
-                        'between',
-                        'created_at',
-                        strtotime(date('Y-m-d 00:00:00')),
-                        time()
-                    ])->count('id') / $temp['COMMENT'] * 100, 2)
-            ],
-            'USER' => [
-                $temp['USER'],
-                $temp['USER'] == 0 ? 0 :
-                number_format(User::find()->where([
-                        'between',
-                        'created_at',
-                        strtotime(date('Y-m-01')),
-                        strtotime(date('Y-m-01 23:59:59') . " +1 month -1 day")
-                    ])->count('id') / $temp['USER'] * 100, 2)
-            ],
-            'FRIEND_LINK' => [
-                $temp['FRIEND_LINK'],
-                $temp['FRIEND_LINK'] == 0 ? 0 :
-                number_format(FriendlyLink::find()->where([
-                        'between',
-                        'created_at',
-                        strtotime(date('Y-m-01')),
-                        strtotime(date('Y-m-01 23:59:59') . " +1 month -1 day")
-                    ])->count('id') / $temp['FRIEND_LINK'] * 100, 2)
-            ],
-        ];
-        $comments = BackendComment::getRecentComments(6);
+
+        // $comments = BackendComment::getRecentComments(6);
+        $statics = Daily::getSumData('-30 day');
+        array_walk($statics, function (&$v) {
+            $v = number_format($v);
+        });
+
         return $this->render('main', [
-            'info' => $info,
-            'status' => $status,
-            'statics' => $statics,
-            'comments' => $comments,
+            'statics' => $statics
         ]);
     }
 
@@ -211,20 +141,6 @@ class SiteController extends \yii\web\Controller
         Yii::$app->getUser()->logout(false);
 
         return $this->goHome();
-    }
-
-    /**
-     * 切换语言
-     *
-     */
-    public function actionLanguage()
-    {
-        $language = Yii::$app->getRequest()->get('lang');
-        if (isset($language)) {
-            $session = Yii::$app->getSession();
-            $session->set("language", $language);
-        }
-        $this->goBack(Yii::$app->getRequest()->headers['referer']);
     }
 
     /**

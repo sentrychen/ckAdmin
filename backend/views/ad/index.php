@@ -16,7 +16,7 @@ use backend\grid\GridView;
 use backend\grid\SortColumn;
 use backend\grid\StatusColumn;
 use common\libs\Constants;
-use frontend\models\User;
+use agent\models\User;
 use backend\widgets\Bar;
 use backend\grid\CheckboxColumn;
 use backend\grid\ActionColumn;

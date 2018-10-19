@@ -3,3 +3,34 @@
     -webkit-background-size: 300px;
     background-size: 300px 69px;
 }
+
+.navbar-header .fa-outdent {
+    display: inline-block;
+}
+
+.navbar-header .fa-indent {
+    display: none;
+}
+
+.mini-navbar .navbar-header .fa-outdent {
+    display: none;
+}
+
+.mini-navbar .navbar-header .fa-indent {
+    display: inline-block;
+}
+
+.profile-element {
+    padding: 12px 0 5px;
+}
+
+.profile-element p {
+    padding-top: 5px;
+    font-size: 16px;
+    color: #999;
+}
+
+.nav .nav-header {
+    padding: 0;
+    text-align: center;
+}

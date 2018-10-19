@@ -43,8 +43,8 @@ class ClearController extends \yii\web\Controller
      */
     public function actionFrontend()
     {
-        FileHelper::removeDirectory(yii::getAlias('@frontend/runtime/cache'));
-        $paths = [yii::getAlias('@frontend/web/assets')];
+        FileHelper::removeDirectory(yii::getAlias('@agent/runtime/cache'));
+        $paths = [yii::getAlias('@agent/web/assets')];
         foreach ($paths as $path) {
             $fp = opendir($path);
             while (false !== ($file = readdir($fp))) {

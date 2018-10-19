@@ -9,7 +9,7 @@
 namespace api\models;
 
 
-class User extends \frontend\models\User
+class User extends \agent\models\User
 {
     public function fields()
     {

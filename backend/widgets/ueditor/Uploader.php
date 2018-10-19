@@ -151,7 +151,7 @@ class Uploader
             $this->stateInfo = $this->stateMap[0];
             /** @var $cdn \feehi\cdn\TargetInterface */
             $cdn = yii::$app->get('cdn');
-            $destFile = str_replace(yii::getAlias("@frontend/web"), '', $this->filePath);
+            $destFile = str_replace(yii::getAlias("@agent/web"), '', $this->filePath);
             $cdn->upload($this->filePath, $destFile);
         }
     }
@@ -409,7 +409,7 @@ class Uploader
      */
     public function getFileInfo()
     {
-        $prefix = str_replace(yii::getAlias(yii::getAlias('@frontend/web')), '', yii::getAlias('@ueditor'));
+        $prefix = str_replace(yii::getAlias(yii::getAlias('@agent/web')), '', yii::getAlias('@ueditor'));
         return array(
             "state" => $this->stateInfo,
             "url" => $prefix . $this->fullName,

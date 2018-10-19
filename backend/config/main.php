@@ -32,24 +32,7 @@ return [
                 [
                     'class' => yii\log\FileTarget::className(),//当触发levels配置的错误级别时，保存到日志文件
                     'levels' => ['error', 'warning'],
-                ],
-                [
-                    'class' => yii\log\EmailTarget::className(),//当触发levels配置的错误级别时，发送到message to配置的邮箱中（请改成自己的邮箱）
-                    'levels' => ['error', 'warning'],
-                    /*'categories' => [//默认匹配所有分类。启用此项后，仅匹配数组中的分类信息会触发邮件提醒（白名单）
-                        'yii\db\*',
-                        'yii\web\HttpException:*',
-                    ],*/
-                    'except' => [//以下配置，除了匹配数组中的分类信息都会触发邮件提醒（黑名单）
-                        'yii\web\HttpException:404',
-                        'yii\web\HttpException:403',
-                        'yii\debug\Module::checkAccess',
-                    ],
-                    'message' => [
-                        'to' => ['230784@qq.com'],//此处修改成自己接收错误的邮箱
-                        'subject' => '来自 onetop 后台的新日志消息',
-                    ],
-                ],
+                ]
             ],
         ],
         'errorHandler' => [
@@ -85,9 +68,11 @@ return [
                 ],
             ],
         ],
+
         'assetManager' => [
             'linkAssets' => false,//若为unix like系统这里可以修改成true则创建css js文件软链接到assets而不是拷贝css js到assets目录
             'forceCopy' => true,
+            /*
             'bundles' => [
                 backend\assets\AppAsset::className() => [
                     'sourcePath' => '@backend/web/static',
@@ -116,6 +101,7 @@ return [
                         'a' => 'css/bootstrap.min.css',
                         'b' => 'css/font-awesome.min93e3.css?v=4.4.0',
                         'c' => 'css/style.min862f.css?v=4.1.0',
+                        'd' => 'css/admin.css',
                     ],
                     'js' => [
                         'a' => "js/jquery.min.js?v=2.1.4",
@@ -134,7 +120,7 @@ return [
                         'a' => 'ueditor.all.min.js'
                     ],
                 ],
-            ]
+            ]*/
         ],
     ],
     'on beforeRequest' => [feehi\components\Feehi::className(), 'backendInit'],

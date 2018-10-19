@@ -7,15 +7,15 @@ class m130524_201442_init extends Migration
     public function up()
     {
         $params = $this->getParams();
-        $frontendUri = "";
-        isset($params['frontendUri']) && $frontendUri = $params['frontendUri'];
-        while( strpos($frontendUri, 'http://') !== 0 && strpos($frontendUri, 'https://') !== 0 && strpos($frontendUri, '//') !== 0 ){
-            if( $frontendUri == "" ){
-                yii::$app->controller->stdout("Input your frontend web url(like http://www.xxx.com) :");
+        $agentUri = "";
+        isset($params['agentUri']) && $agentUri = $params['agentUri'];
+        while (strpos($agentUri, 'http://') !== 0 && strpos($agentUri, 'https://') !== 0 && strpos($agentUri, '//') !== 0) {
+            if ($agentUri == "") {
+                yii::$app->controller->stdout("Input your agent web url(like http://www.xxx.com) :");
             }else {
                 yii::$app->controller->stdout("Must begin with 'http', 'https' or '//' :");
             }
-            $frontendUri = trim(fgets(STDIN));
+            $agentUri = trim(fgets(STDIN));
         }
 
         $tableOptions = null;
@@ -1256,7 +1256,7 @@ class m130524_201442_init extends Migration
                 ['3','0','1','SMTP设置','setting/smtp','','2','_blank','0','1','1505570155','1505570283'],
                 ['4','0','1','自定义设置','setting/custom','','4','_blank','0','1','1505570187','1505570187'],
                 ['5','0','0','菜单','','fa fa-th-list','2','_blank','0','1','1505570320','1512380045'],
-                ['6','0','5','前台菜单','frontend-menu/index','','0','_blank','0','1','1505570366','1505570366'],
+                ['6', '0', '5', '前台菜单', 'agent-menu/index', '', '0', '_blank', '0', '1', '1505570366', '1505570366'],
                 ['7','0','5','后台菜单','menu/index','','0','_blank','0','1','1505570382','1505570382'],
                 ['8','0','0','内容','','fa fa-edit','3','_blank','0','1','1505570558','1512380045'],
                 ['9','0','8','文章','article/index','','0','_blank','0','1','1505570610','1505570610'],
@@ -1270,7 +1270,7 @@ class m130524_201442_init extends Migration
                 ['17','0','14','管理员','admin-user/index','','0','_blank','0','1','1505570902','1505570902'],
                 ['18','0','0','友情链接','friendly-link/index','fa fa-link','6','_blank','0','1','1505570934','1512380045'],
                 ['19','0','0','缓存','','fa fa-file','7','_blank','0','1','1505570947','1512380045'],
-                ['20','0','19','清除前台','clear/frontend','','0','_blank','0','1','1505570974','1505570974'],
+                ['20', '0', '19', '清除前台', 'clear/agent', '', '0', '_blank', '0', '1', '1505570974', '1505570974'],
                 ['21','0','19','清除后台','clear/backend','','0','_blank','0','1','1505570994','1505570994'],
                 ['22','0','0','日志','log/index','fa fa-history','8','_blank','0','1','1505571212','1512380045'],
                 ['23','1','0','首页','/','','0','_self','0','1','1505636890','1505637024'],
@@ -1409,7 +1409,7 @@ class m130524_201442_init extends Migration
                 [
                     '0',
                     'website_url',
-                    $frontendUri,
+                    $agentUri,
                     '1',
                     '',
                     '0',

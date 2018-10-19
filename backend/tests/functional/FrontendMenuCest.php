@@ -30,7 +30,7 @@ class FrontendMenuCest
 
     public function checkIndex(FunctionalTester $I)
     {
-        $I->amOnPage(Url::toRoute('/frontend-menu/index'));
+        $I->amOnPage(Url::toRoute('/agent-menu/index'));
         $I->see('前台菜单');
         $I->click("a[title=编辑]");
         $I->see("编辑前台菜单");

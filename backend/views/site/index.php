@@ -9,11 +9,13 @@
 /* @var $this \yii\web\View */
 /* @var $content string */
 
-use common\helpers\FileDependencyHelper;
+use common\helpers\{
+    FileDependencyHelper, StringHelper
+};
 use yii\caching\FileDependency;
 use yii\helpers\Html;
-use backend\models\Menu;
 use yii\helpers\Url;
+use backend\models\Menu;
 use backend\assets\IndexAsset;
 
 IndexAsset::register($this);
@@ -41,25 +43,16 @@ $this->title = yii::t('app', 'Backend Manage System');
         <div class="sidebar-collapse">
             <ul class="nav" id="side-menu">
                 <li class="nav-header">
-                    <div class="dropdown profile-element">
+                    <div class="profile-element">
                         <span>
-                            <img alt="image" class="img-circle" width="64px" height="64px" src="<?php if (yii::$app->getUser()->getIdentity()->avatar) {echo yii::$app->params['site']['url'] . yii::$app->getUser()->getIdentity()->avatar;} else {echo yii::$app->getRequest()->getBaseUrl() . '/static/img/profile_small.jpg';} ?>"/>
+                            <img alt="image" height="49px" width="170px"
+                                 src="<?= yii::$app->getRequest()->getBaseUrl() . '/static/img/logo-admin.png' ?>"/>
                         </span>
-                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                            <span class="clear">
-                                <span class="block m-t-xs"><strong class="font-bold"><?=yii::$app->getUser()->getIdentity()->getRolesNameString()?></strong></span>
-                                <span class="text-muted text-xs block"><?= yii::$app->getUser()->getIdentity()->username ?><b class="caret"></b></span>
-                            </span>
-                        </a>
-                        <ul class="dropdown-menu animated fadeInRight m-t-xs">
-                            <li><a class="J_menuItem" href="<?= Url::to(['admin-user/update-self']) ?>"><?= yii::t('app', 'Profile') ?></a></li>
-                            <li><a class="J_menuItem" href="<?= Url::to(['article/index']) ?>"><?= yii::t('app', 'Articles') ?></a></li>
-                            <li><a target="_blank" href="<?= yii::$app->params['site']['url'] ?>"><?= yii::t('app', 'Frontend') ?></a></li>
-                            <li class="divider"></li>
-                            <li><a data-method="post" href="<?= Url::toRoute('site/logout') ?>"><?= yii::t('app', 'Logout') ?></a></li>
-                        </ul>
+                        <p>系统管理平台</p>
                     </div>
-                    <div class="logo-element">H+</div>
+                    <div class="logo-element" title="万通国际系统管理平台"><img alt="image" height="25px" width="25px"
+                                                                      src="<?= yii::$app->getRequest()->getBaseUrl() . '/static/img/white-logo.png' ?>"/>
+                    </div>
                 </li>
                 <?php
                 $cacheDependencyObject = yii::createObject([
@@ -90,36 +83,117 @@ $this->title = yii::t('app', 'Backend Manage System');
     <div id="page-wrapper" class="gray-bg dashbard-1">
         <div class="row border-bottom">
             <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
-                <div class="navbar-header" style="width: 50%;">
-                    <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
+                <div class="navbar-header" style="width: 100px">
+                    <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i
+                                class="fa fa-outdent"></i><i class="fa fa-indent"></i> </a>
                 </div>
+
                 <ul class="nav navbar-top-links navbar-right">
+
+                    <li>
+                        <a href="javascript:void(0)" onclick="reloadIframe()" title="刷新当前页面"><i
+                                    class="fa fa-refresh"></i> <?= yii::t('app', 'Refresh') ?></a>
+                    </li>
+
                     <li class="hidden-xs">
-                        <a href="<?= yii::$app->params['site']['url'] ?>" target='_blank'><i class="fa fa-internet-explorer"></i> <?= yii::t('app', 'Frontend') ?></a>
+                        <a class="J_menuItem" href="<?= Url::to(['platform/amount']) ?>" title="当前平台可用游戏额度"><i
+                                    class="fa fa-credit-card"></i> 额度 <span
+                                    class="label label-warning">￥ <?= $counts['AMOUNT'] ?></span></a>
                     </li>
                     <li class="hidden-xs">
-                        <a href="javascript:void(0)" onclick="reloadIframe()"><i class="fa fa-refresh"></i> <?= yii::t('app', 'Refresh') ?></a>
+                        <a class="J_menuItem count-info" href="<?= Url::to(['deposit/index']) ?>" title="待审核取款申请"><i
+                                    class="fa fa-sign-in"></i> 存款<span
+                                    class="label label-primary"><?= $counts['DESPOSIT'] ? $counts['DESPOSIT'] : '' ?></span></a>
                     </li>
                     <li class="hidden-xs">
-                        <a href="http://cms.feehi.com/help" class="J_menuItem" data-index="0"><i class="fa fa-cart-arrow-down"></i> <?= yii::t('app', 'Support') ?></a>
+                        <a class="J_menuItem count-info" href="<?= Url::to(['withdraw/index']) ?>" title="未审核取款申请"><i
+                                    class="fa fa-sign-out"></i> 取款<span
+                                    class="label label-danger"><?= $counts['WITHDRAW'] ? $counts['WITHDRAW'] : '' ?></span></a>
+                    </li>
+
+
+                    <li class="dropdown hidden-xs">
+                        <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#" title="未读消息">
+                            <i class="fa fa-envelope"></i> <span
+                                    class="label label-danger"><?= $counts['MESSAGE']['count'] ? $counts['MESSAGE']['count'] : '' ?></span>
+                            消息
+                        </a>
+                        <ul class="dropdown-menu dropdown-messages">
+                            <?php
+                            $levelIcons = [1 => 'fa-info-circle', 2 => 'fa-exclamation-circle', 3 => 'fa-warning'];
+                            $levelTexts = [1 => 'text-muted', 2 => 'text-warning', 3 => 'text-danger'];
+                            foreach ($counts['MESSAGE']['data'] as $message) {
+
+                                ?>
+                                <li class="m-t-xs">
+                                    <div class="dropdown-messages-box">
+                                        <div class="media-body" style="padding:0 10px;">
+                                            <small class="pull-right text-muted"><?= yii::$app->getFormatter()->asRelativeTime($message->created_at) ?></small>
+                                            <strong class="<?= $levelTexts[$message->level] ?>"
+                                                    title="<?= Html::encode($message->title) ?>"><i
+                                                        class="fa <?= $levelIcons[$message->level] ?>"></i> <?= Html::encode(StringHelper::truncate($message->title, 16)) ?>
+                                            </strong>
+                                            <div><?= StringHelper::truncate($message->content, 60, '...', 'UTF-8', true) ?></div>
+                                            <small class="text-muted"><?= yii::$app->getFormatter()->asDate($message->created_at) ?></small>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="divider"></li>
+                                <?php
+                            }
+                            ?>
+                            <li>
+                                <div class="text-center link-block">
+                                    <a class="J_menuItem" title="消息列表" href="<?= Url::toRoute(['message/index']) ?>">
+                                        <i class="fa fa-envelope"></i> <strong> 查看所有消息</strong>
+                                    </a>
+                                </div>
+                            </li>
+                        </ul>
                     </li>
                     <li class="dropdown hidden-xs">
-                        <a class="right-sidebar-toggle" aria-expanded="false"><i class="fa fa-tasks"></i> <?= yii::t('app', 'Theme') ?></a>
+                        <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#" title="系统公告">
+                            <i class="fa fa-bell"></i> <span
+                                    class="label label-danger"><?= $counts['NOTICE']['count'] ? $counts['NOTICE']['count'] : '' ?></span>
+                            公告
+                        </a>
+                        <ul class="dropdown-menu dropdown-alerts">
+                            <?php
+                            $topClass = ['text-muted', 'text-warning'];
+                            foreach ($counts['NOTICE']['data'] as $notice) {
+                                ?>
+                                <li class="m-t-xs">
+                                    <div class="dropdown-messages-box">
+                                        <div class="media-body" style="padding:0 10px;">
+                                            <small class="pull-right text-muted"><?= yii::$app->getFormatter()->asRelativeTime($notice->created_at) ?></small>
+                                            <strong><?= yii::$app->getFormatter()->asDate($notice->created_at) ?></strong>
+                                            <div class="<?= $topClass[$notice->set_top] ?>"><?= StringHelper::truncate($notice->content, 60, '...', 'UTF-8', true) ?></div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="divider"></li>
+                                <?php
+                            }
+                            ?>
+                            <li>
+                                <div class="text-center link-block">
+                                    <a class="J_menuItem" href="notifications.html">
+                                        <i class="fa fa-bell"></i> <strong>查看所有公告 </strong>
+
+                                    </a>
+                                </div>
+                            </li>
+                        </ul>
                     </li>
                     <li class="hidden-xs">
-                        <select onchange="location.href=this.options[this.selectedIndex].value;">
-                            <option
-                                <?php if (yii::$app->language == 'zh-CN') {
-                                    echo 'selected';
-                                } ?> value="<?= Url::to(['site/language', 'lang' => 'zh-CN']) ?>">简体中文
-                            </option>
-                            <option
-                                <?php if (yii::$app->language == 'en-US') {
-                                    echo "selected";
-                                } ?> value="<?= Url::to(['site/language', 'lang' => 'en-US']) ?>">English
-                            </option>
-                        </select>
+                        <a href="<?= yii::$app->params['site']['url'] ?>" target='_blank' title="进入代理后台"><i
+                                    class="fa fa-ship"></i> 代理</a>
                     </li>
+                    <li>
+                        <a class="J_menuItem" href="<?= Url::to(['admin-user/update-self']) ?>" title="修改个人资料"><i
+                                    class="fa fa-user"> <?= Html::encode(yii::$app->getUser()->getIdentity()->username) ?></i></a>
+                    </li>
+
                 </ul>
             </nav>
         </div>
@@ -147,107 +221,12 @@ $this->title = yii::t('app', 'Backend Manage System');
             <iframe class="J_iframe" name="iframe0" width="100%" height="100%" src="<?= Url::to(['site/main']) ?>" frameborder="0" data-id="<?= Url::to(['site/main']) ?>" seamless></iframe>
         </div>
         <div class="footer">
-            <div class="pull-right">&copy; 2015-<?=date('Y')?> <a href="http://blog.feehi.com/" target="_blank">feehi</a></div>
+            <div class="pull-right">&copy; 2015-<?= date('Y') ?> <a href="http://www.abc.com/" target="_blank">abc</a>
+            </div>
         </div>
     </div>
     <!--右侧部分结束-->
     <!--右侧边栏开始-->
-    <div id="right-sidebar">
-        <div class="sidebar-container">
-            <ul class="nav nav-tabs navs-3">
-                <li class="active">
-                    <a data-toggle="tab" href="#tab-1">
-                        <i class="fa fa-gear"></i> <?=yii::t('app', 'Theme')?>
-                    </a>
-                </li><!--
-                <li class=""><a data-toggle="tab" href="#tab-2">
-                        通知
-                    </a>
-                </li>
-                <li><a data-toggle="tab" href="#tab-3">
-                        项目进度
-                    </a>
-                </li>-->
-            </ul>
-
-            <div class="tab-content">
-                <div id="tab-1" class="tab-pane active">
-                    <div class="sidebar-title">
-                        <h3><i class="fa fa-comments-o"></i> 主题设置</h3>
-                        <small><i class="fa fa-tim"></i> 你可以从这里选择和预览主题的布局和样式，这些设置会被保存在本地，下次打开的时候会直接应用这些设置。</small>
-                    </div>
-                    <div class="skin-setttings">
-                        <div class="title">主题设置</div>
-                        <div class="setings-item">
-                            <span>收起左侧菜单</span>
-                            <div class="switch">
-                                <div class="onoffswitch">
-                                    <input type="checkbox" name="collapsemenu" class="onoffswitch-checkbox"
-                                           id="collapsemenu">
-                                    <label class="onoffswitch-label" for="collapsemenu">
-                                        <span class="onoffswitch-inner"></span>
-                                        <span class="onoffswitch-switch"></span>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="setings-item">
-                            <span>固定顶部</span>
-
-                            <div class="switch">
-                                <div class="onoffswitch">
-                                    <input type="checkbox" name="fixednavbar" class="onoffswitch-checkbox"
-                                           id="fixednavbar">
-                                    <label class="onoffswitch-label" for="fixednavbar">
-                                        <span class="onoffswitch-inner"></span>
-                                        <span class="onoffswitch-switch"></span>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="setings-item">
-                                <span>
-                        固定宽度
-                    </span>
-
-                            <div class="switch">
-                                <div class="onoffswitch">
-                                    <input type="checkbox" name="boxedlayout" class="onoffswitch-checkbox"
-                                           id="boxedlayout">
-                                    <label class="onoffswitch-label" for="boxedlayout">
-                                        <span class="onoffswitch-inner"></span>
-                                        <span class="onoffswitch-switch"></span>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="title">皮肤选择</div>
-                        <div class="setings-item default-skin nb">
-                                <span class="skin-name ">
-                         <a href="#" class="s-skin-0">
-                             默认皮肤
-                         </a>
-                    </span>
-                        </div>
-                        <div class="setings-item blue-skin nb">
-                                <span class="skin-name ">
-                        <a href="#" class="s-skin-1">
-                            蓝色主题
-                        </a>
-                    </span>
-                        </div>
-                        <div class="setings-item yellow-skin nb">
-                                <span class="skin-name ">
-                        <a href="#" class="s-skin-3">
-                            黄色/紫色主题
-                        </a>
-                    </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
     <?php $this->endBody() ?>
 </body>
 <script>

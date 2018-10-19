@@ -32,7 +32,7 @@ class FileController extends \yii\console\Controller
     public function actionDeleteUnused()
     {
         $articeThumb = [];
-        $rootPath = yii::getAlias('@frontend/web');
+        $rootPath = yii::getAlias('@agent/web');
         foreach (Article::find()->where(['<>', 'thumb', ''])->each(100) as $artice) {
             $articeThumb[] = str_replace(yii::$app->params['site']['url'], $rootPath, $artice->thumb);
         }
@@ -105,13 +105,13 @@ class FileController extends \yii\console\Controller
             $temp . 'tests',
             $temp . 'backend' . DIRECTORY_SEPARATOR . 'runtime',
             $temp . 'backend' . DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'assets',
-            $temp . 'frontend' . DIRECTORY_SEPARATOR . 'runtime',
+            $temp . 'agent' . DIRECTORY_SEPARATOR . 'runtime',
             $temp . 'console' . DIRECTORY_SEPARATOR . 'runtime',
             $temp . 'install' . DIRECTORY_SEPARATOR . 'runtime',
-            $temp . 'frontend' . DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'assets',
-            $temp . 'frontend' . DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'uploads',
-            $temp . 'frontend' . DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'admin' . DIRECTORY_SEPARATOR . 'assets',
-            $temp . 'frontend' . DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'admin' . DIRECTORY_SEPARATOR . 'uploads',
+            $temp . 'agent' . DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'assets',
+            $temp . 'agent' . DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'uploads',
+            $temp . 'agent' . DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'admin' . DIRECTORY_SEPARATOR . 'assets',
+            $temp . 'agent' . DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'admin' . DIRECTORY_SEPARATOR . 'uploads',
             $temp . 'common' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR .'conf',
             $temp . 'api' . DIRECTORY_SEPARATOR . 'runtime',
         ];

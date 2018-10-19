@@ -12,7 +12,7 @@ $this->params['breadcrumbs'] = [
     ['label' => yii::t('app', 'Update') . yii::t('app', 'Users')],
 ];
 /**
- * @var $model frontend\models\User
+ * @var $model agent\models\User
  */
 ?>
 <?= $this->render('_form', [

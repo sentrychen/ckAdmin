@@ -153,10 +153,10 @@ class SiteController extends \yii\web\Controller
         }
 
         $folders = array(
-            '@frontend/runtime',
-            '@frontend/web/assets',
+            '@agent/runtime',
+            '@agent/web/assets',
             '@backend/runtime',
-            '@frontend/web/admin/assets',
+            '@agent/web/admin/assets',
             '@common/config/conf',
         );
         @FileHelper::createDirectory(yii::getAlias("@common/config/conf"));

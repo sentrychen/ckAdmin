@@ -122,7 +122,7 @@ class Uploader
             $this->stateInfo = $this->getStateInfo("ERROR_FILE_MOVE");
         } else { //移动成功
             $this->stateInfo = $this->stateMap[0];
-            $arr = explode(yii::getAlias("@frontend/web"), $this->filePath);
+            $arr = explode(yii::getAlias("@agent/web"), $this->filePath);
             yii::$app->alioss->uploadFile($arr[1], $this->filePath);
             yii::$app->qiniu->uploadFile($arr[1], $this->filePath);
         }
@@ -257,7 +257,7 @@ class Uploader
             $this->stateInfo = $this->getStateInfo("ERROR_WRITE_CONTENT");
         } else { //移动成功
             $this->stateInfo = $this->stateMap[0];
-            $arr = explode(yii::getAlias("@frontend/web"), $this->filePath);
+            $arr = explode(yii::getAlias("@agent/web"), $this->filePath);
             yii::$app->alioss->uploadFile($arr[1], $this->filePath);
             yii::$app->qiniu->uploadFile($arr[1], $this->filePath);
         }

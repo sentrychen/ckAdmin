@@ -10,8 +10,8 @@ namespace backend\controllers;
 
 use backend\actions\ViewAction;
 use yii;
-use frontend\models\User;
-use frontend\models\search\UserSearch;
+use agent\models\User;
+use agent\models\search\UserSearch;
 use backend\actions\CreateAction;
 use backend\actions\UpdateAction;
 use backend\actions\IndexAction;

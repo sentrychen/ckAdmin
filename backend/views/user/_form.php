@@ -8,10 +8,10 @@
 
 /**
  * @var $this yii\web\View
- * @var $model frontend\models\User
+ * @var $model agent\models\User
  */
 use backend\widgets\ActiveForm;
-use frontend\models\User;
+use agent\models\User;
 
 $this->title = 'User';
 ?>

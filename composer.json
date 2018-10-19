@@ -19,7 +19,8 @@
         "yiisoft/yii2-swiftmailer": "*",
         "feehi/yii2-swoole": ">=0.0.5",
         "feehi/yii2-cdn" : "*",
-        "yiisoft/yii2-imagine": "^2.1"
+      "yiisoft/yii2-imagine": "^2.1",
+      "bower-asset/echarts": "~4.0"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",
@@ -39,10 +40,6 @@
         }
     },
     "repositories": [
-        {
-            "type": "composer",
-            "url": "https://packagist.phpcomposer.com"
-        },
         {
             "type": "composer",
             "url": "https://asset-packagist.org"

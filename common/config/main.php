@@ -1,6 +1,6 @@
 <?php
 $config = [
-    'name' => 'Feehi CMS',
+    'name' => 'OneTop Admin',
     'version' => '2.0.4.1',
     'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
     'aliases' => [
@@ -9,17 +9,17 @@ $config = [
     ],
     'components' => [
         'db' => [//数据库配置，这里的配置可能会被conf/db.local main-local.php配置覆盖
-            'class' => yii\db\Connection::className(),
+            'class' => yii\db\Connection::class,
             'dsn' => 'mysql:host=localhost;dbname=feehi',
             'username' => 'root',
             'password' => '',
             'charset' => 'utf8mb4',
         ],
         'cdn' => [//支持使用 七牛 腾讯云 阿里云 网易云 具体配置请参见 http://doc.feehi.com/cdn.html
-            'class' => feehi\cdn\DummyTarget::className(),//不使用cdn
+            'class' => feehi\cdn\DummyTarget::class,//不使用cdn
         ],
         'cache' => [//缓存组件 具体配置请参考 http://doc.feehi.com/configs.html
-            'class' => yii\caching\DummyCache::className(),//不使用缓存
+            'class' => yii\caching\DummyCache::class,//不使用缓存
         ],
         'formatter' => [//格式显示配置
             'dateFormat' => 'php:Y-m-d H:i',
@@ -29,7 +29,7 @@ $config = [
             'nullDisplay' => '-',
         ],
         'mailer' => [//邮箱发件人配置，会被main-local.php以及后台管理页面中的smtp配置覆盖
-            'class' => yii\swiftmailer\Mailer::className(),
+            'class' => yii\swiftmailer\Mailer::class,
             'viewPath' => '@common/mail',
             'useFileTransport' => false,//false发送邮件，true只是生成邮件在runtime文件夹下，不发邮件
             'transport' => [
@@ -46,49 +46,52 @@ $config = [
             ],
         ],
         'feehi' => [
-            'class' => feehi\components\Feehi::className(),
+            'class' => feehi\components\Feehi::class,
+        ],
+        'option' => [
+            'class' => common\components\Setting::class,
         ],
         'authManager' => [
-            'class' => yii\rbac\DbManager::className(),
+            'class' => yii\rbac\DbManager::class,
         ],
         'assetManager' => [
             'linkAssets' => false,
             'bundles' => [
-                yii\widgets\ActiveFormAsset::className() => [
+                yii\widgets\ActiveFormAsset::class => [
                     'js' => [
                         'a' => 'yii.activeForm.js'
                     ],
                 ],
-                yii\bootstrap\BootstrapAsset::className() => [
+                yii\bootstrap\BootstrapAsset::class => [
                     'css' => [],
                     'sourcePath' => null,
                 ],
-                yii\captcha\CaptchaAsset::className() => [
+                yii\captcha\CaptchaAsset::class => [
                     'js' => [
                         'a' => 'yii.captcha.js'
                     ],
                 ],
-                yii\grid\GridViewAsset::className() => [
+                yii\grid\GridViewAsset::class => [
                     'js' => [
                         'a' => 'yii.gridView.js'
                     ],
                 ],
-                yii\web\JqueryAsset::className() => [
+                yii\web\JqueryAsset::class => [
                     'js' => [
                         'a' => 'jquery.js'
                     ],
                 ],
-                yii\widgets\PjaxAsset::className() => [
+                yii\widgets\PjaxAsset::class => [
                     'js' => [
                         'a' => 'jquery.pjax.js'
                     ],
                 ],
-                yii\web\YiiAsset::className() => [
+                yii\web\YiiAsset::class => [
                     'js' => [
                         'a' => 'yii.js'
                     ],
                 ],
-                yii\validators\ValidationAsset::className() => [
+                yii\validators\ValidationAsset::class => [
                     'js' => [
                         'a' => 'yii.validation.js'
                     ],

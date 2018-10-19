@@ -5,11 +5,12 @@
  * Email: job@feehi.com
  * Created at: 2018-02-24 13:38
  */
-use frontend\models\User;
+
+use agent\models\User;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model frontend\models\User */
+/* @var $model agent\models\User */
 ?>
 <?= DetailView::widget([
     'model' => $model,

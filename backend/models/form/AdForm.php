@@ -127,7 +127,7 @@ class AdForm extends \Common\models\Options
     public function afterDelete()
     {
         if( $this->input_type != Constants::AD_TEXT ){
-            $file = yii::getAlias('@frontend/web') . $this->ad;
+            $file = yii::getAlias('@agent/web') . $this->ad;
             if( file_exists($file) && is_file($file) ) unlink($file);
         }
     }

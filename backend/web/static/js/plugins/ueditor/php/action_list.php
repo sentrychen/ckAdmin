@@ -31,7 +31,7 @@ $end = $start + $size;
 
 /* 获取文件列表 */
 //$path = $_SERVER['DOCUMENT_ROOT'] . (substr($path, 0, 1) == "/" ? "":"/") . $path;
-$path = $CONFIG['baseUploadsDirectory'].'frontend/web/uploads/article/ueditor';
+$path = $CONFIG['baseUploadsDirectory'] . 'agent/web/uploads/article/ueditor';
 $files = getfiles($path, $allowFiles);
 foreach ($files as &$v){
     $temp = explode('/uploads/', $v['url']);
