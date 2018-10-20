@@ -6,7 +6,7 @@
  * Created at: 2017-08-13 10:00
  */
 
-namespace backend\actions;
+namespace agent\actions;
 
 use yii;
 use yii\web\Response;

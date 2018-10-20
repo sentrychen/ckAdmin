@@ -6,7 +6,7 @@
  * Created at: 2018-01-22 17:23
  */
 
-namespace backend\behaviors;
+namespace agent\behaviors;
 
 use backend\components\search\SearchEvent;
 

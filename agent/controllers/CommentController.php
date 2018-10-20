@@ -6,7 +6,7 @@
  * Created at: 2017-10-03 22:03
  */
 
-namespace backend\controllers;
+namespace agent\controllers;
 
 use yii;
 use backend\actions\ViewAction;

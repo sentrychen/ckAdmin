@@ -8,6 +8,7 @@ use backend\assets\EchartAsset;
 use common\widgets\JsBlock;
 
 EchartAsset::register($this);
+
 ?>
 <div class="row">
     <div class="col-sm-4">
@@ -17,7 +18,6 @@ EchartAsset::register($this);
                 <h5>会员</h5>
             </div>
             <div class="ibox-content">
-
                 <div class="row">
                     <div class="col-md-6">
                         <h1 class="no-margins"><?= $statics['dnu'] ?></h1>
@@ -36,6 +36,7 @@ EchartAsset::register($this);
             </div>
         </div>
     </div>
+
     <div class="col-sm-4">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
@@ -252,19 +253,26 @@ EchartAsset::register($this);
 </div>
 <?php JsBlock::begin() ?>
 <script type="text/javascript">
+
     var userChart = echarts.init(document.getElementById('flot-user-chart'));
     var dwChart = echarts.init(document.getElementById('flot-dw-chart'));
     var betChart = echarts.init(document.getElementById('flot-bet-chart'));
     var wlChart = echarts.init(document.getElementById('flot-wl-chart'));
-    var option = {
+    var userOption = {
         legend: {},
         tooltip: {},
         dataset: {
             source: [
-                ['时间', '2015', '2016', '2017'],
-                ['新增用户', 43.3, 85.8, 93.7],
-                ['活跃用户', 83.1, 73.4, 55.1],
-                ['首付用户', 86.4, 65.2, 82.5],
+                ['用户', '新增用户', '活跃用户', '首付用户'],
+                ['1月', 234, 98, 23],
+                ['2月', 311, 133, 34],
+                ['3月', 420, 156, 66],
+                ['4月', 288, 99, 56],
+                ['5月', 122, 67, 34],
+                ['6月', 432, 112, 66],
+                ['7月', 324, 112, 56],
+                ['8月', 458, 146, 66],
+                ['9月', 550, 168, 78],
             ]
         },
         xAxis: {type: 'category'},
@@ -275,9 +283,33 @@ EchartAsset::register($this);
             {type: 'bar'}
         ]
     };
+    var dwOption = {
+        legend: {},
+        tooltip: {},
+        dataset: {
+            source: [
+                ['存取款', '存款', '取款'],
+                ['1月', 23456, 21398],
+                ['2月', 31451, 22133],
+                ['3月', 42340, 56156],
+                ['4月', 28338, 12399],
+                ['5月', 14422, 9267],
+                ['6月', 43222, 51512],
+                ['7月', 32344, 6112],
+                ['8月', 45668, 32146],
+                ['9月', 55550, 65168],
+            ]
+        },
+        xAxis: {type: 'category'},
+        yAxis: {},
+        series: [
+            {type: 'line'},
+            {type: 'line'}
+        ]
+    };
+    userChart.setOption(userOption);
+    dwChart.setOption(dwOption);
 
-
-    userChart.setOption(option);
 </script>
 
 <?php JsBlock::end() ?>

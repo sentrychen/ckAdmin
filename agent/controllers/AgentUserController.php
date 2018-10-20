@@ -6,7 +6,7 @@
  * Created at: 2016-03-31 15:01
  */
 
-namespace backend\controllers;
+namespace agent\controllers;
 
 use yii;
 use backend\models\form\PasswordResetRequestForm;

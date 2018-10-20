@@ -6,7 +6,7 @@
  * Created at: 2016-06-15 09:25
  */
 
-namespace backend\widgets;
+namespace agent\widgets;
 
 use yii;
 use yii\base\Widget;

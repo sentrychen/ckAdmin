@@ -71,7 +71,7 @@ return [
 
         'assetManager' => [
             'linkAssets' => false,//若为unix like系统这里可以修改成true则创建css js文件软链接到assets而不是拷贝css js到assets目录
-            'forceCopy' => true,
+            'forceCopy' => false,
             /*
             'bundles' => [
                 backend\assets\AppAsset::className() => [

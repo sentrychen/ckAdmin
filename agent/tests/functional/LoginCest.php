@@ -1,6 +1,6 @@
 <?php
 
-namespace backend\tests\functional;
+namespace agent\tests\functional;
 
 use backend\tests\FunctionalTester;
 use backend\fixtures\UserFixture;

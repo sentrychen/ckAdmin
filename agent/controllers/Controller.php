@@ -3,7 +3,7 @@
  *
  */
 
-namespace backend\controllers;
+namespace agent\controllers;
 
 use yii;
 

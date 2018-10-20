@@ -6,7 +6,7 @@
  * Created at: 2016-03-21 14:40
  */
 
-namespace backend\widgets;
+namespace agent\widgets;
 
 use yii;
 use yii\helpers\Html;

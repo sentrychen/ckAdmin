@@ -6,7 +6,7 @@
  * Created at: 2016-04-13 12:49
  */
 
-namespace backend\controllers;
+namespace agent\controllers;
 
 use yii;
 use yii\helpers\FileHelper;

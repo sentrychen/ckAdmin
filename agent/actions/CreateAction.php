@@ -6,7 +6,7 @@
  * Created at: 2017-08-13 00:06
  */
 
-namespace backend\actions;
+namespace agent\actions;
 
 use Closure;
 use yii;

@@ -1,6 +1,6 @@
 <?php
 
-namespace backend\tests\model;
+namespace agent\tests\model;
 
 use backend\models\form\SettingSmtpForm;
 use backend\tests\UnitTester;

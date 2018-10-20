@@ -7,7 +7,7 @@
  * Created at: 2017-09-20 23:04
  */
 
-namespace backend\components;
+namespace agent\components;
 
 use backend\models\form\Rbac;
 use yii;

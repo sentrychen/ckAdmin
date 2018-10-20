@@ -6,7 +6,7 @@
  * Created at: 2018-01-22 17:17
  */
 
-namespace backend\components\search;
+namespace agent\components\search;
 
 class SearchEvent extends \yii\base\Event
 {

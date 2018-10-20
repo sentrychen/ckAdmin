@@ -6,7 +6,7 @@
  * Created at: 2017-09-10 16:42
  */
 
-namespace backend\components;
+namespace agent\components;
 
 use yii\web\ForbiddenHttpException;
 use yii\base\Module;

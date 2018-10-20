@@ -14,5 +14,8 @@ class EchartAsset extends yii\web\AssetBundle
 {
 
     public $sourcePath = '@bower/echarts/dist';
+    public $js = [
+        'echarts.common.min.js',
+    ];
 
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace backend\tests\functional;
+namespace agent\tests\functional;
 
 use backend\models\AgentUser;
 use backend\tests\FunctionalTester;

@@ -35,7 +35,7 @@
  * ])>
  */
 
-namespace backend\widgets;
+namespace agent\widgets;
 
 use yii;
 use yii\helpers\Html;

@@ -6,7 +6,7 @@
  * Created at: 2016-03-21 19:55
  */
 
-namespace backend\grid;
+namespace agent\grid;
 
 use Yii;
 use Closure;

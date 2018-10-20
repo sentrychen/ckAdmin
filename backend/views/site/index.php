@@ -19,7 +19,9 @@ use backend\models\Menu;
 use backend\assets\IndexAsset;
 
 IndexAsset::register($this);
+
 $this->title = yii::t('app', 'Backend Manage System');
+
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>

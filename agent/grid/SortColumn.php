@@ -6,7 +6,7 @@
  * Created at: 2017-10-01 10:43
  */
 
-namespace backend\grid;
+namespace agent\grid;
 
 use yii\helpers\Html;
 use yii\helpers\Url;

@@ -6,7 +6,7 @@
  * Created at: 2017-03-15 21:16
  */
 
-namespace backend\components;
+namespace agent\components;
 
 use yii;
 use backend\models\AdminLog as AdminLogModel;

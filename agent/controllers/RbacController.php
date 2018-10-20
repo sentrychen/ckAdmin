@@ -6,7 +6,7 @@
  * Created at: 2017-09-12 11:30
  */
 
-namespace backend\controllers;
+namespace agent\controllers;
 
 use yii;
 use backend\models\search\RbacSearch;

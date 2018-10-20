@@ -6,7 +6,7 @@
  * Created at: 2017-12-07 19:46
  */
 
-namespace backend\tests\acceptance;
+namespace agent\tests\acceptance;
 
 use backend\fixtures\UserFixture;
 use backend\tests\AcceptanceTester;

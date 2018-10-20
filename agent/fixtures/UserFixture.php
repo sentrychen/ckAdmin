@@ -7,7 +7,7 @@
  * Created at: 2017-08-24 21:52
  */
 
-namespace backend\fixtures;
+namespace agent\fixtures;
 
 use yii\test\ActiveFixture;
 

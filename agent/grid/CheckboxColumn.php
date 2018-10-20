@@ -6,7 +6,7 @@
  * Created at: 2016-04-14 21:53
  */
 
-namespace backend\grid;
+namespace agent\grid;
 
 use Closure;
 use yii\helpers\Html;

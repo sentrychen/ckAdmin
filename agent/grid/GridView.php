@@ -6,7 +6,7 @@
  * Created at: 2016-03-21 18:45
  */
 
-namespace backend\grid;
+namespace agent\grid;
 
 use yii;
 use yii\helpers\ArrayHelper;

@@ -6,7 +6,7 @@
  * Created at: 2017-12-05 12:47
  */
 
-namespace backend\controllers;
+namespace agent\controllers;
 
 use backend\actions\ViewAction;
 use backend\models\form\AdForm;

@@ -6,7 +6,7 @@
  * Created at: 2017-12-07 19:31
  */
 
-namespace backend\tests\functional;
+namespace agent\tests\functional;
 
 use backend\models\AgentUser;
 use backend\tests\FunctionalTester;

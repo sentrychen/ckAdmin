@@ -6,7 +6,7 @@
  * Created at: 2016-03-23 15:13
  */
 
-namespace backend\controllers;
+namespace agent\controllers;
 
 use yii;
 use backend\models\Article;
