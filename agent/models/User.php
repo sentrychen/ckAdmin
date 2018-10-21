@@ -14,7 +14,7 @@ use yii\db\ActiveRecord;
 
 
 /**
- * User model
+ * AdminUser model
  *
  * @property int $id 自增用户id
  * @property string $username 用户名

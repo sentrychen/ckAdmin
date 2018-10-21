@@ -8,11 +8,11 @@
 use yii\helpers\Url;
 
 $this->params['breadcrumbs'] = [
-    ['label' => yii::t('app', 'Users'), 'url' => Url::to(['index'])],
-    ['label' => yii::t('app', 'Create') . yii::t('app', 'Users')],
+    ['label' => '会员列表', 'url' => Url::to(['index'])],
+    ['label' => '新增会员'],
 ];
 /**
- * @var $model agent\models\User
+ * @var $model backend\models\User
  */
 ?>
 <?= $this->render('_form', [

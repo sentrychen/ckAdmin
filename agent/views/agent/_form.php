@@ -8,14 +8,14 @@
 
 /**
  * @var $this yii\web\View
- * @var $model backend\models\User
+ * @var $model backend\models\AdminUser
  */
 
 use backend\widgets\ActiveForm;
 use common\libs\Constants;
 use backend\models\Agent;
 
-$this->title = 'User';
+$this->title = 'AdminUser';
 ?>
 <div class="col-sm-12">
     <div class="ibox">

@@ -12,7 +12,7 @@ $this->params['breadcrumbs'] = [
     ['label' => yii::t('app', 'Create') . yii::t('app', 'Admin Users')],
 ];
 /**
- * @var $model backend\models\User
+ * @var $model backend\models\AdminUser
  */
 ?>
 <?= $this->render('_form', [

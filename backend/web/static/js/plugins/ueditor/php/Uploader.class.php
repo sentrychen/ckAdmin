@@ -2,7 +2,7 @@
 
 /**
  * Created by JetBrains PhpStorm.
- * User: taoqili
+ * AdminUser: taoqili
  * Date: 12-7-18
  * Time: 上午11: 32
  * UEditor编辑器通用上传类

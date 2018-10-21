@@ -12,10 +12,10 @@
  */
 
 use backend\widgets\ActiveForm;
-use backend\models\User;
+use backend\models\AdminUser;
 use common\libs\Constants;
 
-$this->title = 'User';
+$this->title = 'AdminUser';
 ?>
 <div class="col-sm-12">
     <div class="ibox">
@@ -42,7 +42,7 @@ $this->title = 'User';
             <div class="hr-line-dashed"></div>
             <?= $form->field($model, 'repassword')->passwordInput(['maxlength' => 512]) ?>
             <div class="hr-line-dashed"></div>
-            <?= $form->field($model, 'status')->radioList(User::getStatuses()) ?>
+            <?= $form->field($model, 'status')->radioList(AdminUser::getStatuses()) ?>
             <div class="hr-line-dashed"></div>
             <?= $form->field($model, 'min_limit') ?>
             <div class="hr-line-dashed"></div>

@@ -6762,7 +6762,7 @@
             axis.max = null;
             axis.min = null;
 
-            // User set min and max
+            // AdminUser set min and max
             //axis.userMin = UNDEFINED,
             //axis.userMax = UNDEFINED,
 

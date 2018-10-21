@@ -19,7 +19,7 @@ use yii\helpers\Html;
 use backend\widgets\Bar;
 use backend\grid\CheckboxColumn;
 use backend\grid\ActionColumn;
-use backend\models\User;
+use backend\models\AdminUser;
 
 $assignment = function ($url, $model) {
     return Html::a('<i class="fa fa-tablet"></i> ' . yii::t('app', 'Assign Roles'), Url::to([
@@ -57,7 +57,7 @@ $this->params['breadcrumbs'][] = yii::t('app', 'Admin Users');
                             'attribute' => 'role',
                             'label' => yii::t('app', 'Role'),
                             'value' => function ($model) {
-                                /** @var $model backend\models\User */
+                                /** @var $model backend\models\AdminUser */
                                 return $model->getRolesNameString();
                             },
                         ],
@@ -68,13 +68,13 @@ $this->params['breadcrumbs'][] = yii::t('app', 'Admin Users');
                             'attribute' => 'status',
                             'label' => yii::t('app', 'Status'),
                             'value' => function ($model) {
-                                if($model->status == User::STATUS_ACTIVE){
+                                if($model->status == AdminUser::STATUS_ACTIVE){
                                     return yii::t('app', 'Normal');
-                                }else if( $model->status == User::STATUS_DELETED ){
+                                }else if( $model->status == AdminUser::STATUS_DELETED ){
                                     return yii::t('app', 'Disabled');
                                 }
                             },
-                            'filter' => User::getStatuses(),
+                            'filter' => AdminUser::getStatuses(),
                         ],
                         [
                             'class' => DateColumn::className(),

@@ -59,7 +59,7 @@ class AdminLog extends \yii\db\ActiveRecord
             'route' => Yii::t('app', 'Route'),
             'description' => Yii::t('app', 'Description'),
             'created_at' => Yii::t('app', 'Created At'),
-            'user_id' => Yii::t('app', 'Admin User Id'),
+            'user_id' => Yii::t('app', 'Admin AdminUser Id'),
         ];
     }
 
@@ -68,7 +68,7 @@ class AdminLog extends \yii\db\ActiveRecord
      */
     public function getUser()
     {
-        return $this->hasOne(User::className(), ['id' => 'user_id']);
+        return $this->hasOne(AdminUser::className(), ['id' => 'user_id']);
     }
 
     public function afterFind()

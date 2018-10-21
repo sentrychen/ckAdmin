@@ -13,7 +13,7 @@ use Exception;
 use yii\db\Connection;
 use yii\helpers\FileHelper;
 use yii\helpers\Url;
-use backend\models\User;
+use backend\models\AdminUser;
 use common\models\Options;
 use yii\web\Response;
 use yii\web\ErrorAction;
@@ -221,7 +221,7 @@ class SiteController extends \yii\web\Controller
                     'password_hash' => Yii::$app->security->generatePasswordHash($request->post('manager_pwd')),
                     'email' => $request->post('manager_email'),
                 ];
-                yii::$app->getDb()->createCommand()->update(User::tableName(), $data, 'id = 1')->execute();
+                yii::$app->getDb()->createCommand()->update(AdminUser::tableName(), $data, 'id = 1')->execute();
 
                 $model = Options::findOne(['name' => 'website_title']);
                 $model->value = $request->post('sitename', 'Feehi CMS');

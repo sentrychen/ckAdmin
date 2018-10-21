@@ -8,12 +8,14 @@
 
 /**
  * @var $this yii\web\View
- * @var $model agent\models\User
+ * @var $model backend\models\User
  */
-use backend\widgets\ActiveForm;
-use agent\models\User;
 
-$this->title = 'User';
+use backend\widgets\ActiveForm;
+use common\libs\Constants;
+use backend\models\User;
+
+$this->title = '会员';
 ?>
 <div class="col-sm-12">
     <div class="ibox">
@@ -22,27 +24,42 @@ $this->title = 'User';
 
             <?php $form = ActiveForm::begin([
                 'options' => [
-                    'enctype' => 'multipart/form-data',
                     'class' => 'form-horizontal'
                 ]
             ]); ?>
             <?php
+
             $temp = ['maxlength' => 64];
+
             if (yii::$app->controller->action->id == 'update') {
                 $temp['disabled'] = 'disabled';
             }
             ?>
             <?= $form->field($model, 'username')->textInput($temp) ?>
             <div class="hr-line-dashed"></div>
-            <?= $form->field($model, 'avatar')->imgInput(['width' => 200]) ?>
+            <?= $form->field($model, 'password')->passwordInput(['maxlength' => 512]) ?>
             <div class="hr-line-dashed"></div>
-            <?= $form->field($model, 'email')->textInput(['maxlength' => 64]) ?>
+            <?= $form->field($model, 'repassword')->passwordInput(['maxlength' => 512]) ?>
             <div class="hr-line-dashed"></div>
-            <?= $form->field($model, 'status')->radioList( User::getStatuses() ) ?>
+            <?= $form->field($model, 'status')->radioList(User::getStatuses()) ?>
             <div class="hr-line-dashed"></div>
-            <?= $form->field($model, 'password')->textInput(['maxlength' => 512]) ?>
+            <?= $form->field($model, 'min_limit') ?>
             <div class="hr-line-dashed"></div>
-            <?= $form->field($model, 'repassword')->textInput(['maxlength' => 512]) ?>
+            <?= $form->field($model, 'max_limit') ?>
+            <div class="hr-line-dashed"></div>
+            <?= $form->field($model, 'dogfall_min_limit') ?>
+            <div class="hr-line-dashed"></div>
+            <?= $form->field($model, 'dogfall_max_limit') ?>
+            <div class="hr-line-dashed"></div>
+            <?= $form->field($model, 'pair_min_limit') ?>
+            <div class="hr-line-dashed"></div>
+            <?= $form->field($model, 'pair_max_limit') ?>
+            <div class="hr-line-dashed"></div>
+            <?= $form->field($model, 'xima_status')->radioList(Constants::getYesNoItems()) ?>
+            <div class="hr-line-dashed"></div>
+            <?= $form->field($model, 'xima_type')->radioList(Constants::getXiMaTypes()) ?>
+            <div class="hr-line-dashed"></div>
+            <?= $form->field($model, 'xima_rate')->textInput(['afterAddon' => '%']) ?>
             <div class="hr-line-dashed"></div>
             <?= $form->defaultButtons() ?>
             <?php ActiveForm::end(); ?>

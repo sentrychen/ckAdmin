@@ -10,13 +10,17 @@ namespace backend\models\search;
 
 use backend\behaviors\TimeSearchBehavior;
 use backend\components\search\SearchEvent;
+use backend\models\User;
+use yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use yii\db\ActiveRecord;
 use yii\db\BaseActiveRecord;
 
-class UserSearch extends \backend\models\User
+class UserSearch extends User
 {
+    public $create_start_at;
+    public $create_end_at;
 
     public function init()
     {
@@ -26,7 +30,7 @@ class UserSearch extends \backend\models\User
     public function behaviors()
     {
         return [
-            TimeSearchBehavior::className()
+            TimeSearchBehavior::class
         ];
     }
 
@@ -36,8 +40,7 @@ class UserSearch extends \backend\models\User
     public function rules()
     {
         return [
-            [['username', 'email', 'created_at', 'updated_at'], 'string'],
-            ['status', 'integer'],
+            [['id', 'status', 'username', 'created_at'], 'safe'],
         ];
     }
 
@@ -52,11 +55,12 @@ class UserSearch extends \backend\models\User
      */
     public function search($params)
     {
-        $query = self::find();
+        $query = self::find()->with('userStat');
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'sort' => [
                 'defaultOrder' => [
+                    'id' => SORT_DESC,
                     'created_at' => SORT_DESC,
                     'updated_at' => SORT_DESC,
                     'username' => SORT_ASC,
@@ -64,14 +68,15 @@ class UserSearch extends \backend\models\User
             ]
         ]);
         $this->load($params);
-        if (! $this->validate()) {
+        if (!$this->validate()) {
             return $dataProvider;
         }
-        $query->andFilterWhere(['like', 'username', $this->username])
+        $query->andFilterWhere(['id' => $this->id])
+            ->andFilterWhere(['like', 'username', $this->username])
             ->andFilterWhere(['like', 'email', $this->email])
             ->andFilterWhere(['status' => $this->status]);
 
-        $this->trigger(SearchEvent::BEFORE_SEARCH, new SearchEvent(['query'=>$query]));
+        $this->trigger(SearchEvent::BEFORE_SEARCH, new SearchEvent(['query' => $query]));
         return $dataProvider;
     }
 

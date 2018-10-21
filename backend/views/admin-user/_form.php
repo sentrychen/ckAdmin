@@ -8,12 +8,12 @@
 
 /**
  * @var $this yii\web\View
- * @var $model backend\models\User
+ * @var $model backend\models\AdminUser
  */
 
 use backend\models\form\Rbac;
 use backend\widgets\ActiveForm;
-use backend\models\User;
+use backend\models\AdminUser;
 use common\widgets\JsBlock;
 use yii\helpers\Html;
 
@@ -41,7 +41,7 @@ $this->title = "Admin";
                 <div class="hr-line-dashed"></div>
                 <?= $form->field($model, 'password')->passwordInput(['maxlength' => 512]) ?>
                 <div class="hr-line-dashed"></div>
-                <?= $form->field($model, 'status')->radioList( User::getStatuses() ) ?>
+                <?= $form->field($model, 'status')->radioList( AdminUser::getStatuses() ) ?>
                 <div class="hr-line-dashed"></div>
                 <?php
                     $roles = yii::$app->getAuthManager()->getRoles();

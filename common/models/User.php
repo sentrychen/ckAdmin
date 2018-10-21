@@ -9,32 +9,55 @@
 namespace common\models;
 
 use Yii;
-use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
-use yii\web\IdentityInterface;
+
 
 /**
- * User model
+ * AdminUser model
  *
- * @property integer $id
- * @property string $username
- * @property string $password_hash
- * @property string $password_reset_token
- * @property string $email
- * @property string $auth_key
- * @property integer $status
- * @property integer $created_at
- * @property integer $updated_at
- * @property string $password write-only password
+ * @property int $id 自增用户id
+ * @property string $username 用户名
+ * @property string $nickname 昵称
+ * @property string $auth_key cookie验证auth_key
+ * @property string $password_hash 加密后密码
+ * @property string $password_pay 支付密码
+ * @property string $password_reset_token 找回密码token
+ * @property string $email 用户邮箱
+ * @property string $avatar 用户头像url
+ * @property int $status 会员状态             1、正常             2、冻结             3、锁定             4、注销
+ * @property string $xima_rate 洗码率
+ * @property int $xima_type 洗码类别 1 单边 2 双边
+ * @property int $xima_status 查看洗码 0 否 1是
+ * @property int $min_limit 最小限红
+ * @property int $max_limit 最大限红
+ * @property int $dogfall_min_limit 最小和限红
+ * @property int $dogfall_max_limit 最大和限红
+ * @property int $pair_min_limit 最小对限红
+ * @property int $pair_max_limit 最大和限红
+ * @property int $invite_agent_id 邀请代理ID
+ * @property string $invite_user_id 邀请用户ID
+ * @property int $created_at 创建时间
+ * @property int $updated_at 最后修改时间
  */
-class User extends ActiveRecord implements IdentityInterface
+class User extends ActiveRecord
 {
-    const STATUS_DELETED = 0;
-    const STATUS_ACTIVE = 10;
+    const STATUS_NORMAL = 1;
+    const STATUS_FROZEN = 2;
+    const STATUS_LOCKED = 3;
+    const STATUS_DISABLED = 4;
+
+    public $password;
+
+    public $repassword;
+
+    public $old_password;
+
 
     /**
-     * @inheritdoc
+     * 返回数据表名
+     *
+     * @return string
      */
     public static function tableName()
     {
@@ -44,21 +67,39 @@ class User extends ActiveRecord implements IdentityInterface
     /**
      * @inheritdoc
      */
-    public function behaviors()
+    public function rules()
     {
         return [
-            TimestampBehavior::className(),
+            [['username', 'password', 'repassword'], 'required', 'on' => ['create']],
+            [['username'], 'required', 'on' => ['update', 'self-update']],
+            [['username'], 'unique', 'on' => 'create'],
+            [['repassword'], 'compare', 'compareAttribute' => 'password'],
+            [['status', 'xima_type', 'xima_status', 'min_limit', 'max_limit', 'dogfall_min_limit', 'dogfall_max_limit', 'pair_min_limit', 'pair_min_limit', 'invite_agent_id', 'invite_user_id', 'created_at', 'updated_at'], 'integer'],
+            [['xima_rate'], 'number'],
+            [['username', 'password_hash', 'password_pay', 'password_reset_token', 'email', 'avatar'], 'string', 'max' => 255],
+            [['auth_key'], 'string', 'max' => 32],
+            [['max_limit'], 'compare', 'compareAttribute' => 'min_limit', 'operator' => '>='],
+            [['dogfall_max_limit'], 'compare', 'compareAttribute' => 'dogfall_min_limit', 'operator' => '>='],
+            [['pair_max_limit'], 'compare', 'compareAttribute' => 'pair_min_limit', 'operator' => '>='],
+            [['min_limit'], 'compare', 'compareValue' => yii::$app->feehi->game_min_limit, 'operator' => '>='],
+            [['max_limit'], 'compare', 'compareValue' => yii::$app->feehi->game_max_limit, 'operator' => '<='],
+            [['dogfall_min_limit'], 'compare', 'compareValue' => yii::$app->feehi->game_dogfall_min_limit, 'operator' => '>='],
+            [['dogfall_max_limit'], 'compare', 'compareValue' => yii::$app->feehi->game_dogfall_max_limit, 'operator' => '<='],
+            [['pair_min_limit'], 'compare', 'compareValue' => yii::$app->feehi->game_pair_min_limit, 'operator' => '>='],
+            [['pair_max_limit'], 'compare', 'compareValue' => yii::$app->feehi->game_pair_max_limit, 'operator' => '<='],
+            [['xima_rate'], 'compare', 'compareValue' => yii::$app->feehi->game_pair_max_limit, 'operator' => '<='],
         ];
     }
 
     /**
      * @inheritdoc
      */
-    public function rules()
+    public function scenarios()
     {
         return [
-            ['status', 'default', 'value' => self::STATUS_ACTIVE],
-            ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
+            'default' => ['username'],
+            'update' => ['password', 'repassword', 'status', 'min_limit', 'max_limit', 'dogfall_min_limit', 'dogfall_max_limit', 'pair_min_limit', 'pair_max_limit', 'xima_status', 'xima_type', 'xima_rate'],
+            'create' => ['username', 'password', 'repassword', 'status', 'min_limit', 'max_limit', 'dogfall_min_limit', 'dogfall_max_limit', 'pair_min_limit', 'pair_max_limit', 'xima_status', 'xima_type', 'xima_rate'],
         ];
     }
 
@@ -68,118 +109,87 @@ class User extends ActiveRecord implements IdentityInterface
     public function attributeLabels()
     {
         return [
-            'username' => yii::t('app', 'Username'),
-            'email' => yii::t('app', 'Email'),
-            'created_at' => yii::t('app', 'Created At'),
-            'updated_at' => yii::t('app', 'Updated At'),
+            'id' => '会员ID',
+            'username' => '会员账号',
+            'nickname' => '会员昵称',
+            'auth_key' => 'cookie验证auth_key',
+            'password_hash' => '加密后密码',
+            'password_pay' => '支付密码',
+            'password_reset_token' => '找回密码token',
+            'email' => '用户邮箱',
+            'avatar' => '用户头像url',
+            'status' => '会员状态',
+            'xima_rate' => '洗码率',
+            'xima_type' => '洗码类别',
+            'xima_status' => '查看洗码',
+            'min_limit' => '最小限红',
+            'max_limit' => '最大限红',
+            'dogfall_min_limit' => '最小和限红',
+            'dogfall_max_limit' => '最大和限红',
+            'pair_min_limit' => '最小对限红',
+            'pair_max_limit' => '最大和限红',
+            'invite_agent_id' => '邀请代理ID',
+            'invite_user_id' => '邀请用户ID',
+            'created_at' => '注册日期',
+            'updated_at' => '最后修改时间',
+            'password' => '密码',
+            'repassword' => '确认密码'
         ];
     }
 
     /**
      * @inheritdoc
      */
-    public static function findIdentity($id)
+    public function behaviors()
     {
-        return static::findOne(['id' => $id, 'status' => self::STATUS_ACTIVE]);
+        return [
+            TimestampBehavior::class,
+        ];
+    }
+
+    public function getStatuesLabel()
+    {
+        $status = self::getStatuses();
+        return isset($status[$this->status]) ? $status[$this->status] : '';
+    }
+
+    public static function getStatuses()
+    {
+        return [
+            self::STATUS_NORMAL => '正常',
+            self::STATUS_FROZEN => '冻结',
+            self::STATUS_LOCKED => '锁定',
+            self::STATUS_DISABLED => '注销'
+        ];
     }
 
     /**
-     * @inheritdoc
+     * @return \yii\db\ActiveQuery
      */
-    public static function findIdentityByAccessToken($token, $type = null)
+    public function getUserStat()
     {
-        throw new NotSupportedException('"findIdentityByAccessToken" is not implemented.');
+        return $this->hasOne(UserStat::class, ['user_id' => 'id']);
     }
 
     /**
-     * Finds user by username
-     *
-     * @param string $username
-     * @return static|null
+     * @param bool $skipIfSet
      */
-    public static function findByUsername($username)
-    {
-        return static::findOne(['username' => $username, 'status' => self::STATUS_ACTIVE]);
-    }
 
-    /**
-     * Finds user by password reset token
-     *
-     * @param string $token password reset token
-     * @return static|null
-     */
-    public static function findByPasswordResetToken($token)
+
+    public function beforeSave($insert)
     {
-        if (! static::isPasswordResetTokenValid($token)) {
-            return null;
+        if ($this->xima_rate)
+            $this->xima_rate /= 100;
+        if ($insert) {
+            $this->invite_agent_id = yii::$app->getUser()->getId();
+            $this->generateAuthKey();
+            $this->setPassword($this->password);
+        } else {
+            if (isset($this->password) && $this->password != '') {
+                $this->setPassword($this->password);
+            }
         }
-
-        return static::findOne([
-            'password_reset_token' => $token,
-            'status' => self::STATUS_ACTIVE,
-        ]);
-    }
-
-    /**
-     * Finds out if password reset token is valid
-     *
-     * @param string $token password reset token
-     * @return boolean
-     */
-    public static function isPasswordResetTokenValid($token)
-    {
-        if (empty($token)) {
-            return false;
-        }
-
-        $timestamp = (int)substr($token, strrpos($token, '_') + 1);
-        $expire = Yii::$app->params['user.passwordResetTokenExpire'];
-        return $timestamp + $expire >= time();
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getId()
-    {
-        return $this->getPrimaryKey();
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getAuthKey()
-    {
-        return $this->auth_key;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function validateAuthKey($authKey)
-    {
-        return $this->getAuthKey() === $authKey;
-    }
-
-    /**
-     * Validates password
-     *
-     * @param string $password password to validate
-     * @return boolean if password provided is valid for current user
-     */
-    public function validatePassword($password)
-    {
-        return Yii::$app->security->validatePassword($password, $this->password_hash);
-    }
-
-    /**
-     * Generates password hash from password and sets it to the model
-     *
-     * @param string $password
-     */
-    public function setPassword($password)
-    {
-        $this->password_hash = Yii::$app->security->generatePasswordHash($password);
+        return parent::beforeSave($insert);
     }
 
     /**
@@ -191,19 +201,13 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * Generates new password reset token
+     * Generates password hash from password and sets it to the model
+     *
+     * @param string $password
      */
-    public function generatePasswordResetToken()
+    public function setPassword($password)
     {
-        $this->password_reset_token = Yii::$app->security->generateRandomString() . '_' . time();
+        $this->password_hash = Yii::$app->security->generatePasswordHash($password);
     }
-
-    /**
-     * Removes password reset token
-     */
-    public function removePasswordResetToken()
-    {
-        $this->password_reset_token = null;
-    }
-
 }
+

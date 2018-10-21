@@ -26,7 +26,7 @@ class LoginFormTest extends \Codeception\Test\Unit
         return [
             'user' => [
                 'class' => UserFixture::className(),
-                'dataFile' => codecept_data_dir() . 'User.php'
+                'dataFile' => codecept_data_dir() . 'AdminUser.phpr.php'
             ]
         ];
     }

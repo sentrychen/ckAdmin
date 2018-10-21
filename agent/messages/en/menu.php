@@ -18,7 +18,7 @@ return [
     '文章' => 'Article',
     '分类' => 'Category',
     '单页' => 'Page',
-    '用户' => 'User',
+    '用户' => 'AdminUser',
     '日志' => 'Log',
     '角色' => 'Roles',
     '管理员' => 'Admin Users',

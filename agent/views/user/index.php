@@ -14,7 +14,7 @@
 
 use backend\grid\DateColumn;
 use backend\grid\GridView;
-use backend\models\User;
+use backend\models\AdminUser;
 use yii\helpers\Url;
 use yii\helpers\Html;
 use backend\widgets\Bar;
@@ -48,10 +48,10 @@ $this->params['breadcrumbs'][] = yii::t('app', 'Users');
                         [
                             'attribute' => 'status',
                             'value' => function ($model) {
-                                $status = User::getStatuses();
+                                $status = AdminUser::getStatuses();
                                 return isset($status[$model->status]) ? $status[$model->status] : "异常";
                             },
-                            'filter' => User::getStatuses(),
+                            'filter' => AdminUser::getStatuses(),
                         ],
                         [
                             'class' => DateColumn::class,

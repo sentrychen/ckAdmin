@@ -80,9 +80,9 @@ return [
     'Cannot be themselves descendants sub' => '不能是他自己子类的子类',
     'Delete must be POST http method' => '只允许使用POST删除',
     'Value' => '值',
-    'Admin User Id' => '管理员用户Id',
+    'Admin AdminUser Id' => '管理员用户Id',
     'IP Address' => 'IP地址',
-    'User Id' => '用户Id',
+    'AdminUser Id' => '用户Id',
     /*Public*/
 
     /*Login*/
@@ -137,7 +137,7 @@ return [
     'Comments' => '评论',
     'Article Title' => '文章标题',
     'Website' => '网址',
-    'Replay User Id' => '原评论用户Id',
+    'Replay AdminUser Id' => '原评论用户Id',
     /*Comment*/
 
     /*Category*/
@@ -255,7 +255,7 @@ return [
     'Articles' => '文章',
     'Categories' => '分类',
     'Pages' => '单页',
-    'User' => '用户',
+    'AdminUser' => '用户',
     'Backend Menus' => '后台菜单',
     'Frontend Menus' => '前台菜单',
     'Administrators' => '管理员',

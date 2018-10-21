@@ -10,7 +10,7 @@ namespace backend\controllers;
 use yii;
 use backend\models\form\PasswordResetRequestForm;
 use backend\models\form\ResetPasswordForm;
-use backend\models\User;
+use backend\models\AdminUser;
 use backend\models\search\UserSearch;
 use backend\actions\IndexAction;
 use backend\actions\DeleteAction;
@@ -38,15 +38,15 @@ class AdminUserController extends \yii\web\Controller
             ],
             'view-layer' => [
                 'class' => ViewAction::className(),
-                'modelClass' => User::className(),
+                'modelClass' => AdminUser::className(),
             ],
             'delete' => [
                 'class' => DeleteAction::className(),
-                'modelClass' => User::className(),
+                'modelClass' => AdminUser::className(),
             ],
             'sort' => [
                 'class' => SortAction::className(),
-                'modelClass' => User::className(),
+                'modelClass' => AdminUser::className(),
             ],
         ];
     }
@@ -58,7 +58,7 @@ class AdminUserController extends \yii\web\Controller
      */
     public function actionCreate()
     {
-        $model = new User();
+        $model = new AdminUser();
         $model->setScenario('create');
         if (yii::$app->getRequest()->getIsPost()) {
             if ( $model->load(Yii::$app->getRequest()->post()) && $model->save() && $model->assignPermission() ) {
@@ -87,7 +87,7 @@ class AdminUserController extends \yii\web\Controller
      */
     public function actionUpdate($id)
     {
-        $model = User::findOne($id);
+        $model = AdminUser::findOne($id);
         $model->setScenario('update');
         $model->roles = $model->permissions = call_user_func(function() use($id){
             $permissions = yii::$app->getAuthManager()->getAssignments($id);
@@ -108,7 +108,7 @@ class AdminUserController extends \yii\web\Controller
                 }
                 Yii::$app->getSession()->setFlash('error', $err);
             }
-            $model = User::findOne(['id' => yii::$app->getUser()->getIdentity()->getId()]);
+            $model = AdminUser::findOne(['id' => yii::$app->getUser()->getIdentity()->getId()]);
         }
 
         return $this->render('update', [
@@ -123,7 +123,7 @@ class AdminUserController extends \yii\web\Controller
      */
     public function actionUpdateSelf()
     {
-        $model = User::findOne(['id' => yii::$app->getUser()->getIdentity()->getId()]);
+        $model = AdminUser::findOne(['id' => yii::$app->getUser()->getIdentity()->getId()]);
         $model->setScenario('self-update');
         if (yii::$app->getRequest()->getIsPost()) {
             if ($model->load(yii::$app->getRequest()->post()) && $model->selfUpdate()) {
@@ -136,7 +136,7 @@ class AdminUserController extends \yii\web\Controller
                 }
                 Yii::$app->getSession()->setFlash('error', $err);
             }
-            $model = User::findOne(['id' => yii::$app->getUser()->getIdentity()->getId()]);
+            $model = AdminUser::findOne(['id' => yii::$app->getUser()->getIdentity()->getId()]);
         }
 
         return $this->render('update', [

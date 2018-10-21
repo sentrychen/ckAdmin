@@ -71,7 +71,7 @@ class ActionColumn extends \yii\grid\ActionColumn
                 return Html::a('<i class="fa fa-pencil"></i> ' . Yii::t('app', 'Update'), $url, [
                     'title' => Yii::t('app', 'Update'),
                     'data-pjax' => '0',
-                    'class' => 'btn btn-white btn-sm',
+                    'class' => 'btn btn-white btn-sm openContab',
                 ]);
             };
         }

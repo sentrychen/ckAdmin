@@ -10,7 +10,7 @@ use agent\models\User;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model backend\models\User */
+/* @var $model backend\models\AdminUser */
 ?>
 <?= DetailView::widget([
     'model' => $model,

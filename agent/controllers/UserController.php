@@ -10,7 +10,7 @@ namespace agent\controllers;
 
 use backend\actions\ViewAction;
 use yii;
-use backend\models\User;
+use backend\models\AdminUser;
 use backend\models\search\UserSearch;
 use backend\actions\CreateAction;
 use backend\actions\UpdateAction;
@@ -37,22 +37,22 @@ class UserController extends Controller
             ],
             'view-layer' => [
                 'class' => ViewAction::class,
-                'modelClass' => User::class,
+                'modelClass' => AdminUser::class,
             ],
             'create' => [
                 'class' => CreateAction::class,
-                'modelClass' => User::class,
+                'modelClass' => AdminUser::class,
                 'scenario' => 'create',
             ],
             'update' => [
                 'class' => UpdateAction::class,
-                'modelClass' => User::class,
+                'modelClass' => AdminUser::class,
                 'scenario' => 'update',
             ],
 
             'sort' => [
                 'class' => SortAction::class,
-                'modelClass' => User::class,
+                'modelClass' => AdminUser::class,
             ],
         ];
     }

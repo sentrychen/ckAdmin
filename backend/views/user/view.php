@@ -6,11 +6,11 @@
  * Created at: 2018-02-24 13:38
  */
 
-use agent\models\User;
+use backend\models\User;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model agent\models\User */
+/* @var $model backend\models\User */
 ?>
 <?= DetailView::widget([
     'model' => $model,
@@ -18,14 +18,6 @@ use yii\widgets\DetailView;
         'id',
         'username',
         'email',
-        [
-            'attribute' => 'avatar',
-            'format' => 'raw',
-            'value' => function($model){
-                if( empty( $model->avatar ) ) return '-';
-                return "<img style='max-width:100px;max-height:100px' src='" . $model->avatar . "'>";
-            }
-        ],
         [
             'attribute' => 'status',
             'value' => function ($model) {

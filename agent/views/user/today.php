@@ -14,7 +14,7 @@
 
 use backend\grid\DateColumn;
 use backend\grid\GridView;
-use backend\models\User;
+use backend\models\AdminUser;
 use backend\grid\ActionColumn;
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -44,10 +44,10 @@ $this->params['breadcrumbs'][] = '今日注册用户';
                         [
                             'attribute' => 'status',
                             'value' => function ($model) {
-                                $status = User::getStatuses();
+                                $status = AdminUser::getStatuses();
                                 return isset($status[$model->status]) ? $status[$model->status] : "异常";
                             },
-                            'filter' => User::getStatuses(),
+                            'filter' => AdminUser::getStatuses(),
                         ],
                         [
                             'class' => DateColumn::class,

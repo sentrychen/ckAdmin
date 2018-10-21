@@ -17,7 +17,7 @@ return [
     'homeUrl' => '/admin',
     'components' => [
         'user' => [
-            'identityClass' => backend\models\User::className(),
+            'identityClass' => backend\models\AdminUser::class,
             'enableAutoLogin' => false,
             'identityCookie' => ['name' => '_admin_identity'],
             'idParam' => '__admin__id',
@@ -30,7 +30,7 @@ return [
             'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => [
                 [
-                    'class' => yii\log\FileTarget::className(),//当触发levels配置的错误级别时，保存到日志文件
+                    'class' => yii\log\FileTarget::class,//当触发levels配置的错误级别时，保存到日志文件
                     'levels' => ['error', 'warning'],
                 ]
             ],
@@ -49,7 +49,7 @@ return [
         'i18n' => [
             'translations' => [//多语言包设置
                 'app*' => [
-                    'class' => yii\i18n\PhpMessageSource::className(),
+                    'class' => yii\i18n\PhpMessageSource::class,
                     'basePath' => '@backend/messages',
                     'sourceLanguage' => 'en-US',
                     'fileMap' => [
@@ -58,7 +58,7 @@ return [
                     ],
                 ],
                 'menu' => [
-                    'class' => yii\i18n\PhpMessageSource::className(),
+                    'class' => yii\i18n\PhpMessageSource::class,
                     'basePath' => '@backend/messages',
                     'sourceLanguage' => 'zh-CN',
                     'fileMap' => [
@@ -74,7 +74,7 @@ return [
             'forceCopy' => false,
             /*
             'bundles' => [
-                backend\assets\AppAsset::className() => [
+                backend\assets\AppAsset::class => [
                     'sourcePath' => '@backend/web/static',
                     'css' => [
                         'a' => 'css/bootstrap.min14ed.css?v=3.3.6',
@@ -95,7 +95,7 @@ return [
                         'f' => 'js/plugins/toastr/toastr.min.js',
                     ],
                 ],
-                backend\assets\IndexAsset::className() => [
+                backend\assets\IndexAsset::class => [
                     'sourcePath' => '@backend/web/static',
                     'css' => [
                         'a' => 'css/bootstrap.min.css',
@@ -114,7 +114,7 @@ return [
                         'h' => "js/plugins/pace/pace.min.js",
                     ]
                 ],
-                backend\assets\UeditorAsset::className() => [
+                backend\assets\UeditorAsset::class => [
                     'sourcePath' => '@backend/web/static/js/plugins/ueditor',
                     'css' => [
                         'a' => 'ueditor.all.min.js'
@@ -123,9 +123,10 @@ return [
             ]*/
         ],
     ],
-    'on beforeRequest' => [feehi\components\Feehi::className(), 'backendInit'],
+   // 'on beforeRequest' => [feehi\components\Feehi::class, 'backendInit'],
+    'on beforeRequest' => [common\components\Setting::class, 'backendInit'],
     'as access' => [
-        'class' => backend\components\AccessControl::className(),
+        'class' => backend\components\AccessControl::class,
         'allowActions' => [
             'site/login',
             'site/captcha',
