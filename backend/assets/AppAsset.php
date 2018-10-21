@@ -23,6 +23,7 @@ class AppAsset extends \yii\web\AssetBundle
         //'js/plugins/layer/laydate/skins/default/laydate.css'
         'css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css',
         'css/plugins/toastr/toastr.min.css',
+        'css/daterangepicker.css',
         'css/admin.css',
 
     ];
@@ -32,6 +33,8 @@ class AppAsset extends \yii\web\AssetBundle
         'js/plugins/layer/laydate/laydate.js',
         'js/plugins/layer/layer.min.js',
         'js/plugins/prettyfile/bootstrap-prettyfile.js',
+        'js/moment.js',
+        'js/daterangepicker.js',
         'js/plugins/toastr/toastr.min.js',
     ];
 

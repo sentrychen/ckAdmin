@@ -12,16 +12,19 @@
  * @var $searchModel backend\models\search\UserSearch
  */
 
-use backend\grid\DateColumn;
-use backend\grid\GridView;
-use agent\models\User;
+
+use backend\models\User;
+use yii\helpers\Url;
 use yii\helpers\Html;
 use backend\widgets\Bar;
-use backend\grid\CheckboxColumn;
-use backend\grid\ActionColumn;
+use common\grid\CheckboxColumn;
+use common\grid\ActionColumn;
+use common\grid\DateColumn;
+use common\grid\GridView;
 
 $this->title = 'Users';
 $this->params['breadcrumbs'][] = yii::t('app', 'Users');
+
 ?>
 <div class="row">
     <div class="col-sm-12">
@@ -29,16 +32,14 @@ $this->params['breadcrumbs'][] = yii::t('app', 'Users');
             <?= $this->render('/widgets/_ibox-title') ?>
             <div class="ibox-content">
                 <?= Bar::widget([
-                    'template' => '{refresh} {create} {delete}',
+                    'template' => '{refresh} {create} ',
                 ]) ?>
                 <?= GridView::widget([
                     'dataProvider' => $dataProvider,
                     'filterModel' => $searchModel,
                     'layout' => "{items}\n{pager}",
                     'columns' => [
-                        [
-                            'class' => CheckboxColumn::className(),
-                        ],
+
                         [
                             'attribute' => 'id',
                         ],
@@ -46,22 +47,15 @@ $this->params['breadcrumbs'][] = yii::t('app', 'Users');
                             'attribute' => 'username',
                         ],
                         [
-                            'attribute' => 'email',
-                        ],
-                        [
                             'attribute' => 'status',
-                            'label' => yii::t('app', 'Status'),
                             'value' => function ($model) {
-                                if($model->status == User::STATUS_ACTIVE){
-                                    return yii::t('app', 'Normal');
-                                }else if( $model->status == User::STATUS_DELETED ){
-                                    return yii::t('app', 'Disabled');
-                                }
+                                $status = User::getStatuses();
+                                return isset($status[$model->status]) ? $status[$model->status] : "异常";
                             },
                             'filter' => User::getStatuses(),
                         ],
                         [
-                            'class' => DateColumn::className(),
+                            'class' => DateColumn::class,
                             'attribute' => 'created_at',
                             'filter' => Html::activeInput('text', $searchModel, 'create_start_at', [
                                     'class' => 'form-control layer-date',
@@ -74,21 +68,28 @@ $this->params['breadcrumbs'][] = yii::t('app', 'Users');
                                 ]),
                         ],
                         [
-                            'class' => DateColumn::className(),
-                            'attribute' => 'updated_at',
-                            'filter' => Html::activeInput('text', $searchModel, 'update_start_at', [
-                                    'class' => 'form-control layer-date',
-                                    'placeholder' => '',
-                                    'onclick' => "laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})"
-                                ]) . Html::activeInput('text', $searchModel, 'update_end_at', [
-                                    'class' => 'form-control layer-date',
-                                    'placeholder' => '',
-                                    'onclick' => "laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})"
-                                ]),
+                            'attribute' => 'userStat.login_number',
                         ],
                         [
-                            'class' => ActionColumn::className(),
-                            'width' => '190px',
+                            'attribute' => 'userStat.oneline_status',
+                        ],
+                        [
+                            'attribute' => 'userStat.available_amount',
+                        ],
+                        [
+                            'attribute' => 'userStat.deposit_amount',
+                        ],
+                        [
+                            'attribute' => 'userStat.withdrawal_amount',
+                        ],
+                        [
+                            'attribute' => 'userStat.bet_amount',
+                        ],
+
+
+                        [
+                            'class' => ActionColumn::class,
+                            'template' => '{update}',
                         ],
                     ]
                 ]); ?>
