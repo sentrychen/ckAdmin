@@ -105,7 +105,7 @@ $this->title = yii::t('app', 'Backend Manage System');
                     <li class="hidden-xs">
                         <a class="J_menuItem count-info" href="<?= Url::to(['deposit/index']) ?>" title="待审核取款申请"><i
                                     class="fa fa-sign-in"></i> 存款<span
-                                    class="label label-primary"><?= $counts['DESPOSIT'] ? $counts['DESPOSIT'] : '' ?></span></a>
+                                    class="label label-danger"><?= $counts['DESPOSIT'] ? $counts['DESPOSIT'] : '' ?></span></a>
                     </li>
                     <li class="hidden-xs">
                         <a class="J_menuItem count-info" href="<?= Url::to(['withdraw/index']) ?>" title="未审核取款申请"><i

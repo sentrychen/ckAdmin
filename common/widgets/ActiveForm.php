@@ -17,7 +17,7 @@ class ActiveForm extends \yii\widgets\ActiveForm
         'class' => 'form-horizontal'
     ];
 
-    public $fieldClass = 'backend\widgets\ActiveField';
+    public $fieldClass = 'common\widgets\ActiveField';
 
 
     /**

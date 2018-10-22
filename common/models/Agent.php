@@ -1,6 +1,6 @@
 <?php
 
-namespace agent\models;
+namespace common\models;
 
 use backend\components\CustomLog;
 use common\helpers\Util;
@@ -69,7 +69,7 @@ class Agent extends ActiveRecord implements IdentityInterface
      */
     public static function tableName()
     {
-        return 'agent';
+        return '{{%agent}}';
     }
 
     public static function getStatuses()
@@ -479,5 +479,19 @@ class Agent extends ActiveRecord implements IdentityInterface
     public function getId()
     {
         return $this->getPrimaryKey();
+    }
+
+    /**
+     * @param bool $skipIfSet
+     */
+    public function loadDefaultValues($skipIfSet = true)
+    {
+
+        $identity = yii::$app->getUser()->getIdentity();
+        $this->rebate_rate = $identity->rebate_rate;
+        $this->xima_status = $identity->xima_status;
+        $this->xima_type = $identity->xima_type;
+        $this->xima_rate = $identity->xima_rate;
+        parent::loadDefaultValues();
     }
 }

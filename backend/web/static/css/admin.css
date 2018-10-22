@@ -34,3 +34,26 @@
     padding: 0;
     text-align: center;
 }
+
+.toolbar {
+    padding:10px;
+    background:#f9f9fc;
+}
+
+.toolbar .toolbar-actions{
+    width:20%;
+    float:left;
+    padding:5px;
+}
+.toolbar .toolbar-searchs{
+    float:right;
+    width:80%;
+}
+
+.toolbar .toolbar-searchs input{
+    width:120px;
+}
+
+.toolbar .toolbar-searchs .form-group{
+    margin:5px 10px 5px 0;
+}

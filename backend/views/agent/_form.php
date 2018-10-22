@@ -8,14 +8,14 @@
 
 /**
  * @var $this yii\web\View
- * @var $model backend\models\User
+ * @var $model backend\models\Agent
  */
 
-use common\widgets\ActiveForm;
+use backend\widgets\ActiveForm;
 use common\libs\Constants;
-use backend\models\User;
+use backend\models\Agent;
 
-$this->title = '会员';
+$this->title = '代理管理';
 ?>
 <div class="col-sm-12">
     <div class="ibox">
@@ -24,36 +24,29 @@ $this->title = '会员';
 
             <?php $form = ActiveForm::begin([
                 'options' => [
+                    'enctype' => 'multipart/form-data',
                     'class' => 'form-horizontal'
                 ]
             ]); ?>
             <?php
-
+            $model->xima_rate *= 100;
+            $model->rebate_rate *= 100;
             $temp = ['maxlength' => 64];
-
             if (yii::$app->controller->action->id == 'update') {
                 $temp['disabled'] = 'disabled';
             }
             ?>
             <?= $form->field($model, 'username')->textInput($temp) ?>
             <div class="hr-line-dashed"></div>
+            <?= $form->field($model, 'realname') ?>
+            <div class="hr-line-dashed"></div>
             <?= $form->field($model, 'password')->passwordInput(['maxlength' => 512]) ?>
             <div class="hr-line-dashed"></div>
             <?= $form->field($model, 'repassword')->passwordInput(['maxlength' => 512]) ?>
             <div class="hr-line-dashed"></div>
-            <?= $form->field($model, 'status')->radioList(User::getStatuses()) ?>
+            <?= $form->field($model, 'status')->radioList(Agent::getStatuses()) ?>
             <div class="hr-line-dashed"></div>
-            <?= $form->field($model, 'min_limit') ?>
-            <div class="hr-line-dashed"></div>
-            <?= $form->field($model, 'max_limit') ?>
-            <div class="hr-line-dashed"></div>
-            <?= $form->field($model, 'dogfall_min_limit') ?>
-            <div class="hr-line-dashed"></div>
-            <?= $form->field($model, 'dogfall_max_limit') ?>
-            <div class="hr-line-dashed"></div>
-            <?= $form->field($model, 'pair_min_limit') ?>
-            <div class="hr-line-dashed"></div>
-            <?= $form->field($model, 'pair_max_limit') ?>
+            <?= $form->field($model, 'rebate_rate')->textInput(['afterAddon' => '%']) ?>
             <div class="hr-line-dashed"></div>
             <?= $form->field($model, 'xima_status')->radioList(Constants::getYesNoItems()) ?>
             <div class="hr-line-dashed"></div>
@@ -62,6 +55,7 @@ $this->title = '会员';
             <?= $form->field($model, 'xima_rate')->textInput(['afterAddon' => '%']) ?>
             <div class="hr-line-dashed"></div>
             <?= $form->defaultButtons() ?>
+
             <?php ActiveForm::end(); ?>
         </div>
     </div>

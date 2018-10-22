@@ -18,7 +18,7 @@ use backend\actions\IndexAction;
 use backend\actions\DeleteAction;
 use backend\actions\SortAction;
 
-class UserController extends \yii\web\Controller
+class UserController extends Controller
 {
 
     public function actions()
@@ -59,4 +59,11 @@ class UserController extends \yii\web\Controller
             ],
         ];
     }
+
+    public function actionReport(){
+        $model = new User();
+
+        return $this->render('report',['model'=>$model]);
+    }
+
 }

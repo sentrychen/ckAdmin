@@ -51,7 +51,7 @@ class ActionColumn extends \yii\grid\ActionColumn
                 return Html::a('<i class="fa fa-folder"></i> ' . Yii::t('yii', 'View'), $url, [
                     'title' => Yii::t('app', 'View'),
                     'data-pjax' => '0',
-                    'class' => 'btn btn-white btn-sm',
+                    'class' => 'btn btn-info btn-sm',
                 ]);
             };
         }
@@ -62,7 +62,7 @@ class ActionColumn extends \yii\grid\ActionColumn
                     'title' => Yii::t('yii', 'View'),
                     'onclick' => "viewLayer('" . $url . "',$(this))",
                     'data-pjax' => '0',
-                    'class' => 'btn btn-white btn-sm',
+                    'class' => 'btn btn-info btn-sm',
                 ]);
             };
         }
@@ -71,7 +71,7 @@ class ActionColumn extends \yii\grid\ActionColumn
                 return Html::a('<i class="fa fa-pencil"></i> ' . Yii::t('app', 'Update'), $url, [
                     'title' => Yii::t('app', 'Update'),
                     'data-pjax' => '0',
-                    'class' => 'btn btn-white btn-sm openContab',
+                    'class' => 'btn btn-primary btn-sm',
                 ]);
             };
         }
@@ -82,7 +82,7 @@ class ActionColumn extends \yii\grid\ActionColumn
                     'data-confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
                     'data-method' => 'post',
                     'data-pjax' => '0',
-                    'class' => 'btn btn-white btn-sm',
+                    'class' => 'btn btn-danger btn-sm',
                 ]);
             };
         }

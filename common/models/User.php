@@ -164,6 +164,17 @@ class User extends ActiveRecord
     }
 
     /**
+     * Finds user by username
+     *
+     * @param string $username
+     * @return static|null
+     */
+    public static function findByUsername($username)
+    {
+        return static::findOne(['username' => $username, 'status' => self::STATUS_NORMAL]);
+    }
+
+    /**
      * @return \yii\db\ActiveQuery
      */
     public function getUserStat()
@@ -174,8 +185,6 @@ class User extends ActiveRecord
     /**
      * @param bool $skipIfSet
      */
-
-
     public function beforeSave($insert)
     {
         if ($this->xima_rate)

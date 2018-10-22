@@ -68,9 +68,9 @@
         this.locale = {
             direction: 'ltr',
             format: 'YYYY-MM-DD',
-            separator: ' 至 ',
+            separator: ' ~ ',
             applyLabel: '确定',
-            cancelLabel: '取消',
+            cancelLabel: '清除',
             fromLabel: "起始时间",
             toLabel: "结束时间",
             weekLabel: 'W',

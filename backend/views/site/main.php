@@ -254,13 +254,28 @@ EchartAsset::register($this);
 <?php JsBlock::begin() ?>
 <script type="text/javascript">
 
-    var userChart = echarts.init(document.getElementById('flot-user-chart'));
-    var dwChart = echarts.init(document.getElementById('flot-dw-chart'));
-    var betChart = echarts.init(document.getElementById('flot-bet-chart'));
-    var wlChart = echarts.init(document.getElementById('flot-wl-chart'));
-    var userOption = {
+    let userChart = echarts.init(document.getElementById('flot-user-chart'));
+    let dwChart = echarts.init(document.getElementById('flot-dw-chart'),'light');
+    let betChart = echarts.init(document.getElementById('flot-bet-chart'));
+    let wlChart = echarts.init(document.getElementById('flot-wl-chart'),'light');
+    let userOption = {
         legend: {},
-        tooltip: {},
+        grid: {
+            top:40,
+            left: 10,
+            right: 10,
+            bottom: 10,
+            containLabel: true
+        },
+        tooltip : {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'cross',
+                label: {
+                    backgroundColor: '#6a7985'
+                }
+            }
+        },
         dataset: {
             source: [
                 ['用户', '新增用户', '活跃用户', '首付用户'],
@@ -280,12 +295,27 @@ EchartAsset::register($this);
         series: [
             {type: 'bar'},
             {type: 'bar'},
-            {type: 'bar'}
+            {type: 'bar'},
         ]
     };
-    var dwOption = {
+    let dwOption = {
         legend: {},
-        tooltip: {},
+        grid: {
+            top:40,
+            left: 10,
+            right: 10,
+            bottom: 10,
+            containLabel: true
+        },
+        tooltip : {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'cross',
+                label: {
+                    backgroundColor: '#6a7985'
+                }
+            }
+        },
         dataset: {
             source: [
                 ['存取款', '存款', '取款'],
@@ -300,16 +330,104 @@ EchartAsset::register($this);
                 ['9月', 55550, 65168],
             ]
         },
-        xAxis: {type: 'category'},
+        xAxis: {type: 'category',boundaryGap : false},
         yAxis: {},
         series: [
+            {type: 'line',areaStyle: {},smooth:true},
+            {type: 'line',areaStyle: {},smooth:true}
+        ]
+    };
+    let betOption = {
+        legend: {},
+        grid: {
+            top:40,
+            left: 10,
+            right: 10,
+            bottom: 10,
+            containLabel: true
+        },
+        tooltip : {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'cross',
+                label: {
+                    backgroundColor: '#6a7985'
+                }
+            }
+        },
+        dataset: {
+            source: [
+                ['游戏平台', '皇家国际', '威尼斯人','机械臂'],
+                ['1月', 23456, 21398,34324],
+                ['2月', 31451, 22133,45667],
+                ['3月', 42340, 56156,23421],
+                ['4月', 28338, 12399,43221],
+                ['5月', 14422, 9267,6533],
+                ['6月', 43222, 51512,26755],
+                ['7月', 32344, 6112,65332],
+                ['8月', 45668, 32146,5645],
+                ['9月', 55550, 65168,33456],
+            ]
+        },
+        xAxis: {type: 'category',boundaryGap : false},
+        yAxis: {},
+        series: [
+            {type: 'line'},
             {type: 'line'},
             {type: 'line'}
         ]
     };
+    let wlOption = {
+        legend: {},
+        grid: {
+            top:40,
+            left: 10,
+            right: 10,
+            bottom: 10,
+            containLabel: true
+        },
+        tooltip : {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'cross',
+                label: {
+                    backgroundColor: '#6a7985'
+                }
+            }
+        },
+        dataset: {
+            source: [
+                ['游戏平台', '赢输','皇家国际', '威尼斯人','机械臂'],
+                ['1月',160587, 43546, 71398,45643],
+                ['2月', -34965,-63141, 22533,5643],
+                ['3月', 129739,4230, 56756,68753],
+                ['4月', 20261,28338, -12399,4322],
+                ['5月', -92699,14422, -99267,-7854],
+                ['6月', 70664,43222, -51512,78954],
+                ['7月', -73041,-32344, -6112,-34585],
+                ['8月', 21044,-45668, 32146,34566],
+                ['9月', 185053,55550, 65168,64335],
+            ]
+        },
+        xAxis: {type: 'category'},
+        yAxis: {},
+        series: [
+            {type: 'line'},
+            {type: 'bar',stack:'game'},
+            {type: 'bar',stack:'game'},
+            {type: 'bar',stack:'game'}
+        ]
+    };
     userChart.setOption(userOption);
     dwChart.setOption(dwOption);
-
+    betChart.setOption(betOption);
+    wlChart.setOption(wlOption);
+    window.onresize = function () {
+        userChart.resize();
+        dwChart.resize();
+        betChart.resize();
+        wlChart.resize();
+    }
 </script>
 
 <?php JsBlock::end() ?>

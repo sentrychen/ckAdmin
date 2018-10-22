@@ -10,18 +10,18 @@ namespace backend\models\search;
 
 use backend\behaviors\TimeSearchBehavior;
 use backend\components\search\SearchEvent;
-use backend\models\User;
-use yii;
+use backend\models\Agent;
+use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use yii\db\ActiveRecord;
 use yii\db\BaseActiveRecord;
 
-class UserSearch extends User
+class AgentSearch extends Agent
 {
-    public $available_amount;
-    public $available_amount_min;
-    public $available_amount_max;
+    public $create_start_at;
+    public $create_end_at;
+
 
     public function init()
     {
@@ -41,7 +41,7 @@ class UserSearch extends User
     public function rules()
     {
         return [
-            [['id', 'status','available_amount', 'username','invite_agent_id','created_at'], 'safe'],
+            [['id', 'username', 'realname', 'promo_code', 'status', 'created_at'], 'safe'],
         ];
     }
 
@@ -56,15 +56,12 @@ class UserSearch extends User
      */
     public function search($params)
     {
-        $query = self::find()->with('userStat');
+        $query = self::find()->andWhere(['parent_id' => yii::$app->getUser()->getIdentity()->id]);
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'sort' => [
                 'defaultOrder' => [
-                    'id' => SORT_DESC,
-                    'created_at' => SORT_DESC,
-                    'updated_at' => SORT_DESC,
-                    'username' => SORT_ASC,
+                    'created_at' => SORT_DESC
                 ]
             ]
         ]);
@@ -74,8 +71,8 @@ class UserSearch extends User
         }
         $query->andFilterWhere(['id' => $this->id])
             ->andFilterWhere(['like', 'username', $this->username])
-            ->andFilterWhere(['like', 'email', $this->email])
-            ->andFilterWhere(['status' => $this->status]);
+            ->andFilterWhere(['like', 'realname', $this->realname])
+            ->andFilterWhere(['like', 'promo_code', $this->promo_code]);
 
         $this->trigger(SearchEvent::BEFORE_SEARCH, new SearchEvent(['query' => $query]));
         return $dataProvider;

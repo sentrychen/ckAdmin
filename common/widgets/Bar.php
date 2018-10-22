@@ -18,7 +18,7 @@ class Bar extends Widget
     public $buttons = [];
 
     public $options = [
-        'class' => 'mail-tools tooltip-demo m-t-md',
+        'class' => 'toolbar-actions m-t-md',
     ];
     public $template = "{refresh} {create} {delete}";
 
@@ -31,7 +31,7 @@ class Bar extends Widget
         $buttons = '';
         $this->initDefaultButtons();
         $buttons .= $this->renderDataCellContent();
-        return "<div class='{$this->options['class']}'>{$buttons}</div>";
+        return html::tag('div',$buttons,$this->options);
     }
 
     /**
@@ -72,7 +72,7 @@ class Bar extends Widget
                 return Html::a('<i class="fa fa-plus"></i> ' . yii::t('app', 'Create'), Url::to(['create']), [
                     'title' => yii::t('app', 'Create'),
                     'data-pjax' => '0',
-                    'class' => 'btn btn-white btn-sm',
+                    'class' => 'btn btn-primary btn-sm',
                 ]);
             };
         }
@@ -83,7 +83,7 @@ class Bar extends Widget
                     'title' => yii::t('app', 'Delete'),
                     'data-pjax' => '0',
                     'data-confirm' => yii::t('app', 'Really to delete?'),
-                    'class' => 'btn btn-white btn-sm multi-operate',
+                    'class' => 'btn btn-danger btn-sm multi-operate',
                 ]);
             };
         }
