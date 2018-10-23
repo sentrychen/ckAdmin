@@ -37,7 +37,7 @@ class SearchForm extends \yii\widgets\ActiveForm
     {
         $html =  '<div class="form-group">' . Html::submitButton('<i class="fa fa-search"></i> 搜索', ['class' => 'btn btn-primary btn-sm']);
         if (!empty($restUrl))
-            $html .=" " . Html::a('<i class=\"fa fa-undo\"></i> 重置', Url::to($restUrl), ['class' => 'btn btn-default btn-sm']) ;
+            $html .=" " . Html::a('<i class="fa fa-undo"></i> 重置', Url::to($restUrl), ['class' => 'btn btn-default btn-sm']) ;
         $html .= '</div>';
         return $html;
     }

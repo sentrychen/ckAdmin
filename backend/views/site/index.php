@@ -179,7 +179,7 @@ $this->title = yii::t('app', 'Backend Manage System');
                             ?>
                             <li>
                                 <div class="text-center link-block">
-                                    <a class="J_menuItem" href="notifications.html">
+                                    <a class="J_menuItem" href="<?= Url::toRoute(['notice/index']) ?>">
                                         <i class="fa fa-bell"></i> <strong>查看所有公告 </strong>
 
                                     </a>

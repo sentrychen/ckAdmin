@@ -52,7 +52,6 @@
         this.autoUpdateInput = true;
         this.alwaysShowCalendars = false;
         this.ranges = {};
-
         this.opens = 'right';
         if (this.element.hasClass('pull-right'))
             this.opens = 'left';

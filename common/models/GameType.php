@@ -5,7 +5,7 @@ namespace common\models;
 use Yii;
 
 /**
- * This is the model class for table "{{%platform_type}}".
+ * This is the model class for table "{{%game_type}}".
  *
  * @property int $id 游戏类型ID
  * @property string $name 类型名称
@@ -13,14 +13,14 @@ use Yii;
  * @property int $updated_at 更新日期
  * @property int $created_at 创建日期
  */
-class PlatformType extends \yii\db\ActiveRecord
+class GameType extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
-        return '{{%platform_type}}';
+        return '{{%game_type}}';
     }
 
     /**

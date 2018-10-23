@@ -3,17 +3,17 @@
 namespace backend\controllers;
 
 use Yii;
-use backend\models\search\MessageSearch;
-use backend\models\Message;
+use backend\models\search\UserWithdrawSearch;
+use backend\models\UserWithdraw;
 use backend\actions\CreateAction;
 use backend\actions\UpdateAction;
 use backend\actions\IndexAction;
 use backend\actions\DeleteAction;
 use backend\actions\SortAction;
 /**
- * MessageController implements the CRUD actions for Message model.
+ * WithdrawController implements the CRUD actions for UserWithdraw model.
  */
-class MessageController extends \yii\web\Controller
+class WithdrawController extends \yii\web\Controller
 {
     public function actions()
     {
@@ -22,7 +22,7 @@ class MessageController extends \yii\web\Controller
                 'class' => IndexAction::className(),
                 'data' => function(){
                     
-                        $searchModel = new MessageSearch();
+                        $searchModel = new UserWithdrawSearch();
                         $dataProvider = $searchModel->search(yii::$app->getRequest()->getQueryParams());
                         return [
                             'dataProvider' => $dataProvider,
@@ -33,19 +33,19 @@ class MessageController extends \yii\web\Controller
             ],
             'create' => [
                 'class' => CreateAction::className(),
-                'modelClass' => Message::className(),
+                'modelClass' => UserWithdraw::className(),
             ],
             'update' => [
                 'class' => UpdateAction::className(),
-                'modelClass' => Message::className(),
+                'modelClass' => UserWithdraw::className(),
             ],
             'delete' => [
                 'class' => DeleteAction::className(),
-                'modelClass' => Message::className(),
+                'modelClass' => UserWithdraw::className(),
             ],
             'sort' => [
                 'class' => SortAction::className(),
-                'modelClass' => Message::className(),
+                'modelClass' => UserWithdraw::className(),
             ],
         ];
     }
