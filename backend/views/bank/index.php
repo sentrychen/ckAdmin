@@ -1,16 +1,16 @@
 <?php
 
-use backend\widgets\Bar;
+use common\widgets\Bar;
 use backend\grid\CheckboxColumn;
 use backend\grid\ActionColumn;
-use backend\grid\GridView;
+use common\grid\GridView;
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\search\CompanyBankSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Company Banks';
-$this->params['breadcrumbs'][] = 'Company Banks';
+$this->title = '银行卡管理';
+$this->params['breadcrumbs'][] = '银行卡管理';
 ?>
 <div class="row">
     <div class="col-sm-12">
@@ -20,7 +20,7 @@ $this->params['breadcrumbs'][] = 'Company Banks';
                 <?= Bar::widget() ?>
                 <?= GridView::widget([
                     'dataProvider' => $dataProvider,
-                    'filterModel' => $searchModel,
+                    'filterModel' => null,
                     'columns' => [
                         ['class' => CheckboxColumn::className()],
 

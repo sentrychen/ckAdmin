@@ -23,9 +23,9 @@ $config = [
         ],
         'formatter' => [//格式显示配置
             'dateFormat' => 'php:Y-m-d H:i',
-            'decimalSeparator' => ',',
-            'thousandSeparator' => ' ',
-            'currencyCode' => 'CHY',
+            'decimalSeparator' => '.',
+            'thousandSeparator' => ',',
+            'currencyCode' => '¥',
             'nullDisplay' => '-',
         ],
         'mailer' => [//邮箱发件人配置，会被main-local.php以及后台管理页面中的smtp配置覆盖

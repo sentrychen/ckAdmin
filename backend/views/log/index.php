@@ -12,19 +12,19 @@
  * @var $searchModel backend\models\search\AdminLogSearch
  */
 
-use backend\grid\DateColumn;
-use backend\grid\GridView;
+use common\grid\DateColumn;
+use common\grid\GridView;
 use yii\helpers\StringHelper;
-use backend\widgets\Bar;
-use backend\grid\CheckboxColumn;
-use backend\grid\ActionColumn;
+use common\widgets\Bar;
+use common\grid\CheckboxColumn;
+use common\grid\ActionColumn;
 
 $this->title = "Admin Log";
 
 $this->params['breadcrumbs'][] = yii::t('app', 'Admin Log');
 ?>
 <div class="row">
-    <div class="col-sm-12">
+    <div class="col-sm-12">commonco
         <div class="ibox">
             <?= $this->render('/widgets/_ibox-title') ?>
             <div class="ibox-content">

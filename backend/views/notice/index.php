@@ -1,9 +1,10 @@
 <?php
 
-use backend\widgets\Bar;
-use backend\grid\CheckboxColumn;
-use backend\grid\ActionColumn;
-use backend\grid\GridView;
+use common\widgets\Bar;
+use common\grid\{
+    CheckboxColumn, ActionColumn, GridView
+};
+
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\search\NoticeSearch */
@@ -20,7 +21,7 @@ $this->params['breadcrumbs'][] = 'Notices';
                 <?= Bar::widget() ?>
                 <?= GridView::widget([
                     'dataProvider' => $dataProvider,
-                    'filterModel' => $searchModel,
+                    'filterModel' => null,
                     'columns' => [
                         ['class' => CheckboxColumn::className()],
 

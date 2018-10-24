@@ -23,15 +23,14 @@ class User extends \common\models\User
         $attrs = ['min_limit', 'max_limit', 'dogfall_min_limit', 'dogfall_max_limit', 'pair_min_limit', 'pair_max_limit'];
         foreach ($attrs as $attr) {
             if ($this->{$attr} === null && isset(yii::$app->option->{'game_' . $attr})) {
-                $this->{$attr} = yii::$app->feehi->{'game_' . $attr};
+                $this->{$attr} = yii::$app->option->{'game_' . $attr};
             }
         }
-        /*
-        $identity = yii::$app->getUser()->getIdentity();
-        $this->xima_status = $identity->xima_status;
-        $this->xima_type = $identity->xima_type;
-        $this->xima_rate = $identity->xima_rate;
-        */
+
+        $this->xima_status = yii::$app->option->agent_xima_status;
+        $this->xima_type =  yii::$app->option->agent_xima_type;
+        $this->xima_rate = yii::$app->option->agent_xima_rate;
+
         parent::loadDefaultValues();
     }
 }

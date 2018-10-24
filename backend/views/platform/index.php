@@ -1,16 +1,16 @@
 <?php
 
-use backend\widgets\Bar;
-use backend\grid\CheckboxColumn;
-use backend\grid\ActionColumn;
-use backend\grid\GridView;
+use common\widgets\Bar;
+use common\grid\{
+    CheckboxColumn, ActionColumn, GridView
+};
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\search\PlatformSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Platforms';
-$this->params['breadcrumbs'][] = 'Platforms';
+$this->title = '游戏平台';
+$this->params['breadcrumbs'][] = '游戏平台';
 ?>
 <div class="row">
     <div class="col-sm-12">
@@ -20,7 +20,7 @@ $this->params['breadcrumbs'][] = 'Platforms';
                 <?= Bar::widget() ?>
                 <?= GridView::widget([
                     'dataProvider' => $dataProvider,
-                    'filterModel' => $searchModel,
+                    'filterModel' => null,
                     'columns' => [
                         ['class' => CheckboxColumn::className()],
 

@@ -71,7 +71,7 @@ class UserWithdraw extends \yii\db\ActiveRecord
             'user_id' => '用户ID',
             'username' => '用户姓名',
             'apply_amount' => '申请取款金额',
-            'status' => '取款状态 1 申请中 2 已完成  0 已取消',
+            'status' => '取款状态',
             'transfer_amount' => '实际转账金额',
             'audit_by_id' => '处理人员ID',
             'audit_by_username' => '处理人员',

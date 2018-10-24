@@ -11,6 +11,9 @@ namespace backend\models\search;
 use backend\behaviors\TimeSearchBehavior;
 use backend\components\search\SearchEvent;
 use backend\models\User;
+use common\models\Agent;
+use common\models\UserAccount;
+use common\models\UserStat;
 use yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
@@ -19,6 +22,7 @@ use yii\db\BaseActiveRecord;
 
 class UserSearch extends User
 {
+    public $agent_name;
     public $available_amount;
     public $available_amount_min;
     public $available_amount_max;
@@ -41,7 +45,7 @@ class UserSearch extends User
     public function rules()
     {
         return [
-            [['id', 'status','available_amount', 'username','invite_agent_id','created_at'], 'safe'],
+            [['status','available_amount_min','available_amount_max','agent_name','username','created_at'], 'safe'],
         ];
     }
 
@@ -56,26 +60,56 @@ class UserSearch extends User
      */
     public function search($params)
     {
-        $query = self::find()->with('userStat');
+        $query = self::find()->joinWith('userStat')->joinWith('inviteAgent')->joinWith('account');
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'sort' => [
                 'defaultOrder' => [
-                    'id' => SORT_DESC,
                     'created_at' => SORT_DESC,
-                    'updated_at' => SORT_DESC,
-                    'username' => SORT_ASC,
-                ]
+                ],
             ]
         ]);
+        $sort = $dataProvider->getSort();
+
+        $sort->attributes +=[
+            'agent_name' => [
+                    'asc' => [Agent::tableName() . '.username' => SORT_ASC],
+                    'desc' => [Agent::tableName() . '.username' => SORT_DESC],
+                ],
+            'userStat.last_login_at' => [
+                'asc' => [UserStat::tableName() . '.last_login_at' => SORT_ASC],
+                'desc' => [UserStat::tableName() . '.last_login_at' => SORT_DESC],
+            ],
+            'userStat.login_number' => [
+                'asc' => [UserStat::tableName() . '.login_number' => SORT_ASC],
+                'desc' => [UserStat::tableName() . '.login_number' => SORT_DESC],
+            ],
+            'userStat.deposit_amount' => [
+                'asc' => [UserStat::tableName() . '.deposit_amount' => SORT_ASC],
+                'desc' => [UserStat::tableName() . '.deposit_amount' => SORT_DESC],
+            ],
+            'userStat.withdrawal_amount' => [
+                'asc' => [UserStat::tableName() . '.withdrawal_amount' => SORT_ASC],
+                'desc' => [UserStat::tableName() . '.withdrawal_amount' => SORT_DESC],
+            ],
+            'userStat.bet_amount' => [
+                'asc' => [UserStat::tableName() . '.bet_amount' => SORT_ASC],
+                'desc' => [UserStat::tableName() . '.bet_amount' => SORT_DESC],
+            ],
+            'account.available_amount' => [
+                'asc' => [UserAccount::tableName() . '.available_amount' => SORT_ASC],
+                'desc' => [UserAccount::tableName() . '.available_amount' => SORT_DESC],
+            ],
+        ];
+
         $this->load($params);
         if (!$this->validate()) {
             return $dataProvider;
         }
-        $query->andFilterWhere(['id' => $this->id])
-            ->andFilterWhere(['like', 'username', $this->username])
-            ->andFilterWhere(['like', 'email', $this->email])
-            ->andFilterWhere(['status' => $this->status]);
+        $query->andFilterWhere(['like', User::tableName() . '.username', $this->username])
+            ->andFilterWhere(['like', Agent::tableName() . '.username', $this->agent_name])
+            ->andFilterWhere(['between', UserAccount::tableName() .'.available_amount', $this->available_amount_min,$this->available_amount_max])
+            ->andFilterWhere([User::tableName() . 'status' => $this->status]);
 
         $this->trigger(SearchEvent::BEFORE_SEARCH, new SearchEvent(['query' => $query]));
         return $dataProvider;

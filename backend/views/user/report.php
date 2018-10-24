@@ -8,17 +8,14 @@
 
 /**
  * @var $this yii\web\View
- * @var model backend\models\User
+ * @var $model backend\models\User
  */
 
-use backend\models\User;
-use common\widgets\SearchForm;
-use yii\helpers\Url;
-use yii\helpers\Html;
 use common\widgets\Bar;
-use common\grid\ActionColumn;
-use common\grid\DateColumn;
-use common\grid\GridView;
+use common\widgets\SearchForm;
+use yii\jui\Tabs;
+use yii\helpers\Url;
+use yii\jui\AutoComplete;
 
 $this->title = '会员管理';
 $this->params['breadcrumbs'][] = '会员报表';
@@ -36,14 +33,57 @@ $this->params['breadcrumbs'][] = '会员报表';
                         'template' => '{refresh}',
                     ]) ?>
                     <div class="toolbar-searchs">
-                        <?php $form = SearchForm::begin(['action'=>['report']]); ?>
-
-                        <?= $form->field($model, 'username')->textInput() ?>
-                        <?=$form->searchButtons(false)?>
+                        <?php $form = SearchForm::begin(['action' => ['report']]); ?>
+                        <div class="form-group">
+                            <label class="control-label" for="username">会员账号</label>
+                            <?= AutoComplete::widget([
+                                'options' => ['class' => 'form-control'],
+                                'name' => 'username',
+                                'value' => $username,
+                                'clientOptions' => [
+                                    'source' => Url::to(['user/search']),
+                                    'minLength' => '2',
+                                ],
+                            ]) ?>
+                        </div>
+                        <?= $form->searchButtons(false) ?>
                         <?php SearchForm::end(); ?>
-
                     </div>
+                </div>
+                <?php
+                if ($model) {
+                    echo Tabs::widget([
+                        'items' => [
+                            [
+                                'label' => '会员详情',
+                                'content' => $this->render('view', ['model' => $model]),
+                                'active' => true
+                            ],
+                            [
+                                'label' => '投注记录',
+                                'content' => 'Anim pariatur cliche...',
+                            ],
+                            [
+                                'label' => '上下分记录',
+                                'content' => 'Anim pariatur cliche...',
+                            ],
+                            [
+                                'label' => '存款记录',
+                                'content' => 'Anim pariatur cliche...',
+                            ],
+                            [
+                                'label' => '取款记录',
+                                'content' => 'Anim pariatur cliche...',
+                            ],
+                            [
+                                'label' => '登陆日志',
+                                'content' => 'Anim pariatur cliche...',
+                            ],
 
+                        ],
+                    ]);
+                }
+                ?>
             </div>
         </div>
     </div>

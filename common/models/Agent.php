@@ -494,4 +494,13 @@ class Agent extends ActiveRecord implements IdentityInterface
         $this->xima_rate = $identity->xima_rate;
         parent::loadDefaultValues();
     }
+
+    /**
+     * @param null $status
+     * @return array|ActiveRecord[]
+     */
+    public static function getAgentName($status = null){
+        return self::find()->orderBy('username')->filterWhere(['status'=>$status])->all();
+
+    }
 }

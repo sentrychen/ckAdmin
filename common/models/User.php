@@ -182,13 +182,42 @@ class User extends ActiveRecord
         return $this->hasOne(UserStat::class, ['user_id' => 'id']);
     }
 
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getInviteAgent()
+    {
+        return $this->hasOne(Agent::class, ['id' => 'invite_agent_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getInviteUser()
+    {
+        return $this->hasOne(User::class, ['id' => 'invite_user_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAccount()
+    {
+        return $this->hasOne(UserAccount::class, ['user_id' => 'id']);
+    }
+
+
+    public function getPlatforms()
+    {
+        return $this->hasMany(PlatformUser::class,['user_id'=>'id']);
+    }
+
     /**
      * @param bool $skipIfSet
      */
     public function beforeSave($insert)
     {
-        if ($this->xima_rate)
-            $this->xima_rate /= 100;
         if ($insert) {
             $this->invite_agent_id = yii::$app->getUser()->getId();
             $this->generateAuthKey();

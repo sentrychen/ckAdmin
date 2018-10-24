@@ -17,7 +17,7 @@ class ActiveField extends \yii\widgets\ActiveField
         'class' => 'col-sm-2 control-label',
     ];
 
-    public $size = '10';
+    public $size = '5';
 
     public $template = "{label}\n<div class=\"col-sm-{size}\">{input}\n{hint}\n{error}</div>";
 

@@ -13,12 +13,12 @@
  */
 
 use backend\models\User;
-use yii\helpers\Url;
-use yii\helpers\Html;
-use common\widgets\Bar;
 use common\grid\ActionColumn;
 use common\grid\DateColumn;
 use common\grid\GridView;
+use common\widgets\Bar;
+use yii\helpers\Html;
+use yii\helpers\Url;
 
 $this->title = 'Users';
 $this->params['breadcrumbs'][] = '会员列表';
@@ -34,7 +34,7 @@ $this->params['breadcrumbs'][] = '会员列表';
                     <?= Bar::widget([
                         'template' => '{refresh} {create} ',
                     ]) ?>
-                     <?=$this->render('_search', ['model' => $searchModel]); ?>
+                    <?= $this->render('_search', ['model' => $searchModel]); ?>
                 </div>
                 <?= GridView::widget([
                     'dataProvider' => $dataProvider,
@@ -48,6 +48,14 @@ $this->params['breadcrumbs'][] = '会员列表';
                             'attribute' => 'username',
                         ],
                         [
+                            'attribute' => 'nickname',
+                        ],
+                        [
+                            'attribute' => 'agent_name',
+                            'value' => 'inviteAgent.username',
+                            'label'=>'所属代理',
+                        ],
+                        [
                             'attribute' => 'status',
                             'value' => function ($model) {
                                 $status = User::getStatuses();
@@ -59,28 +67,51 @@ $this->params['breadcrumbs'][] = '会员列表';
                             'attribute' => 'created_at'
                         ],
                         [
+                            'class' => DateColumn::class,
+                            'attribute' => 'userStat.last_login_at',
+                        ],
+                        [
                             'attribute' => 'userStat.login_number',
+                            'format'=>'integer',
                         ],
+
                         [
-                            'attribute' => 'userStat.oneline_status',
-                        ],
-                        [
-                            'attribute' => 'userStat.available_amount',
+                            'attribute' => 'account.available_amount',
+                            'format'=>'currency',
                         ],
                         [
                             'attribute' => 'userStat.deposit_amount',
+                            'format'=>'currency',
                         ],
                         [
                             'attribute' => 'userStat.withdrawal_amount',
+                            'format'=>'currency',
                         ],
                         [
                             'attribute' => 'userStat.bet_amount',
+                            'format'=>'currency',
                         ],
-
 
                         [
                             'class' => ActionColumn::class,
-                            'template' => '{view} {update}',
+                            'width' => '130px',
+                            'buttons' => [
+                                'report' => function ($url, $model, $key) {
+                                    return Html::a('<i class="fa fa-table"></i> 报表', Url::to(['report','username'=>$model->username]), [
+                                        'title' => '会员报表',
+                                        'data-pjax' => '0',
+                                        'class' => 'btn btn-info btn-sm openContab',
+                                    ]);
+                                },
+                                'amount' => function ($url, $model, $key) {
+                                    return Html::a('<i class="fa fa-cny"></i> 额度', Url::to(['change-amount','username'=>$model->username]), [
+                                        'title' => '会员额度调整',
+                                        'data-pjax' => '0',
+                                        'class' => 'btn btn-warning btn-sm openContab',
+                                    ]);
+                                },
+                            ],
+                            'template' => '{report} {update} {amount}',
                         ],
                     ]
                 ]); ?>

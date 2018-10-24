@@ -60,7 +60,7 @@ class PlatformUser extends \yii\db\ActiveRecord
             'game_password' => '游戏登陆密码',
             'user_status' => '用户状态 1 正常 2 冻结  3 锁定 4 注销',
             'first_login_ip' => '首次登陆IP',
-            'last_login_at' => '最后登陆事件',
+            'last_login_at' => '最后登陆时间',
             'last_login_ip' => '最后登陆IP',
             'available_amount' => '用户余额',
             'frozen_amount' => '冻结余额',
@@ -68,4 +68,13 @@ class PlatformUser extends \yii\db\ActiveRecord
             'created_at' => '创建日期',
         ];
     }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getPlatform()
+    {
+        return $this->hasOne(Platform::class, ['id' => 'platform_id']);
+    }
+
 }

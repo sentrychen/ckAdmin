@@ -8,15 +8,18 @@
 
 namespace backend\controllers;
 
-use backend\actions\ViewAction;
-use yii;
-use backend\models\User;
-use backend\models\search\UserSearch;
 use backend\actions\CreateAction;
-use backend\actions\UpdateAction;
-use backend\actions\IndexAction;
 use backend\actions\DeleteAction;
+use backend\actions\IndexAction;
 use backend\actions\SortAction;
+use backend\actions\UpdateAction;
+use backend\actions\ViewAction;
+use backend\models\search\UserSearch;
+use backend\models\User;
+use common\models\Agent;
+use yii;
+use yii\web\Response;
+
 
 class UserController extends Controller
 {
@@ -26,7 +29,7 @@ class UserController extends Controller
         return [
             'index' => [
                 'class' => IndexAction::className(),
-                'data' => function(){
+                'data' => function () {
                     $searchModel = new UserSearch();
                     $dataProvider = $searchModel->search(yii::$app->getRequest()->getQueryParams());
                     return [
@@ -60,10 +63,30 @@ class UserController extends Controller
         ];
     }
 
-    public function actionReport(){
-        $model = new User();
+    public function actionReport($username = "")
+    {
+        //$username = yii::$app->getRequest()->get('username','');
 
-        return $this->render('report',['model'=>$model]);
+        $model = UserSearch::findOne(['username'=>$username]);
+
+        return $this->render('report', ['model' => $model,'username'=>$username]);
     }
 
+    /**
+     * @param $term
+     * @return array
+     */
+    public function actionSearch($term)
+    {
+
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        return User::find()->select('username as label,username as value')->where(['like', 'username', $term])->asArray()->all();
+    }
+
+    public function actionSearchAgent($term)
+    {
+
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        return Agent::find()->select('username as label,id as value')->where(['like', 'username', $term])->asArray()->all();
+    }
 }
