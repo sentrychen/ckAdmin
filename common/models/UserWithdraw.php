@@ -81,8 +81,18 @@ class UserWithdraw extends \yii\db\ActiveRecord
             'bank_name' => '银行开户名',
             'bank_account' => '银行账号',
             'updated_at' => '更新日期',
-            'created_at' => '创建日期',
+            'created_at' => '申请日期',
             'apply_ip' => '申请时登陆IP',
         ];
     }
+    public static function getStatuses($key = null)
+    {
+        $status =  [
+            self::STATUS_UNCHECKED => '申请中',
+            self::STATUS_CHECKED => '已完成',
+            self::STATUS_CANCLED => '已取消',
+        ];
+        return $status[$key]??$status;
+    }
+
 }

@@ -11,6 +11,7 @@ namespace common\models;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
+use yii\web\IdentityInterface;
 
 
 /**
@@ -19,6 +20,7 @@ use yii\db\ActiveRecord;
  * @property int $id 自增用户id
  * @property string $username 用户名
  * @property string $nickname 昵称
+ * @property string $api_token 接口令牌
  * @property string $auth_key cookie验证auth_key
  * @property string $password_hash 加密后密码
  * @property string $password_pay 支付密码
@@ -76,7 +78,7 @@ class User extends ActiveRecord
             [['repassword'], 'compare', 'compareAttribute' => 'password'],
             [['status', 'xima_type', 'xima_status', 'min_limit', 'max_limit', 'dogfall_min_limit', 'dogfall_max_limit', 'pair_min_limit', 'pair_min_limit', 'invite_agent_id', 'invite_user_id', 'created_at', 'updated_at'], 'integer'],
             [['xima_rate'], 'number'],
-            [['username', 'password_hash', 'password_pay', 'password_reset_token', 'email', 'avatar'], 'string', 'max' => 255],
+            [['username', 'password_hash', 'password_pay','api_token', 'password_reset_token', 'email', 'avatar'], 'string', 'max' => 255],
             [['auth_key'], 'string', 'max' => 32],
             [['max_limit'], 'compare', 'compareAttribute' => 'min_limit', 'operator' => '>='],
             [['dogfall_max_limit'], 'compare', 'compareAttribute' => 'dogfall_min_limit', 'operator' => '>='],
@@ -112,6 +114,7 @@ class User extends ActiveRecord
             'id' => '会员ID',
             'username' => '会员账号',
             'nickname' => '会员昵称',
+            'api_token' => '接口令牌',
             'auth_key' => 'cookie验证auth_key',
             'password_hash' => '加密后密码',
             'password_pay' => '支付密码',
@@ -153,14 +156,15 @@ class User extends ActiveRecord
         return isset($status[$this->status]) ? $status[$this->status] : '';
     }
 
-    public static function getStatuses()
+    public static function getStatuses($key = null)
     {
-        return [
+        $status =  [
             self::STATUS_NORMAL => '正常',
             self::STATUS_FROZEN => '冻结',
             self::STATUS_LOCKED => '锁定',
             self::STATUS_DISABLED => '注销'
         ];
+        return $status[$key]??$status;
     }
 
     /**
@@ -247,5 +251,18 @@ class User extends ActiveRecord
     {
         $this->password_hash = Yii::$app->security->generatePasswordHash($password);
     }
+
+    /**
+     * Validates password
+     *
+     * @param string $password password to validate
+     * @return boolean if password provided is valid for current user
+     */
+    public function validatePassword($password)
+    {
+        return Yii::$app->security->validatePassword($password, $this->password_hash);
+    }
+
+
 }
 

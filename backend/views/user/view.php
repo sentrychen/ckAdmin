@@ -30,28 +30,34 @@ use yii\widgets\DetailView;
 
         [
             'attribute' => 'platform.name',
+            'label'=>'游戏平台名称',
         ],
 
         [
             'attribute' => 'platform.code',
+            'label'=>'平台代码',
         ],
         [
             'attribute' => 'game_account',
+            'label'=>'游戏账号',
         ],
         [
             'attribute' => 'available_amount',
-            'format'=>'html',
+            'label'=>'游戏平台余额',
+            'format'=>'raw',
             'value' => function($model){
-                return Yii::$app->formatter->asCurrency($model->available_amount) .
-                    Html::a('<i class="fa fa-refresh"></i> 刷新', Url::to(['refresh','id'=>$model->id]), [
+                return '<span class="label label-warning" id="amount-'.$model->id.'">'. Yii::$app->formatter->asCurrency($model->available_amount) .'</span>'.
+                    Html::a('<i class="fa fa-refresh"></i> 刷新','javascript:void(0)',[
                             'title' => '刷新额度',
                             'data-pjax' => '0',
+                            'onclick' => "$('#amount-{$model->id}').load('".Url::to(['user/amount','id'=>$model->id])."')",
                             'class' => 'btn btn-white btn-sm pull-right',
                         ]);
             }
         ],
         [
             'attribute' => 'last_login_at',
+            'label'=>'最后登陆时间',
             'format'=>'date',
         ],
 

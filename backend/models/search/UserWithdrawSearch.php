@@ -2,6 +2,8 @@
 
 namespace backend\models\search;
 
+use backend\behaviors\TimeSearchBehavior;
+use backend\components\search\SearchEvent;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
@@ -18,12 +20,18 @@ class UserWithdrawSearch extends UserWithdraw
     public function rules()
     {
         return [
-            [['id', 'user_id', 'status', 'audit_by_id', 'audit_at', 'user_bank_id', 'updated_at', 'created_at'], 'integer'],
+            [['id', 'user_id', 'status', 'audit_by_id', 'audit_at', 'user_bank_id', 'updated_at', 'created_at'], 'safe'],
             [['username', 'audit_by_username', 'audit_remark', 'bank_name', 'bank_account', 'apply_ip'], 'safe'],
-            [['apply_amount', 'transfer_amount'], 'number'],
+            [['apply_amount', 'transfer_amount'], 'safe'],
         ];
     }
 
+    public function behaviors()
+    {
+        return [
+            TimeSearchBehavior::class
+        ];
+    }
     /**
      * @inheritdoc
      */
@@ -38,9 +46,10 @@ class UserWithdrawSearch extends UserWithdraw
      *
      * @param array $params
      *
+     * @param null $userid
      * @return ActiveDataProvider
      */
-    public function search($params)
+    public function search($params,$userid=null)
     {
         $query = UserWithdraw::find();
 
@@ -51,7 +60,8 @@ class UserWithdrawSearch extends UserWithdraw
         ]);
 
         $this->load($params);
-
+        if ($userid)
+            $this->user_id = $userid;
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
             // $query->where('0=1');
@@ -68,8 +78,6 @@ class UserWithdrawSearch extends UserWithdraw
             'audit_by_id' => $this->audit_by_id,
             'audit_at' => $this->audit_at,
             'user_bank_id' => $this->user_bank_id,
-            'updated_at' => $this->updated_at,
-            'created_at' => $this->created_at,
         ]);
 
         $query->andFilterWhere(['like', 'username', $this->username])
@@ -78,7 +86,7 @@ class UserWithdrawSearch extends UserWithdraw
             ->andFilterWhere(['like', 'bank_name', $this->bank_name])
             ->andFilterWhere(['like', 'bank_account', $this->bank_account])
             ->andFilterWhere(['like', 'apply_ip', $this->apply_ip]);
-
+        $this->trigger(SearchEvent::BEFORE_SEARCH, new SearchEvent(['query' => $query]));
         return $dataProvider;
     }
 }

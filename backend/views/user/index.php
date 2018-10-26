@@ -98,7 +98,7 @@ $this->params['breadcrumbs'][] = '会员列表';
                             'buttons' => [
                                 'report' => function ($url, $model, $key) {
                                     return Html::a('<i class="fa fa-table"></i> 报表', Url::to(['report','username'=>$model->username]), [
-                                        'title' => '会员报表',
+                                        'title' => $model->username,
                                         'data-pjax' => '0',
                                         'class' => 'btn btn-info btn-sm openContab',
                                     ]);

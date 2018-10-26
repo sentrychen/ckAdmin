@@ -9,7 +9,11 @@
 namespace api\models;
 
 
-class User extends \agent\models\User
+use Yii;
+use yii\web\IdentityInterface;
+use yii\web\UnauthorizedHttpException;
+
+class User extends \common\models\User implements IdentityInterface
 {
     public function fields()
     {
@@ -17,4 +21,78 @@ class User extends \agent\models\User
         unset($fields['auth_key'], $fields['password_hash'], $fields['password_reset_token']);
         return $fields;
     }
+
+    /**
+     * 生成 api_token
+     */
+    public function generateApiToken()
+    {
+        $this->api_token = Yii::$app->security->generateRandomString() . '_' . time();
+    }
+
+    /**
+     * 校验api_token是否有效
+     */
+    public static function apiTokenIsValid($token)
+    {
+        if (empty($token)) {
+            return false;
+        }
+
+        $timestamp = (int) substr($token, strrpos($token, '_') + 1);
+        $expire = Yii::$app->params['user.apiTokenExpire'];
+        return $timestamp + $expire >= time();
+    }
+
+    /**
+     * @param $token
+     * @param null $type
+     * @return null|static
+     * @throws UnauthorizedHttpException
+     */
+    public static function findIdentityByAccessToken($token, $type = null)
+    {
+        // 如果token无效的话，
+        if(!static::apiTokenIsValid($token)) {
+            throw new UnauthorizedHttpException("token is invalid.");
+        }
+
+        return static::findOne(['api_token' => $token, 'status' => self::STATUS_NORMAL]);
+        // throw new NotSupportedException('"findIdentityByAccessToken" is not implemented.');
+    }
+
+
+    /**
+     * @inheritdoc
+     */
+    public static function findIdentity($id)
+    {
+        return static::findOne(['id' => $id, 'status' => self::STATUS_NORMAL]);
+    }
+
+
+    /**
+     * @inheritdoc
+     */
+    public function getId()
+    {
+        return $this->getPrimaryKey();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function validateAuthKey($authKey)
+    {
+        return $this->getAuthKey() === $authKey;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getAuthKey()
+    {
+        return $this->auth_key;
+    }
+
 }

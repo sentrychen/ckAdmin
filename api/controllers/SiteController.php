@@ -7,29 +7,26 @@
  */
 namespace api\controllers;
 
+use api\models\form\LoginForm;
+use api\models\User;
+use Yii;
+use yii\base\UserException;
+use yii\web\IdentityInterface;
 use yii\web\Response;
 
-class SiteController extends \yii\rest\ActiveController
+class SiteController extends ActiveController
 {
-    public $modelClass = "api\models\Article";
 
-    public function behaviors()
-    {
-        $behaviors = parent::behaviors();
-        $behaviors['contentNegotiator']['formats']['text/html'] = Response::FORMAT_JSON;//默认浏览器打开返回json
-        return $behaviors;
-    }
+    public $modelClass = "api\models\User";
 
-    public function actions()
-    {
+    public function actions(){
         return [];
     }
 
     public function verbs()
     {
         return [
-            'index' => ['GET', 'HEAD'],
-            'login' => ['POST'],
+            'login' => ['GET'],
             'register' => ['POST'],
         ];
     }
@@ -43,10 +40,19 @@ class SiteController extends \yii\rest\ActiveController
 
     public function actionLogin()
     {
-        return [
-            "username" => 'test',
-            "sex" => "male",
-        ];
+        $model = new LoginForm;
+        $model->setAttributes(Yii::$app->request->get());
+
+        if ($user = $model->login()) {
+            if ($user instanceof IdentityInterface) {
+                return $user->api_token;
+            } else {
+                return $user->errors;
+            }
+        } else {
+            return $model->errors;
+        }
+
     }
 
     public function actionRegister()
@@ -55,5 +61,6 @@ class SiteController extends \yii\rest\ActiveController
             "success" => true
         ];
     }
+
 
 }

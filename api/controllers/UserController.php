@@ -9,7 +9,7 @@ namespace api\controllers;
 
 use yii\web\Response;
 
-class UserController extends \yii\rest\ActiveController
+class UserController extends ActiveController
 {
     public $modelClass = "api\models\User";
 

@@ -58,7 +58,7 @@ class UserSearch extends User
      * @param $params
      * @return \yii\data\ActiveDataProvider
      */
-    public function search($params)
+    public function search($params,$agent_id = null,$online = null)
     {
         $query = self::find()->joinWith('userStat')->joinWith('inviteAgent')->joinWith('account');
         $dataProvider = new ActiveDataProvider([
@@ -109,7 +109,9 @@ class UserSearch extends User
         $query->andFilterWhere(['like', User::tableName() . '.username', $this->username])
             ->andFilterWhere(['like', Agent::tableName() . '.username', $this->agent_name])
             ->andFilterWhere(['between', UserAccount::tableName() .'.available_amount', $this->available_amount_min,$this->available_amount_max])
-            ->andFilterWhere([User::tableName() . 'status' => $this->status]);
+            ->andFilterWhere([User::tableName() . '.invite_agent_id' => $agent_id])
+            ->andFilterWhere([UserStat::tableName() . '.oneline_status' => $online])
+            ->andFilterWhere([User::tableName() . '.status' => $this->status]);
 
         $this->trigger(SearchEvent::BEFORE_SEARCH, new SearchEvent(['query' => $query]));
         return $dataProvider;

@@ -14,7 +14,14 @@ use backend\actions\IndexAction;
 use backend\actions\SortAction;
 use backend\actions\UpdateAction;
 use backend\actions\ViewAction;
+use backend\models\PlatformUser;
+use backend\models\search\BetListSearch;
+use backend\models\search\LoginLogSearch;
+use backend\models\search\TradeSearch;
+use backend\models\search\UserDepositSearch;
 use backend\models\search\UserSearch;
+use backend\models\search\UserWithdrawSearch;
+use backend\models\Trade;
 use backend\models\User;
 use common\models\Agent;
 use yii;
@@ -63,13 +70,98 @@ class UserController extends Controller
         ];
     }
 
+    public function actionToday()
+    {
+        $searchModel = new UserSearch();
+        $dataProvider = $searchModel->search(['UserSearch'=>['created_at'=>date('Y-m-d') .' ~ ' . date('Y-m-d')]]);
+
+        return $this->render('today',['dataProvider' => $dataProvider,'searchModel' => $searchModel]);
+    }
+
+    public function actionOnline()
+    {
+        $searchModel = new UserSearch();
+        $dataProvider = $searchModel->search([],null,1);
+
+        return $this->render('online',['dataProvider' => $dataProvider,'searchModel' => $searchModel]);
+    }
+
     public function actionReport($username = "")
     {
         //$username = yii::$app->getRequest()->get('username','');
 
         $model = UserSearch::findOne(['username'=>$username]);
 
-        return $this->render('report', ['model' => $model,'username'=>$username]);
+        return $this->render('report', ['model' => $model]);
+    }
+
+
+    /**
+     * @param $id
+     * @return array|string
+     */
+    public function actionTradeList($id)
+    {
+        $searchModel = new TradeSearch();
+        $dataProvider = $searchModel->search(yii::$app->getRequest()->getQueryParams(),$id);
+        $query = clone $dataProvider->query;
+        $total = $query->select('SUM(case WHEN income_switch= '.Trade::SWITCH_IN.' then amount else 0 end ) as inAmount,SUM(case WHEN income_switch = '.Trade::SWITCH_OUT.' then amount else 0 end ) as outAmount')->asArray()->one();
+
+        return $this->render('tradelist',['dataProvider' => $dataProvider,'searchModel' => $searchModel,'total'=>$total]);
+    }
+
+    /**
+     * @param $id
+     * @return array|string
+     */
+    public function actionDepositList($id)
+    {
+        $searchModel = new UserDepositSearch();
+        $dataProvider = $searchModel->search(yii::$app->getRequest()->getQueryParams(),$id);
+        $query = clone $dataProvider->query;
+        $total = $query->select('SUM(confirm_amount ) as amount')->asArray()->one();
+
+        return $this->render('depositlist',['dataProvider' => $dataProvider,'searchModel' => $searchModel,'total'=>$total]);
+    }
+
+    /**
+     * @param $id
+     * @return array|string
+     */
+    public function actionWithdrawList($id)
+    {
+        $searchModel = new UserWithdrawSearch();
+        $dataProvider = $searchModel->search(yii::$app->getRequest()->getQueryParams(),$id);
+        $query = clone $dataProvider->query;
+        $total = $query->select('SUM(transfer_amount ) as amount')->asArray()->one();
+
+        return $this->render('withdrawlist',['dataProvider' => $dataProvider,'searchModel' => $searchModel,'total'=>$total]);
+    }
+
+    /**
+     * @param $id
+     * @return array|string
+     */
+    public function actionBetList($id)
+    {
+        $searchModel = new BetListSearch();
+        $dataProvider = $searchModel->search(yii::$app->getRequest()->getQueryParams(),$id);
+        $query = clone $dataProvider->query;
+        $total = $query->select('sum(bet_amount) as betAmount,sum(profit) as profit')->asArray()->one();
+
+        return $this->render('betlist',['dataProvider' => $dataProvider,'searchModel' => $searchModel,'total'=>$total]);
+    }
+
+    /**
+     * @param $id
+     * @return array|string
+     */
+    public function actionLogList($id)
+    {
+        $searchModel = new LoginLogSearch();
+        $dataProvider = $searchModel->search(yii::$app->getRequest()->getQueryParams(),$id);
+
+        return $this->render('loglist',['dataProvider' => $dataProvider,'searchModel' => $searchModel]);
     }
 
     /**
@@ -88,5 +180,12 @@ class UserController extends Controller
 
         Yii::$app->response->format = Response::FORMAT_JSON;
         return Agent::find()->select('username as label,id as value')->where(['like', 'username', $term])->asArray()->all();
+    }
+
+    public function actionAmount($id){
+        Yii::$app->response->format = Response::FORMAT_RAW;
+        $model = PlatformUser::findOne($id);
+
+        return Yii::$app->formatter->asCurrency($model->available_amount);
     }
 }

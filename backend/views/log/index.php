@@ -24,7 +24,7 @@ $this->title = "Admin Log";
 $this->params['breadcrumbs'][] = yii::t('app', 'Admin Log');
 ?>
 <div class="row">
-    <div class="col-sm-12">commonco
+    <div class="col-sm-12">
         <div class="ibox">
             <?= $this->render('/widgets/_ibox-title') ?>
             <div class="ibox-content">

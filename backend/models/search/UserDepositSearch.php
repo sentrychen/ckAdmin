@@ -2,6 +2,8 @@
 
 namespace backend\models\search;
 
+use backend\behaviors\TimeSearchBehavior;
+use backend\components\search\SearchEvent;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
@@ -18,12 +20,17 @@ class UserDepositSearch extends UserDeposit
     public function rules()
     {
         return [
-            [['id', 'user_id', 'status', 'audit_by_id', 'audit_at', 'pay_channel', 'save_bank_id', 'feedback', 'feedback_at', 'updated_at', 'created_at'], 'integer'],
+            [['id', 'user_id', 'status', 'audit_by_id', 'audit_at', 'pay_channel', 'save_bank_id', 'feedback', 'feedback_at', 'updated_at', 'created_at'], 'safe'],
             [['username', 'audit_by_username', 'audit_remark', 'pay_username', 'pay_nickname', 'pay_info', 'feedback_remark'], 'safe'],
-            [['apply_amount', 'confirm_amount'], 'number'],
+            [['apply_amount', 'confirm_amount'], 'safe'],
         ];
     }
-
+    public function behaviors()
+    {
+        return [
+            TimeSearchBehavior::class
+        ];
+    }
     /**
      * @inheritdoc
      */
@@ -38,9 +45,10 @@ class UserDepositSearch extends UserDeposit
      *
      * @param array $params
      *
+     * @param $userid int
      * @return ActiveDataProvider
      */
-    public function search($params)
+    public function search($params,$userid = null)
     {
         $query = UserDeposit::find();
 
@@ -51,10 +59,9 @@ class UserDepositSearch extends UserDeposit
         ]);
 
         $this->load($params);
-
+        if ($userid)
+            $this->user_id = $userid;
         if (!$this->validate()) {
-            // uncomment the following line if you do not want to return any records when validation fails
-            // $query->where('0=1');
             return $dataProvider;
         }
 
@@ -71,8 +78,6 @@ class UserDepositSearch extends UserDeposit
             'save_bank_id' => $this->save_bank_id,
             'feedback' => $this->feedback,
             'feedback_at' => $this->feedback_at,
-            'updated_at' => $this->updated_at,
-            'created_at' => $this->created_at,
         ]);
 
         $query->andFilterWhere(['like', 'username', $this->username])
@@ -82,7 +87,7 @@ class UserDepositSearch extends UserDeposit
             ->andFilterWhere(['like', 'pay_nickname', $this->pay_nickname])
             ->andFilterWhere(['like', 'pay_info', $this->pay_info])
             ->andFilterWhere(['like', 'feedback_remark', $this->feedback_remark]);
-
+        $this->trigger(SearchEvent::BEFORE_SEARCH, new SearchEvent(['query' => $query]));
         return $dataProvider;
     }
 }

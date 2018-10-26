@@ -40,6 +40,9 @@ class TimeSearchBehavior extends \yii\base\Behavior
         /** @var $event \backend\components\search\SearchEvent */
         foreach ($this->timeAttributes as $filed => $attribute) {
             if($attribute !== null) $timeAt = $event->sender->{$attribute};
+            if (false === strpos($filed,'.') && method_exists($event->sender,'tableName')){
+                $filed = $event->sender::tableName() .'.'.$filed;
+            }
             if( !empty($timeAt) ){
                 $time = explode($this->delimiter, $timeAt);
                 if( $this->format === 'int' ){

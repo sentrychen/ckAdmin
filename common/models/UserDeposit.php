@@ -35,6 +35,9 @@ class UserDeposit extends \yii\db\ActiveRecord
     const STATUS_CHECKED = 2;
     const STATUS_CANCLED = 0;
 
+    const CHANNEL_BANK = 1;
+    const CHANNEL_ALIPAY = 2;
+    const CHANNEL_WEIXIN = 3;
     /**
      * {@inheritdoc}
      */
@@ -87,7 +90,34 @@ class UserDeposit extends \yii\db\ActiveRecord
             'feedback_remark' => '会员反馈信息',
             'feedback_at' => '反馈时间',
             'updated_at' => '更新日期',
-            'created_at' => '创建日期',
+            'created_at' => '申请日期',
         ];
+    }
+
+    public static function getStatuses($key = null)
+    {
+        $status =  [
+            self::STATUS_UNCHECKED => '申请中',
+            self::STATUS_CHECKED => '已存入',
+            self::STATUS_CANCLED => '已取消',
+        ];
+        return $status[$key]??$status;
+    }
+
+    public static function getPayChannels($key = null)
+    {
+        $channels =  [
+            self::CHANNEL_BANK => '银行',
+            self::CHANNEL_ALIPAY => '支付宝',
+            self::CHANNEL_WEIXIN => '微信支付',
+        ];
+        return $channels[$key]??$channels;
+    }
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUser()
+    {
+        return $this->hasOne(User::class, ['id' => 'user_id']);
     }
 }
