@@ -2,6 +2,8 @@
 
 namespace backend\models\search;
 
+use backend\behaviors\TimeSearchBehavior;
+use backend\components\search\SearchEvent;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
@@ -18,9 +20,14 @@ class AgentAccountRecordSearch extends AgentAccountRecord
     public function rules()
     {
         return [
-            [['id', 'agent_id', 'switch', 'updated_at', 'created_at'], 'integer'],
-            [['name', 'remark'], 'safe'],
-            [['amount', 'after_amount'], 'number'],
+            [['agent_id', 'switch', 'name', 'created_at'], 'safe'],
+        ];
+    }
+
+    public function behaviors()
+    {
+        return [
+            TimeSearchBehavior::class
         ];
     }
 
@@ -48,6 +55,11 @@ class AgentAccountRecordSearch extends AgentAccountRecord
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'sort' => [
+                'defaultOrder' => [
+                    'created_at' => SORT_DESC,
+                ],
+            ]
         ]);
 
         $this->load($params);
@@ -60,18 +72,13 @@ class AgentAccountRecordSearch extends AgentAccountRecord
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
             'agent_id' => $this->agent_id,
-            'amount' => $this->amount,
             'switch' => $this->switch,
-            'after_amount' => $this->after_amount,
-            'updated_at' => $this->updated_at,
-            'created_at' => $this->created_at,
+
         ]);
 
-        $query->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'remark', $this->remark]);
-
+        $query->andFilterWhere(['like', 'name', $this->name]);
+        $this->trigger(SearchEvent::BEFORE_SEARCH, new SearchEvent(['query' => $query]));
         return $dataProvider;
     }
 }

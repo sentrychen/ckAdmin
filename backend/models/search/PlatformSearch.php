@@ -20,7 +20,6 @@ class PlatformSearch extends Platform
         return [
             [['id', 'status', 'updated_at', 'created_at'], 'integer'],
             [['name', 'code', 'api_host', 'app_id', 'app_secret', 'login_url'], 'safe'],
-            [['buy_amount', 'total_amount', 'available_amount', 'frozen_amount'], 'number'],
         ];
     }
 
@@ -62,10 +61,6 @@ class PlatformSearch extends Platform
         $query->andFilterWhere([
             'id' => $this->id,
             'status' => $this->status,
-            'buy_amount' => $this->buy_amount,
-            'total_amount' => $this->total_amount,
-            'available_amount' => $this->available_amount,
-            'frozen_amount' => $this->frozen_amount,
             'updated_at' => $this->updated_at,
             'created_at' => $this->created_at,
         ]);

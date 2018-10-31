@@ -38,18 +38,6 @@ use backend\widgets\ActiveForm;
                         <?= $form->field($model, 'status')->textInput() ?>
                         <div class="hr-line-dashed"></div>
 
-                        <?= $form->field($model, 'buy_amount')->textInput(['maxlength' => true]) ?>
-                        <div class="hr-line-dashed"></div>
-
-                        <?= $form->field($model, 'total_amount')->textInput(['maxlength' => true]) ?>
-                        <div class="hr-line-dashed"></div>
-
-                        <?= $form->field($model, 'available_amount')->textInput(['maxlength' => true]) ?>
-                        <div class="hr-line-dashed"></div>
-
-                        <?= $form->field($model, 'frozen_amount')->textInput(['maxlength' => true]) ?>
-                        <div class="hr-line-dashed"></div>
-
                         <?= $form->field($model, 'updated_at')->textInput() ?>
                         <div class="hr-line-dashed"></div>
 

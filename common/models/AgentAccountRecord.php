@@ -19,6 +19,9 @@ use Yii;
  */
 class AgentAccountRecord extends \yii\db\ActiveRecord
 {
+
+    const SWITCH_IN = 1;
+    const SWITCH_OUT = 2;
     /**
      * {@inheritdoc}
      */
@@ -46,15 +49,32 @@ class AgentAccountRecord extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => '代理账户变更记录ID',
+            'id' => '交易ID',
             'agent_id' => '代理ID',
-            'name' => '变更名称',
-            'amount' => '变更额度',
-            'switch' => '收支 1 收入 2支出',
-            'after_amount' => '变更后余额',
+            'name' => '交易项目',
+            'amount' => '交易额度',
+            'switch' => '收支',
+            'after_amount' => '交易后余额',
             'remark' => '备注',
             'updated_at' => '更新日期',
-            'created_at' => '创建日期',
+            'created_at' => '交易日期',
         ];
+    }
+
+    public static function getSwitchStatus($key = null)
+    {
+        $ary = [
+            static::SWITCH_IN => '收入',
+            static::SWITCH_OUT => '支出',
+        ];
+        return $ary[$key] ?? $ary;
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAgent()
+    {
+        return $this->hasOne(Agent::class, ['id' => 'agent_id']);
     }
 }
