@@ -7,8 +7,8 @@ use yii\helpers\Url;
 /* @var $model backend\models\GameType */
 
 $this->params['breadcrumbs'] = [
-    ['label' => yii::t('app', 'Game Type'), 'url' => Url::to(['index'])],
-    ['label' => yii::t('app', 'Create') . yii::t('app', 'Game Type')],
+    ['label' => '游戏类型', 'url' => Url::to(['index'])],
+    ['label' => '新增游戏类型'],
 ];
 ?>
 <?= $this->render('_form', [

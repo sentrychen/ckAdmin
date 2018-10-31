@@ -1,7 +1,7 @@
 <?php
 
+use backend\models\Platform;
 use common\widgets\Bar;
-use common\grid\CheckboxColumn;
 use common\grid\ActionColumn;
 use common\grid\GridView;
 
@@ -28,11 +28,18 @@ $this->params['breadcrumbs'][] = '游戏平台管理';
                         'name',
                         'code',
                         'api_host',
+                        'account.available_amount:currency',
+                        [
+                            'attribute' => 'status',
+                            'value' => function ($model) {
+                                $status = Platform::getStatuses();
+                                return isset($status[$model->status]) ? $status[$model->status] : "异常";
+                            }
+                        ],
 
-                        'login_url:url',
-                        'status',
-
-                        ['class' => ActionColumn::className(),],
+                        ['class' => ActionColumn::className(),
+                            'template' => '{update} ',
+                        ],
                     ],
                 ]); ?>
             </div>

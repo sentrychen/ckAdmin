@@ -3,6 +3,7 @@
 namespace common\models;
 
 use Yii;
+use yii\behaviors\TimestampBehavior;
 
 /**
  * This is the model class for table "{{%game_type}}".
@@ -33,6 +34,16 @@ class GameType extends \yii\db\ActiveRecord
             [['updated_at', 'created_at'], 'integer'],
             [['name', 'name_en'], 'string', 'max' => 128],
             [['name'], 'unique'],
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return [
+            TimestampBehavior::class,
         ];
     }
 

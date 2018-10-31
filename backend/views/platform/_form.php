@@ -1,5 +1,6 @@
 <?php
 
+use backend\models\Platform;
 use backend\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
@@ -35,16 +36,11 @@ use backend\widgets\ActiveForm;
                         <?= $form->field($model, 'login_url')->textInput(['maxlength' => true]) ?>
                         <div class="hr-line-dashed"></div>
 
-                        <?= $form->field($model, 'status')->textInput() ?>
+                <?= $form->field($model, 'status')->radioList(Platform::getStatuses()) ?>
                         <div class="hr-line-dashed"></div>
 
-                        <?= $form->field($model, 'updated_at')->textInput() ?>
-                        <div class="hr-line-dashed"></div>
 
-                        <?= $form->field($model, 'created_at')->textInput() ?>
-                        <div class="hr-line-dashed"></div>
-
-                        <?= $form->defaultButtons() ?>
+                <?= $form->defaultButtons() ?>
                     <?php ActiveForm::end(); ?>
             </div>
         </div>

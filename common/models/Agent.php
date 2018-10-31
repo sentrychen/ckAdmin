@@ -501,5 +501,12 @@ class Agent extends ActiveRecord implements IdentityInterface
         return $data;
     }
 
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAccount()
+    {
+        return $this->hasOne(AgentAccount::class, ['agent_id' => 'id']);
+    }
 
 }

@@ -6,8 +6,8 @@ use yii\helpers\Url;
 /* @var $model backend\models\Platform */
 
 $this->params['breadcrumbs'] = [
-    ['label' => yii::t('app', 'Platform'), 'url' => Url::to(['index'])],
-    ['label' => yii::t('app', 'Update') . yii::t('app', 'Platform')],
+    ['label' => '游戏平台', 'url' => Url::to(['index'])],
+    ['label' => '编辑游戏平台'],
 ];
 ?>
 <?= $this->render('_form', [

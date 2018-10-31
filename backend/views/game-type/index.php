@@ -18,20 +18,19 @@ $this->params['breadcrumbs'][] = '游戏类型';
         <div class="ibox">
             <?= $this->render('/widgets/_ibox-title') ?>
             <div class="ibox-content">
-                <?= Bar::widget() ?>
+                <?= Bar::widget([
+                    'template' => '{refresh} {create} ',
+                ]) ?>
                 <?= GridView::widget([
                     'dataProvider' => $dataProvider,
                     'filterModel' => null,
                     'columns' => [
-                        ['class' => CheckboxColumn::className()],
-
                         'id',
                         'name',
                         'name_en',
-                        'updated_at',
-                        'created_at',
-
-                        ['class' => ActionColumn::className(),],
+                        ['class' => ActionColumn::className(),
+                            'template' => '{update} {delete}',
+                        ],
                     ],
                 ]); ?>
             </div>
