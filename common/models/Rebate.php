@@ -3,6 +3,7 @@
 namespace common\models;
 
 use Yii;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "{{%rebate}}".
@@ -12,14 +13,15 @@ use Yii;
  * @property int $agent_id 代理ID
  * @property string $agent_name 代理账号
  * @property int $agent_level 代理层级
+ * @property string $rebate_rate 占成
  * @property string $self_bet_amount 自身有效投注
- * @property string $sub_bet_amount 下级有效投注
  * @property string $self_profit_loss 自身会员损益
+ * @property string $sub_bet_amount 下级有效投注总额
  * @property string $sub_profit_loss 下级代理会员损益
- * @property string $total_sub_amount 累计佣金
- * @property string $cur_sub_amount 当期佣金
- * @property string $cur_rebate_amount 本期返佣
- * @property string $total_rebate_amount 累计返佣
+ * @property string $sub_rebate_amount 下级返佣
+ * @property string $self_rebate_amount 自身返佣
+ * @property string $total_rebate_amount 合计返佣
+ * @property int $created_at 计佣时间
  */
 class Rebate extends \yii\db\ActiveRecord
 {
@@ -37,8 +39,8 @@ class Rebate extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['agent_id', 'agent_level'], 'integer'],
-            [['self_bet_amount', 'sub_bet_amount', 'self_profit_loss', 'sub_profit_loss', 'total_sub_amount', 'cur_sub_amount', 'cur_rebate_amount', 'total_rebate_amount'], 'number'],
+            [['agent_id', 'agent_level', 'created_at'], 'integer'],
+            [['rebate_rate', 'self_bet_amount', 'self_profit_loss', 'sub_bet_amount', 'sub_profit_loss', 'sub_rebate_amount', 'self_rebate_amount', 'total_rebate_amount'], 'number'],
             [['ym'], 'string', 'max' => 7],
             [['agent_name'], 'string', 'max' => 255],
         ];
@@ -55,14 +57,31 @@ class Rebate extends \yii\db\ActiveRecord
             'agent_id' => '代理ID',
             'agent_name' => '代理账号',
             'agent_level' => '代理层级',
-            'self_bet_amount' => '自身有效投注',
-            'sub_bet_amount' => '下级有效投注',
+            'rebate_rate' => '返佣率',
+            'self_bet_amount' => '自身会员有效投注',
             'self_profit_loss' => '自身会员损益',
+            'sub_bet_amount' => '下级有效投注总额',
             'sub_profit_loss' => '下级代理会员损益',
-            'total_sub_amount' => '累计佣金',
-            'cur_sub_amount' => '当期佣金',
-            'cur_rebate_amount' => '本期返佣',
-            'total_rebate_amount' => '累计返佣',
+            'sub_rebate_amount' => '下级返佣',
+            'self_rebate_amount' => '自身返佣',
+            'total_rebate_amount' => '合计返佣',
+            'created_at' => '计佣时间',
         ];
     }
+
+    public static function getYms(){
+        $data = self::find()->select('ym')->distinct(true)->orderBy('ym')->asArray()->all();
+
+        return ArrayHelper::map($data,'ym','ym');
+    }
+
+    public static function getLevels(){
+        $maxLevel = Agent::find()->max('agent_level');
+        $levels = [];
+        for($i =1;$i<= $maxLevel;$i++){
+            $levels[$i] = $i;
+        }
+        return $levels;
+    }
+
 }

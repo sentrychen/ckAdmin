@@ -8,6 +8,7 @@
 
 use backend\models\Agent;
 use common\widgets\SearchForm;
+use yii\helpers\ArrayHelper;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\search\UserSearch */
@@ -17,8 +18,7 @@ use common\widgets\SearchForm;
     <?php $form = SearchForm::begin([]); ?>
 
     <?= $form->field($model, 'username')->textInput() ?>
-    <?= $form->field($model, 'realname')->textInput() ?>
-    <?= $form->field($model, 'parent_id')->textInput() ?>
+    <?= $form->field($model, 'parent_id')->label('上级代理')->dropDownList(['0'=>'顶级代理'] + Agent::getAgentTreeList()) ?>
     <?= $form->field($model, 'promo_code')->textInput() ?>
     <?= $form->field($model, 'status')->dropDownList(Agent::getStatuses()) ?>
         <?= $form->field($model, 'created_at')->dateRange() ?>

@@ -18,9 +18,7 @@ class RebateSearch extends Rebate
     public function rules()
     {
         return [
-            [['id', 'agent_id', 'agent_level'], 'integer'],
-            [['ym', 'agent_name'], 'safe'],
-            [['self_bet_amount', 'sub_bet_amount', 'self_profit_loss', 'sub_profit_loss', 'total_sub_amount', 'cur_sub_amount', 'cur_rebate_amount', 'total_rebate_amount'], 'number'],
+            [['ym', 'agent_id','agent_level'], 'safe'],
         ];
     }
 
@@ -48,6 +46,11 @@ class RebateSearch extends Rebate
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'sort' => [
+                'defaultOrder' => [
+                    'ym' => SORT_DESC,
+                ],
+            ]
         ]);
 
         $this->load($params);
@@ -60,22 +63,10 @@ class RebateSearch extends Rebate
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
+            'ym' => $this->ym,
             'agent_id' => $this->agent_id,
             'agent_level' => $this->agent_level,
-            'self_bet_amount' => $this->self_bet_amount,
-            'sub_bet_amount' => $this->sub_bet_amount,
-            'self_profit_loss' => $this->self_profit_loss,
-            'sub_profit_loss' => $this->sub_profit_loss,
-            'total_sub_amount' => $this->total_sub_amount,
-            'cur_sub_amount' => $this->cur_sub_amount,
-            'cur_rebate_amount' => $this->cur_rebate_amount,
-            'total_rebate_amount' => $this->total_rebate_amount,
         ]);
-
-        $query->andFilterWhere(['like', 'ym', $this->ym])
-            ->andFilterWhere(['like', 'agent_name', $this->agent_name]);
-
         return $dataProvider;
     }
 }

@@ -22,12 +22,10 @@ class Agent extends \common\models\Agent
     {
 
         parent::loadDefaultValues();
-        $this->rebate_rate = yii::$app->option->agent_default_rebate/100;
+        $this->rebate_rate = yii::$app->option->agent_default_rebate;
         $this->xima_status = yii::$app->option->agent_xima_status;
         $this->xima_type = yii::$app->option->agent_xima_type;
-        $this->xima_rate = yii::$app->option->agent_xima_rate/100;
-
-
+        $this->xima_rate = yii::$app->option->agent_xima_rate;
     }
 
 }

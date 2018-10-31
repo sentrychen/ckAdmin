@@ -41,7 +41,7 @@ class AgentSearch extends Agent
     public function rules()
     {
         return [
-            [['id', 'username', 'realname', 'promo_code', 'status', 'created_at'], 'safe'],
+            [['id', 'username', 'realname','parent_id', 'promo_code', 'status', 'created_at'], 'safe'],
         ];
     }
 
@@ -56,21 +56,34 @@ class AgentSearch extends Agent
      */
     public function search($params)
     {
-        $query = self::find()->andWhere(['parent_id' => yii::$app->getUser()->getIdentity()->id]);
+        $query = self::find();
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'sort' => [
                 'defaultOrder' => [
-                    'created_at' => SORT_DESC
+                    'agent_level' => SORT_ASC,
+                    'parent_id' => SORT_ASC
                 ]
             ]
         ]);
-        $this->load($params);
+        $sort = $dataProvider->getSort();
+
+        $sort->attributes +=[
+            'parent.username' => [
+                'asc' => ['parent_id' => SORT_ASC],
+                'desc' => ['parent_id' => SORT_DESC],
+            ],
+        ];
+            $this->load($params);
         if (!$this->validate()) {
             return $dataProvider;
         }
-        $query->andFilterWhere(['id' => $this->id])
-            ->andFilterWhere(['like', 'username', $this->username])
+        if('0' === $this->parent_id)
+            $query->andWhere(['parent_id'=> null]);
+        else
+            $query->andFilterWhere(['parent_id' => $this->parent_id]);
+
+        $query->andFilterWhere(['like', 'username', $this->username])
             ->andFilterWhere(['like', 'realname', $this->realname])
             ->andFilterWhere(['like', 'promo_code', $this->promo_code]);
 

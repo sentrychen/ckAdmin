@@ -11,9 +11,10 @@
  * @var $model backend\models\Agent
  */
 
+use backend\models\Agent;
 use backend\widgets\ActiveForm;
 use common\libs\Constants;
-use backend\models\Agent;
+use yii\helpers\ArrayHelper;
 
 $this->title = '代理管理';
 ?>
@@ -40,6 +41,8 @@ $this->title = '代理管理';
             <div class="hr-line-dashed"></div>
             <?= $form->field($model, 'realname') ?>
             <div class="hr-line-dashed"></div>
+            <?= $form->field($model, 'parent_id')->label('上级代理')->dropDownList(Agent::getAgentTreeList(AGENT::STATUS_NORMAL, 0,yii::$app->option->agent_max_level), $temp) ?>
+            <div class="hr-line-dashed"></div>
             <?= $form->field($model, 'password')->passwordInput(['maxlength' => 512]) ?>
             <div class="hr-line-dashed"></div>
             <?= $form->field($model, 'repassword')->passwordInput(['maxlength' => 512]) ?>
@@ -48,12 +51,20 @@ $this->title = '代理管理';
             <div class="hr-line-dashed"></div>
             <?= $form->field($model, 'rebate_rate')->textInput(['afterAddon' => '%']) ?>
             <div class="hr-line-dashed"></div>
-            <?= $form->field($model, 'xima_status')->radioList(Constants::getYesNoItems()) ?>
-            <div class="hr-line-dashed"></div>
-            <?= $form->field($model, 'xima_type')->radioList(Constants::getXiMaTypes()) ?>
-            <div class="hr-line-dashed"></div>
-            <?= $form->field($model, 'xima_rate')->textInput(['afterAddon' => '%']) ?>
-            <div class="hr-line-dashed"></div>
+            <?php
+            if (yii::$app->option->agent_xima_status == 1) {
+
+                ?>
+                <?= $form->field($model, 'xima_status')->radioList(Constants::getYesNoItems()) ?>
+                <div class="hr-line-dashed"></div>
+                <?= $form->field($model, 'xima_type')->radioList(Constants::getXiMaTypes(),['options'=>['readOnly'=>'readOnly']]) ?>
+                <div class="hr-line-dashed"></div>
+                <?= $form->field($model, 'xima_rate')->textInput(['afterAddon' => '%']) ?>
+                <div class="hr-line-dashed"></div>
+                <?php
+            }
+
+            ?>
             <?= $form->defaultButtons() ?>
 
             <?php ActiveForm::end(); ?>

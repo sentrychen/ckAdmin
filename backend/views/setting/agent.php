@@ -23,19 +23,20 @@ $this->params['breadcrumbs'][] = '代理设置';
             <?= $this->render('/widgets/_ibox-title') ?>
             <div class="ibox-content">
                 <?php $form = ActiveForm::begin(); ?>
+
                 <?= $form->field($model, 'agent_status')->dropDownList(Constants::getAgentStatusItems()) ?>
                 <div class="hr-line-dashed"></div>
                 <?= $form->field($model, 'agent_max_level') ?>
                 <div class="hr-line-dashed"></div>
-                <?= $form->field($model, 'agent_max_rebate')->textInput(['afterAddon' => '%']) ?>
+                <?= $form->field($model, 'agent_max_rebate')->textInput(['afterAddon' => '%','value'=>$model->agent_max_rebate * 100]) ?>
                 <div class="hr-line-dashed"></div>
-                <?= $form->field($model, 'agent_default_rebate')->textInput(['afterAddon' => '%']) ?>
+                <?= $form->field($model, 'agent_default_rebate')->textInput(['afterAddon' => '%','value'=>$model->agent_default_rebate * 100]) ?>
                 <div class="hr-line-dashed"></div>
                 <?= $form->field($model, 'agent_xima_status')->radioList(Constants::getYesNoItems()) ?>
                 <div class="hr-line-dashed"></div>
                 <?= $form->field($model, 'agent_xima_type')->radioList(Constants::getXimaTypes()) ?>
                 <div class="hr-line-dashed"></div>
-                <?= $form->field($model, 'agent_xima_rate')->textInput(['afterAddon' => '%']) ?>
+                <?= $form->field($model, 'agent_xima_rate')->textInput(['afterAddon' => '%','value'=>$model->agent_xima_rate * 100]) ?>
                 <div class="hr-line-dashed"></div>
                 <?= $form->field($model, 'agent_backend_url') ?>
                 <div class="hr-line-dashed"></div>

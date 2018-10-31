@@ -1,8 +1,8 @@
 <?php
 /**
  * Author: lf
- * Blog: https://blog.feehi.com
- * Email: job@feehi.com
+ * Blog: https://blog.option.com
+ * Email: job@option.com
  * Created at: 2017-03-15 21:16
  */
 
@@ -83,14 +83,32 @@ class User extends ActiveRecord
             [['max_limit'], 'compare', 'compareAttribute' => 'min_limit', 'operator' => '>='],
             [['dogfall_max_limit'], 'compare', 'compareAttribute' => 'dogfall_min_limit', 'operator' => '>='],
             [['pair_max_limit'], 'compare', 'compareAttribute' => 'pair_min_limit', 'operator' => '>='],
-            [['min_limit'], 'compare', 'compareValue' => yii::$app->feehi->game_min_limit, 'operator' => '>='],
-            [['max_limit'], 'compare', 'compareValue' => yii::$app->feehi->game_max_limit, 'operator' => '<='],
-            [['dogfall_min_limit'], 'compare', 'compareValue' => yii::$app->feehi->game_dogfall_min_limit, 'operator' => '>='],
-            [['dogfall_max_limit'], 'compare', 'compareValue' => yii::$app->feehi->game_dogfall_max_limit, 'operator' => '<='],
-            [['pair_min_limit'], 'compare', 'compareValue' => yii::$app->feehi->game_pair_min_limit, 'operator' => '>='],
-            [['pair_max_limit'], 'compare', 'compareValue' => yii::$app->feehi->game_pair_max_limit, 'operator' => '<='],
-            [['xima_rate'], 'compare', 'compareValue' => yii::$app->feehi->game_pair_max_limit, 'operator' => '<='],
+            [['min_limit'], 'compare', 'compareValue' => yii::$app->option->game_min_limit, 'operator' => '>='],
+            [['max_limit'], 'compare', 'compareValue' => yii::$app->option->game_max_limit, 'operator' => '<='],
+            [['dogfall_min_limit'], 'compare', 'compareValue' => yii::$app->option->game_dogfall_min_limit, 'operator' => '>='],
+            [['dogfall_max_limit'], 'compare', 'compareValue' => yii::$app->option->game_dogfall_max_limit, 'operator' => '<='],
+            [['pair_min_limit'], 'compare', 'compareValue' => yii::$app->option->game_pair_min_limit, 'operator' => '>='],
+            [['pair_max_limit'], 'compare', 'compareValue' => yii::$app->option->game_pair_max_limit, 'operator' => '<='],
+            [['xima_rate'], 'compare', 'compareValue' => yii::$app->option->agent_xima_rate * 100, 'operator' => '<='],
+            [['xima_rate'], 'filter','filter'=>function($value){return $value/100;}],
+            [['xima_rate'], 'checkXimaRate'],
         ];
+    }
+
+    public function checkXimaRate($attribute, $params)
+    {
+        if ($this->invite_agent_id) {
+            $agent = $this->getInviteAgent()->one();
+            if($agent->xima_status==0 && $this->xima_status !=0){
+                $this->addError('xima_status', '当代理洗码不可见时，用户也必须设置为洗码不可见');
+            }
+            if($agent->xima_type ==1 && $this->xima_type !=1){
+                $this->addError('xima_type', '当代理类别为单边时，用户也必须是单边');
+            }
+
+            if ($this->xima_rate > $agent->xima_rate)
+                $this->addError($attribute, '洗码率不能超出代理洗码率[' . yii::$app->formatter->asPercent($agent->xima_rate, 2) . ']');
+        }
     }
 
     /**

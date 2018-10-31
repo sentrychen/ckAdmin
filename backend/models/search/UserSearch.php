@@ -45,7 +45,7 @@ class UserSearch extends User
     public function rules()
     {
         return [
-            [['status','available_amount_min','available_amount_max','agent_name','username','created_at'], 'safe'],
+            [['status','available_amount_min','available_amount_max','invite_agent_id','username','created_at'], 'safe'],
         ];
     }
 
@@ -104,7 +104,7 @@ class UserSearch extends User
             return $dataProvider;
         }
         $query->andFilterWhere(['like', User::tableName() . '.username', $this->username])
-            ->andFilterWhere(['like', Agent::tableName() . '.username', $this->agent_name])
+            ->andFilterWhere([User::tableName() . '.invite_agent_id' => $this->invite_agent_id])
             ->andFilterWhere(['between', UserAccount::tableName() .'.available_amount', $this->available_amount_min,$this->available_amount_max])
             ->andFilterWhere([User::tableName() . '.invite_agent_id' => $agent_id])
             ->andFilterWhere([UserStat::tableName() . '.oneline_status' => $online])

@@ -46,7 +46,7 @@ $this->title = '会员';
             <div class="hr-line-dashed"></div>
             <?= $form->field($model, 'repassword')->passwordInput(['maxlength' => 512]) ?>
             <div class="hr-line-dashed"></div>
-            <?= $form->field($model, 'invite_agent_id')->label('所属代理')->dropDownList(ArrayHelper::map(Agent::getAgentName(),'id','username'),$temp) ?>
+            <?= $form->field($model, 'invite_agent_id')->label('所属代理')->dropDownList(Agent::getAgentTreeList(Agent::STATUS_NORMAL),$temp) ?>
             <div class="hr-line-dashed"></div>
             <?= $form->field($model, 'status')->radioList(User::getStatuses()) ?>
             <div class="hr-line-dashed"></div>
@@ -87,7 +87,7 @@ $this->title = '会员';
             </div>
 
             <div class="hr-line-dashed"></div>
-            <?= $form->field($model, 'xima_rate')->textInput(['afterAddon' => '%']) ?>
+            <?= $form->field($model, 'xima_rate')->textInput(['afterAddon' => '%','value'=>$model->xima_rate * 100]) ?>
             <div class="hr-line-dashed"></div>
             <?= $form->defaultButtons() ?>
             <?php ActiveForm::end(); ?>

@@ -67,6 +67,7 @@ class SettingAgentForm extends \common\models\Options
             ],
             [['agent_status', 'agent_max_level', 'agent_xima_type', 'agent_xima_status'], 'integer'],
             [['agent_max_rebate', 'agent_default_rebate', 'agent_xima_rate'], 'double', 'min' => 0, 'max' => 100],
+            [['agent_max_rebate', 'agent_default_rebate', 'agent_xima_rate'], 'filter', 'filter' =>function($value){return $value/100;}],
             ['agent_default_rebate', 'compare', 'compareAttribute' => 'agent_max_rebate', 'operator' => '<='],
         ];
     }

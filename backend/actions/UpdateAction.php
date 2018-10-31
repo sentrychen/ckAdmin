@@ -28,7 +28,7 @@ class UpdateAction extends \yii\base\Action
     public $data;
 
     /** @var  string|array 编辑成功后跳转地址,此参数直接传给yii::$app->controller->redirect() */
-    public $successRedirect;
+    public $successRedirect = ['index'];
 
 
     /**
@@ -67,7 +67,7 @@ class UpdateAction extends \yii\base\Action
                 }else {
                     yii::$app->getSession()->setFlash('error', $err);
                 }
-                $model = call_user_func([$this->modelClass, 'findOne'], $id);
+                //$model = call_user_func([$this->modelClass, 'findOne'], $id);
             }
         }
 

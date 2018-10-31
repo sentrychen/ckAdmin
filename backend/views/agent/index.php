@@ -49,6 +49,15 @@ $this->params['breadcrumbs'][] = '代理列表';
                         ],
                         [
                             'attribute' => 'parent.username',
+                            'label' =>'上级代理',
+                        ],
+                        [
+                            'attribute' => 'agent_level',
+                            'format' =>'raw',
+                            'value' =>function($model){
+                                $class =['danger','danger','warning','info'];
+                                return '<span class="badge label-' . ($class[$model->agent_level]??'info') . '">'.$model->agent_level.'</span>';
+                            }
                         ],
                         [
                             'attribute' => 'realname',
