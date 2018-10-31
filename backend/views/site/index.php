@@ -100,7 +100,7 @@ $this->title = yii::t('app', 'Backend Manage System');
                     <li class="hidden-xs">
                         <a class="J_menuItem" href="<?= Url::to(['platform/amount']) ?>" title="当前平台可用游戏额度"><i
                                     class="fa fa-credit-card"></i> 额度 <span
-                                    class="label label-warning">￥ <?= $counts['AMOUNT'] ?></span></a>
+                                    class="label label-warning"><?= yii::$app->formatter->asCurrency($counts['AMOUNT']) ?></span></a>
                     </li>
                     <li class="hidden-xs">
                         <a class="J_menuItem count-info" href="<?= Url::to(['deposit/index']) ?>" title="待审核取款申请"><i

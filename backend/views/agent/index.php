@@ -48,7 +48,7 @@ $this->params['breadcrumbs'][] = '代理列表';
                             'attribute' => 'username',
                         ],
                         [
-                            'attribute' => 'parent_id',
+                            'attribute' => 'parent.username',
                         ],
                         [
                             'attribute' => 'realname',
@@ -70,21 +70,15 @@ $this->params['breadcrumbs'][] = '代理列表';
                         ],
                         [
                             'attribute' => 'rebate_rate',
-                            'value' => function ($model) {
-                                return $model->rebate_rate * 100 . '%';
-                            }
+                            'format' =>['percent',2],
                         ],
                         [
                             'attribute' => 'xima_rate',
-                            'value' => function ($model) {
-                                return $model->xima_rate * 100 . '%';
-                            }
+                            'format' =>['percent',2],
                         ],
                         [
                             'attribute' => 'available_amount',
-                            'value' => function ($model) {
-                                return '￥' . number_format($model->available_amount, 2);
-                            }
+                            'format'=>'currency',
 
                         ],
                         [

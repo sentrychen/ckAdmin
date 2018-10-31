@@ -9,11 +9,11 @@
 /**
  * @var $this yii\web\View
  * @var $dataProvider yii\data\ActiveDataProvider
- * @var $searchModel backend\models\search\TradeSearch
+ * @var $searchModel backend\models\search\UserAccountRecordSearch
  * @var $total array
  */
 
-use backend\models\Trade;
+use backend\models\UserAccountRecord;
 use common\grid\DateColumn;
 use common\grid\GridView;
 use yii\widgets\Pjax;
@@ -45,9 +45,9 @@ use yii\widgets\Pjax;
                     'value' =>'tradeType.name'
                 ],
                 [
-                    'attribute' => 'income_switch',
+                    'attribute' => 'switch',
                     'value' => function($model){
-                        return Trade::getSwitchStatus($model->income_switch);
+                        return UserAccountRecord::getSwitchStatus($model->switch);
                     }
 
                 ],

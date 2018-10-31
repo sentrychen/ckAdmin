@@ -91,6 +91,7 @@ use yii\widgets\DetailView;
         'userStat.bet_number',
         'userStat.bet_amount:currency',
         'account.available_amount:currency',
+        'account.frozen_amount:currency',
         'account.user_point',
         'account.xima_account:currency',
 

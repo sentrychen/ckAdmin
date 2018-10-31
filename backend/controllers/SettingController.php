@@ -8,6 +8,7 @@
 
 namespace backend\controllers;
 
+use backend\models\form\SettingFinanceForm;
 use backend\models\form\SettingGameForm;
 use yii;
 use backend\models\form\SettingWebsiteForm;
@@ -118,6 +119,34 @@ class SettingController extends Controller
 
         $model->getGameSetting();
         return $this->render('game', [
+            'model' => $model
+        ]);
+
+    }
+
+    /**
+     * 财务设置
+     *
+     * @return string
+     */
+    public function actionFinance()
+    {
+        $model = new SettingFinanceForm();
+        if (yii::$app->getRequest()->getIsPost()) {
+            if ($model->load(yii::$app->getRequest()->post()) && $model->validate() && $model->setFinanceConfig()) {
+                yii::$app->getSession()->setFlash('success', yii::t('app', 'Success'));
+            } else {
+                $errors = $model->getErrors();
+                $err = '';
+                foreach ($errors as $v) {
+                    $err .= $v[0] . '<br>';
+                }
+                yii::$app->getSession()->setFlash('error', $err);
+            }
+        }
+
+        $model->getFinanceSetting();
+        return $this->render('finance', [
             'model' => $model
         ]);
 

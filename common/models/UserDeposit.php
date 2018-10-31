@@ -9,7 +9,7 @@ use Yii;
  *
  * @property string $id 存款记录ID
  * @property int $user_id 会员ID
- * @property string $username 会员名称
+ * @property string remark 备注信息
  * @property string $apply_amount 申请存款金额
  * @property int $status 存款状态 1 申请中 2 已存入 0 已取消
  * @property string $confirm_amount 确认金额
@@ -57,10 +57,10 @@ class UserDeposit extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'username', 'apply_amount', 'pay_channel'], 'required'],
+            [['user_id', 'apply_amount', 'pay_channel'], 'required'],
             [['user_id', 'status', 'audit_by_id', 'audit_at', 'pay_channel', 'save_bank_id', 'feedback', 'feedback_at', 'updated_at', 'created_at'], 'integer'],
             [['apply_amount', 'confirm_amount'], 'number'],
-            [['username', 'audit_remark', 'pay_username', 'pay_nickname', 'pay_info', 'feedback_remark'], 'string', 'max' => 255],
+            [['remark', 'audit_remark', 'pay_username', 'pay_nickname', 'pay_info', 'feedback_remark'], 'string', 'max' => 255],
             [['audit_by_username'], 'string', 'max' => 64],
         ];
     }
@@ -73,7 +73,7 @@ class UserDeposit extends \yii\db\ActiveRecord
         return [
             'id' => '存款记录ID',
             'user_id' => '会员ID',
-            'username' => '会员名称',
+            'remark' => '备注',
             'apply_amount' => '申请存款金额',
             'status' => '存款状态',
             'confirm_amount' => '确认金额',
@@ -113,6 +113,7 @@ class UserDeposit extends \yii\db\ActiveRecord
         ];
         return $channels[$key]??$channels;
     }
+
     /**
      * @return \yii\db\ActiveQuery
      */

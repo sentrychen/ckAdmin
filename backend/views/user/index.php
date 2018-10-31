@@ -80,11 +80,7 @@ $this->params['breadcrumbs'][] = '会员列表';
                             'format'=>'currency',
                         ],
                         [
-                            'attribute' => 'userStat.deposit_amount',
-                            'format'=>'currency',
-                        ],
-                        [
-                            'attribute' => 'userStat.withdrawal_amount',
+                            'attribute' => 'account.frozen_amount',
                             'format'=>'currency',
                         ],
                         [
@@ -94,7 +90,7 @@ $this->params['breadcrumbs'][] = '会员列表';
 
                         [
                             'class' => ActionColumn::class,
-                            'width' => '130px',
+                            'width' => '18%',
                             'buttons' => [
                                 'report' => function ($url, $model, $key) {
                                     return Html::a('<i class="fa fa-table"></i> 报表', Url::to(['report','username'=>$model->username]), [
@@ -103,15 +99,16 @@ $this->params['breadcrumbs'][] = '会员列表';
                                         'class' => 'btn btn-info btn-sm openContab',
                                     ]);
                                 },
-                                'amount' => function ($url, $model, $key) {
-                                    return Html::a('<i class="fa fa-cny"></i> 额度', Url::to(['change-amount','username'=>$model->username]), [
+                                'change-amount' => function ($url, $model, $key) {
+                                    return Html::a('<i class="fa fa-credit-card"></i> 上下分', Url::to(['change-amount','user_id'=>$model->id]), [
                                         'title' => '会员额度调整',
                                         'data-pjax' => '0',
-                                        'class' => 'btn btn-warning btn-sm openContab',
+                                        'class' => 'btn btn-warning btn-sm',
                                     ]);
                                 },
+
                             ],
-                            'template' => '{report} {update} {amount}',
+                            'template' => '{report} {update} {change-amount} {change-money}',
                         ],
                     ]
                 ]); ?>

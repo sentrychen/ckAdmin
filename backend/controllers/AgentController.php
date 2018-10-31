@@ -10,7 +10,7 @@ namespace backend\controllers;
 
 use backend\actions\ViewAction;
 use yii;
-use common\models\Agent;
+use backend\models\Agent;
 use backend\models\search\AgentSearch;
 use backend\actions\CreateAction;
 use backend\actions\UpdateAction;

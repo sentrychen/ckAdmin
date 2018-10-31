@@ -9,7 +9,7 @@ use Yii;
  *
  * @property string $id 存款单号
  * @property string $user_id 用户ID
- * @property string $username 用户姓名
+ * @property string remark 备注
  * @property string $apply_amount 申请取款金额
  * @property int $status 取款状态 1 申请中 2 已完成  0 已取消
  * @property string $transfer_amount 实际转账金额
@@ -53,10 +53,10 @@ class UserWithdraw extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'username', 'apply_amount'], 'required'],
+            [['user_id', 'apply_amount'], 'required'],
             [['user_id', 'status', 'audit_by_id', 'audit_at', 'user_bank_id', 'updated_at', 'created_at'], 'integer'],
             [['apply_amount', 'transfer_amount'], 'number'],
-            [['username', 'audit_remark'], 'string', 'max' => 255],
+            [['remark', 'audit_remark'], 'string', 'max' => 255],
             [['audit_by_username', 'bank_name', 'bank_account', 'apply_ip'], 'string', 'max' => 64],
         ];
     }
@@ -69,7 +69,7 @@ class UserWithdraw extends \yii\db\ActiveRecord
         return [
             'id' => '存款单号',
             'user_id' => '用户ID',
-            'username' => '用户姓名',
+            'remark' => '备注',
             'apply_amount' => '申请取款金额',
             'status' => '取款状态',
             'transfer_amount' => '实际转账金额',

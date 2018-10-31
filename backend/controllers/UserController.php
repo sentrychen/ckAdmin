@@ -14,16 +14,18 @@ use backend\actions\IndexAction;
 use backend\actions\SortAction;
 use backend\actions\UpdateAction;
 use backend\actions\ViewAction;
+use backend\models\ChangeAmountRecord;
 use backend\models\PlatformUser;
 use backend\models\search\BetListSearch;
 use backend\models\search\LoginLogSearch;
-use backend\models\search\TradeSearch;
+use backend\models\search\UserAccountRecordSearch;
 use backend\models\search\UserDepositSearch;
 use backend\models\search\UserSearch;
 use backend\models\search\UserWithdrawSearch;
-use backend\models\Trade;
+use backend\models\UserAccountRecord;
 use backend\models\User;
 use common\models\Agent;
+use common\models\UserAccount;
 use yii;
 use yii\web\Response;
 
@@ -102,10 +104,10 @@ class UserController extends Controller
      */
     public function actionTradeList($id)
     {
-        $searchModel = new TradeSearch();
+        $searchModel = new UserAccountRecordSearch();
         $dataProvider = $searchModel->search(yii::$app->getRequest()->getQueryParams(),$id);
         $query = clone $dataProvider->query;
-        $total = $query->select('SUM(case WHEN income_switch= '.Trade::SWITCH_IN.' then amount else 0 end ) as inAmount,SUM(case WHEN income_switch = '.Trade::SWITCH_OUT.' then amount else 0 end ) as outAmount')->asArray()->one();
+        $total = $query->select('SUM(case WHEN switch= '.UserAccountRecord::SWITCH_IN.' then amount else 0 end ) as inAmount,SUM(case WHEN switch = '.UserAccountRecord::SWITCH_OUT.' then amount else 0 end ) as outAmount')->asArray()->one();
 
         return $this->render('tradelist',['dataProvider' => $dataProvider,'searchModel' => $searchModel,'total'=>$total]);
     }
@@ -188,4 +190,29 @@ class UserController extends Controller
 
         return Yii::$app->formatter->asCurrency($model->available_amount);
     }
+
+    public function actionChangeAmount($user_id){
+        $model = new ChangeAmountRecord();
+        $model->user_id = $user_id;
+        $model->scenario = 'create';
+        if (yii::$app->getRequest()->getIsPost()) {
+            if ($model->load(yii::$app->getRequest()->post()) && $model->save()) {
+                yii::$app->getSession()->setFlash('success', yii::t('app', 'Success'));
+                return $this->redirect(['index']);
+            } else {
+                $errors = $model->getErrors();
+                $err = '';
+                foreach ($errors as $v) {
+                    $err .= $v[0] . '<br>';
+                }
+                yii::$app->getSession()->setFlash('error', $err);
+            }
+        }
+        $userModel = User::findOne(['id'=>$user_id]);
+        $model->loadDefaultValues();
+        return $this->render('change-amount', [
+            'model' => $model,'userModel'=>$userModel
+        ]);
+    }
+
 }

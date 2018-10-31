@@ -53,7 +53,7 @@ EchartAsset::register($this);
                         </div>
                     </div>
                     <div class="col-md-7">
-                        <h1 class="no-margins">¥ <?= $statics['nda'] ?></h1>
+                        <h1 class="no-margins"><?= Yii::$app->formatter->asCurrency($statics['nda']) ?></h1>
                         <div class="font-bold text-info">
                             <small>首存额度</small>
                         </div>
@@ -79,7 +79,7 @@ EchartAsset::register($this);
                         </div>
                     </div>
                     <div class="col-md-7">
-                        <h1 class="no-margins">¥ <?= $statics['dda'] ?></h1>
+                        <h1 class="no-margins"><?= Yii::$app->formatter->asCurrency($statics['dda'])?></h1>
                         <div class="font-bold text-warning">
                             <small>存款额度</small>
                         </div>
@@ -99,13 +99,13 @@ EchartAsset::register($this);
 
                 <div class="row">
                     <div class="col-md-6">
-                        <h1 class="no-margins">¥ <?= $statics['dpa'] ?></h1>
+                        <h1 class="no-margins"><?= Yii::$app->formatter->asCurrency($statics['dpa'])?></h1>
                         <div class="font-bold text-navy">
                             <small>赢额度</small>
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <h1 class="no-margins">¥ <?= $statics['dla'] ?></h1>
+                        <h1 class="no-margins"><?= Yii::$app->formatter->asCurrency($statics['dla'])?></h1>
                         <div class="font-bold text-navy">
                             <small>输额度</small>
                         </div>
@@ -131,7 +131,7 @@ EchartAsset::register($this);
                         </div>
                     </div>
                     <div class="col-md-7">
-                        <h1 class="no-margins">¥ <?= $statics['dba'] ?></h1>
+                        <h1 class="no-margins"><?= Yii::$app->formatter->asCurrency($statics['dba'])?></h1>
                         <div class="font-bold text-info">
                             <small>投注额度</small>
                         </div>
@@ -157,7 +157,7 @@ EchartAsset::register($this);
                         </div>
                     </div>
                     <div class="col-md-7">
-                        <h1 class="no-margins">¥ <?= $statics['dwa'] ?></h1>
+                        <h1 class="no-margins"><?= Yii::$app->formatter->asCurrency($statics['dwa'])?></h1>
                         <div class="font-bold text-warning">
                             <small>取款额度</small>
                         </div>

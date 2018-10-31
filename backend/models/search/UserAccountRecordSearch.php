@@ -10,14 +10,14 @@ namespace backend\models\search;
 
 use backend\behaviors\TimeSearchBehavior;
 use backend\components\search\SearchEvent;
-use backend\models\Trade;
+use backend\models\UserAccountRecord;
 use yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use yii\db\ActiveRecord;
 use yii\db\BaseActiveRecord;
 
-class TradeSearch extends Trade
+class UserAccountRecordSearch extends UserAccountRecord
 {
 
     public function init()
@@ -38,7 +38,7 @@ class TradeSearch extends Trade
     public function rules()
     {
         return [
-            [['user_id','trade_type_id','income_switch','username','created_at'], 'safe'],
+            [['user_id','trade_type_id','switch','username','created_at'], 'safe'],
         ];
     }
 
@@ -71,9 +71,8 @@ class TradeSearch extends Trade
             return $dataProvider;
         }
         $query->andFilterWhere(['user_id' => $this->user_id])
-            ->andFilterWhere(['like','username', $this->username])
             ->andFilterWhere(['trade_type_id' => $this->trade_type_id])
-            ->andFilterWhere(['income_switch' => $this->income_switch]);
+            ->andFilterWhere(['switch' => $this->switch]);
         if (!empty($this->winloss))
             $query->andFilterWhere([$this->winloss,'profit', 0]);
 

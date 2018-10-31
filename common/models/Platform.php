@@ -36,11 +36,6 @@ class Platform extends \yii\db\ActiveRecord
         return '{{%platform}}';
     }
 
-    public static function getToalAvailableAmount()
-    {
-        $amount = static::find()->where(['status' => static::STATUS_ENABLE])->sum('available_amount');
-        return number_format(round($amount));
-    }
 
     /**
      * {@inheritdoc}

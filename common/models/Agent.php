@@ -276,10 +276,12 @@ class Agent extends ActiveRecord implements IdentityInterface
     public function beforeSave($insert)
     {
 
+
         if ($this->xima_rate)
             $this->xima_rate /= 100;
         if ($this->rebate_rate)
             $this->rebate_rate /= 100;
+
         if ($insert) {
             /**
              * @var $parent Agent
@@ -332,81 +334,7 @@ class Agent extends ActiveRecord implements IdentityInterface
         $this->password_hash = Yii::$app->security->generatePasswordHash($password);
     }
 
-    public function assignPermission()
-    {
-        $authManager = yii::$app->getAuthManager();
-        //if(!$this->getIsNewRecord() && in_array($this->id, yii::$app->getBehavior('access')->superAdminUserIds)){
-        if (!$this->getIsNewRecord() && $this->is_master) {
-            $this->permissions = $this->roles = [];
-        }
-        $assignments = $authManager->getAssignments($this->id);
-        $roles = $permissions = [];
-        foreach ($assignments as $key => $assignment) {
-            if (strpos($assignment->roleName, ':GET') || strpos($assignment->roleName, ':POST')) {
-                $permissions[$key] = $assignment;
-            } else {
-                $roles[$key] = $assignment;
-            }
-        }
-        $roles = array_keys($roles);
-        $permissions = array_keys($permissions);
 
-        $str = '';
-
-        //角色roles
-        if (!is_array($this->roles)) $this->roles = [];
-
-        $needAdds = array_diff($this->roles, $roles);
-        $needRemoves = array_diff($roles, $this->roles);
-        if (!empty($needAdds)) {
-            $str .= " 增加了角色: ";
-            foreach ($needAdds as $role) {
-                $roleItem = $authManager->getRole($role);
-                $authManager->assign($roleItem, $this->id);
-                $str .= " {$roleItem->name},";
-            }
-        }
-        if (!empty($needRemoves)) {
-            $str .= ' 删除了角色: ';
-            foreach ($needRemoves as $role) {
-                $roleItem = $authManager->getRole($role);
-                $authManager->revoke($roleItem, $this->id);
-                $str .= " {$roleItem->name},";
-            }
-        }
-
-        //权限permission
-        $this->permissions = array_flip($this->permissions);
-        if (isset($this->permissions[0])) unset($this->permissions[0]);
-        $this->permissions = array_flip($this->permissions);
-
-        $needAdds = array_diff($this->permissions, $permissions);
-        $needRemoves = array_diff($permissions, $this->permissions);
-        if (!empty($needAdds)) {
-            $str .= ' 增加了权限: ';
-            foreach ($needAdds as $permission) {
-                $permissionItem = $authManager->getPermission($permission);
-                $authManager->assign($permissionItem, $this->id);
-                $str .= " {$permissionItem->name},";
-            }
-        }
-        if (!empty($needRemoves)) {
-            $str .= ' 删除了权限: ';
-            foreach ($needRemoves as $permission) {
-                $permissionItem = $authManager->getPermission($permission);
-                $authManager->revoke($permissionItem, $this->id);
-                $str .= " {$permissionItem->name},";
-            }
-        }
-
-        Event::trigger(CustomLog::class, CustomLog::EVENT_CUSTOM, new CustomLog([
-            'sender' => $this,
-            'description' => "修改了 用户(uid {$this->id}) {$this->username} 的权限: {$str}",
-        ]));
-
-        return true;
-
-    }
 
     /**
      * @inheritdoc
@@ -453,25 +381,7 @@ class Agent extends ActiveRecord implements IdentityInterface
         return true;
     }
 
-    public function getRolesNameString($glue = ',')
-    {
-        $roles = $this->getRolesName();
-        $str = '';
-        foreach ($roles as $role) {
-            $str .= yii::t('menu', $role) . $glue;
-        }
-        return rtrim($str, $glue);
-    }
 
-    public function getRolesName()
-    {
-        if (in_array($this->getId(), yii::$app->getBehavior('access')->superAdminUserIds)) {
-            return [yii::t('app', 'System')];
-        }
-        $role = array_keys(yii::$app->getAuthManager()->getRolesByUser($this->getId()));
-        if (!isset($role[0])) return [];
-        return $role;
-    }
 
     /**
      * @inheritdoc
@@ -487,11 +397,13 @@ class Agent extends ActiveRecord implements IdentityInterface
     public function loadDefaultValues($skipIfSet = true)
     {
 
+        /*
         $identity = yii::$app->getUser()->getIdentity();
         $this->rebate_rate = $identity->rebate_rate;
         $this->xima_status = $identity->xima_status;
         $this->xima_type = $identity->xima_type;
         $this->xima_rate = $identity->xima_rate;
+        */
         parent::loadDefaultValues();
     }
 
@@ -502,5 +414,9 @@ class Agent extends ActiveRecord implements IdentityInterface
     public static function getAgentName($status = null){
         return self::find()->orderBy('username')->filterWhere(['status'=>$status])->all();
 
+    }
+
+    public function getParent(){
+        return $this->hasOne(Agent::class, ['id' => 'parent_id']);
     }
 }

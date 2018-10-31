@@ -11,7 +11,7 @@ namespace backend\models\search;
 use backend\behaviors\TimeSearchBehavior;
 use backend\components\search\SearchEvent;
 use backend\models\BetList;
-use backend\models\Trade;
+use backend\models\UserAccountRecord;
 use yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;

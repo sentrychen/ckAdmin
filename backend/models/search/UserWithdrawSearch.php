@@ -21,7 +21,7 @@ class UserWithdrawSearch extends UserWithdraw
     {
         return [
             [['id', 'user_id', 'status', 'audit_by_id', 'audit_at', 'user_bank_id', 'updated_at', 'created_at'], 'safe'],
-            [['username', 'audit_by_username', 'audit_remark', 'bank_name', 'bank_account', 'apply_ip'], 'safe'],
+            [[ 'audit_by_username', 'audit_remark', 'bank_name', 'bank_account', 'apply_ip'], 'safe'],
             [['apply_amount', 'transfer_amount'], 'safe'],
         ];
     }
@@ -80,8 +80,7 @@ class UserWithdrawSearch extends UserWithdraw
             'user_bank_id' => $this->user_bank_id,
         ]);
 
-        $query->andFilterWhere(['like', 'username', $this->username])
-            ->andFilterWhere(['like', 'audit_by_username', $this->audit_by_username])
+        $query->andFilterWhere(['like', 'audit_by_username', $this->audit_by_username])
             ->andFilterWhere(['like', 'audit_remark', $this->audit_remark])
             ->andFilterWhere(['like', 'bank_name', $this->bank_name])
             ->andFilterWhere(['like', 'bank_account', $this->bank_account])

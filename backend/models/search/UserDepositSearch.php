@@ -21,7 +21,7 @@ class UserDepositSearch extends UserDeposit
     {
         return [
             [['id', 'user_id', 'status', 'audit_by_id', 'audit_at', 'pay_channel', 'save_bank_id', 'feedback', 'feedback_at', 'updated_at', 'created_at'], 'safe'],
-            [['username', 'audit_by_username', 'audit_remark', 'pay_username', 'pay_nickname', 'pay_info', 'feedback_remark'], 'safe'],
+            [[ 'audit_by_username', 'audit_remark', 'pay_username', 'pay_nickname', 'pay_info', 'feedback_remark'], 'safe'],
             [['apply_amount', 'confirm_amount'], 'safe'],
         ];
     }
@@ -80,8 +80,7 @@ class UserDepositSearch extends UserDeposit
             'feedback_at' => $this->feedback_at,
         ]);
 
-        $query->andFilterWhere(['like', 'username', $this->username])
-            ->andFilterWhere(['like', 'audit_by_username', $this->audit_by_username])
+        $query->    andFilterWhere(['like', 'audit_by_username', $this->audit_by_username])
             ->andFilterWhere(['like', 'audit_remark', $this->audit_remark])
             ->andFilterWhere(['like', 'pay_username', $this->pay_username])
             ->andFilterWhere(['like', 'pay_nickname', $this->pay_nickname])

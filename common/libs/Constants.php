@@ -185,4 +185,25 @@ class Constants
         ];
         return self::getItems($items, $key);
     }
+
+    const TRADE_TYPE_DESOPIT = 1;
+    const TRADE_TYPE_WITHDRAW = 2;
+    const TRADE_TYPE_ADDAMOUNT = 3;
+    const TRADE_TYPE_REDUCEAMOUNT = 4;
+    const TRADE_TYPE_ADMINADD = 5;
+    const TRADE_TYPE_ADMINREDUCE = 6;
+
+    public static function getTradeTypeItems($key = null)
+    {
+
+        $items = [
+            self::TRADE_TYPE_DESOPIT => '存款',
+            self::TRADE_TYPE_WITHDRAW => '取款',
+            self::TRADE_TYPE_ADDAMOUNT => '上分',
+            self::TRADE_TYPE_REDUCEAMOUNT => '下分',
+            self::TRADE_TYPE_ADDAMOUNT => '人工增加',
+            self::TRADE_TYPE_REDUCEAMOUNT => '人工减少',
+        ];
+        return self::getItems($items, $key);
+    }
 }

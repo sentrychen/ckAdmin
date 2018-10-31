@@ -6,7 +6,7 @@
  * Created at: 2018-10-13 23:18
  */
 
-use backend\models\Trade;
+use backend\models\UserAccountRecord;
 use backend\models\TradeType;
 use yii\helpers\ArrayHelper;
 use common\widgets\SearchForm;
@@ -24,7 +24,7 @@ use common\widgets\SearchForm;
             'options'=>['class' => 'form-inline pull-right','data-pjax' => true]
     ]); ?>
 
-    <?= $form->field($model, 'income_switch')->label('收支')->dropDownList(Trade::getSwitchStatus()) ?>
+    <?= $form->field($model, 'switch')->label('收支')->dropDownList(UserAccountRecord::getSwitchStatus()) ?>
     <?= $form->field($model, 'trade_type_id')->dropDownList(ArrayHelper::map(TradeType::find()->all(),'id','name')) ?>
     <?= $form->field($model, 'created_at')->dateRange() ?>
     <?=$form->searchButtons(false)?>

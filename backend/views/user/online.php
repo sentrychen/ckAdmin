@@ -12,13 +12,8 @@
  * @var $searchModel backend\models\search\UserSearch
  */
 
-use backend\models\User;
-use common\grid\ActionColumn;
 use common\grid\DateColumn;
 use common\grid\GridView;
-use common\widgets\Bar;
-use yii\helpers\Html;
-use yii\helpers\Url;
 
 $this->title = 'Users';
 $this->params['breadcrumbs'][] = '在线会员';
@@ -30,7 +25,6 @@ $this->params['breadcrumbs'][] = '在线会员';
             <?= $this->render('/widgets/_ibox-title') ?>
             <div class="ibox-content">
 
-                <div class="toolbar clearfix">
 
                 <?= GridView::widget([
                     'dataProvider' => $dataProvider,
@@ -49,17 +43,17 @@ $this->params['breadcrumbs'][] = '在线会员';
                         [
                             'attribute' => 'agent_name',
                             'value' => 'inviteAgent.username',
-                            'label'=>'所属代理',
+                            'label' => '所属代理',
                         ],
 
                         [
                             'class' => DateColumn::class,
                             'attribute' => 'userStat.last_login_at',
-                            'label'=>'登陆时间',
+                            'label' => '登陆时间',
                         ],
                         [
                             'attribute' => 'userStat.oneline_duration',
-                            'format'=>'integer',
+                            'format' => 'integer',
                         ],
 
                     ]

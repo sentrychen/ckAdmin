@@ -6,7 +6,7 @@
  * Created at: 2018-10-13 23:18
  */
 
-use backend\models\Trade;
+use backend\models\UserAccountRecord;
 use backend\models\TradeType;
 use backend\models\UserLoginLog;
 use yii\helpers\ArrayHelper;

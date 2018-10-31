@@ -16,7 +16,6 @@ class SettingWebsiteForm extends \common\models\Options
 
     public $website_email;
 
-    public $website_language;
 
     public $website_icp;
 
@@ -45,7 +44,6 @@ class SettingWebsiteForm extends \common\models\Options
         return [
             'website_title' => yii::t('app', 'Website Title'),
             'website_email' => yii::t('app', 'Website Email'),
-            'website_language' => yii::t('app', 'Website Language'),
             'website_icp' => yii::t('app', 'Icp Sn'),
             'website_statics_script' => yii::t('app', 'Statics Script'),
             'website_status' => yii::t('app', 'Website Status'),
@@ -68,7 +66,6 @@ class SettingWebsiteForm extends \common\models\Options
                 [
                     'website_title',
                     'website_email',
-                    'website_language',
                     'website_icp',
                     'website_statics_script',
                     'website_timezone',

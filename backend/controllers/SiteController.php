@@ -8,6 +8,7 @@
 
 namespace backend\controllers;
 
+use backend\models\PlatformAccount;
 use common\libs\Constants;
 use common\models\Daily;
 use common\models\Platform;
@@ -82,7 +83,7 @@ class SiteController extends Controller
     {
 
         $counts = [
-            'AMOUNT' => Platform::getToalAvailableAmount(),
+            'AMOUNT' => PlatformAccount::getToalAvailableAmount(),
             'DESPOSIT' => UserDeposit::getUncheckedCount(),
             'WITHDRAW' => UserWithdraw::getUncheckedCount(),
             'MESSAGE' => Message::getUnreads(10),
@@ -101,9 +102,7 @@ class SiteController extends Controller
 
         // $comments = BackendComment::getRecentComments(6);
         $statics = Daily::getSumData('-30 day');
-        array_walk($statics, function (&$v) {
-            $v = number_format($v);
-        });
+
 
         return $this->render('main', [
             'statics' => $statics
