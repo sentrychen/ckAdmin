@@ -42,22 +42,16 @@ $this->title = yii::t('app', 'Backend Manage System');
         <div class="sidebar-collapse">
             <ul class="nav" id="side-menu">
                 <li class="nav-header">
-                    <div class="dropdown profile-element">
+                    <div class="profile-element">
                         <span>
-                            <img alt="image" class="img-circle" width="64px" height="64px"
-                                 src="<?= yii::$app->getRequest()->getBaseUrl() . (yii::$app->getUser()->getIdentity()->avatar ? yii::$app->getUser()->getIdentity()->avatar : '/static/img/profile_small.jpg') ?>"/>
+                            <img alt="image" height="49px" width="170px"
+                                 src="<?= yii::$app->getRequest()->getBaseUrl() . '/static/img/logo-admin.png' ?>"/>
                         </span>
-
-                        <ul class="dropdown-menu animated fadeInRight m-t-xs">
-                            <li><a class="J_menuItem"
-                                   href="<?= Url::to(['admin-user/update-self']) ?>"><?= yii::t('app', 'Profile') ?></a>
-                            </li>
-                            <li class="divider"></li>
-                            <li><a data-method="post"
-                                   href="<?= Url::toRoute('site/logout') ?>"><?= yii::t('app', 'Logout') ?></a></li>
-                        </ul>
+                        <p>代理管理后台</p>
                     </div>
-                    <div class="logo-element">H+</div>
+                    <div class="logo-element" title="万通国际系统管理平台"><img alt="image" height="25px" width="25px"
+                                                                      src="<?= yii::$app->getRequest()->getBaseUrl() . '/static/img/white-logo.png' ?>"/>
+                    </div>
                 </li>
                 <?php
                 $cacheDependencyObject = yii::createObject([

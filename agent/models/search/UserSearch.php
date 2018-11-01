@@ -8,16 +8,14 @@
 
 namespace agent\models\search;
 
-use backend\behaviors\TimeSearchBehavior;
-use backend\components\search\SearchEvent;
-use backend\models\AdminUser;
+use agent\behaviors\TimeSearchBehavior;
+use agent\components\search\SearchEvent;
+use agent\models\User;
 use yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use yii\db\ActiveRecord;
-use yii\db\BaseActiveRecord;
 
-class UserSearch extends AdminUser
+class UserSearch extends User
 {
     public $create_start_at;
     public $create_end_at;

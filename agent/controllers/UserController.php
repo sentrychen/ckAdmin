@@ -8,15 +8,15 @@
 
 namespace agent\controllers;
 
-use backend\actions\ViewAction;
+use agent\actions\ViewAction;
 use yii;
-use backend\models\AdminUser;
-use backend\models\search\UserSearch;
-use backend\actions\CreateAction;
-use backend\actions\UpdateAction;
-use backend\actions\IndexAction;
+use agent\models\User;
+use agent\models\search\UserSearch;
+use agent\actions\CreateAction;
+use agent\actions\UpdateAction;
+use agent\actions\IndexAction;
 use backend\actions\DeleteAction;
-use backend\actions\SortAction;
+use agent\actions\SortAction;
 
 class UserController extends Controller
 {
@@ -37,22 +37,22 @@ class UserController extends Controller
             ],
             'view-layer' => [
                 'class' => ViewAction::class,
-                'modelClass' => AdminUser::class,
+                'modelClass' => User::class,
             ],
             'create' => [
                 'class' => CreateAction::class,
-                'modelClass' => AdminUser::class,
+                'modelClass' => User::class,
                 'scenario' => 'create',
             ],
             'update' => [
                 'class' => UpdateAction::class,
-                'modelClass' => AdminUser::class,
+                'modelClass' => User::class,
                 'scenario' => 'update',
             ],
 
             'sort' => [
                 'class' => SortAction::class,
-                'modelClass' => AdminUser::class,
+                'modelClass' => User::class,
             ],
         ];
     }

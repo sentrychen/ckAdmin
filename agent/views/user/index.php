@@ -12,13 +12,12 @@
  * @var $searchModel backend\models\search\UserSearch
  */
 
+use agent\models\User;
 use common\grid\DateColumn;
 use common\grid\GridView;
-use backend\models\AdminUser;
-use yii\helpers\Url;
 use yii\helpers\Html;
 use common\widgets\Bar;
-use common\grid\CheckboxColumn;
+
 use common\grid\ActionColumn;
 
 $this->title = 'Users';
@@ -35,7 +34,7 @@ $this->params['breadcrumbs'][] = yii::t('app', 'Users');
                 ]) ?>
                 <?= GridView::widget([
                     'dataProvider' => $dataProvider,
-                    'filterModel' => $searchModel,
+                    'filterModel' => null,
                     'layout' => "{items}\n{pager}",
                     'columns' => [
 
@@ -48,10 +47,10 @@ $this->params['breadcrumbs'][] = yii::t('app', 'Users');
                         [
                             'attribute' => 'status',
                             'value' => function ($model) {
-                                $status = AdminUser::getStatuses();
+                                $status = User::getStatuses();
                                 return isset($status[$model->status]) ? $status[$model->status] : "异常";
                             },
-                            'filter' => AdminUser::getStatuses(),
+                            'filter' => User::getStatuses(),
                         ],
                         [
                             'class' => DateColumn::class,
@@ -73,7 +72,7 @@ $this->params['breadcrumbs'][] = yii::t('app', 'Users');
                             'attribute' => 'userStat.oneline_status',
                         ],
                         [
-                            'attribute' => 'userStat.available_amount',
+                            'attribute' => 'account.available_amount',
                         ],
                         [
                             'attribute' => 'userStat.deposit_amount',
