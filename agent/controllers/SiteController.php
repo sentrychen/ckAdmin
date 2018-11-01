@@ -80,6 +80,7 @@ class SiteController extends \yii\web\Controller
             'MESSAGE' => Message::getUnreads(10),
             'NOTICE' => Notice::getRecentNoticeS(6, Notice::OBJ_AGENT)
         ];
+
         return $this->renderPartial('index', ['counts' => $counts]);
     }
 
@@ -91,12 +92,7 @@ class SiteController extends \yii\web\Controller
     public function actionMain()
     {
 
-        return $this->render('main', [
-            'info' => [],
-            'status' => [],
-            'statics' => [],
-            'comments' => [],
-        ]);
+        return $this->render('main');
     }
 
     /**
