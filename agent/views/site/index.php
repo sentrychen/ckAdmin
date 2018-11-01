@@ -13,7 +13,7 @@
 use common\helpers\FileDependencyHelper;
 use yii\caching\FileDependency;
 use yii\helpers\Html;
-use backend\models\Menu;
+use agent\models\Menu;
 use yii\helpers\Url;
 use backend\assets\IndexAsset;
 
@@ -47,14 +47,7 @@ $this->title = yii::t('app', 'Backend Manage System');
                             <img alt="image" class="img-circle" width="64px" height="64px"
                                  src="<?= yii::$app->getRequest()->getBaseUrl() . (yii::$app->getUser()->getIdentity()->avatar ? yii::$app->getUser()->getIdentity()->avatar : '/static/img/profile_small.jpg') ?>"/>
                         </span>
-                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                            <span class="clear">
-                                <span class="block m-t-xs"><strong
-                                            class="font-bold"><?= yii::$app->getUser()->getIdentity()->getRolesNameString() ?></strong></span>
-                                <span class="text-muted text-xs block"><?= yii::$app->getUser()->getIdentity()->username ?>
-                                    <b class="caret"></b></span>
-                            </span>
-                        </a>
+
                         <ul class="dropdown-menu animated fadeInRight m-t-xs">
                             <li><a class="J_menuItem"
                                    href="<?= Url::to(['admin-user/update-self']) ?>"><?= yii::t('app', 'Profile') ?></a>
