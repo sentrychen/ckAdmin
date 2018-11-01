@@ -8,12 +8,11 @@
 
 namespace agent\controllers;
 
+use agent\models\Message;
+use agent\models\Notice;
 use yii;
 use Exception;
-use common\models\Comment;
 
-use common\libs\ServerInfo;
-use common\models\FriendlyLink;
 use agent\models\form\LoginForm;
 use agent\models\User;
 use yii\base\UserException;
@@ -77,7 +76,11 @@ class SiteController extends \yii\web\Controller
      */
     public function actionIndex()
     {
-        return $this->renderPartial('index');
+        $counts = [
+            'MESSAGE' => Message::getUnreads(10),
+            'NOTICE' => Notice::getRecentNoticeS(6, Notice::OBJ_AGENT)
+        ];
+        return $this->renderPartial('index', ['counts' => $counts]);
     }
 
     /**

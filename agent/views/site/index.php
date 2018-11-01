@@ -11,6 +11,7 @@
 /* @var $content string */
 
 use common\helpers\FileDependencyHelper;
+use common\helpers\StringHelper;
 use yii\caching\FileDependency;
 use yii\helpers\Html;
 use agent\models\Menu;
@@ -47,7 +48,7 @@ $this->title = yii::t('app', 'Backend Manage System');
                             <img alt="image" height="49px" width="170px"
                                  src="<?= yii::$app->getRequest()->getBaseUrl() . '/static/img/logo-admin.png' ?>"/>
                         </span>
-                        <p>代理管理后台</p>
+                        <p>代理后台</p>
                     </div>
                     <div class="logo-element" title="万通国际系统管理平台"><img alt="image" height="25px" width="25px"
                                                                       src="<?= yii::$app->getRequest()->getBaseUrl() . '/static/img/white-logo.png' ?>"/>
@@ -94,6 +95,83 @@ $this->title = yii::t('app', 'Backend Manage System');
                     </li>
 
 
+                    <li class="dropdown hidden-xs">
+                        <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#" title="未读消息">
+                            <i class="fa fa-envelope"></i> <span
+                                    class="label label-danger"><?= $counts['MESSAGE']['count'] ? $counts['MESSAGE']['count'] : '' ?></span>
+                            消息
+                        </a>
+                        <ul class="dropdown-menu dropdown-messages">
+                            <?php
+                            $levelIcons = [1 => 'fa-info-circle', 2 => 'fa-exclamation-circle', 3 => 'fa-warning'];
+                            $levelTexts = [1 => 'text-muted', 2 => 'text-warning', 3 => 'text-danger'];
+                            foreach ($counts['MESSAGE']['data'] as $message) {
+
+                                ?>
+                                <li class="m-t-xs">
+                                    <div class="dropdown-messages-box">
+                                        <div class="media-body" style="padding:0 10px;">
+                                            <small class="pull-right text-muted"><?= yii::$app->getFormatter()->asRelativeTime($message->created_at) ?></small>
+                                            <strong class="<?= $levelTexts[$message->level] ?>"
+                                                    title="<?= Html::encode($message->title) ?>"><i
+                                                        class="fa <?= $levelIcons[$message->level] ?>"></i> <?= Html::encode(StringHelper::truncate($message->title, 16)) ?>
+                                            </strong>
+                                            <div><?= StringHelper::truncate($message->content, 60, '...', 'UTF-8', true) ?></div>
+                                            <small class="text-muted"><?= yii::$app->getFormatter()->asDate($message->created_at) ?></small>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="divider"></li>
+                                <?php
+                            }
+                            ?>
+                            <li>
+                                <div class="text-center link-block">
+                                    <a class="J_menuItem" title="消息列表" href="<?= Url::toRoute(['message/index']) ?>">
+                                        <i class="fa fa-envelope"></i> <strong> 查看所有消息</strong>
+                                    </a>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown hidden-xs">
+                        <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#" title="系统公告">
+                            <i class="fa fa-bell"></i> <span
+                                    class="label label-danger"><?= $counts['NOTICE']['count'] ? $counts['NOTICE']['count'] : '' ?></span>
+                            公告
+                        </a>
+                        <ul class="dropdown-menu dropdown-alerts">
+                            <?php
+                            $topClass = ['text-muted', 'text-warning'];
+                            foreach ($counts['NOTICE']['data'] as $notice) {
+                                ?>
+                                <li class="m-t-xs">
+                                    <div class="dropdown-messages-box">
+                                        <div class="media-body" style="padding:0 10px;">
+                                            <small class="pull-right text-muted"><?= yii::$app->getFormatter()->asRelativeTime($notice->created_at) ?></small>
+                                            <strong><?= yii::$app->getFormatter()->asDate($notice->created_at) ?></strong>
+                                            <div class="<?= $topClass[$notice->set_top] ?>"><?= StringHelper::truncate($notice->content, 60, '...', 'UTF-8', true) ?></div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="divider"></li>
+                                <?php
+                            }
+                            ?>
+                            <li>
+                                <div class="text-center link-block">
+                                    <a class="J_menuItem" href="<?= Url::toRoute(['notice/index']) ?>">
+                                        <i class="fa fa-bell"></i> <strong>查看所有公告 </strong>
+
+                                    </a>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a class="J_menuItem" href="<?= Url::to(['admin-user/update-self']) ?>" title="修改个人资料"><i
+                                    class="fa fa-user"> <?= Html::encode(yii::$app->getUser()->getIdentity()->username) ?></i></a>
+                    </li>
                 </ul>
             </nav>
         </div>
@@ -124,8 +202,8 @@ $this->title = yii::t('app', 'Backend Manage System');
                     frameborder="0" data-id="<?= Url::to(['site/main']) ?>" seamless></iframe>
         </div>
         <div class="footer">
-            <div class="pull-right">&copy; 2015-<?= date('Y') ?> <a href="http://blog.feehi.com/"
-                                                                    target="_blank">feehi</a></div>
+            <div class="pull-right">&copy; 2015-<?= date('Y') ?> <a href="http://www.onetop.pw/"
+                                                                    target="_blank">onetop</a></div>
         </div>
     </div>
     <!--右侧部分结束-->
