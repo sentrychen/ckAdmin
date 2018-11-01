@@ -9,6 +9,10 @@
 namespace agent\controllers;
 
 use agent\actions\ViewAction;
+use agent\models\search\BetListSearch;
+use agent\models\search\LoginLogSearch;
+use agent\models\search\UserAccountRecordSearch;
+use agent\models\UserAccountRecord;
 use yii;
 use agent\models\User;
 use agent\models\search\UserSearch;
@@ -55,5 +59,45 @@ class UserController extends Controller
                 'modelClass' => User::class,
             ],
         ];
+    }
+
+    /**
+     * @param $id
+     * @return array|string
+     */
+    public function actionTradeList()
+    {
+        $searchModel = new UserAccountRecordSearch();
+        $dataProvider = $searchModel->search(yii::$app->getRequest()->getQueryParams());
+        $query = clone $dataProvider->query;
+        $total = $query->select('SUM(case WHEN switch= ' . UserAccountRecord::SWITCH_IN . ' then amount else 0 end ) as inAmount,SUM(case WHEN switch = ' . UserAccountRecord::SWITCH_OUT . ' then amount else 0 end ) as outAmount')->asArray()->one();
+
+        return $this->render('tradelist', ['dataProvider' => $dataProvider, 'searchModel' => $searchModel, 'total' => $total]);
+    }
+
+    /**
+     * @param $id
+     * @return array|string
+     */
+    public function actionBetList()
+    {
+        $searchModel = new BetListSearch();
+        $dataProvider = $searchModel->search(yii::$app->getRequest()->getQueryParams());
+        $query = clone $dataProvider->query;
+        $total = $query->select('sum(bet_amount) as betAmount,sum(profit) as profit')->asArray()->one();
+
+        return $this->render('betlist', ['dataProvider' => $dataProvider, 'searchModel' => $searchModel, 'total' => $total]);
+    }
+
+    /**
+     * @param $id
+     * @return array|string
+     */
+    public function actionLogList()
+    {
+        $searchModel = new LoginLogSearch();
+        $dataProvider = $searchModel->search(yii::$app->getRequest()->getQueryParams());
+
+        return $this->render('loglist', ['dataProvider' => $dataProvider, 'searchModel' => $searchModel]);
     }
 }

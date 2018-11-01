@@ -8,7 +8,7 @@
 
 namespace agent\models\form;
 
-use backend\components\CustomLog;
+use agent\components\CustomLog;
 use yii\base\Event;
 use yii;
 use yii\helpers\ArrayHelper;

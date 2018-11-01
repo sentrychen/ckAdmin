@@ -8,9 +8,9 @@
 
 namespace agent\models\search;
 
-use backend\behaviors\TimeSearchBehavior;
-use backend\components\search\SearchEvent;
-use backend\models\AdminLog;
+use agent\behaviors\TimeSearchBehavior;
+use agent\components\search\SearchEvent;
+use agent\models\AdminLog;
 use yii\data\ActiveDataProvider;
 
 class AdminLogSearch extends \backend\models\AdminLog

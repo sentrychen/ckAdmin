@@ -8,10 +8,10 @@
 
 namespace agent\models\search;
 
-use backend\behaviors\TimeSearchBehavior;
-use backend\components\search\SearchEvent;
+use agent\behaviors\TimeSearchBehavior;
+use agent\components\search\SearchEvent;
 use common\models\Article as CommonArticle;
-use backend\models\Article;
+use agent\models\Article;
 use common\models\Category;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;

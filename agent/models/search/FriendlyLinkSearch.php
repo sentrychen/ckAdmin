@@ -8,9 +8,9 @@
 
 namespace agent\models\search;
 
-use backend\behaviors\TimeSearchBehavior;
-use backend\components\search\SearchEvent;
-use backend\models\FriendlyLink;
+use agent\behaviors\TimeSearchBehavior;
+use agent\components\search\SearchEvent;
+use agent\models\FriendlyLink;
 use yii\data\ActiveDataProvider;
 
 class FriendlyLinkSearch extends \backend\models\FriendlyLink

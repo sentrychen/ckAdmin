@@ -10,7 +10,7 @@ namespace agent\models\search;
 
 
 use yii\data\ArrayDataProvider;
-use backend\models\form\Rbac;
+use agent\models\form\Rbac;
 
 class RbacSearch extends Rbac
 {

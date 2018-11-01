@@ -8,9 +8,9 @@
 
 namespace agent\models\search;
 
-use backend\behaviors\TimeSearchBehavior;
-use backend\components\search\SearchEvent;
-use backend\models\Article;
+use agent\behaviors\TimeSearchBehavior;
+use agent\components\search\SearchEvent;
+use agent\models\Article;
 use yii\data\ActiveDataProvider;
 
 class CommentSearch extends \common\models\Comment

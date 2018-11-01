@@ -8,9 +8,9 @@
 
 namespace agent\models\search;
 
-use backend\behaviors\TimeSearchBehavior;
-use backend\components\search\SearchEvent;
-use backend\models\AgentUser;
+use agent\behaviors\TimeSearchBehavior;
+use agent\components\search\SearchEvent;
+use agent\models\AgentUser;
 use yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;

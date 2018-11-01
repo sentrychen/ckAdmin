@@ -20,8 +20,8 @@ use common\widgets\Bar;
 
 use common\grid\ActionColumn;
 
-$this->title = 'Users';
-$this->params['breadcrumbs'][] = yii::t('app', 'Users');
+$this->title = '会员';
+$this->params['breadcrumbs'][] = '会员列表';
 
 ?>
 <div class="row">
@@ -29,9 +29,12 @@ $this->params['breadcrumbs'][] = yii::t('app', 'Users');
         <div class="ibox">
             <?= $this->render('/widgets/_ibox-title') ?>
             <div class="ibox-content">
-                <?= Bar::widget([
-                    'template' => '{refresh} {create} ',
-                ]) ?>
+                <div class="toolbar clearfix">
+                    <?= Bar::widget([
+                        'template' => '{refresh} {create} ',
+                    ]) ?>
+                    <?= $this->render('_search', ['model' => $searchModel]); ?>
+                </div>
                 <?= GridView::widget([
                     'dataProvider' => $dataProvider,
                     'filterModel' => null,
@@ -54,34 +57,28 @@ $this->params['breadcrumbs'][] = yii::t('app', 'Users');
                         ],
                         [
                             'class' => DateColumn::class,
-                            'attribute' => 'created_at',
-                            'filter' => Html::activeInput('text', $searchModel, 'create_start_at', [
-                                    'class' => 'form-control layer-date',
-                                    'placeholder' => '',
-                                    'onclick' => "laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'});"
-                                ]) . Html::activeInput('text', $searchModel, 'create_end_at', [
-                                    'class' => 'form-control layer-date',
-                                    'placeholder' => '',
-                                    'onclick' => "laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})"
-                                ]),
+                            'attribute' => 'created_at'
+                        ],
+                        [
+                            'class' => DateColumn::class,
+                            'attribute' => 'userStat.last_login_at',
                         ],
                         [
                             'attribute' => 'userStat.login_number',
+                            'format' => 'integer',
                         ],
-                        [
-                            'attribute' => 'userStat.oneline_status',
-                        ],
+
                         [
                             'attribute' => 'account.available_amount',
+                            'format' => 'currency',
                         ],
                         [
-                            'attribute' => 'userStat.deposit_amount',
-                        ],
-                        [
-                            'attribute' => 'userStat.withdrawal_amount',
+                            'attribute' => 'account.frozen_amount',
+                            'format' => 'currency',
                         ],
                         [
                             'attribute' => 'userStat.bet_amount',
+                            'format' => 'currency',
                         ],
 
 

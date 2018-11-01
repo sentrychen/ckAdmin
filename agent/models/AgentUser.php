@@ -8,7 +8,7 @@
 
 namespace agent\models;
 
-use backend\components\CustomLog;
+use agent\components\CustomLog;
 use common\helpers\Util;
 use Yii;
 use yii\base\Event;

@@ -10,15 +10,14 @@ namespace agent\models\search;
 
 use agent\behaviors\TimeSearchBehavior;
 use agent\components\search\SearchEvent;
-use agent\models\Agent;
-use agent\models\GameRecord;
-use Yii;
+use agent\models\UserAccountRecord;
+use yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use yii\db\ActiveRecord;
 use yii\db\BaseActiveRecord;
 
-class GameRecordSearch extends GameRecord
+class UserAccountRecordSearch extends UserAccountRecord
 {
 
     public function init()
@@ -39,6 +38,7 @@ class GameRecordSearch extends GameRecord
     public function rules()
     {
         return [
+            [['user_id', 'trade_type_id', 'switch', 'username', 'created_at'], 'safe'],
         ];
     }
 
@@ -49,7 +49,8 @@ class GameRecordSearch extends GameRecord
 
     /**
      * @param $params
-     * @return \yii\data\ActiveDataProvider
+     * @param $userid
+     * @return ActiveDataProvider
      */
     public function search($params)
     {
@@ -58,21 +59,25 @@ class GameRecordSearch extends GameRecord
             'query' => $query,
             'sort' => [
                 'defaultOrder' => [
-                    'game_time' => SORT_DESC
-                ]
+                    'created_at' => SORT_DESC,
+                ],
             ]
         ]);
-        /*
+        $sort = $dataProvider->getSort();
+
+
         $this->load($params);
-        if (! $this->validate()) {
+        //$this->user_id = $userid;
+        if (!$this->validate()) {
             return $dataProvider;
         }
-        $query->andFilterWhere(['id'=> $this->id])
-            ->andFilterWhere(['like', 'username', $this->username])
-            ->andFilterWhere(['like', 'realname', $this->realname])
-            ->andFilterWhere(['like', 'promo_code', $this->promo_code]);
-*/
-        //   $this->trigger(SearchEvent::BEFORE_SEARCH, new SearchEvent(['query'=>$query]));
+        $query->andFilterWhere(['user_id' => $this->user_id])
+            ->andFilterWhere(['trade_type_id' => $this->trade_type_id])
+            ->andFilterWhere(['switch' => $this->switch]);
+        if (!empty($this->winloss))
+            $query->andFilterWhere([$this->winloss, 'profit', 0]);
+
+        $this->trigger(SearchEvent::BEFORE_SEARCH, new SearchEvent(['query' => $query]));
         return $dataProvider;
     }
 

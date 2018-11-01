@@ -8,14 +8,14 @@
 
 namespace agent\controllers;
 
-use backend\actions\ViewAction;
+use agent\actions\ViewAction;
 use yii;
-use backend\models\Agent;
-use backend\models\search\AgentSearch;
-use backend\actions\CreateAction;
-use backend\actions\UpdateAction;
-use backend\actions\IndexAction;
-use backend\actions\SortAction;
+use agent\models\Agent;
+use agent\models\search\AgentSearch;
+use agent\actions\CreateAction;
+use agent\actions\UpdateAction;
+use agent\actions\IndexAction;
+use agent\actions\SortAction;
 
 class AgentController extends Controller
 {

@@ -12,7 +12,7 @@ use yii;
 use yii\base\Event;
 use yii\db\BaseActiveRecord;
 use yii\base\InvalidParamException;
-use backend\models\AgentUser;
+use agent\models\AgentUser;
 
 /**
  * Password reset form

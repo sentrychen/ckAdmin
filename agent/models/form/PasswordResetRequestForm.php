@@ -12,7 +12,7 @@ use Yii;
 use yii\base\Model;
 use yii\base\Event;
 use yii\db\BaseActiveRecord;
-use backend\models\AgentUser;
+use agent\models\AgentUser;
 
 /**
  * Password reset request form

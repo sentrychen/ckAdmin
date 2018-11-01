@@ -9,7 +9,7 @@
 namespace agent\models\search;
 
 use yii\data\ArrayDataProvider;
-use backend\models\Menu;
+use agent\models\Menu;
 
 class MenuSearch extends Menu
 {

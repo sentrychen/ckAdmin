@@ -14,14 +14,12 @@
 
 use common\grid\DateColumn;
 use common\grid\GridView;
-use common\grid\StatusColumn;
-use backend\models\Agent;
-use yii\helpers\Url;
-use yii\helpers\Html;
+
+use agent\models\Agent;
 use common\widgets\Bar;
 use common\grid\ActionColumn;
 
-$this->title = 'Agents';
+$this->title = '代理列表';
 $this->params['breadcrumbs'][] = '代理列表';
 
 ?>
@@ -30,13 +28,15 @@ $this->params['breadcrumbs'][] = '代理列表';
         <div class="ibox">
             <?= $this->render('/widgets/_ibox-title') ?>
             <div class="ibox-content">
-                <?= Bar::widget([
-                    'template' => '{refresh} {create} ',
-                ]) ?>
+                <div class="toolbar clearfix">
+                    <?= Bar::widget([
+                        'template' => '{refresh} {create} ',
+                    ]) ?>
+                    <?= $this->render('_search', ['model' => $searchModel]); ?>
+                </div>
                 <?= GridView::widget([
                     'dataProvider' => $dataProvider,
-                    'filterModel' => $searchModel,
-                    'layout' => "{items}\n{pager}",
+                    'filterModel' => null,
                     'columns' => [
 
                         [
@@ -44,6 +44,18 @@ $this->params['breadcrumbs'][] = '代理列表';
                         ],
                         [
                             'attribute' => 'username',
+                        ],
+                        [
+                            'attribute' => 'parent.username',
+                            'label' => '上级代理',
+                        ],
+                        [
+                            'attribute' => 'agent_level',
+                            'format' => 'raw',
+                            'value' => function ($model) {
+                                $class = ['danger', 'danger', 'warning', 'info'];
+                                return '<span class="badge label-' . ($class[$model->agent_level] ?? 'info') . '">' . $model->agent_level . '</span>';
+                            }
                         ],
                         [
                             'attribute' => 'realname',
@@ -57,38 +69,23 @@ $this->params['breadcrumbs'][] = '代理列表';
                                 $status = Agent::getStatuses();
                                 return isset($status[$model->status]) ? $status[$model->status] : "异常";
                             },
-                            'filter' => Agent::getStatuses(),
                         ],
                         [
                             'class' => DateColumn::class,
                             'attribute' => 'created_at',
-                            'filter' => Html::activeInput('text', $searchModel, 'create_start_at', [
-                                    'class' => 'form-control layer-date',
-                                    'placeholder' => '',
-                                    'onclick' => "laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'});"
-                                ]) . Html::activeInput('text', $searchModel, 'create_end_at', [
-                                    'class' => 'form-control layer-date',
-                                    'placeholder' => '',
-                                    'onclick' => "laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})"
-                                ]),
+
                         ],
                         [
                             'attribute' => 'rebate_rate',
-                            'value' => function ($model) {
-                                return $model->rebate_rate * 100 . '%';
-                            }
+                            'format' => ['percent', 2],
                         ],
                         [
                             'attribute' => 'xima_rate',
-                            'value' => function ($model) {
-                                return $model->xima_rate * 100 . '%';
-                            }
+                            'format' => ['percent', 2],
                         ],
                         [
                             'attribute' => 'available_amount',
-                            'value' => function ($model) {
-                                return '￥' . number_format($model->available_amount, 2);
-                            }
+                            'format' => 'currency',
 
                         ],
                         [

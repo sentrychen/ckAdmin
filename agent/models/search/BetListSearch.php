@@ -10,18 +10,26 @@ namespace agent\models\search;
 
 use agent\behaviors\TimeSearchBehavior;
 use agent\components\search\SearchEvent;
-use agent\models\Agent;
-use Yii;
+use agent\models\BetList;
+use agent\models\UserAccountRecord;
+use yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use yii\db\ActiveRecord;
 use yii\db\BaseActiveRecord;
 
-class AgentSearch extends Agent
+class BetListSearch extends BetList
 {
-    public $create_start_at;
-    public $create_end_at;
 
+    public $winloss;
+
+    public static function getWinLossList()
+    {
+        return [
+            '>' => '赢',
+            '<' => '输',
+        ];
+    }
 
     public function init()
     {
@@ -31,7 +39,10 @@ class AgentSearch extends Agent
     public function behaviors()
     {
         return [
-            TimeSearchBehavior::class
+            [
+                'class' => TimeSearchBehavior::class,
+                'timeAttributes' => ['bet_at' => 'bet_at']
+            ]
         ];
     }
 
@@ -41,7 +52,7 @@ class AgentSearch extends Agent
     public function rules()
     {
         return [
-            [['id', 'username', 'realname', 'promo_code', 'status', 'created_at'], 'safe'],
+            [['user_id', 'platform_id', 'game_type', 'username', 'winloss', 'bet_at'], 'safe'],
         ];
     }
 
@@ -52,30 +63,36 @@ class AgentSearch extends Agent
 
     /**
      * @param $params
-     * @return \yii\data\ActiveDataProvider
+     * @param int $userid
+     * @return ActiveDataProvider
      */
-    public function search($params)
+    public function search($params, $userid = null)
     {
-        $query = self::find()->andWhere(['parent_id' => yii::$app->getUser()->getIdentity()->id]);
+        $query = self::find();
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'sort' => [
                 'defaultOrder' => [
-                    'created_at' => SORT_DESC
-                ]
+                    'bet_at' => SORT_DESC,
+                ],
             ]
         ]);
+        $sort = $dataProvider->getSort();
+
+
         $this->load($params);
+        $this->user_id = $userid;
         if (!$this->validate()) {
             return $dataProvider;
         }
-        $query->andFilterWhere(['id' => $this->id])
+        $query->andFilterWhere(['user_id' => $this->user_id])
             ->andFilterWhere(['like', 'username', $this->username])
-            ->andFilterWhere(['like', 'realname', $this->realname])
-            ->andFilterWhere(['like', 'promo_code', $this->promo_code]);
+            ->andFilterWhere(['game_type' => $this->game_type])
+            ->andFilterWhere(['platform_id' => $this->platform_id]);
+        if (!empty($this->winloss))
+            $query->andFilterWhere([$this->winloss, 'profit', 0]);
 
         $this->trigger(SearchEvent::BEFORE_SEARCH, new SearchEvent(['query' => $query]));
         return $dataProvider;
     }
-
 }
