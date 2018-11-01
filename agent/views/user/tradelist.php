@@ -43,7 +43,7 @@ $this->params['breadcrumbs'][] = '会员交易记录';
                     'dataProvider' => $dataProvider,
                     'filterModel' => null,
                     'columns' => [
-
+                        'user.username',
                         [
                             'attribute' => 'trade_no',
                         ],

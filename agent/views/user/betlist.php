@@ -46,6 +46,9 @@ $this->params['breadcrumbs'][] = '会员投注记录';
                             'attribute' => 'record_id',
                         ],
                         [
+                            'attribute' => 'username',
+                        ],
+                        [
                             'attribute' => 'platform_id',
                             'value' => 'platform.name',
                             'label' => '游戏平台',

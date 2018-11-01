@@ -37,7 +37,8 @@ $this->params['breadcrumbs'][] = '会员登陆记录';
                     'dataProvider' => $dataProvider,
                     'filterModel' => null,
                     'columns' => [
-
+                        'user_id',
+                        'username',
                         [
                             'class' => DateColumn::class,
                             'attribute' => 'created_at'
