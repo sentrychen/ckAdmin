@@ -11,7 +11,7 @@
  * @var $model common\models\Options
  */
 
-use backend\widgets\ActiveForm;
+use common\widgets\ActiveForm;
 
 $this->title = '游戏设置';
 $this->params['breadcrumbs'][] = '游戏设置';

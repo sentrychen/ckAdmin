@@ -13,7 +13,7 @@
 
 use backend\assets\AppAsset;
 use yii\helpers\Html;
-use backend\widgets\ActiveForm;
+use common\widgets\ActiveForm;
 use yii\helpers\Url;
 use yii\captcha\Captcha;
 

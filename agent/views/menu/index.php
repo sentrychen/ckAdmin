@@ -12,17 +12,17 @@
  * @var $searchModel backend\models\search\MenuSearch
  */
 
-use backend\grid\DateColumn;
-use backend\grid\GridView;
-use backend\grid\SortColumn;
-use backend\grid\StatusColumn;
+use common\grid\DateColumn;
+use common\grid\GridView;
+use common\grid\SortColumn;
+use common\grid\StatusColumn;
 use backend\models\Menu;
-use backend\widgets\Bar;
+use common\widgets\Bar;
 use common\libs\Constants;
 use yii\helpers\Html;
 use yii\helpers\Url;
-use backend\grid\CheckboxColumn;
-use backend\grid\ActionColumn;
+use common\grid\CheckboxColumn;
+use common\grid\ActionColumn;
 
 $this->title = "Backend Menus";
 $this->params['breadcrumbs'][] = yii::t('app', 'Backend Menus');

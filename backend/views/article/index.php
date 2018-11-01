@@ -11,19 +11,19 @@
  * @var $searchModel backend\models\search\ArticleSearch
  */
 
-use backend\grid\DateColumn;
-use backend\grid\GridView;
-use backend\grid\SortColumn;
+use common\grid\DateColumn;
+use common\grid\GridView;
+use common\grid\SortColumn;
 use common\widgets\JsBlock;
 use yii\helpers\Url;
 use common\models\Category;
 use common\libs\Constants;
 use yii\helpers\Html;
-use backend\widgets\Bar;
+use common\widgets\Bar;
 use yii\widgets\Pjax;
-use backend\grid\CheckboxColumn;
-use backend\grid\ActionColumn;
-use backend\grid\StatusColumn;
+use common\grid\CheckboxColumn;
+use common\grid\ActionColumn;
+use common\grid\StatusColumn;
 
 $this->title = 'Articles';
 $this->params['breadcrumbs'][] = yii::t('app', 'Articles');

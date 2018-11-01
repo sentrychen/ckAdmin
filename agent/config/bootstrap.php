@@ -1,2 +1,2 @@
 <?php
-Yii::setAlias('@admin', '@backend/web/admin');
+Yii::setAlias('@admin', '@agent/web/admin');

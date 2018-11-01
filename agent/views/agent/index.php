@@ -12,14 +12,14 @@
  * @var $searchModel backend\models\search\AgentSearch
  */
 
-use backend\grid\DateColumn;
-use backend\grid\GridView;
-use backend\grid\StatusColumn;
+use common\grid\DateColumn;
+use common\grid\GridView;
+use common\grid\StatusColumn;
 use backend\models\Agent;
 use yii\helpers\Url;
 use yii\helpers\Html;
-use backend\widgets\Bar;
-use backend\grid\ActionColumn;
+use common\widgets\Bar;
+use common\grid\ActionColumn;
 
 $this->title = 'Agents';
 $this->params['breadcrumbs'][] = '代理列表';

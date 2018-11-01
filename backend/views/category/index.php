@@ -11,14 +11,14 @@
  * @var $model common\models\Category
  */
 
-use backend\grid\DateColumn;
-use backend\grid\GridView;
-use backend\grid\SortColumn;
-use backend\widgets\Bar;
+use common\grid\DateColumn;
+use common\grid\GridView;
+use common\grid\SortColumn;
+use common\widgets\Bar;
 use yii\helpers\Url;
 use yii\helpers\Html;
-use backend\grid\CheckboxColumn;
-use backend\grid\ActionColumn;
+use common\grid\CheckboxColumn;
+use common\grid\ActionColumn;
 
 $this->title = "Category";
 $this->params['breadcrumbs'][] = yii::t('app', 'Category');

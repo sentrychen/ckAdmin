@@ -236,7 +236,9 @@ class User extends ActiveRecord
     }
 
     /**
-     * @param bool $skipIfSet
+     * @param bool $insert
+     * @return bool
+     * @internal param bool $skipIfSet
      */
     public function beforeSave($insert)
     {
@@ -244,12 +246,26 @@ class User extends ActiveRecord
             $this->invite_agent_id = yii::$app->getUser()->getId();
             $this->generateAuthKey();
             $this->setPassword($this->password);
+
         } else {
             if (isset($this->password) && $this->password != '') {
                 $this->setPassword($this->password);
             }
         }
         return parent::beforeSave($insert);
+    }
+
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+        if ($insert) {
+            $account = new UserAccount();
+            $account->user_id = $this->id;
+            $account->save(false);
+            $stat = new UserStat();
+            $stat->user_id = $this->id;
+            $stat->save(false);
+        }
     }
 
     /**

@@ -12,7 +12,7 @@
  * @var $settings array
  */
 
-use backend\widgets\ActiveForm;
+use common\widgets\ActiveForm;
 use common\widgets\JsBlock;
 use common\libs\Constants;
 use yii\helpers\Url;

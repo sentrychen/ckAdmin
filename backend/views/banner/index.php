@@ -10,12 +10,12 @@
  * @var $dataProvider yii\data\ArrayDataProvider
  */
 
-use backend\grid\GridView;
-use backend\widgets\Bar;
+use common\grid\GridView;
+use common\widgets\Bar;
 use yii\helpers\Html;
 use yii\helpers\Url;
-use backend\grid\CheckboxColumn;
-use backend\grid\ActionColumn;
+use common\grid\CheckboxColumn;
+use common\grid\ActionColumn;
 
 $this->title = "Banner Types";
 $this->params['breadcrumbs'][] = yii::t('app', 'Banner Types');

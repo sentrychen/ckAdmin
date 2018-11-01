@@ -10,7 +10,7 @@ namespace agent\models\form;
 
 use yii;
 use yii\base\Model;
-use backend\models\Agent;
+use agent\models\Agent;
 
 /**
  * Login form

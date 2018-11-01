@@ -16,11 +16,11 @@ if (empty($safeAttributes)) {
 echo "<?php\n";
 ?>
 
-use backend\widgets\ActiveForm;
+use common\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
 /* @var $model <?= ltrim($generator->modelClass, '\\') ?> */
-/* @var $form backend\widgets\ActiveForm */
+/* @var $form common\widgets\ActiveForm */
 ?>
 <div class="row">
     <div class="col-sm-12">

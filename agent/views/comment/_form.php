@@ -11,7 +11,7 @@
  * @var $model backend\models\Comment
  */
 
-use backend\widgets\ActiveForm;
+use common\widgets\ActiveForm;
 use common\libs\Constants;
 
 $this->title = "Comments";

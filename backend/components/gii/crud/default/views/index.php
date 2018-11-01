@@ -12,9 +12,9 @@ $nameAttribute = $generator->getNameAttribute();
 echo "<?php\n";
 ?>
 
-use backend\widgets\Bar;
-use backend\grid\CheckboxColumn;
-use backend\grid\ActionColumn;
+use common\widgets\Bar;
+use common\grid\CheckboxColumn;
+use common\grid\ActionColumn;
 use <?= $generator->indexWidgetType === 'grid' ? "backend\\grid\\GridView" : "yii\\widgets\\ListView" ?>;
 <?= $generator->enablePjax ? 'use yii\widgets\Pjax;' : '' ?>
 

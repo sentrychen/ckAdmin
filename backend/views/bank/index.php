@@ -1,8 +1,8 @@
 <?php
 
 use common\widgets\Bar;
-use backend\grid\CheckboxColumn;
-use backend\grid\ActionColumn;
+use common\grid\CheckboxColumn;
+use common\grid\ActionColumn;
 use common\grid\GridView;
 
 /* @var $this yii\web\View */

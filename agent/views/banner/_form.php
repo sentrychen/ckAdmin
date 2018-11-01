@@ -12,7 +12,7 @@
  * @var $model backend\models\form\BannerForm
  */
 
-use backend\widgets\ActiveForm;
+use common\widgets\ActiveForm;
 
 ?>
 

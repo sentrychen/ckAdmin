@@ -11,9 +11,9 @@
  * @var $model \common\models\LoginForm
  */
 
-use backend\assets\AppAsset;
+use agent\assets\AppAsset;
 use yii\helpers\Html;
-use backend\widgets\ActiveForm;
+use common\widgets\ActiveForm;
 use yii\helpers\Url;
 use yii\captcha\Captcha;
 
@@ -84,13 +84,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 'class' => 'btn btn-primary block full-width m-b',
                 'name' => 'login-button'
             ]) ?>
-
+            <!--
             <p class="text-muted text-center">
-                <a href="<?= Url::to(['admin-user/request-password-reset']) ?>">
+                <a href="<?= Url::to(['agent/request-password-reset']) ?>">
                     <small><?= yii::t('app', 'Forgot password') ?></small>
                 </a>
             </p>
-
+-->
             <?php ActiveForm::end(); ?>
         </div>
     </div>

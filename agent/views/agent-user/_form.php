@@ -12,7 +12,7 @@
  */
 
 use backend\models\form\Rbac;
-use backend\widgets\ActiveForm;
+use common\widgets\ActiveForm;
 use backend\models\AgentUser;
 use common\widgets\JsBlock;
 use yii\helpers\Html;

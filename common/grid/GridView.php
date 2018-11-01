@@ -20,8 +20,8 @@ use yii\widgets\BaseListView;
  */
 class GridView extends \yii\grid\GridView
 {
-    /* @var $dataColumnClass \backend\grid\DataColumn */
-    public $dataColumnClass = 'backend\grid\DataColumn';
+    /* @var $dataColumnClass \common\grid\DataColumn */
+    public $dataColumnClass = 'common\grid\DataColumn';
 
     public $options = ['class' => 'fixed-table-header', 'style' => 'margin-right: 0px;'];
 

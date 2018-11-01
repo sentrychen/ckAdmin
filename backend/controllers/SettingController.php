@@ -19,7 +19,7 @@ use common\libs\Constants;
 use yii\base\Model;
 use yii\web\Response;
 use backend\actions\DeleteAction;
-use backend\widgets\ActiveForm;
+use common\widgets\ActiveForm;
 use yii\swiftmailer\Mailer;
 use yii\web\BadRequestHttpException;
 use yii\web\UnprocessableEntityHttpException;

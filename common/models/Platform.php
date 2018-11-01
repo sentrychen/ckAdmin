@@ -92,4 +92,14 @@ class Platform extends \yii\db\ActiveRecord
     {
         return $this->hasOne(PlatformAccount::class, ['platform_id' => 'id']);
     }
+
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+        if ($insert) {
+            $account = new PlatformAccount();
+            $account->platform_id = $this->id;
+            $account->save(false);
+        }
+    }
 }

@@ -11,7 +11,7 @@
  * @var $model backend\models\Menu
  */
 
-use backend\widgets\ActiveForm;
+use common\widgets\ActiveForm;
 use common\helpers\FamilyTree;
 use common\libs\Constants;
 use backend\models\Menu;

@@ -11,7 +11,7 @@
  * @var $model backend\models\AgentUser
  */
 
-use backend\widgets\ActiveForm;
+use common\widgets\ActiveForm;
 
 $this->title = "Admin";
 ?>

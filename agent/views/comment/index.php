@@ -12,14 +12,14 @@
  * @var $searchModel backend\models\search\CommentSearch
  */
 
-use backend\grid\DateColumn;
-use backend\grid\GridView;
+use common\grid\DateColumn;
+use common\grid\GridView;
 use common\libs\Constants;
 use yii\helpers\Html;
-use backend\widgets\Bar;
+use common\widgets\Bar;
 use backend\models\Comment;
-use backend\grid\CheckboxColumn;
-use backend\grid\ActionColumn;
+use common\grid\CheckboxColumn;
+use common\grid\ActionColumn;
 
 $this->title = 'Comments';
 $this->params['breadcrumbs'][] = yii::t('app', 'Comments');

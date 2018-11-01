@@ -12,15 +12,15 @@
  * @var $searchModel backend\models\search\ArticleSearch
  */
 
-use backend\grid\DateColumn;
-use backend\grid\GridView;
-use backend\grid\SortColumn;
+use common\grid\DateColumn;
+use common\grid\GridView;
+use common\grid\SortColumn;
 use yii\helpers\Url;
 use common\libs\Constants;
 use yii\helpers\Html;
-use backend\widgets\Bar;
-use backend\grid\CheckboxColumn;
-use backend\grid\ActionColumn;
+use common\widgets\Bar;
+use common\grid\CheckboxColumn;
+use common\grid\ActionColumn;
 
 $this->title = 'Pages';
 $this->params['breadcrumbs'][] = yii::t('app', 'Pages');

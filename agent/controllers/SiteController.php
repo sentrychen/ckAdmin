@@ -11,11 +11,10 @@ namespace agent\controllers;
 use yii;
 use Exception;
 use common\models\Comment;
-use backend\models\form\LoginForm;
+
 use common\libs\ServerInfo;
-use backend\models\Article as ArticleModel;
-use backend\models\Comment as BackendComment;
 use common\models\FriendlyLink;
+use agent\models\form\LoginForm;
 use agent\models\User;
 use yii\base\UserException;
 use yii\db\Query;

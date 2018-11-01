@@ -11,7 +11,7 @@
  * @var $model common\models\Options
  */
 
-use backend\widgets\ActiveForm;
+use common\widgets\ActiveForm;
 use common\widgets\JsBlock;
 use yii\helpers\Url;
 

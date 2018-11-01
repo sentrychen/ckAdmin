@@ -1,11 +1,11 @@
 <?php
 
 use backend\models\Platform;
-use backend\widgets\ActiveForm;
+use common\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\Platform */
-/* @var $form backend\widgets\ActiveForm */
+/* @var $form common\widgets\ActiveForm */
 ?>
 <div class="row">
     <div class="col-sm-12">

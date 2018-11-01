@@ -12,10 +12,10 @@
  * @var $searchModel backend\models\search\UserSearch
  */
 
-use backend\grid\DateColumn;
-use backend\grid\GridView;
+use common\grid\DateColumn;
+use common\grid\GridView;
 use backend\models\AdminUser;
-use backend\grid\ActionColumn;
+use common\grid\ActionColumn;
 use yii\helpers\Html;
 use yii\helpers\Url;
 

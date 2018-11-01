@@ -12,14 +12,14 @@
  * @var $searchModel backend\models\search\UserSearch
  */
 
-use backend\grid\DateColumn;
-use backend\grid\GridView;
+use common\grid\DateColumn;
+use common\grid\GridView;
 use backend\models\AdminUser;
 use yii\helpers\Url;
 use yii\helpers\Html;
-use backend\widgets\Bar;
-use backend\grid\CheckboxColumn;
-use backend\grid\ActionColumn;
+use common\widgets\Bar;
+use common\grid\CheckboxColumn;
+use common\grid\ActionColumn;
 
 $this->title = 'Users';
 $this->params['breadcrumbs'][] = yii::t('app', 'Users');

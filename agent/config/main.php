@@ -9,7 +9,7 @@ $params = array_merge(
 return [
     'id' => 'app-agent',//应用id，必须唯一
     'basePath' => dirname(__DIR__),
-    'controllerNamespace' => 'backend\controllers',//控制器命名空间
+    'controllerNamespace' => 'agent\controllers',//控制器命名空间
     'language' => 'zh-CN',//默认语言
     'timeZone' => 'Asia/Shanghai',//默认时区
     'bootstrap' => ['log'],
@@ -17,7 +17,7 @@ return [
     'homeUrl' => '/agent',
     'components' => [
         'user' => [
-            'identityClass' => backend\models\Agent::class,
+            'identityClass' => agent\models\Agent::class,
             'enableAutoLogin' => false,
             'identityCookie' => ['name' => '_agent_identity'],
             'idParam' => '__agent__id',
@@ -70,54 +70,7 @@ return [
         ],
         'assetManager' => [
             'linkAssets' => false,//若为unix like系统这里可以修改成true则创建css js文件软链接到assets而不是拷贝css js到assets目录
-            'forceCopy' => true,
-            'bundles' => [
-                backend\assets\AppAsset::class => [
-                    'sourcePath' => '@backend/web/static',
-                    'css' => [
-                        'a' => 'css/bootstrap.min14ed.css?v=3.3.6',
-                        'b' => 'css/font-awesome.min93e3.css?v=4.4.0',
-                        'c' => 'css/animate.min.css',
-                        'd' => 'css/style.min862f.css?v=4.1.0',
-                        'f' => 'js/plugins/layer/laydate/theme/default/laydate.css',
-                        'g' => 'css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css',
-                        'h' => 'css/plugins/toastr/toastr.min.css',
-                        'i' => 'css/agent.css',
-
-                    ],
-                    'js' => [
-                        'a' => 'js/feehi.js',
-                        'c' => 'js/plugins/layer/laydate/laydate.js',
-                        'd' => 'js/plugins/layer/layer.min.js',
-                        'e' => 'js/plugins/prettyfile/bootstrap-prettyfile.js',
-                        'f' => 'js/plugins/toastr/toastr.min.js',
-                    ],
-                ],
-                backend\assets\IndexAsset::class => [
-                    'sourcePath' => '@backend/web/static',
-                    'css' => [
-                        'a' => 'css/bootstrap.min.css',
-                        'b' => 'css/font-awesome.min93e3.css?v=4.4.0',
-                        'c' => 'css/style.min862f.css?v=4.1.0',
-                    ],
-                    'js' => [
-                        'a' => "js/jquery.min.js?v=2.1.4",
-                        'b' => "js/bootstrap.min.js?v=3.3.6",
-                        'c' => "js/plugins/metisMenu/jquery.metisMenu.js",
-                        'd' => "js/plugins/slimscroll/jquery.slimscroll.min.js",
-                        'e' => "js/plugins/layer/layer.min.js",
-                        'f' => "js/hplus.min.js?v=4.1.0",
-                        'g' => "js/contabs.min.js",
-                        'h' => "js/plugins/pace/pace.min.js",
-                    ]
-                ],
-                backend\assets\UeditorAsset::class => [
-                    'sourcePath' => '@backend/web/static/js/plugins/ueditor',
-                    'css' => [
-                        'a' => 'ueditor.all.min.js'
-                    ],
-                ],
-            ]
+            'forceCopy' => false,
         ],
     ],
     'on beforeRequest' => [feehi\components\Feehi::class, 'backendInit'],

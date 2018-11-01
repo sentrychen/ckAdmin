@@ -12,12 +12,12 @@
  * @var $searchModel backend\models\search\RebateSearch
  */
 
-use backend\grid\DateColumn;
-use backend\grid\GridView;
+use common\grid\DateColumn;
+use common\grid\GridView;
 use backend\models\Rebate;
 use yii\helpers\Url;
 use yii\helpers\Html;
-use backend\widgets\Bar;
+use common\widgets\Bar;
 
 $this->title = '返佣明细';
 $this->params['breadcrumbs'][] = '返佣明细';

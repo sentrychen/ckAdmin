@@ -11,7 +11,7 @@
  * @var $model backend\models\AdminUser
  */
 
-use backend\widgets\ActiveForm;
+use common\widgets\ActiveForm;
 use common\libs\Constants;
 use backend\models\Agent;
 

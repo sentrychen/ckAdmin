@@ -1,9 +1,9 @@
 <?php
 
-use backend\widgets\Bar;
-use backend\grid\CheckboxColumn;
-use backend\grid\ActionColumn;
-use backend\grid\GridView;
+use common\widgets\Bar;
+use common\grid\CheckboxColumn;
+use common\grid\ActionColumn;
+use common\grid\GridView;
 use common\grid\DateColumn;
 
 /* @var $this yii\web\View */

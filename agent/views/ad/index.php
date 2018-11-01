@@ -11,15 +11,15 @@
  * @var $dataProvider \yii\data\ActiveDataProvider
  */
 
-use backend\grid\DateColumn;
-use backend\grid\GridView;
-use backend\grid\SortColumn;
-use backend\grid\StatusColumn;
+use common\grid\DateColumn;
+use common\grid\GridView;
+use common\grid\SortColumn;
+use common\grid\StatusColumn;
 use common\libs\Constants;
 use agent\models\User;
-use backend\widgets\Bar;
-use backend\grid\CheckboxColumn;
-use backend\grid\ActionColumn;
+use common\widgets\Bar;
+use common\grid\CheckboxColumn;
+use common\grid\ActionColumn;
 
 $this->title = 'Ad';
 $this->params['breadcrumbs'][] = yii::t('app', 'Ad');

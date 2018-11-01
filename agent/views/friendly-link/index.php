@@ -12,14 +12,14 @@
  * @var $searchModel backend\models\search\FriendlyLinkSearch
  */
 
-use backend\grid\DateColumn;
-use backend\grid\GridView;
-use backend\grid\SortColumn;
-use backend\grid\StatusColumn;
-use backend\widgets\Bar;
+use common\grid\DateColumn;
+use common\grid\GridView;
+use common\grid\SortColumn;
+use common\grid\StatusColumn;
+use common\widgets\Bar;
 use yii\helpers\Html;
-use backend\grid\CheckboxColumn;
-use backend\grid\ActionColumn;
+use common\grid\CheckboxColumn;
+use common\grid\ActionColumn;
 use common\libs\Constants;
 
 $this->title = "Friendly Links";

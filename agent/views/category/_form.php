@@ -11,7 +11,7 @@
  * @var $model common\models\Category
  */
 
-use backend\widgets\ActiveForm;
+use common\widgets\ActiveForm;
 use common\helpers\FamilyTree;
 use common\models\Category;
 use yii\helpers\ArrayHelper;

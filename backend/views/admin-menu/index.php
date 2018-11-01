@@ -11,16 +11,16 @@
  * @var $dataProvider agent\models\Menu
  */
 
-use backend\grid\DateColumn;
-use backend\grid\GridView;
-use backend\grid\SortColumn;
-use backend\grid\StatusColumn;
-use backend\widgets\Bar;
+use common\grid\DateColumn;
+use common\grid\GridView;
+use common\grid\SortColumn;
+use common\grid\StatusColumn;
+use common\widgets\Bar;
 use agent\models\Menu;
 use yii\helpers\Html;
 use yii\helpers\Url;
-use backend\grid\CheckboxColumn;
-use backend\grid\ActionColumn;
+use common\grid\CheckboxColumn;
+use common\grid\ActionColumn;
 
 $this->title = "后台菜单";
 $this->params['breadcrumbs'][] = '后台菜单';

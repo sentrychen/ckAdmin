@@ -11,7 +11,7 @@
  * @var $model backend\models\Article
  */
 
-use backend\widgets\ActiveForm;
+use common\widgets\ActiveForm;
 use common\libs\Constants;
 use backend\widgets\Ueditor;
 

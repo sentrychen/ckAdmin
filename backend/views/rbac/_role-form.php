@@ -11,7 +11,7 @@
  * @var $model backend\models\form\Rbac
  */
 
-use backend\widgets\ActiveForm;
+use common\widgets\ActiveForm;
 use common\widgets\JsBlock;
 use yii\helpers\Html;
 

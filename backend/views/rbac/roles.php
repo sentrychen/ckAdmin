@@ -12,13 +12,13 @@
  * @var $searchModel backend\models\form\Rbac
  */
 
-use backend\grid\GridView;
-use backend\grid\SortColumn;
-use backend\widgets\Bar;
+use common\grid\GridView;
+use common\grid\SortColumn;
+use common\widgets\Bar;
 use yii\helpers\Html;
 use yii\helpers\Url;
-use backend\grid\CheckboxColumn;
-use backend\grid\ActionColumn;
+use common\grid\CheckboxColumn;
+use common\grid\ActionColumn;
 
 $this->title = "Roles";
 $this->params['breadcrumbs'][] = yii::t('app', 'Roles');

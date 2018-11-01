@@ -12,7 +12,7 @@
  */
 
 use backend\models\Agent;
-use backend\widgets\ActiveForm;
+use common\widgets\ActiveForm;
 use common\libs\Constants;
 use yii\helpers\ArrayHelper;
 
