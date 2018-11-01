@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50641
 File Encoding         : 65001
 
-Date: 2018-10-19 18:12:32
+Date: 2018-11-01 16:35:42
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -27,7 +27,7 @@ CREATE TABLE `ck_admin_log` (
   `created_at` int(11) unsigned NOT NULL COMMENT '创建时间',
   `updated_at` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '最后修改时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=298 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=416 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- ----------------------------
 -- Records of ck_admin_log
@@ -130,11 +130,11 @@ INSERT INTO `ck_admin_log` VALUES ('95', '1', 'setting/agent', '{{%ADMIN_USER%}}
 INSERT INTO `ck_admin_log` VALUES ('96', '1', 'setting/agent', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\form\\SettingAgentForm [ {{%options}} ]  {{%UPDATED%}} {{%ID%}} 32 {{%RECORD%}}: <br>Value(value) : =>http://127.0.0.1/admin', '1538975417', '1538975417');
 INSERT INTO `ck_admin_log` VALUES ('97', '1', 'setting/agent', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\form\\SettingAgentForm [ {{%options}} ]  {{%UPDATED%}} {{%ID%}} 33 {{%RECORD%}}: <br>Value(value) : =>http://127.0.0.1/mobile/use/signup', '1538975417', '1538975417');
 INSERT INTO `ck_admin_log` VALUES ('98', '1', 'setting/agent', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\form\\SettingAgentForm [ {{%options}} ]  {{%UPDATED%}} {{%ID%}} 34 {{%RECORD%}}: <br>Value(value) : =>http://127.0.0.1/mobile/agent/signup', '1538975417', '1538975417');
-INSERT INTO `ck_admin_log` VALUES ('99', '1', 'admin-user/update-self', '{{%ADMIN_USER%}} [ agent ] {{%BY%}} backend\\models\\AdminUser [ {{%admin_agent}} ]  {{%UPDATED%}} {{%ID%}} 1 {{%RECORD%}}: <br>邮箱(email) : admin@feehi.com=>abcd@11111.com,<br>头像(avatar) : =>/admin/uploads/avatar/20181008144356_5bbafcacb90ed.png,<br>最后更新(updated_at) : 1476711945=>1538981036', '1538981036', '1538981036');
-INSERT INTO `ck_admin_log` VALUES ('100', '1', 'admin-user/update-self', '{{%ADMIN_USER%}} [ agent ] {{%BY%}} backend\\models\\AdminUser [ {{%admin_agent}} ]  {{%UPDATED%}} {{%ID%}} 1 {{%RECORD%}}: <br>头像(avatar) : /admin/uploads/avatar/20181008144356_5bbafcacb90ed.png=>/admin/uploads/avatar/20181008144833_5bbafdc1020e1.png,<br>最后更新(updated_at) : 1538981036=>1538981313', '1538981313', '1538981313');
-INSERT INTO `ck_admin_log` VALUES ('101', '1', 'admin-user/update-self', '{{%ADMIN_USER%}} [ agent ] {{%BY%}} backend\\models\\AdminUser [ {{%admin_agent}} ]  {{%UPDATED%}} {{%ID%}} 1 {{%RECORD%}}: <br>头像(avatar) : /admin/uploads/avatar/20181008144833_5bbafdc1020e1.png=>D:\\www\\ckAgent/backend/web/uploads/avatar/20181008153538_5bbb08caa1e36.png,<br>最后更新(updated_at) : 1538981313=>1538984138', '1538984138', '1538984138');
-INSERT INTO `ck_admin_log` VALUES ('102', '1', 'admin-user/update-self', '{{%ADMIN_USER%}} [ agent ] {{%BY%}} backend\\models\\AdminUser [ {{%admin_agent}} ]  {{%UPDATED%}} {{%ID%}} 1 {{%RECORD%}}: <br>头像(avatar) : D:\\www\\ckAgent/backend/web/uploads/avatar/20181008153538_5bbb08caa1e36.png=>D:\\www\\ckAgent/backend/web/uploads/avatar/20181008153725_5bbb093593092.png,<br>最后更新(updated_at) : 1538984138=>1538984245', '1538984245', '1538984245');
-INSERT INTO `ck_admin_log` VALUES ('103', '1', 'admin-user/update-self', '{{%ADMIN_USER%}} [ agent ] {{%BY%}} backend\\models\\AdminUser [ {{%admin_agent}} ]  {{%UPDATED%}} {{%ID%}} 1 {{%RECORD%}}: <br>头像(avatar) : D:\\www\\ckAgent/backend/web/uploads/avatar/20181008153725_5bbb093593092.png=>/uploads/avatar/20181008154119_5bbb0a1f2049f.png,<br>最后更新(updated_at) : 1538984245=>1538984479', '1538984479', '1538984479');
+INSERT INTO `ck_admin_log` VALUES ('99', '1', 'admin-user/update-self', '{{%ADMIN_USER%}} [ agent ] {{%BY%}} backend\\models\\User [ {{%admin_agent}} ]  {{%UPDATED%}} {{%ID%}} 1 {{%RECORD%}}: <br>邮箱(email) : admin@feehi.com=>abcd@11111.com,<br>头像(avatar) : =>/admin/uploads/avatar/20181008144356_5bbafcacb90ed.png,<br>最后更新(updated_at) : 1476711945=>1538981036', '1538981036', '1538981036');
+INSERT INTO `ck_admin_log` VALUES ('100', '1', 'admin-user/update-self', '{{%ADMIN_USER%}} [ agent ] {{%BY%}} backend\\models\\User [ {{%admin_agent}} ]  {{%UPDATED%}} {{%ID%}} 1 {{%RECORD%}}: <br>头像(avatar) : /admin/uploads/avatar/20181008144356_5bbafcacb90ed.png=>/admin/uploads/avatar/20181008144833_5bbafdc1020e1.png,<br>最后更新(updated_at) : 1538981036=>1538981313', '1538981313', '1538981313');
+INSERT INTO `ck_admin_log` VALUES ('101', '1', 'admin-user/update-self', '{{%ADMIN_USER%}} [ agent ] {{%BY%}} backend\\models\\User [ {{%admin_agent}} ]  {{%UPDATED%}} {{%ID%}} 1 {{%RECORD%}}: <br>头像(avatar) : /admin/uploads/avatar/20181008144833_5bbafdc1020e1.png=>D:\\www\\ckAgent/backend/web/uploads/avatar/20181008153538_5bbb08caa1e36.png,<br>最后更新(updated_at) : 1538981313=>1538984138', '1538984138', '1538984138');
+INSERT INTO `ck_admin_log` VALUES ('102', '1', 'admin-user/update-self', '{{%ADMIN_USER%}} [ agent ] {{%BY%}} backend\\models\\User [ {{%admin_agent}} ]  {{%UPDATED%}} {{%ID%}} 1 {{%RECORD%}}: <br>头像(avatar) : D:\\www\\ckAgent/backend/web/uploads/avatar/20181008153538_5bbb08caa1e36.png=>D:\\www\\ckAgent/backend/web/uploads/avatar/20181008153725_5bbb093593092.png,<br>最后更新(updated_at) : 1538984138=>1538984245', '1538984245', '1538984245');
+INSERT INTO `ck_admin_log` VALUES ('103', '1', 'admin-user/update-self', '{{%ADMIN_USER%}} [ agent ] {{%BY%}} backend\\models\\User [ {{%admin_agent}} ]  {{%UPDATED%}} {{%ID%}} 1 {{%RECORD%}}: <br>头像(avatar) : D:\\www\\ckAgent/backend/web/uploads/avatar/20181008153725_5bbb093593092.png=>/uploads/avatar/20181008154119_5bbb0a1f2049f.png,<br>最后更新(updated_at) : 1538984245=>1538984479', '1538984479', '1538984479');
 INSERT INTO `ck_admin_log` VALUES ('104', '1', 'agent-menu/update', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\Menu [ {{%menu}} ]  {{%UPDATED%}} {{%ID%}} 42 {{%RECORD%}}: <br>名称(name) : 玩家管理=>会员管理,<br>最后更新(updated_at) : 1538895056=>1538987426', '1538987426', '1538987426');
 INSERT INTO `ck_admin_log` VALUES ('105', '1', 'agent-menu/create', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\Menu [ {{%menu}} ]  {{%CREATED%}} {{%ID%}} 43 {{%RECORD%}}: <br>序号(id) => 43,<br>类型(type) => 1,<br>父分类Id(parent_id) => 42,<br>名称(name) => 会员列表,<br>地址(url) => user/index,<br>图标(icon) => ,<br>排序(sort) => 0,<br>新窗口打开(target) => ,<br>绝对地址(is_absolute_url) => 0,<br>是否显示(is_display) => 1,<br>创建时间(created_at) => 1538987465,<br>最后更新(updated_at) => 1538987465', '1538987465', '1538987465');
 INSERT INTO `ck_admin_log` VALUES ('106', '1', 'agent-menu/create', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\Menu [ {{%menu}} ]  {{%CREATED%}} {{%ID%}} 44 {{%RECORD%}}: <br>序号(id) => 44,<br>类型(type) => 1,<br>父分类Id(parent_id) => 42,<br>名称(name) => 在线会员,<br>地址(url) => user/online,<br>图标(icon) => ,<br>排序(sort) => 0,<br>新窗口打开(target) => ,<br>绝对地址(is_absolute_url) => 0,<br>是否显示(is_display) => 1,<br>创建时间(created_at) => 1538987516,<br>最后更新(updated_at) => 1538987516', '1538987516', '1538987516');
@@ -173,10 +173,10 @@ INSERT INTO `ck_admin_log` VALUES ('138', '1', 'admin-menu/update', '{{%ADMIN_US
 INSERT INTO `ck_admin_log` VALUES ('139', '1', 'admin-menu/sort', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\Menu [ {{%menu}} ]  {{%UPDATED%}} {{%ID%}} 47 {{%RECORD%}}: <br>排序(sort) : 2=>3,<br>最后更新(updated_at) : 1539160793=>1539160862', '1539160862', '1539160862');
 INSERT INTO `ck_admin_log` VALUES ('140', '1', 'admin-menu/sort', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\Menu [ {{%menu}} ]  {{%UPDATED%}} {{%ID%}} 4 {{%RECORD%}}: <br>排序(sort) : 3=>4,<br>最后更新(updated_at) : 1538960350=>1539160863', '1539160863', '1539160863');
 INSERT INTO `ck_admin_log` VALUES ('141', '1', 'setting/game', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\form\\SettingGameForm [ {{%options}} ]  {{%UPDATED%}} {{%ID%}} 36 {{%RECORD%}}: <br>Value(value) : 5000=>10000', '1539162526', '1539162526');
-INSERT INTO `ck_admin_log` VALUES ('142', '1', 'user/create', '{{%ADMIN_USER%}} [ agent ] {{%BY%}} backend\\models\\AdminUser [ {{%user}} ]  {{%CREATED%}} {{%ID%}} 4 {{%RECORD%}}: <br>会员ID(id) => 4,<br>会员账号(username) => aaaaa,<br>会员昵称(nickname) => ,<br>cookie验证auth_key(auth_key) => ,<br>加密后密码(password_hash) => ,<br>支付密码(password_pay) => ,<br>找回密码token(password_reset_token) => ,<br>用户邮箱(email) => ,<br>用户头像url(avatar) => ,<br>会员状态(status) => 1,<br>洗码率(xima_rate) => ,<br>洗码类别(xima_type) => ,<br>查看洗码(xima_status) => ,<br>最小限红(min_limit) => ,<br>最大限红(max_limit) => ,<br>最小和限红(dogfall_min_limit) => ,<br>最大和限红(dogfall_max_limit) => ,<br>最小对限红(pair_min_limit) => ,<br>最大和限红(pair_max_limit) => ,<br>邀请代理ID(invite_agent_id) => ,<br>邀请用户ID(invite_user_id) => ,<br>注册日期(created_at) => 1539173959,<br>最后修改时间(updated_at) => 1539173959', '1539173959', '1539173959');
-INSERT INTO `ck_admin_log` VALUES ('143', '1', 'user/create', '{{%ADMIN_USER%}} [ agent ] {{%BY%}} backend\\models\\AdminUser [ {{%user}} ]  {{%CREATED%}} {{%ID%}} 5 {{%RECORD%}}: <br>会员ID(id) => 5,<br>会员账号(username) => 12345,<br>会员昵称(nickname) => ,<br>cookie验证auth_key(auth_key) => hg7FzRlHigQsFtsTDhG3Kwgntp-wzKNO,<br>加密后密码(password_hash) => $2y$13$Ua8FnsVfC8tX/CR1ykQUXO33NkBD0LVPvv6oYtglCmqu1rQsiuV8W,<br>支付密码(password_pay) => ,<br>找回密码token(password_reset_token) => ,<br>用户邮箱(email) => ,<br>用户头像url(avatar) => ,<br>会员状态(status) => 1,<br>洗码率(xima_rate) => 0.900,<br>洗码类别(xima_type) => 2,<br>查看洗码(xima_status) => 1,<br>最小限红(min_limit) => 10,<br>最大限红(max_limit) => 10000,<br>最小和限红(dogfall_min_limit) => 10,<br>最大和限红(dogfall_max_limit) => 5000,<br>最小对限红(pair_min_limit) => 10,<br>最大和限红(pair_max_limit) => ,<br>邀请代理ID(invite_agent_id) => 1,<br>邀请用户ID(invite_user_id) => ,<br>注册日期(created_at) => 1539239742,<br>最后修改时间(updated_at) => 1539239742', '1539239742', '1539239742');
-INSERT INTO `ck_admin_log` VALUES ('144', '1', 'user/update', '{{%ADMIN_USER%}} [ agent ] {{%BY%}} backend\\models\\AdminUser [ {{%user}} ]  {{%UPDATED%}} {{%ID%}} 5 {{%RECORD%}}: <br>最大和限红(pair_max_limit) : =>5000,<br>最后修改时间(updated_at) : 1539239742=>1539239858', '1539239858', '1539239858');
-INSERT INTO `ck_admin_log` VALUES ('145', '1', 'user/update', '{{%ADMIN_USER%}} [ agent ] {{%BY%}} backend\\models\\AdminUser [ {{%user}} ]  {{%UPDATED%}} {{%ID%}} 5 {{%RECORD%}}: <br>洗码率(xima_rate) : 0.900=>0.008,<br>最后修改时间(updated_at) : 1539239858=>1539240983', '1539240983', '1539240983');
+INSERT INTO `ck_admin_log` VALUES ('142', '1', 'user/create', '{{%ADMIN_USER%}} [ agent ] {{%BY%}} backend\\models\\User [ {{%user}} ]  {{%CREATED%}} {{%ID%}} 4 {{%RECORD%}}: <br>会员ID(id) => 4,<br>会员账号(username) => aaaaa,<br>会员昵称(nickname) => ,<br>cookie验证auth_key(auth_key) => ,<br>加密后密码(password_hash) => ,<br>支付密码(password_pay) => ,<br>找回密码token(password_reset_token) => ,<br>用户邮箱(email) => ,<br>用户头像url(avatar) => ,<br>会员状态(status) => 1,<br>洗码率(xima_rate) => ,<br>洗码类别(xima_type) => ,<br>查看洗码(xima_status) => ,<br>最小限红(min_limit) => ,<br>最大限红(max_limit) => ,<br>最小和限红(dogfall_min_limit) => ,<br>最大和限红(dogfall_max_limit) => ,<br>最小对限红(pair_min_limit) => ,<br>最大和限红(pair_max_limit) => ,<br>邀请代理ID(invite_agent_id) => ,<br>邀请用户ID(invite_user_id) => ,<br>注册日期(created_at) => 1539173959,<br>最后修改时间(updated_at) => 1539173959', '1539173959', '1539173959');
+INSERT INTO `ck_admin_log` VALUES ('143', '1', 'user/create', '{{%ADMIN_USER%}} [ agent ] {{%BY%}} backend\\models\\User [ {{%user}} ]  {{%CREATED%}} {{%ID%}} 5 {{%RECORD%}}: <br>会员ID(id) => 5,<br>会员账号(username) => 12345,<br>会员昵称(nickname) => ,<br>cookie验证auth_key(auth_key) => hg7FzRlHigQsFtsTDhG3Kwgntp-wzKNO,<br>加密后密码(password_hash) => $2y$13$Ua8FnsVfC8tX/CR1ykQUXO33NkBD0LVPvv6oYtglCmqu1rQsiuV8W,<br>支付密码(password_pay) => ,<br>找回密码token(password_reset_token) => ,<br>用户邮箱(email) => ,<br>用户头像url(avatar) => ,<br>会员状态(status) => 1,<br>洗码率(xima_rate) => 0.900,<br>洗码类别(xima_type) => 2,<br>查看洗码(xima_status) => 1,<br>最小限红(min_limit) => 10,<br>最大限红(max_limit) => 10000,<br>最小和限红(dogfall_min_limit) => 10,<br>最大和限红(dogfall_max_limit) => 5000,<br>最小对限红(pair_min_limit) => 10,<br>最大和限红(pair_max_limit) => ,<br>邀请代理ID(invite_agent_id) => 1,<br>邀请用户ID(invite_user_id) => ,<br>注册日期(created_at) => 1539239742,<br>最后修改时间(updated_at) => 1539239742', '1539239742', '1539239742');
+INSERT INTO `ck_admin_log` VALUES ('144', '1', 'user/update', '{{%ADMIN_USER%}} [ agent ] {{%BY%}} backend\\models\\User [ {{%user}} ]  {{%UPDATED%}} {{%ID%}} 5 {{%RECORD%}}: <br>最大和限红(pair_max_limit) : =>5000,<br>最后修改时间(updated_at) : 1539239742=>1539239858', '1539239858', '1539239858');
+INSERT INTO `ck_admin_log` VALUES ('145', '1', 'user/update', '{{%ADMIN_USER%}} [ agent ] {{%BY%}} backend\\models\\User [ {{%user}} ]  {{%UPDATED%}} {{%ID%}} 5 {{%RECORD%}}: <br>洗码率(xima_rate) : 0.900=>0.008,<br>最后修改时间(updated_at) : 1539239858=>1539240983', '1539240983', '1539240983');
 INSERT INTO `ck_admin_log` VALUES ('146', '1', 'agent/create', '{{%ADMIN_USER%}} [ agent ] {{%BY%}} backend\\models\\Agent [ agent ]  {{%CREATED%}} {{%ID%}} 2 {{%RECORD%}}: <br>代理id(id) => 2,<br>代理账号(username) => abcd,<br>Password Hash(password_hash) => $2y$13$8Z7ZYvJophNzhE9fIHuhluh5vFE1K8bDe5Nw19KRrX3bIZIDqJPvS,<br>管理员cookie验证auth_key(auth_key) => l1UmJJ7gZbLyzblGiglnT7ye6HB91FA1,<br>管理员找回密码token(password_reset_token) => ,<br>真实姓名(realname) => ,<br>邮箱(email) => ,<br>手机号码(mobile) => ,<br>头像(avatar) => ,<br>推广码(promo_code) => jaLgnR,<br>上层账号(parent_id) => 1,<br>总代账号(top_id) => 1,<br>代理层级(agent_level) => 2,<br>查看洗码(xima_status) => 1,<br>洗码率(xima_rate) => 0.009,<br>洗码类别(xima_type) => 2,<br>占成(rebate_rate) => 0.350,<br>预设玩家层级(default_player_level) => ,<br>返佣方案(rebate_id) => ,<br>账户余额(available_amount) => ,<br>冻结余额(frozen_amount) => ,<br>返佣总额(rebate_amount) => ,<br>主货币(currency) => ,<br>创建渠道(reg_from) => ,<br>注册IP(reg_ip) => ,<br>状态(status) => 1,<br>备注(memo) => ,<br>创建日期(created_at) => 1539253756,<br>修改日期(updated_at) => 1539253756', '1539253756', '1539253756');
 INSERT INTO `ck_admin_log` VALUES ('147', '1', 'agent/create', '{{%ADMIN_USER%}} [ agent ] {{%BY%}} backend\\models\\Agent [ agent ]  {{%CREATED%}} {{%ID%}} 3 {{%RECORD%}}: <br>代理id(id) => 3,<br>代理账号(username) => sentry,<br>Password Hash(password_hash) => $2y$13$wXgEKeiho2xsYdujFhyKCu7Pz9G8LA8BC1KgCj36R48viAuua9cYe,<br>管理员cookie验证auth_key(auth_key) => BQJSUEW_CarL9K8pRZ7jSPGSIv36UZCl,<br>管理员找回密码token(password_reset_token) => ,<br>真实姓名(realname) => ,<br>邮箱(email) => ,<br>手机号码(mobile) => ,<br>头像(avatar) => ,<br>推广码(promo_code) => QQRN1_9X,<br>上层账号(parent_id) => 1,<br>总代账号(top_id) => 1,<br>代理层级(agent_level) => 2,<br>查看洗码(xima_status) => 1,<br>洗码率(xima_rate) => 0.009,<br>洗码类别(xima_type) => 2,<br>占成(rebate_rate) => 0.350,<br>预设玩家层级(default_player_level) => ,<br>返佣方案(rebate_id) => ,<br>账户余额(available_amount) => ,<br>冻结余额(frozen_amount) => ,<br>返佣总额(rebate_amount) => ,<br>主货币(currency) => ,<br>创建渠道(reg_from) => ,<br>注册IP(reg_ip) => ,<br>状态(status) => 1,<br>备注(memo) => ,<br>创建日期(created_at) => 1539254027,<br>修改日期(updated_at) => 1539254027', '1539254027', '1539254027');
 INSERT INTO `ck_admin_log` VALUES ('148', '1', 'agent/create', '{{%ADMIN_USER%}} [ agent ] {{%BY%}} backend\\models\\Agent [ agent ]  {{%CREATED%}} {{%ID%}} 4 {{%RECORD%}}: <br>代理id(id) => 4,<br>代理账号(username) => aaaaa,<br>Password Hash(password_hash) => $2y$13$R4iNNIv/HpQPZiHzDlo9Oe6rdnWRABBvQGk1mNMU2LVBx4aZwm3be,<br>管理员cookie验证auth_key(auth_key) => upF5uuqeLAgAvCbCLkyyfVPTYf6YxcrX,<br>管理员找回密码token(password_reset_token) => ,<br>真实姓名(realname) => ,<br>邮箱(email) => ,<br>手机号码(mobile) => ,<br>头像(avatar) => ,<br>推广码(promo_code) => AU8CTP0TWW,<br>上层账号(parent_id) => 1,<br>总代账号(top_id) => 1,<br>代理层级(agent_level) => 2,<br>查看洗码(xima_status) => 1,<br>洗码率(xima_rate) => 0.009,<br>洗码类别(xima_type) => 2,<br>占成(rebate_rate) => 0.350,<br>预设玩家层级(default_player_level) => ,<br>返佣方案(rebate_id) => ,<br>账户余额(available_amount) => ,<br>冻结余额(frozen_amount) => ,<br>返佣总额(rebate_amount) => ,<br>主货币(currency) => ,<br>创建渠道(reg_from) => ,<br>注册IP(reg_ip) => ,<br>状态(status) => 1,<br>备注(memo) => ,<br>创建日期(created_at) => 1539254184,<br>修改日期(updated_at) => 1539254184', '1539254184', '1539254184');
@@ -329,6 +329,124 @@ INSERT INTO `ck_admin_log` VALUES ('294', '1', 'admin-menu/update', '{{%ADMIN_US
 INSERT INTO `ck_admin_log` VALUES ('295', '1', 'admin-menu/update', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\Menu [ {{%menu}} ]  {{%UPDATED%}} {{%ID%}} 19 {{%RECORD%}}: <br>地址(url) : =>cache/clean,<br>最后更新(updated_at) : 1539923293=>1539938585', '1539938585', '1539938585');
 INSERT INTO `ck_admin_log` VALUES ('296', '1', 'admin-menu/update', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\Menu [ {{%menu}} ]  {{%UPDATED%}} {{%ID%}} 83 {{%RECORD%}}: <br>地址(url) : =>tast/index,<br>最后更新(updated_at) : 1539923261=>1539938599', '1539938599', '1539938599');
 INSERT INTO `ck_admin_log` VALUES ('297', '1', 'admin-menu/delete', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\Menu [ {{%menu}} ]  {{%DELETED%}} {{%ID%}} 87 {{%RECORD%}}: <br>序号(id) => 87,<br>类型(type) => 0,<br>父分类Id(parent_id) => 48,<br>名称(name) => 关闭平台,<br>地址(url) => ,<br>图标(icon) => ,<br>排序(sort) => 8,<br>新窗口打开(target) => _blank,<br>绝对地址(is_absolute_url) => 0,<br>是否显示(is_display) => 1,<br>创建时间(created_at) => 1539923204,<br>最后更新(updated_at) => 1539923248', '1539938630', '1539938630');
+INSERT INTO `ck_admin_log` VALUES ('298', '1', 'platform/update', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\Platform [ {{%platform}} ]  {{%UPDATED%}} {{%ID%}} 1 {{%RECORD%}}: <br>游戏平台名称(name) : hj=>皇家国际,<br>平台代码(code) : 皇家国际=>HJ', '1540293982', '1540293982');
+INSERT INTO `ck_admin_log` VALUES ('299', '1', 'platform/create', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\Platform [ {{%platform}} ]  {{%CREATED%}} {{%ID%}} 2 {{%RECORD%}}: <br>平台ID(id) => 2,<br>游戏平台名称(name) => 威尼斯人,<br>平台代码(code) => WNSR,<br>api地址(api_host) => ,<br>应用ID(app_id) => ,<br>ap密钥(app_secret) => ,<br>登陆地址(login_url) => ,<br>平台状态 1 激活 0 停用(status) => 1,<br>购买额度(buy_amount) => ,<br>累计购买额度(total_amount) => ,<br>平台可用额度(available_amount) => 60000,<br>平台冻结额度(frozen_amount) => ,<br>更新日期(updated_at) => ,<br>创建日期(created_at) => ', '1540294014', '1540294014');
+INSERT INTO `ck_admin_log` VALUES ('300', '1', 'platform/create', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\Platform [ {{%platform}} ]  {{%CREATED%}} {{%ID%}} 3 {{%RECORD%}}: <br>平台ID(id) => 3,<br>游戏平台名称(name) => 万通国际,<br>平台代码(code) => WT,<br>api地址(api_host) => ,<br>应用ID(app_id) => ,<br>ap密钥(app_secret) => ,<br>登陆地址(login_url) => ,<br>平台状态 1 激活 0 停用(status) => 1,<br>购买额度(buy_amount) => ,<br>累计购买额度(total_amount) => ,<br>平台可用额度(available_amount) => 1000000,<br>平台冻结额度(frozen_amount) => ,<br>更新日期(updated_at) => ,<br>创建日期(created_at) => ', '1540294064', '1540294064');
+INSERT INTO `ck_admin_log` VALUES ('301', '1', 'platform/update', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\Platform [ {{%platform}} ]  {{%UPDATED%}} {{%ID%}} 3 {{%RECORD%}}: <br>游戏平台名称(name) : 万通国际=>机械版百乐,<br>平台代码(code) : WT=>JXB', '1540294239', '1540294239');
+INSERT INTO `ck_admin_log` VALUES ('302', '1', 'platform/create', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\Platform [ {{%platform}} ]  {{%CREATED%}} {{%ID%}} 4 {{%RECORD%}}: <br>平台ID(id) => 4,<br>游戏平台名称(name) => AG旗舰厅,<br>平台代码(code) => AG,<br>api地址(api_host) => ,<br>应用ID(app_id) => ,<br>ap密钥(app_secret) => ,<br>登陆地址(login_url) => ,<br>平台状态 1 激活 0 停用(status) => 1,<br>购买额度(buy_amount) => ,<br>累计购买额度(total_amount) => ,<br>平台可用额度(available_amount) => ,<br>平台冻结额度(frozen_amount) => ,<br>更新日期(updated_at) => ,<br>创建日期(created_at) => ', '1540294278', '1540294278');
+INSERT INTO `ck_admin_log` VALUES ('303', '1', 'platform/create', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\Platform [ {{%platform}} ]  {{%CREATED%}} {{%ID%}} 5 {{%RECORD%}}: <br>平台ID(id) => 5,<br>游戏平台名称(name) => 欧博,<br>平台代码(code) => OB,<br>api地址(api_host) => ,<br>应用ID(app_id) => ,<br>ap密钥(app_secret) => ,<br>登陆地址(login_url) => ,<br>平台状态 1 激活 0 停用(status) => 1,<br>购买额度(buy_amount) => ,<br>累计购买额度(total_amount) => ,<br>平台可用额度(available_amount) => 3456667,<br>平台冻结额度(frozen_amount) => ,<br>更新日期(updated_at) => ,<br>创建日期(created_at) => ', '1540294320', '1540294320');
+INSERT INTO `ck_admin_log` VALUES ('304', '1', 'platform/create', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\Platform [ {{%platform}} ]  {{%CREATED%}} {{%ID%}} 6 {{%RECORD%}}: <br>平台ID(id) => 6,<br>游戏平台名称(name) => 彩票投注,<br>平台代码(code) => CP,<br>api地址(api_host) => ,<br>应用ID(app_id) => ,<br>ap密钥(app_secret) => ,<br>登陆地址(login_url) => ,<br>平台状态 1 激活 0 停用(status) => 1,<br>购买额度(buy_amount) => ,<br>累计购买额度(total_amount) => ,<br>平台可用额度(available_amount) => 456778,<br>平台冻结额度(frozen_amount) => ,<br>更新日期(updated_at) => ,<br>创建日期(created_at) => ', '1540294338', '1540294338');
+INSERT INTO `ck_admin_log` VALUES ('305', '1', 'game-type/create', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\GameType [ {{%game_type}} ]  {{%CREATED%}} {{%ID%}} 1 {{%RECORD%}}: <br>游戏类型ID(id) => 1,<br>类型名称(name) => 百家乐,<br>游戏类型英文名(name_en) => baret,<br>更新日期(updated_at) => ,<br>创建日期(created_at) => ', '1540294370', '1540294370');
+INSERT INTO `ck_admin_log` VALUES ('306', '1', 'game-type/create', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\GameType [ {{%game_type}} ]  {{%CREATED%}} {{%ID%}} 2 {{%RECORD%}}: <br>游戏类型ID(id) => 2,<br>类型名称(name) => 龙虎,<br>游戏类型英文名(name_en) => dragon_tiger,<br>更新日期(updated_at) => ,<br>创建日期(created_at) => ', '1540294409', '1540294409');
+INSERT INTO `ck_admin_log` VALUES ('307', '1', 'game-type/update', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\GameType [ {{%game_type}} ]  {{%UPDATED%}} {{%ID%}} 1 {{%RECORD%}}: <br>游戏类型英文名(name_en) : baret=>baccarat', '1540294439', '1540294439');
+INSERT INTO `ck_admin_log` VALUES ('308', '1', 'game-type/create', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\GameType [ {{%game_type}} ]  {{%CREATED%}} {{%ID%}} 3 {{%RECORD%}}: <br>游戏类型ID(id) => 3,<br>类型名称(name) => 单挑,<br>游戏类型英文名(name_en) => one_on_one,<br>更新日期(updated_at) => ,<br>创建日期(created_at) => ', '1540294463', '1540294463');
+INSERT INTO `ck_admin_log` VALUES ('309', '1', 'bank/create', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\CompanyBank [ {{%company_bank}} ]  {{%CREATED%}} {{%ID%}} 22222222 {{%RECORD%}}: <br>银行账号ID(id) => 22222222,<br>开户姓名(bank_username) => 张三,<br>银行账号(bank_account) => 8888888888888,<br>银行名称(bank_name) => 中国银行,<br>开户省份(province) => ,<br>开户城市(city) => ,<br>网点名称(branch_name) => ,<br>银行卡类型 1:借记卡  2：信用卡(card_type) => 1,<br>账号状态 1：启用 0：停用(status) => 1,<br>创建者ID(created_by_id) => ,<br>创建者IP(created_by_ip) => ,<br>创建日期(created_at) => ,<br>修改日期(updated_at) => ', '1540296553', '1540296553');
+INSERT INTO `ck_admin_log` VALUES ('310', '1', 'user/update', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\User [ {{%user}} ]  {{%UPDATED%}} {{%ID%}} 1 {{%RECORD%}}: <br>洗码率(xima_rate) : =>0.005,<br>洗码类别(xima_type) : =>1,<br>查看洗码(xima_status) : =>1,<br>最后修改时间(updated_at) : 0=>1540373120', '1540373120', '1540373120');
+INSERT INTO `ck_admin_log` VALUES ('311', '1', 'user/update', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\User [ {{%user}} ]  {{%UPDATED%}} {{%ID%}} 1 {{%RECORD%}}: <br>洗码率(xima_rate) : 0.005=>0.5,<br>最后修改时间(updated_at) : 1540373120=>1540373173', '1540373173', '1540373173');
+INSERT INTO `ck_admin_log` VALUES ('312', '1', 'admin-menu/delete', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\Menu [ {{%menu}} ]  {{%DELETED%}} {{%ID%}} 56 {{%RECORD%}}: <br>序号(id) => 56,<br>类型(type) => 0,<br>父分类Id(parent_id) => 13,<br>名称(name) => 登陆查询,<br>地址(url) => user/loging,<br>图标(icon) => ,<br>排序(sort) => 4,<br>新窗口打开(target) => _blank,<br>绝对地址(is_absolute_url) => 0,<br>是否显示(is_display) => 1,<br>创建时间(created_at) => 1539920151,<br>最后更新(updated_at) => 1539937573', '1540429435', '1540429435');
+INSERT INTO `ck_admin_log` VALUES ('313', '1', 'admin-menu/delete', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\Menu [ {{%menu}} ]  {{%DELETED%}} {{%ID%}} 76 {{%RECORD%}}: <br>序号(id) => 76,<br>类型(type) => 0,<br>父分类Id(parent_id) => 13,<br>名称(name) => 会员报表,<br>地址(url) => user/report,<br>图标(icon) => ,<br>排序(sort) => 1,<br>新窗口打开(target) => _blank,<br>绝对地址(is_absolute_url) => 0,<br>是否显示(is_display) => 1,<br>创建时间(created_at) => 1539922562,<br>最后更新(updated_at) => 1539937523', '1540536864', '1540536864');
+INSERT INTO `ck_admin_log` VALUES ('314', '1', 'admin-menu/create', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\Menu [ {{%menu}} ]  {{%CREATED%}} {{%ID%}} 87 {{%RECORD%}}: <br>序号(id) => 87,<br>类型(type) => 0,<br>父分类Id(parent_id) => 1,<br>名称(name) => 财务设置,<br>地址(url) => setting/finance,<br>图标(icon) => ,<br>排序(sort) => 0,<br>新窗口打开(target) => _blank,<br>绝对地址(is_absolute_url) => 0,<br>是否显示(is_display) => 1,<br>创建时间(created_at) => 1540887404,<br>最后更新(updated_at) => 1540887404', '1540887404', '1540887404');
+INSERT INTO `ck_admin_log` VALUES ('315', '1', 'admin-menu/sort', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\Menu [ {{%menu}} ]  {{%UPDATED%}} {{%ID%}} 4 {{%RECORD%}}: <br>排序(sort) : 4=>5,<br>最后更新(updated_at) : 1539160863=>1540887434', '1540887434', '1540887434');
+INSERT INTO `ck_admin_log` VALUES ('316', '1', 'admin-menu/sort', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\Menu [ {{%menu}} ]  {{%UPDATED%}} {{%ID%}} 87 {{%RECORD%}}: <br>排序(sort) : 0=>4,<br>最后更新(updated_at) : 1540887404=>1540887435', '1540887435', '1540887435');
+INSERT INTO `ck_admin_log` VALUES ('317', '1', 'setting/finance', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\form\\SettingFinanceForm [ {{%options}} ]  {{%UPDATED%}} {{%ID%}} 44 {{%RECORD%}}: <br>Value(value) : =>500000', '1540887748', '1540887748');
+INSERT INTO `ck_admin_log` VALUES ('318', '1', 'setting/finance', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\form\\SettingFinanceForm [ {{%options}} ]  {{%UPDATED%}} {{%ID%}} 45 {{%RECORD%}}: <br>Value(value) : =>100', '1540887748', '1540887748');
+INSERT INTO `ck_admin_log` VALUES ('319', '1', 'setting/finance', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\form\\SettingFinanceForm [ {{%options}} ]  {{%UPDATED%}} {{%ID%}} 46 {{%RECORD%}}: <br>Value(value) : =>50000', '1540887748', '1540887748');
+INSERT INTO `ck_admin_log` VALUES ('320', '1', 'setting/finance', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\form\\SettingFinanceForm [ {{%options}} ]  {{%UPDATED%}} {{%ID%}} 47 {{%RECORD%}}: <br>Value(value) : =>100', '1540887748', '1540887748');
+INSERT INTO `ck_admin_log` VALUES ('321', '1', 'setting/finance', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\form\\SettingFinanceForm [ {{%options}} ]  {{%UPDATED%}} {{%ID%}} 48 {{%RECORD%}}: <br>Value(value) : =>1', '1540887748', '1540887748');
+INSERT INTO `ck_admin_log` VALUES ('322', '1', 'setting/finance', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\form\\SettingFinanceForm [ {{%options}} ]  {{%UPDATED%}} {{%ID%}} 49 {{%RECORD%}}: <br>Value(value) : =>1', '1540887748', '1540887748');
+INSERT INTO `ck_admin_log` VALUES ('323', '1', 'setting/finance', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\form\\SettingFinanceForm [ {{%options}} ]  {{%UPDATED%}} {{%ID%}} 50 {{%RECORD%}}: <br>Value(value) : =>10000', '1540887748', '1540887748');
+INSERT INTO `ck_admin_log` VALUES ('324', '1', 'setting/finance', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\form\\SettingFinanceForm [ {{%options}} ]  {{%UPDATED%}} {{%ID%}} 51 {{%RECORD%}}: <br>Value(value) : =>10000', '1540887748', '1540887748');
+INSERT INTO `ck_admin_log` VALUES ('325', '1', 'user/change-amount', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\ChangeAmountRecord [ {{%change_amount_record}} ]  {{%CREATED%}}  {{%RECORD%}}: <br>ID(id) => ,<br>用户ID(user_id) => 1,<br>上下分(switch) => 1,<br>额度(amount) => 1,<br>余额(after_amount) => ,<br>备注(remark) => ,<br>提交者ID(submit_by_id) => ,<br>提交者名称(submit_by_name) => ,<br>审核人员ID(audit_by_id) => ,<br>审核人员(audit_by_name) => ,<br>审核备注(audit_remark) => ,<br>审核时间(audit_at) => ,<br>创建时间(created_at) => ,<br>最后修改时间(updated_at) => ', '1540894513', '1540894513');
+INSERT INTO `ck_admin_log` VALUES ('326', '1', 'user/change-amount', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\ChangeAmountRecord [ {{%change_amount_record}} ]  {{%CREATED%}} {{%ID%}} 2 {{%RECORD%}}: <br>ID(id) => 2,<br>用户ID(user_id) => 1,<br>上下分(switch) => 2,<br>额度(amount) => 500,<br>余额(after_amount) => ,<br>备注(remark) => ,<br>提交者ID(submit_by_id) => ,<br>提交者名称(submit_by_name) => ,<br>审核人员ID(audit_by_id) => ,<br>审核人员(audit_by_name) => ,<br>审核备注(audit_remark) => ,<br>审核时间(audit_at) => ,<br>创建时间(created_at) => ,<br>最后修改时间(updated_at) => ', '1540897021', '1540897021');
+INSERT INTO `ck_admin_log` VALUES ('327', '1', 'user/change-amount', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} common\\models\\UserAccount [ {{%user_account}} ]  {{%UPDATED%}}  {{%RECORD%}}: <br>冻结金额(frozen_amount) : 0.0000=>200,<br>更新日期(updated_at) : =>1540900696', '1540900696', '1540900696');
+INSERT INTO `ck_admin_log` VALUES ('328', '1', 'user/change-amount', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\ChangeAmountRecord [ {{%change_amount_record}} ]  {{%CREATED%}} {{%ID%}} 3 {{%RECORD%}}: <br>ID(id) => 3,<br>用户ID(user_id) => 1,<br>上下分(switch) => 1,<br>额度(amount) => 200,<br>余额(after_amount) => 5236.0000,<br>审核状态(status) => 1,<br>备注(remark) => 测试上分200,<br>提交者ID(submit_by_id) => 1,<br>提交者名称(submit_by_name) => admin,<br>审核人员ID(audit_by_id) => ,<br>审核人员(audit_by_name) => ,<br>审核备注(audit_remark) => ,<br>审核时间(audit_at) => ,<br>创建时间(created_at) => 1540900696,<br>最后修改时间(updated_at) => 1540900696', '1540900696', '1540900696');
+INSERT INTO `ck_admin_log` VALUES ('329', '1', 'setting/finance', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\form\\SettingFinanceForm [ {{%options}} ]  {{%UPDATED%}} {{%ID%}} 48 {{%RECORD%}}: <br>Value(value) : 1=>0', '1540900740', '1540900740');
+INSERT INTO `ck_admin_log` VALUES ('330', '1', 'setting/finance', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\form\\SettingFinanceForm [ {{%options}} ]  {{%UPDATED%}} {{%ID%}} 49 {{%RECORD%}}: <br>Value(value) : 1=>0', '1540900740', '1540900740');
+INSERT INTO `ck_admin_log` VALUES ('331', '1', 'user/change-amount', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} common\\models\\UserAccount [ {{%user_account}} ]  {{%UPDATED%}}  {{%RECORD%}}: <br>可用余额(available_amount) : 5236.0000=>4636,<br>更新日期(updated_at) : 1540900696=>1540900762', '1540900762', '1540900762');
+INSERT INTO `ck_admin_log` VALUES ('332', '1', 'user/change-amount', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\ChangeAmountRecord [ {{%change_amount_record}} ]  {{%CREATED%}} {{%ID%}} 4 {{%RECORD%}}: <br>ID(id) => 4,<br>用户ID(user_id) => 1,<br>上下分(switch) => 2,<br>额度(amount) => 600,<br>余额(after_amount) => 4636,<br>审核状态(status) => 2,<br>备注(remark) => 非审核下分600,<br>提交者ID(submit_by_id) => 1,<br>提交者名称(submit_by_name) => admin,<br>审核人员ID(audit_by_id) => 1,<br>审核人员(audit_by_name) => admin,<br>审核备注(audit_remark) => ,<br>审核时间(audit_at) => 1540900762,<br>创建时间(created_at) => 1540900762,<br>最后修改时间(updated_at) => 1540900762', '1540900762', '1540900762');
+INSERT INTO `ck_admin_log` VALUES ('333', '1', 'user/change-amount', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} common\\models\\UserAccountRecord [ {{%trade}} ]  {{%CREATED%}} {{%ID%}} 6 {{%RECORD%}}: <br>会员账户变更日志表(id) => 6,<br>会员ID(user_id) => 1,<br>收支类型(switch) => 2,<br>交易单号(trade_no) => 4,<br>交易类型(trade_type_id) => 6,<br>备注信息(remark) => 非审核下分600,<br>交易金额(amount) => 600,<br>交易后余额(after_amount) => 4636,<br>更新日期(updated_at) => ,<br>交易时间(created_at) => ', '1540900762', '1540900762');
+INSERT INTO `ck_admin_log` VALUES ('334', '1', 'user/change-amount', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} common\\models\\UserAccount [ {{%user_account}} ]  {{%UPDATED%}}  {{%RECORD%}}: <br>可用余额(available_amount) : 4636.0000=>5536,<br>更新日期(updated_at) : 1540900762=>1540900860', '1540900860', '1540900860');
+INSERT INTO `ck_admin_log` VALUES ('335', '1', 'user/change-amount', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\ChangeAmountRecord [ {{%change_amount_record}} ]  {{%CREATED%}} {{%ID%}} 5 {{%RECORD%}}: <br>ID(id) => 5,<br>用户ID(user_id) => 1,<br>上下分(switch) => 1,<br>额度(amount) => 900,<br>余额(after_amount) => 5536,<br>审核状态(status) => 2,<br>备注(remark) => 非审核上分900分,<br>提交者ID(submit_by_id) => 1,<br>提交者名称(submit_by_name) => admin,<br>审核人员ID(audit_by_id) => 1,<br>审核人员(audit_by_name) => admin,<br>审核备注(audit_remark) => ,<br>审核时间(audit_at) => 1540900860,<br>创建时间(created_at) => 1540900860,<br>最后修改时间(updated_at) => 1540900860', '1540900860', '1540900860');
+INSERT INTO `ck_admin_log` VALUES ('336', '1', 'user/change-amount', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} common\\models\\UserAccountRecord [ {{%trade}} ]  {{%CREATED%}} {{%ID%}} 7 {{%RECORD%}}: <br>会员账户变更日志表(id) => 7,<br>会员ID(user_id) => 1,<br>收支类型(switch) => 1,<br>交易单号(trade_no) => 5,<br>交易类型(trade_type_id) => 5,<br>备注信息(remark) => 非审核上分900分,<br>交易金额(amount) => 900,<br>交易后余额(after_amount) => 5536,<br>更新日期(updated_at) => ,<br>交易时间(created_at) => ', '1540900860', '1540900860');
+INSERT INTO `ck_admin_log` VALUES ('337', '1', 'user/change-amount', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} common\\models\\UserAccount [ {{%user_account}} ]  {{%UPDATED%}}  {{%RECORD%}}: <br>可用余额(available_amount) : 5536.0000=>536,<br>更新日期(updated_at) : 1540900860=>1540901085', '1540901085', '1540901085');
+INSERT INTO `ck_admin_log` VALUES ('338', '1', 'user/change-amount', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\ChangeAmountRecord [ {{%change_amount_record}} ]  {{%CREATED%}} {{%ID%}} 6 {{%RECORD%}}: <br>ID(id) => 6,<br>用户ID(user_id) => 1,<br>上下分(switch) => 2,<br>额度(amount) => 5000,<br>余额(after_amount) => 536,<br>审核状态(status) => 2,<br>备注(remark) => 下分5000,<br>提交者ID(submit_by_id) => 1,<br>提交者名称(submit_by_name) => admin,<br>审核人员ID(audit_by_id) => 1,<br>审核人员(audit_by_name) => admin,<br>审核备注(audit_remark) => 自动审核,<br>审核时间(audit_at) => 1540901085,<br>创建时间(created_at) => 1540901085,<br>最后修改时间(updated_at) => 1540901085', '1540901085', '1540901085');
+INSERT INTO `ck_admin_log` VALUES ('339', '1', 'user/change-amount', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} common\\models\\UserAccountRecord [ {{%user_account_record}} ]  {{%CREATED%}} {{%ID%}} 6 {{%RECORD%}}: <br>会员账户变更日志表(id) => 6,<br>会员ID(user_id) => 1,<br>收支类型(switch) => 2,<br>交易单号(trade_no) => 6,<br>交易类型(trade_type_id) => 6,<br>备注信息(remark) => 下分5000,<br>交易金额(amount) => 5000,<br>交易后余额(after_amount) => 536,<br>更新日期(updated_at) => 1540901085,<br>交易时间(created_at) => 1540901085', '1540901085', '1540901085');
+INSERT INTO `ck_admin_log` VALUES ('340', '1', 'user/change-amount', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} common\\models\\UserAccount [ {{%user_account}} ]  {{%UPDATED%}}  {{%RECORD%}}: <br>可用余额(available_amount) : 536.0000=>8536,<br>更新日期(updated_at) : 1540901085=>1540901118', '1540901118', '1540901118');
+INSERT INTO `ck_admin_log` VALUES ('341', '1', 'user/change-amount', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\ChangeAmountRecord [ {{%change_amount_record}} ]  {{%CREATED%}} {{%ID%}} 7 {{%RECORD%}}: <br>ID(id) => 7,<br>用户ID(user_id) => 1,<br>上下分(switch) => 1,<br>额度(amount) => 8000,<br>余额(after_amount) => 8536,<br>审核状态(status) => 2,<br>备注(remark) => 上分8000,<br>提交者ID(submit_by_id) => 1,<br>提交者名称(submit_by_name) => admin,<br>审核人员ID(audit_by_id) => 1,<br>审核人员(audit_by_name) => admin,<br>审核备注(audit_remark) => 自动审核,<br>审核时间(audit_at) => 1540901118,<br>创建时间(created_at) => 1540901118,<br>最后修改时间(updated_at) => 1540901118', '1540901118', '1540901118');
+INSERT INTO `ck_admin_log` VALUES ('342', '1', 'user/change-amount', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} common\\models\\UserAccountRecord [ {{%user_account_record}} ]  {{%CREATED%}} {{%ID%}} 7 {{%RECORD%}}: <br>会员账户变更日志表(id) => 7,<br>会员ID(user_id) => 1,<br>收支类型(switch) => 1,<br>交易单号(trade_no) => 7,<br>交易类型(trade_type_id) => 5,<br>备注信息(remark) => 上分8000,<br>交易金额(amount) => 8000,<br>交易后余额(after_amount) => 8536,<br>更新日期(updated_at) => 1540901118,<br>交易时间(created_at) => 1540901118', '1540901118', '1540901118');
+INSERT INTO `ck_admin_log` VALUES ('343', '1', 'agent/update', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\Agent [ {{%agent}} ]  {{%UPDATED%}} {{%ID%}} 2 {{%RECORD%}}: <br>洗码率(xima_rate) : 0.009=>0.009,<br>修改日期(updated_at) : 1539253756=>1540903157', '1540903157', '1540903157');
+INSERT INTO `ck_admin_log` VALUES ('344', '1', 'agent/update', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\Agent [ {{%agent}} ]  {{%UPDATED%}} {{%ID%}} 4 {{%RECORD%}}: <br>洗码率(xima_rate) : 0.009=>0.009,<br>修改日期(updated_at) : 1539254184=>1540903557', '1540903557', '1540903557');
+INSERT INTO `ck_admin_log` VALUES ('345', '1', 'agent/update', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\Agent [ {{%agent}} ]  {{%UPDATED%}} {{%ID%}} 4 {{%RECORD%}}: <br>洗码率(xima_rate) : 0.009=>0.009,<br>修改日期(updated_at) : 1540903557=>1540903571', '1540903571', '1540903571');
+INSERT INTO `ck_admin_log` VALUES ('346', '1', 'agent/update', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\Agent [ {{%agent}} ]  {{%UPDATED%}} {{%ID%}} 4 {{%RECORD%}}: <br>洗码率(xima_rate) : 0.009=>0.9,<br>占成(rebate_rate) : 0.350=>35,<br>修改日期(updated_at) : 1540903571=>1540903641', '1540903641', '1540903641');
+INSERT INTO `ck_admin_log` VALUES ('347', '1', 'agent/update', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\Agent [ {{%agent}} ]  {{%UPDATED%}} {{%ID%}} 4 {{%RECORD%}}: <br>洗码率(xima_rate) : 0.900=>0.009,<br>占成(rebate_rate) : 9.999=>0.35,<br>修改日期(updated_at) : 1540903641=>1540903732', '1540903732', '1540903732');
+INSERT INTO `ck_admin_log` VALUES ('348', '1', 'agent/update', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\Agent [ {{%agent}} ]  {{%UPDATED%}} {{%ID%}} 2 {{%RECORD%}}: <br>洗码率(xima_rate) : 0.009=>0.009,<br>修改日期(updated_at) : 1540903157=>1540903799', '1540903799', '1540903799');
+INSERT INTO `ck_admin_log` VALUES ('349', '1', 'agent/update', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\Agent [ {{%agent}} ]  {{%UPDATED%}} {{%ID%}} 2 {{%RECORD%}}: <br>洗码率(xima_rate) : 0.009=>0.009,<br>修改日期(updated_at) : 1540903799=>1540903901', '1540903901', '1540903901');
+INSERT INTO `ck_admin_log` VALUES ('350', '1', 'admin-menu/update', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\Menu [ {{%menu}} ]  {{%UPDATED%}} {{%ID%}} 58 {{%RECORD%}}: <br>地址(url) : agent/rebate=>rebate/index,<br>最后更新(updated_at) : 1539937599=>1540904198', '1540904198', '1540904198');
+INSERT INTO `ck_admin_log` VALUES ('351', '1', 'admin-menu/update', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\Menu [ {{%menu}} ]  {{%UPDATED%}} {{%ID%}} 59 {{%RECORD%}}: <br>地址(url) : agent/trade=>agent-trade/index,<br>最后更新(updated_at) : 1539937617=>1540904592', '1540904592', '1540904592');
+INSERT INTO `ck_admin_log` VALUES ('352', '1', 'agent/update', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\Agent [ {{%agent}} ]  {{%UPDATED%}} {{%ID%}} 2 {{%RECORD%}}: <br>洗码率(xima_rate) : 0.009=>0.009,<br>状态(status) : 1=>3,<br>修改日期(updated_at) : 1540903901=>1540952803', '1540952803', '1540952803');
+INSERT INTO `ck_admin_log` VALUES ('353', '1', 'setting/agent', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\form\\SettingAgentForm [ {{%options}} ]  {{%UPDATED%}} {{%ID%}} 29 {{%RECORD%}}: <br>Value(value) : 3=>4', '1540954652', '1540954652');
+INSERT INTO `ck_admin_log` VALUES ('354', '1', 'setting/agent', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\form\\SettingAgentForm [ {{%options}} ]  {{%UPDATED%}} {{%ID%}} 29 {{%RECORD%}}: <br>Value(value) : 4=>3', '1540954666', '1540954666');
+INSERT INTO `ck_admin_log` VALUES ('355', '1', 'agent/create', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\Agent [ {{%agent}} ]  {{%CREATED%}} {{%ID%}} 6 {{%RECORD%}}: <br>代理id(id) => 6,<br>代理账号(username) => top,<br>Password Hash(password_hash) => $2y$13$4c5kphKdj4xO3C6rJX51aOV.cWj1qHDBUhOMWHG/BHOl1nj1yY0dm,<br>管理员cookie验证auth_key(auth_key) => 7FC-HCBqqO-PAq7rqZT51-eH1MC31XFy,<br>管理员找回密码token(password_reset_token) => ,<br>真实姓名(realname) => 顶级代理,<br>邮箱(email) => ,<br>手机号码(mobile) => ,<br>头像(avatar) => ,<br>推广码(promo_code) => B9UXF2WABB,<br>上层账号(parent_id) => ,<br>总代账号(top_id) => ,<br>代理层级(agent_level) => 1,<br>查看洗码(xima_status) => 1,<br>洗码率(xima_rate) => 0.01,<br>洗码类别(xima_type) => 2,<br>占成(rebate_rate) => 0.3,<br>预设玩家层级(default_player_level) => ,<br>返佣方案(rebate_id) => ,<br>账户余额(available_amount) => ,<br>冻结余额(frozen_amount) => ,<br>返佣总额(rebate_amount) => ,<br>主货币(currency) => ,<br>创建渠道(reg_from) => ,<br>注册IP(reg_ip) => ,<br>状态(status) => 1,<br>备注(memo) => ,<br>注册日期(created_at) => 1540956815,<br>修改日期(updated_at) => 1540956815', '1540956816', '1540956816');
+INSERT INTO `ck_admin_log` VALUES ('356', '1', 'agent/update', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\Agent [ {{%agent}} ]  {{%UPDATED%}} {{%ID%}} 6 {{%RECORD%}}: <br>占成(rebate_rate) : 0.300=>0.35,<br>修改日期(updated_at) : 1540956815=>1540956830', '1540956830', '1540956830');
+INSERT INTO `ck_admin_log` VALUES ('357', '1', 'agent/update', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\Agent [ {{%agent}} ]  {{%UPDATED%}} {{%ID%}} 6 {{%RECORD%}}: <br>占成(rebate_rate) : 0.350=>0.36,<br>修改日期(updated_at) : 1540956830=>1540956842', '1540956842', '1540956842');
+INSERT INTO `ck_admin_log` VALUES ('358', '1', 'agent/update', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\Agent [ {{%agent}} ]  {{%UPDATED%}} {{%ID%}} 6 {{%RECORD%}}: <br>占成(rebate_rate) : 0.360=>0.35,<br>修改日期(updated_at) : 1540956842=>1540957246', '1540957246', '1540957246');
+INSERT INTO `ck_admin_log` VALUES ('359', '1', 'agent/create', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\Agent [ {{%agent}} ]  {{%CREATED%}} {{%ID%}} 7 {{%RECORD%}}: <br>代理id(id) => 7,<br>代理账号(username) => level2,<br>Password Hash(password_hash) => $2y$13$6uwQW/aLYuIo5ZalXrOKlu0SAwpLPOMplpXJftFer39GCDTZ4tPEu,<br>管理员cookie验证auth_key(auth_key) => NYTGIzMnzXgbEUZXDphwMTWDAd8NP7OE,<br>管理员找回密码token(password_reset_token) => ,<br>真实姓名(realname) => 2级代理,<br>邮箱(email) => ,<br>手机号码(mobile) => ,<br>头像(avatar) => ,<br>推广码(promo_code) => AX9_FKEJB6,<br>上层账号(parent_id) => 6,<br>总代账号(top_id) => 6,<br>代理层级(agent_level) => 2,<br>查看洗码(xima_status) => 1,<br>洗码率(xima_rate) => 0.008,<br>洗码类别(xima_type) => 2,<br>占成(rebate_rate) => 0.3,<br>预设玩家层级(default_player_level) => ,<br>返佣方案(rebate_id) => ,<br>账户余额(available_amount) => ,<br>冻结余额(frozen_amount) => ,<br>返佣总额(rebate_amount) => ,<br>主货币(currency) => ,<br>创建渠道(reg_from) => ,<br>注册IP(reg_ip) => ,<br>状态(status) => 1,<br>备注(memo) => ,<br>注册日期(created_at) => 1540957467,<br>修改日期(updated_at) => 1540957467', '1540957467', '1540957467');
+INSERT INTO `ck_admin_log` VALUES ('360', '1', 'setting/agent', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\form\\SettingAgentForm [ {{%options}} ]  {{%UPDATED%}} {{%ID%}} 43 {{%RECORD%}}: <br>Value(value) : 1=>0', '1540958365', '1540958365');
+INSERT INTO `ck_admin_log` VALUES ('361', '1', 'setting/agent', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\form\\SettingAgentForm [ {{%options}} ]  {{%UPDATED%}} {{%ID%}} 43 {{%RECORD%}}: <br>Value(value) : 0=>1', '1540958493', '1540958493');
+INSERT INTO `ck_admin_log` VALUES ('362', '1', 'agent/create', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\Agent [ {{%agent}} ]  {{%CREATED%}} {{%ID%}} 8 {{%RECORD%}}: <br>代理id(id) => 8,<br>代理账号(username) => level3,<br>Password Hash(password_hash) => $2y$13$Ax6onFxqiYBmk35U56s72.69tpylZSUaDSGABNe.XbHEUr4RwUGRO,<br>管理员cookie验证auth_key(auth_key) => 9_zMyz3UZiEjnCoq4nU2ZYdXD025gtyd,<br>管理员找回密码token(password_reset_token) => ,<br>真实姓名(realname) => 三级代理,<br>邮箱(email) => ,<br>手机号码(mobile) => ,<br>头像(avatar) => ,<br>推广码(promo_code) => WHOWJJLXV5,<br>上层账号(parent_id) => 7,<br>总代账号(top_id) => 6,<br>代理层级(agent_level) => 3,<br>查看洗码(xima_status) => 1,<br>洗码率(xima_rate) => 0,<br>洗码类别(xima_type) => 2,<br>占成(rebate_rate) => 0,<br>预设玩家层级(default_player_level) => ,<br>返佣方案(rebate_id) => ,<br>账户余额(available_amount) => ,<br>冻结余额(frozen_amount) => ,<br>返佣总额(rebate_amount) => ,<br>主货币(currency) => ,<br>创建渠道(reg_from) => ,<br>注册IP(reg_ip) => ,<br>状态(status) => 1,<br>备注(memo) => ,<br>注册日期(created_at) => 1540969481,<br>修改日期(updated_at) => 1540969481', '1540969481', '1540969481');
+INSERT INTO `ck_admin_log` VALUES ('363', '1', 'agent/create', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\Agent [ {{%agent}} ]  {{%CREATED%}} {{%ID%}} 9 {{%RECORD%}}: <br>代理id(id) => 9,<br>代理账号(username) => sssss,<br>Password Hash(password_hash) => $2y$13$MvjsaNI6sfOa1SBUEhSAx.VcR7JEu4xbvAOjjlmZYDjWnJ3dn/FXy,<br>管理员cookie验证auth_key(auth_key) => 3C_DqxoZlWcxh9LHZS5RW-9_3wviG02z,<br>管理员找回密码token(password_reset_token) => ,<br>真实姓名(realname) => sssss,<br>邮箱(email) => ,<br>手机号码(mobile) => ,<br>头像(avatar) => ,<br>推广码(promo_code) => F8RV1-BHHM,<br>上层账号(parent_id) => ,<br>总代账号(top_id) => ,<br>代理层级(agent_level) => 1,<br>查看洗码(xima_status) => 1,<br>洗码率(xima_rate) => 0.01,<br>洗码类别(xima_type) => 2,<br>占成(rebate_rate) => 0.3,<br>预设玩家层级(default_player_level) => ,<br>返佣方案(rebate_id) => ,<br>账户余额(available_amount) => ,<br>冻结余额(frozen_amount) => ,<br>返佣总额(rebate_amount) => ,<br>主货币(currency) => ,<br>创建渠道(reg_from) => ,<br>注册IP(reg_ip) => ,<br>状态(status) => 1,<br>备注(memo) => ,<br>注册日期(created_at) => 1540972917,<br>修改日期(updated_at) => 1540972917', '1540972917', '1540972917');
+INSERT INTO `ck_admin_log` VALUES ('364', '1', 'agent/create', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\Agent [ {{%agent}} ]  {{%CREATED%}} {{%ID%}} 10 {{%RECORD%}}: <br>代理id(id) => 10,<br>代理账号(username) => ggggg,<br>Password Hash(password_hash) => $2y$13$mTnb6TYbbelPcZmZN5nwu.Bu3NZx0AHCA4fesoqB59WsW.burAWCa,<br>管理员cookie验证auth_key(auth_key) => 5gUHJDotbjl6FUEY7aCA63hbQ0jBqGIS,<br>管理员找回密码token(password_reset_token) => ,<br>真实姓名(realname) => gggg,<br>邮箱(email) => ,<br>手机号码(mobile) => ,<br>头像(avatar) => ,<br>推广码(promo_code) => TUZIUJORLZ,<br>上层账号(parent_id) => 9,<br>总代账号(top_id) => 9,<br>代理层级(agent_level) => 2,<br>查看洗码(xima_status) => 1,<br>洗码率(xima_rate) => 0,<br>洗码类别(xima_type) => 2,<br>占成(rebate_rate) => 0,<br>预设玩家层级(default_player_level) => ,<br>返佣方案(rebate_id) => ,<br>账户余额(available_amount) => ,<br>冻结余额(frozen_amount) => ,<br>返佣总额(rebate_amount) => ,<br>主货币(currency) => ,<br>创建渠道(reg_from) => ,<br>注册IP(reg_ip) => ,<br>状态(status) => 1,<br>备注(memo) => ,<br>注册日期(created_at) => 1540973024,<br>修改日期(updated_at) => 1540973024', '1540973024', '1540973024');
+INSERT INTO `ck_admin_log` VALUES ('365', '1', 'agent/create', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\Agent [ {{%agent}} ]  {{%CREATED%}} {{%ID%}} 11 {{%RECORD%}}: <br>代理id(id) => 11,<br>代理账号(username) => hhhhh,<br>Password Hash(password_hash) => $2y$13$0/HDtiBhiE4S0lyxUTujdOi/wgslaywUIYNEpyGB26xglcoBjP.OW,<br>管理员cookie验证auth_key(auth_key) => u6HtaGzTDSYyjmR2JIVH91gPV0m1tayR,<br>管理员找回密码token(password_reset_token) => ,<br>真实姓名(realname) => hhhhh,<br>邮箱(email) => ,<br>手机号码(mobile) => ,<br>头像(avatar) => ,<br>推广码(promo_code) => GFRH9LWLMT,<br>上层账号(parent_id) => 10,<br>总代账号(top_id) => 9,<br>代理层级(agent_level) => 3,<br>查看洗码(xima_status) => 1,<br>洗码率(xima_rate) => 0,<br>洗码类别(xima_type) => 2,<br>占成(rebate_rate) => 0,<br>预设玩家层级(default_player_level) => ,<br>返佣方案(rebate_id) => ,<br>账户余额(available_amount) => ,<br>冻结余额(frozen_amount) => ,<br>返佣总额(rebate_amount) => ,<br>主货币(currency) => ,<br>创建渠道(reg_from) => ,<br>注册IP(reg_ip) => ,<br>状态(status) => 1,<br>备注(memo) => ,<br>注册日期(created_at) => 1540973041,<br>修改日期(updated_at) => 1540973041', '1540973041', '1540973041');
+INSERT INTO `ck_admin_log` VALUES ('366', '1', 'agent/update', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\Agent [ {{%agent}} ]  {{%UPDATED%}} {{%ID%}} 8 {{%RECORD%}}: <br>洗码率(xima_rate) : 0.000=>0.008,<br>占成(rebate_rate) : 0.000=>0.3,<br>修改日期(updated_at) : 1540969481=>1540974039', '1540974039', '1540974039');
+INSERT INTO `ck_admin_log` VALUES ('367', '1', 'agent/update', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\Agent [ {{%agent}} ]  {{%UPDATED%}} {{%ID%}} 8 {{%RECORD%}}: <br>修改日期(updated_at) : 1540974039=>1540974053', '1540974053', '1540974053');
+INSERT INTO `ck_admin_log` VALUES ('368', '1', 'agent/update', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\Agent [ {{%agent}} ]  {{%UPDATED%}} {{%ID%}} 2 {{%RECORD%}}: <br>洗码率(xima_rate) : 0.009=>0.007,<br>修改日期(updated_at) : 1540952803=>1540974462', '1540974462', '1540974462');
+INSERT INTO `ck_admin_log` VALUES ('369', '1', 'agent/update', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\Agent [ {{%agent}} ]  {{%UPDATED%}} {{%ID%}} 11 {{%RECORD%}}: <br>修改日期(updated_at) : 1540973041=>1540974540', '1540974540', '1540974540');
+INSERT INTO `ck_admin_log` VALUES ('370', '1', 'agent/update', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\Agent [ {{%agent}} ]  {{%UPDATED%}} {{%ID%}} 10 {{%RECORD%}}: <br>占成(rebate_rate) : 0.000=>0.25,<br>修改日期(updated_at) : 1540973024=>1540975149', '1540975149', '1540975149');
+INSERT INTO `ck_admin_log` VALUES ('371', '1', 'agent/update', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\Agent [ {{%agent}} ]  {{%UPDATED%}} {{%ID%}} 10 {{%RECORD%}}: <br>占成(rebate_rate) : 0.250=>0.33,<br>修改日期(updated_at) : 1540975149=>1540975194', '1540975194', '1540975194');
+INSERT INTO `ck_admin_log` VALUES ('372', '1', 'setting/agent', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\form\\SettingAgentForm [ {{%options}} ]  {{%UPDATED%}} {{%ID%}} 30 {{%RECORD%}}: <br>Value(value) : 35=>0.35', '1540975746', '1540975746');
+INSERT INTO `ck_admin_log` VALUES ('373', '1', 'setting/agent', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\form\\SettingAgentForm [ {{%options}} ]  {{%UPDATED%}} {{%ID%}} 31 {{%RECORD%}}: <br>Value(value) : 30=>0.3', '1540975746', '1540975746');
+INSERT INTO `ck_admin_log` VALUES ('374', '1', 'setting/agent', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\form\\SettingAgentForm [ {{%options}} ]  {{%UPDATED%}} {{%ID%}} 41 {{%RECORD%}}: <br>Value(value) : 1=>0.01', '1540975746', '1540975746');
+INSERT INTO `ck_admin_log` VALUES ('375', '1', 'setting/agent', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\form\\SettingAgentForm [ {{%options}} ]  {{%UPDATED%}} {{%ID%}} 30 {{%RECORD%}}: ', '1540975818', '1540975818');
+INSERT INTO `ck_admin_log` VALUES ('376', '1', 'setting/agent', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\form\\SettingAgentForm [ {{%options}} ]  {{%UPDATED%}} {{%ID%}} 31 {{%RECORD%}}: ', '1540975818', '1540975818');
+INSERT INTO `ck_admin_log` VALUES ('377', '1', 'setting/agent', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\form\\SettingAgentForm [ {{%options}} ]  {{%UPDATED%}} {{%ID%}} 41 {{%RECORD%}}: <br>Value(value) : 0.01=>0.009', '1540975818', '1540975818');
+INSERT INTO `ck_admin_log` VALUES ('378', '1', 'user/update', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\User [ {{%user}} ]  {{%UPDATED%}} {{%ID%}} 1 {{%RECORD%}}: <br>洗码率(xima_rate) : 0.50=>0.008,<br>最后修改时间(updated_at) : 1540373173=>1540976511', '1540976511', '1540976511');
+INSERT INTO `ck_admin_log` VALUES ('379', '1', 'user/update', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\User [ {{%user}} ]  {{%UPDATED%}} {{%ID%}} 1 {{%RECORD%}}: <br>洗码率(xima_rate) : 0.0100=>0.008,<br>最后修改时间(updated_at) : 1540976511=>1540976611', '1540976611', '1540976611');
+INSERT INTO `ck_admin_log` VALUES ('380', '1', 'setting/agent', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\form\\SettingAgentForm [ {{%options}} ]  {{%UPDATED%}} {{%ID%}} 30 {{%RECORD%}}: ', '1540976643', '1540976643');
+INSERT INTO `ck_admin_log` VALUES ('381', '1', 'setting/agent', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\form\\SettingAgentForm [ {{%options}} ]  {{%UPDATED%}} {{%ID%}} 31 {{%RECORD%}}: ', '1540976643', '1540976643');
+INSERT INTO `ck_admin_log` VALUES ('382', '1', 'setting/agent', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\form\\SettingAgentForm [ {{%options}} ]  {{%UPDATED%}} {{%ID%}} 41 {{%RECORD%}}: <br>Value(value) : 0.009=>0.01', '1540976644', '1540976644');
+INSERT INTO `ck_admin_log` VALUES ('383', '1', 'user/change-amount', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} common\\models\\UserAccount [ {{%user_account}} ]  {{%UPDATED%}}  {{%RECORD%}}: <br>可用余额(available_amount) : =>8000,<br>更新日期(updated_at) : =>1540984908', '1540984908', '1540984908');
+INSERT INTO `ck_admin_log` VALUES ('384', '1', 'user/change-amount', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\ChangeAmountRecord [ {{%change_amount_record}} ]  {{%CREATED%}} {{%ID%}} 8 {{%RECORD%}}: <br>ID(id) => 8,<br>用户ID(user_id) => 5,<br>上下分(switch) => 1,<br>额度(amount) => 8000,<br>余额(after_amount) => 8000,<br>审核状态(status) => 2,<br>备注(remark) => ,<br>提交者ID(submit_by_id) => 1,<br>提交者名称(submit_by_name) => admin,<br>审核人员ID(audit_by_id) => 1,<br>审核人员(audit_by_name) => admin,<br>审核备注(audit_remark) => 自动审核,<br>审核时间(audit_at) => 1540984908,<br>创建时间(created_at) => 1540984908,<br>最后修改时间(updated_at) => 1540984908', '1540984908', '1540984908');
+INSERT INTO `ck_admin_log` VALUES ('385', '1', 'user/change-amount', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} common\\models\\UserAccountRecord [ {{%user_account_record}} ]  {{%CREATED%}} {{%ID%}} 8 {{%RECORD%}}: <br>会员账户变更日志表(id) => 8,<br>会员ID(user_id) => 5,<br>收支类型(switch) => 1,<br>交易单号(trade_no) => 8,<br>交易类型(trade_type_id) => 5,<br>备注信息(remark) => ,<br>交易金额(amount) => 8000,<br>交易后余额(after_amount) => 8000,<br>更新日期(updated_at) => 1540984908,<br>交易时间(created_at) => 1540984908', '1540984908', '1540984908');
+INSERT INTO `ck_admin_log` VALUES ('386', '1', 'user/change-amount', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} common\\models\\UserAccount [ {{%user_account}} ]  {{%UPDATED%}}  {{%RECORD%}}: <br>可用余额(available_amount) : =>2000,<br>更新日期(updated_at) : =>1540984917', '1540984917', '1540984917');
+INSERT INTO `ck_admin_log` VALUES ('387', '1', 'user/change-amount', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\ChangeAmountRecord [ {{%change_amount_record}} ]  {{%CREATED%}} {{%ID%}} 9 {{%RECORD%}}: <br>ID(id) => 9,<br>用户ID(user_id) => 4,<br>上下分(switch) => 1,<br>额度(amount) => 2000,<br>余额(after_amount) => 2000,<br>审核状态(status) => 2,<br>备注(remark) => ,<br>提交者ID(submit_by_id) => 1,<br>提交者名称(submit_by_name) => admin,<br>审核人员ID(audit_by_id) => 1,<br>审核人员(audit_by_name) => admin,<br>审核备注(audit_remark) => 自动审核,<br>审核时间(audit_at) => 1540984917,<br>创建时间(created_at) => 1540984917,<br>最后修改时间(updated_at) => 1540984917', '1540984917', '1540984917');
+INSERT INTO `ck_admin_log` VALUES ('388', '1', 'user/change-amount', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} common\\models\\UserAccountRecord [ {{%user_account_record}} ]  {{%CREATED%}} {{%ID%}} 9 {{%RECORD%}}: <br>会员账户变更日志表(id) => 9,<br>会员ID(user_id) => 4,<br>收支类型(switch) => 1,<br>交易单号(trade_no) => 9,<br>交易类型(trade_type_id) => 5,<br>备注信息(remark) => ,<br>交易金额(amount) => 2000,<br>交易后余额(after_amount) => 2000,<br>更新日期(updated_at) => 1540984917,<br>交易时间(created_at) => 1540984917', '1540984917', '1540984917');
+INSERT INTO `ck_admin_log` VALUES ('389', '1', 'game-type/create', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\GameType [ {{%game_type}} ]  {{%CREATED%}} {{%ID%}} 4 {{%RECORD%}}: <br>游戏类型ID(id) => 4,<br>类型名称(name) => aaaa,<br>游戏类型英文名(name_en) => dd,<br>更新日期(updated_at) => 1540989228,<br>创建日期(created_at) => 1540989228', '1540989228', '1540989228');
+INSERT INTO `ck_admin_log` VALUES ('390', '1', 'game-type/delete', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\GameType [ {{%game_type}} ]  {{%DELETED%}} {{%ID%}} 4 {{%RECORD%}}: <br>游戏类型ID(id) => 4,<br>类型名称(name) => aaaa,<br>游戏类型英文名(name_en) => dd,<br>更新日期(updated_at) => 1540989228,<br>创建日期(created_at) => 1540989228', '1540989231', '1540989231');
+INSERT INTO `ck_admin_log` VALUES ('391', '1', 'agent-menu/update', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\Menu [ {{%menu}} ]  {{%UPDATED%}} {{%ID%}} 42 {{%RECORD%}}: <br>名称(name) : 会员管理=>会员,<br>最后更新(updated_at) : 1539155034=>1541050933', '1541050933', '1541050933');
+INSERT INTO `ck_admin_log` VALUES ('392', '1', 'agent-menu/update', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\Menu [ {{%menu}} ]  {{%UPDATED%}} {{%ID%}} 27 {{%RECORD%}}: <br>名称(name) : 代理管理=>代理,<br>图标(icon) : fa fa-sitemap=>fa fa-ship,<br>最后更新(updated_at) : 1539154093=>1541050948', '1541050949', '1541050949');
+INSERT INTO `ck_admin_log` VALUES ('393', '1', 'agent-menu/create', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\Menu [ {{%menu}} ]  {{%CREATED%}} {{%ID%}} 88 {{%RECORD%}}: <br>序号(id) => 88,<br>类型(type) => 1,<br>父分类Id(parent_id) => 42,<br>名称(name) => 会员列表,<br>地址(url) => user/index,<br>图标(icon) => ,<br>排序(sort) => 0,<br>新窗口打开(target) => ,<br>绝对地址(is_absolute_url) => 0,<br>是否显示(is_display) => 1,<br>创建时间(created_at) => 1541050982,<br>最后更新(updated_at) => 1541050982', '1541050982', '1541050982');
+INSERT INTO `ck_admin_log` VALUES ('394', '1', 'agent-menu/create', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\Menu [ {{%menu}} ]  {{%CREATED%}} {{%ID%}} 89 {{%RECORD%}}: <br>序号(id) => 89,<br>类型(type) => 1,<br>父分类Id(parent_id) => 42,<br>名称(name) => 投注记录,<br>地址(url) => user/betlist,<br>图标(icon) => ,<br>排序(sort) => 0,<br>新窗口打开(target) => ,<br>绝对地址(is_absolute_url) => 0,<br>是否显示(is_display) => 1,<br>创建时间(created_at) => 1541051004,<br>最后更新(updated_at) => 1541051004', '1541051004', '1541051004');
+INSERT INTO `ck_admin_log` VALUES ('395', '1', 'agent-menu/create', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\Menu [ {{%menu}} ]  {{%CREATED%}} {{%ID%}} 90 {{%RECORD%}}: <br>序号(id) => 90,<br>类型(type) => 1,<br>父分类Id(parent_id) => 42,<br>名称(name) => 交易记录,<br>地址(url) => user/tradelist,<br>图标(icon) => ,<br>排序(sort) => 0,<br>新窗口打开(target) => ,<br>绝对地址(is_absolute_url) => 0,<br>是否显示(is_display) => 1,<br>创建时间(created_at) => 1541051031,<br>最后更新(updated_at) => 1541051031', '1541051031', '1541051031');
+INSERT INTO `ck_admin_log` VALUES ('396', '1', 'agent-menu/sort', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\Menu [ {{%menu}} ]  {{%UPDATED%}} {{%ID%}} 89 {{%RECORD%}}: <br>排序(sort) : 0=>1,<br>最后更新(updated_at) : 1541051004=>1541051036', '1541051036', '1541051036');
+INSERT INTO `ck_admin_log` VALUES ('397', '1', 'agent-menu/sort', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\Menu [ {{%menu}} ]  {{%UPDATED%}} {{%ID%}} 90 {{%RECORD%}}: <br>排序(sort) : 0=>2,<br>最后更新(updated_at) : 1541051031=>1541051037', '1541051037', '1541051037');
+INSERT INTO `ck_admin_log` VALUES ('398', '1', 'agent-menu/update', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\Menu [ {{%menu}} ]  {{%UPDATED%}} {{%ID%}} 36 {{%RECORD%}}: <br>父分类Id(parent_id) : 8=>27,<br>最后更新(updated_at) : 1538987911=>1541051055', '1541051055', '1541051055');
+INSERT INTO `ck_admin_log` VALUES ('399', '1', 'agent-menu/delete', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\Menu [ {{%menu}} ]  {{%DELETED%}} {{%ID%}} 35 {{%RECORD%}}: <br>序号(id) => 35,<br>类型(type) => 1,<br>父分类Id(parent_id) => 8,<br>名称(name) => 投注记录,<br>地址(url) => report/betlist,<br>图标(icon) => ,<br>排序(sort) => 0,<br>新窗口打开(target) => _blank,<br>绝对地址(is_absolute_url) => 0,<br>是否显示(is_display) => 1,<br>创建时间(created_at) => 1538279590,<br>最后更新(updated_at) => 1539310071', '1541051066', '1541051066');
+INSERT INTO `ck_admin_log` VALUES ('400', '1', 'agent-menu/delete', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\Menu [ {{%menu}} ]  {{%DELETED%}} {{%ID%}} 8 {{%RECORD%}}: <br>序号(id) => 8,<br>类型(type) => 1,<br>父分类Id(parent_id) => 0,<br>名称(name) => 报表查询,<br>地址(url) => ,<br>图标(icon) => fa fa-table,<br>排序(sort) => 3,<br>新窗口打开(target) => _blank,<br>绝对地址(is_absolute_url) => 0,<br>是否显示(is_display) => 1,<br>创建时间(created_at) => 1505570558,<br>最后更新(updated_at) => 1538988531', '1541051069', '1541051069');
+INSERT INTO `ck_admin_log` VALUES ('401', '1', 'agent-menu/create', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\Menu [ {{%menu}} ]  {{%CREATED%}} {{%ID%}} 91 {{%RECORD%}}: <br>序号(id) => 91,<br>类型(type) => 1,<br>父分类Id(parent_id) => 27,<br>名称(name) => 下级代理,<br>地址(url) => agent/index,<br>图标(icon) => ,<br>排序(sort) => 0,<br>新窗口打开(target) => ,<br>绝对地址(is_absolute_url) => 0,<br>是否显示(is_display) => 1,<br>创建时间(created_at) => 1541051094,<br>最后更新(updated_at) => 1541051094', '1541051094', '1541051094');
+INSERT INTO `ck_admin_log` VALUES ('402', '1', 'agent-menu/sort', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\Menu [ {{%menu}} ]  {{%UPDATED%}} {{%ID%}} 36 {{%RECORD%}}: <br>排序(sort) : 0=>1,<br>最后更新(updated_at) : 1541051055=>1541051096', '1541051097', '1541051097');
+INSERT INTO `ck_admin_log` VALUES ('403', '1', 'agent-menu/sort', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\Menu [ {{%menu}} ]  {{%UPDATED%}} {{%ID%}} 36 {{%RECORD%}}: <br>排序(sort) : 1=>2,<br>最后更新(updated_at) : 1541051096=>1541051102', '1541051102', '1541051102');
+INSERT INTO `ck_admin_log` VALUES ('404', '1', 'agent-menu/create', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\Menu [ {{%menu}} ]  {{%CREATED%}} {{%ID%}} 92 {{%RECORD%}}: <br>序号(id) => 92,<br>类型(type) => 1,<br>父分类Id(parent_id) => 27,<br>名称(name) => 交易记录,<br>地址(url) => agent/tradelist,<br>图标(icon) => ,<br>排序(sort) => 0,<br>新窗口打开(target) => ,<br>绝对地址(is_absolute_url) => 0,<br>是否显示(is_display) => 1,<br>创建时间(created_at) => 1541051117,<br>最后更新(updated_at) => 1541051117', '1541051117', '1541051117');
+INSERT INTO `ck_admin_log` VALUES ('405', '1', 'agent-menu/sort', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\Menu [ {{%menu}} ]  {{%UPDATED%}} {{%ID%}} 92 {{%RECORD%}}: <br>排序(sort) : 0=>1,<br>最后更新(updated_at) : 1541051117=>1541051120', '1541051120', '1541051120');
+INSERT INTO `ck_admin_log` VALUES ('406', '1', 'agent-menu/create', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\Menu [ {{%menu}} ]  {{%CREATED%}} {{%ID%}} 93 {{%RECORD%}}: <br>序号(id) => 93,<br>类型(type) => 1,<br>父分类Id(parent_id) => 27,<br>名称(name) => 代理设置,<br>地址(url) => agent/setting,<br>图标(icon) => ,<br>排序(sort) => 4,<br>新窗口打开(target) => ,<br>绝对地址(is_absolute_url) => 0,<br>是否显示(is_display) => 1,<br>创建时间(created_at) => 1541051145,<br>最后更新(updated_at) => 1541051145', '1541051145', '1541051145');
+INSERT INTO `ck_admin_log` VALUES ('407', '1', 'agent-menu/create', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\Menu [ {{%menu}} ]  {{%CREATED%}} {{%ID%}} 94 {{%RECORD%}}: <br>序号(id) => 94,<br>类型(type) => 1,<br>父分类Id(parent_id) => 42,<br>名称(name) => 会员设置,<br>地址(url) => ,<br>图标(icon) => ,<br>排序(sort) => 4,<br>新窗口打开(target) => ,<br>绝对地址(is_absolute_url) => 0,<br>是否显示(is_display) => 1,<br>创建时间(created_at) => 1541051158,<br>最后更新(updated_at) => 1541051158', '1541051158', '1541051158');
+INSERT INTO `ck_admin_log` VALUES ('408', '1', 'agent-menu/update', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\Menu [ {{%menu}} ]  {{%UPDATED%}} {{%ID%}} 36 {{%RECORD%}}: <br>名称(name) : 返佣明细=>返佣记录,<br>最后更新(updated_at) : 1541051102=>1541053823', '1541053823', '1541053823');
+INSERT INTO `ck_admin_log` VALUES ('409', '1', 'agent-menu/create', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\Menu [ {{%menu}} ]  {{%CREATED%}} {{%ID%}} 95 {{%RECORD%}}: <br>序号(id) => 95,<br>类型(type) => 1,<br>父分类Id(parent_id) => 42,<br>名称(name) => 登陆记录,<br>地址(url) => user/loglist,<br>图标(icon) => ,<br>排序(sort) => 0,<br>新窗口打开(target) => ,<br>绝对地址(is_absolute_url) => 0,<br>是否显示(is_display) => 1,<br>创建时间(created_at) => 1541058229,<br>最后更新(updated_at) => 1541058229', '1541058229', '1541058229');
+INSERT INTO `ck_admin_log` VALUES ('410', '1', 'agent-menu/sort', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\Menu [ {{%menu}} ]  {{%UPDATED%}} {{%ID%}} 95 {{%RECORD%}}: <br>排序(sort) : 0=>3,<br>最后更新(updated_at) : 1541058229=>1541058236', '1541058236', '1541058236');
+INSERT INTO `ck_admin_log` VALUES ('411', '1', 'agent-menu/update', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\Menu [ {{%menu}} ]  {{%UPDATED%}} {{%ID%}} 95 {{%RECORD%}}: <br>地址(url) : user/loglist=>user/log-list,<br>最后更新(updated_at) : 1541058236=>1541058958', '1541058958', '1541058958');
+INSERT INTO `ck_admin_log` VALUES ('412', '1', 'agent-menu/update', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\Menu [ {{%menu}} ]  {{%UPDATED%}} {{%ID%}} 89 {{%RECORD%}}: <br>地址(url) : user/betlist=>user/bet-list,<br>最后更新(updated_at) : 1541051036=>1541058967', '1541058967', '1541058967');
+INSERT INTO `ck_admin_log` VALUES ('413', '1', 'agent-menu/update', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\Menu [ {{%menu}} ]  {{%UPDATED%}} {{%ID%}} 90 {{%RECORD%}}: <br>地址(url) : user/tradelist=>user/trade-list,<br>最后更新(updated_at) : 1541051037=>1541058977', '1541058977', '1541058977');
+INSERT INTO `ck_admin_log` VALUES ('414', '1', 'agent-menu/update', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\Menu [ {{%menu}} ]  {{%UPDATED%}} {{%ID%}} 92 {{%RECORD%}}: <br>地址(url) : agent/tradelist=>agent-trade/index,<br>最后更新(updated_at) : 1541051120=>1541060082', '1541060082', '1541060082');
+INSERT INTO `ck_admin_log` VALUES ('415', '1', 'agent-menu/update', '{{%ADMIN_USER%}} [ admin ] {{%BY%}} backend\\models\\Menu [ {{%menu}} ]  {{%UPDATED%}} {{%ID%}} 36 {{%RECORD%}}: <br>地址(url) : report/rebate=>rebate/index,<br>最后更新(updated_at) : 1541053823=>1541060106', '1541060106', '1541060106');
 
 -- ----------------------------
 -- Table structure for `ck_admin_user`
@@ -371,13 +489,13 @@ CREATE TABLE `ck_agent` (
   `mobile` varchar(32) DEFAULT NULL COMMENT '手机号码',
   `avatar` varchar(255) DEFAULT NULL COMMENT '头像',
   `promo_code` varchar(32) NOT NULL COMMENT '推广码',
-  `parent_id` int(11) DEFAULT NULL COMMENT '上层账号',
-  `top_id` int(11) DEFAULT NULL COMMENT '总代账号',
+  `parent_id` int(11) DEFAULT '0' COMMENT '上层账号',
+  `top_id` int(11) DEFAULT '0' COMMENT '总代账号',
   `agent_level` tinyint(3) unsigned DEFAULT NULL COMMENT '代理层级',
   `xima_status` tinyint(3) unsigned DEFAULT '1' COMMENT '洗码是否可看 0 否 1 是',
-  `xima_rate` decimal(4,3) DEFAULT NULL COMMENT '洗码率',
+  `xima_rate` decimal(6,4) DEFAULT NULL COMMENT '洗码率',
   `xima_type` tinyint(4) DEFAULT NULL COMMENT '洗码类别 1 单边 2 双边',
-  `rebate_rate` decimal(4,3) DEFAULT NULL COMMENT '占成',
+  `rebate_rate` decimal(6,4) DEFAULT NULL COMMENT '占成',
   `default_player_level` tinyint(3) unsigned DEFAULT NULL COMMENT '预设玩家层级',
   `rebate_id` int(11) unsigned DEFAULT NULL COMMENT '返佣方案',
   `available_amount` decimal(10,3) DEFAULT NULL COMMENT '账户余额',
@@ -393,16 +511,22 @@ CREATE TABLE `ck_agent` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `idx_account` (`username`),
   UNIQUE KEY `idx_promo_code` (`promo_code`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COMMENT='代理表';
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COMMENT='代理表';
 
 -- ----------------------------
 -- Records of ck_agent
 -- ----------------------------
-INSERT INTO `ck_agent` VALUES ('1', 'agent', '$13$8aF72c/7Nqq/atyMivhVTej0bIXS1t8daPJXKtVjFzJUsG68eGgaG', 'zr9mY7lt23oAhj_ZYjydbLJKcbE3FJ19', null, 'cccc', null, null, null, 'ddd', null, null, '1', '1', '0.009', '2', '0.350', null, null, '3000.000', null, null, null, null, null, '1', null, null, null);
-INSERT INTO `ck_agent` VALUES ('2', 'abcd', '$2y$13$8Z7ZYvJophNzhE9fIHuhluh5vFE1K8bDe5Nw19KRrX3bIZIDqJPvS', 'l1UmJJ7gZbLyzblGiglnT7ye6HB91FA1', null, null, null, null, null, 'jaLgnR', '1', '1', '2', '1', '0.009', '2', '0.350', null, null, null, null, null, null, null, null, '1', null, '1539253756', '1539253756');
-INSERT INTO `ck_agent` VALUES ('3', 'sentry', '$2y$13$wXgEKeiho2xsYdujFhyKCu7Pz9G8LA8BC1KgCj36R48viAuua9cYe', 'BQJSUEW_CarL9K8pRZ7jSPGSIv36UZCl', null, null, null, null, null, 'QQRN1_9X', '1', '1', '2', '1', '0.009', '2', '0.350', null, null, null, null, null, null, null, null, '1', null, '1539254027', '1539254027');
-INSERT INTO `ck_agent` VALUES ('4', 'aaaaa', '$2y$13$R4iNNIv/HpQPZiHzDlo9Oe6rdnWRABBvQGk1mNMU2LVBx4aZwm3be', 'upF5uuqeLAgAvCbCLkyyfVPTYf6YxcrX', null, null, null, null, null, 'AU8CTP0TWW', '1', '1', '2', '1', '0.009', '2', '0.350', null, null, null, null, null, null, null, null, '1', null, '1539254184', '1539254184');
-INSERT INTO `ck_agent` VALUES ('5', 'ddddd', '$2y$13$Pi1MNeZQgy.URXjdIUwFWeXVP3u22mOVuWlTfNuVROP1L2EWNz9lm', 'ytOKSDCJfK3K8zWXUm9-RNteTJJ-nUy9', null, '测试', null, null, null, 'TMB8RUO7CR', '3', '1', '3', '1', '0.009', '2', '0.350', null, null, null, null, null, null, null, null, '1', null, '1539334247', '1539334897');
+INSERT INTO `ck_agent` VALUES ('1', 'agent', '$2y$13$4c5kphKdj4xO3C6rJX51aOV.cWj1qHDBUhOMWHG/BHOl1nj1yY0dm', 'zr9mY7lt23oAhj_ZYjydbLJKcbE3FJ19', null, 'cccc', null, null, null, 'ddd', '0', '1', '1', '1', '0.0090', '2', '0.3500', null, null, '3000.000', null, null, null, null, null, '1', null, null, null);
+INSERT INTO `ck_agent` VALUES ('2', 'abcd', '$2y$13$8Z7ZYvJophNzhE9fIHuhluh5vFE1K8bDe5Nw19KRrX3bIZIDqJPvS', 'l1UmJJ7gZbLyzblGiglnT7ye6HB91FA1', null, '', null, null, null, 'jaLgnR', '1', '1', '2', '1', '0.0070', '2', '0.3500', null, null, null, null, null, null, null, null, '3', null, '1539253756', '1540974462');
+INSERT INTO `ck_agent` VALUES ('3', 'sentry', '$2y$13$wXgEKeiho2xsYdujFhyKCu7Pz9G8LA8BC1KgCj36R48viAuua9cYe', 'BQJSUEW_CarL9K8pRZ7jSPGSIv36UZCl', null, null, null, null, null, 'QQRN1_9X', '1', '1', '2', '1', '0.0090', '2', '0.3500', null, null, null, null, null, null, null, null, '1', null, '1539254027', '1539254027');
+INSERT INTO `ck_agent` VALUES ('4', 'aaaaa', '$2y$13$R4iNNIv/HpQPZiHzDlo9Oe6rdnWRABBvQGk1mNMU2LVBx4aZwm3be', 'upF5uuqeLAgAvCbCLkyyfVPTYf6YxcrX', null, '', null, null, null, 'AU8CTP0TWW', '1', '1', '2', '1', '0.0090', '2', '0.3500', null, null, null, null, null, null, null, null, '1', null, '1539254184', '1540903732');
+INSERT INTO `ck_agent` VALUES ('5', 'ddddd', '$2y$13$Pi1MNeZQgy.URXjdIUwFWeXVP3u22mOVuWlTfNuVROP1L2EWNz9lm', 'ytOKSDCJfK3K8zWXUm9-RNteTJJ-nUy9', null, '测试', null, null, null, 'TMB8RUO7CR', '3', '1', '3', '1', '0.0090', '2', '0.3500', null, null, null, null, null, null, null, null, '1', null, '1539334247', '1539334897');
+INSERT INTO `ck_agent` VALUES ('6', 'top', '$2y$13$4c5kphKdj4xO3C6rJX51aOV.cWj1qHDBUhOMWHG/BHOl1nj1yY0dm', '7FC-HCBqqO-PAq7rqZT51-eH1MC31XFy', null, '顶级代理', null, null, null, 'B9UXF2WABB', '0', '0', '1', '1', '0.0100', '2', '0.3500', null, null, null, null, null, null, null, null, '1', null, '1540956815', '1540957246');
+INSERT INTO `ck_agent` VALUES ('7', 'level2', '$2y$13$6uwQW/aLYuIo5ZalXrOKlu0SAwpLPOMplpXJftFer39GCDTZ4tPEu', 'NYTGIzMnzXgbEUZXDphwMTWDAd8NP7OE', null, '2级代理', null, null, null, 'AX9_FKEJB6', '6', '6', '2', '1', '0.0080', '2', '0.3000', null, null, null, null, null, null, null, null, '1', null, '1540957467', '1540957467');
+INSERT INTO `ck_agent` VALUES ('8', 'level3', '$2y$13$Ax6onFxqiYBmk35U56s72.69tpylZSUaDSGABNe.XbHEUr4RwUGRO', '9_zMyz3UZiEjnCoq4nU2ZYdXD025gtyd', null, '三级代理', null, null, null, 'WHOWJJLXV5', '7', '6', '3', '1', '0.0080', '2', '0.3000', null, null, null, null, null, null, null, null, '1', null, '1540969481', '1540974053');
+INSERT INTO `ck_agent` VALUES ('9', 'sssss', '$2y$13$MvjsaNI6sfOa1SBUEhSAx.VcR7JEu4xbvAOjjlmZYDjWnJ3dn/FXy', '3C_DqxoZlWcxh9LHZS5RW-9_3wviG02z', null, 'sssss', null, null, null, 'F8RV1-BHHM', null, '0', '1', '1', '0.0100', '2', '0.3000', null, null, null, null, null, null, null, null, '1', null, '1540972917', '1540972917');
+INSERT INTO `ck_agent` VALUES ('10', 'ggggg', '$2y$13$mTnb6TYbbelPcZmZN5nwu.Bu3NZx0AHCA4fesoqB59WsW.burAWCa', '5gUHJDotbjl6FUEY7aCA63hbQ0jBqGIS', null, 'gggg', null, null, null, 'TUZIUJORLZ', '9', '9', '2', '1', '0.0000', '2', '0.3300', null, null, null, null, null, null, null, null, '1', null, '1540973024', '1540975194');
+INSERT INTO `ck_agent` VALUES ('11', 'hhhhh', '$2y$13$0/HDtiBhiE4S0lyxUTujdOi/wgslaywUIYNEpyGB26xglcoBjP.OW', 'u6HtaGzTDSYyjmR2JIVH91gPV0m1tayR', null, 'hhhhh', null, null, null, 'GFRH9LWLMT', '10', '9', '3', '1', '0.0000', '2', '0.0000', null, null, null, null, null, null, null, null, '1', null, '1540973041', '1540974540');
 
 -- ----------------------------
 -- Table structure for `ck_agent_account`
@@ -411,8 +535,8 @@ DROP TABLE IF EXISTS `ck_agent_account`;
 CREATE TABLE `ck_agent_account` (
   `agent_id` int(10) unsigned NOT NULL COMMENT '代理ID',
   `agent_name` varchar(64) DEFAULT NULL COMMENT '代理账号',
-  `available_amount` decimal(10,3) DEFAULT NULL COMMENT '可用余额',
-  `frozen_amount` decimal(10,3) DEFAULT NULL COMMENT '冻结金额',
+  `available_amount` decimal(15,2) DEFAULT NULL COMMENT '可用余额',
+  `frozen_amount` decimal(15,2) DEFAULT NULL COMMENT '冻结金额',
   `updated_at` int(10) unsigned DEFAULT NULL COMMENT '更新日期',
   `created_at` int(10) unsigned DEFAULT NULL COMMENT '创建日期',
   PRIMARY KEY (`agent_id`)
@@ -421,6 +545,29 @@ CREATE TABLE `ck_agent_account` (
 -- ----------------------------
 -- Records of ck_agent_account
 -- ----------------------------
+
+-- ----------------------------
+-- Table structure for `ck_agent_account_record`
+-- ----------------------------
+DROP TABLE IF EXISTS `ck_agent_account_record`;
+CREATE TABLE `ck_agent_account_record` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '代理账户变更记录ID',
+  `agent_id` int(10) unsigned NOT NULL COMMENT '代理ID',
+  `name` varchar(255) DEFAULT NULL COMMENT '变更名称',
+  `amount` decimal(19,4) DEFAULT NULL COMMENT '变更额度',
+  `switch` tinyint(3) unsigned DEFAULT NULL COMMENT '收支 1 收入 2支出',
+  `after_amount` decimal(19,4) DEFAULT NULL COMMENT '变更后余额',
+  `remark` varchar(255) DEFAULT NULL COMMENT '备注',
+  `updated_at` int(10) unsigned DEFAULT NULL COMMENT '更新日期',
+  `created_at` int(10) unsigned DEFAULT NULL COMMENT '创建日期',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
+
+-- ----------------------------
+-- Records of ck_agent_account_record
+-- ----------------------------
+INSERT INTO `ck_agent_account_record` VALUES ('1', '1', '返佣', '6900.0000', '1', '6900.0000', '自动返佣', null, '1539153959');
+INSERT INTO `ck_agent_account_record` VALUES ('2', '1', '取款', '6000.0000', '2', '900.0000', '代理取款', null, '1539253959');
 
 -- ----------------------------
 -- Table structure for `ck_agent_daily`
@@ -688,6 +835,78 @@ CREATE TABLE `ck_auth_rule` (
 -- ----------------------------
 
 -- ----------------------------
+-- Table structure for `ck_bet_list`
+-- ----------------------------
+DROP TABLE IF EXISTS `ck_bet_list`;
+CREATE TABLE `ck_bet_list` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '投注流水ID',
+  `record_id` bigint(20) unsigned DEFAULT NULL COMMENT '投注单号',
+  `user_id` bigint(20) unsigned NOT NULL COMMENT '用户ID',
+  `username` varchar(64) DEFAULT NULL COMMENT '用户名',
+  `platform_username` varchar(64) DEFAULT NULL COMMENT '平台用户名',
+  `platform_id` int(10) unsigned NOT NULL COMMENT '游戏平台ID',
+  `game_type` varchar(64) DEFAULT NULL COMMENT '游戏类型',
+  `table_no` varchar(16) DEFAULT NULL COMMENT '桌号',
+  `period_boot` int(10) unsigned DEFAULT NULL COMMENT '靴次',
+  `period_round` int(10) unsigned DEFAULT NULL COMMENT '局次',
+  `bet_amount` int(10) unsigned DEFAULT NULL COMMENT '投注金额',
+  `game_result` varchar(128) DEFAULT NULL COMMENT '开奖结果',
+  `bet_record` varchar(255) DEFAULT NULL COMMENT '投注点',
+  `profit` int(11) DEFAULT NULL COMMENT '赢输',
+  `amount_before` int(10) unsigned DEFAULT NULL COMMENT '投注前余额',
+  `amount_after` int(10) unsigned DEFAULT NULL COMMENT '投注后余额',
+  `xima` decimal(10,2) DEFAULT NULL COMMENT '洗码值',
+  `state` tinyint(3) unsigned DEFAULT NULL COMMENT '游戏状态',
+  `bet_at` int(10) unsigned DEFAULT NULL COMMENT '投注时间',
+  `draw_at` int(10) unsigned DEFAULT NULL COMMENT '开奖时间',
+  `created_at` int(10) unsigned DEFAULT NULL COMMENT '创建时间',
+  PRIMARY KEY (`id`),
+  KEY `uid` (`user_id`),
+  KEY `pid` (`platform_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
+
+-- ----------------------------
+-- Records of ck_bet_list
+-- ----------------------------
+INSERT INTO `ck_bet_list` VALUES ('1', '1234', '1', '测试专用号', '', '1', 'dragon_tiger', '34', '1988', '22', '500', 'dragon,dragon_odd,tiger_even', 'dragon', '450', '1500', '1950', '0.00', '1', '1539173959', '1539173959', '1539173959');
+INSERT INTO `ck_bet_list` VALUES ('2', '1235', '1', '测试专用号', null, '1', 'dragon_tiger', '34', '1988', '23', '200', 'tiger,dragon_even,tiger_odd', 'dragon', '-200', '1950', '1750', '0.00', '1', '1539174959', '1539173959', '1539173959');
+INSERT INTO `ck_bet_list` VALUES ('3', '1236', '1', '测试专用号', null, '1', 'baccarat', '31', '14675', '47', '300', 'player,big', 'player', '300', '1750', '2050', '0.00', '1', '1539175559', null, null);
+
+-- ----------------------------
+-- Table structure for `ck_change_amount_record`
+-- ----------------------------
+DROP TABLE IF EXISTS `ck_change_amount_record`;
+CREATE TABLE `ck_change_amount_record` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` bigint(20) unsigned NOT NULL COMMENT '用户ID',
+  `switch` tinyint(3) unsigned DEFAULT NULL COMMENT '上下分 1 上分 2 下分',
+  `amount` decimal(19,4) DEFAULT NULL COMMENT '额度',
+  `after_amount` decimal(19,4) DEFAULT NULL COMMENT '余额',
+  `status` tinyint(3) unsigned DEFAULT NULL COMMENT '审核状态 1待审核 1已完成 2 已取消',
+  `remark` varchar(255) DEFAULT NULL COMMENT '备注',
+  `submit_by_id` int(10) unsigned DEFAULT NULL COMMENT '提交者ID',
+  `submit_by_name` varchar(64) DEFAULT NULL COMMENT '提交者名称',
+  `audit_by_id` int(11) unsigned DEFAULT NULL COMMENT '审核人员ID',
+  `audit_by_name` varchar(64) CHARACTER SET utf8 DEFAULT NULL COMMENT '审核人员',
+  `audit_remark` varchar(255) CHARACTER SET utf8 DEFAULT NULL COMMENT '审核备注',
+  `audit_at` int(20) unsigned DEFAULT NULL COMMENT '审核时间',
+  `created_at` int(11) DEFAULT NULL COMMENT '创建时间',
+  `updated_at` int(11) DEFAULT NULL COMMENT '最后修改时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COMMENT='上下分记录表';
+
+-- ----------------------------
+-- Records of ck_change_amount_record
+-- ----------------------------
+INSERT INTO `ck_change_amount_record` VALUES ('3', '1', '1', '200.0000', '5236.0000', '1', '测试上分200', '1', 'admin', null, null, null, null, '1540900696', '1540900696');
+INSERT INTO `ck_change_amount_record` VALUES ('4', '1', '2', '600.0000', '4636.0000', '2', '非审核下分600', '1', 'admin', '1', 'admin', null, '1540900762', '1540900762', '1540900762');
+INSERT INTO `ck_change_amount_record` VALUES ('5', '1', '1', '900.0000', '5536.0000', '2', '非审核上分900分', '1', 'admin', '1', 'admin', null, '1540900860', '1540900860', '1540900860');
+INSERT INTO `ck_change_amount_record` VALUES ('6', '1', '2', '5000.0000', '536.0000', '2', '下分5000', '1', 'admin', '1', 'admin', '自动审核', '1540901085', '1540901085', '1540901085');
+INSERT INTO `ck_change_amount_record` VALUES ('7', '1', '1', '8000.0000', '8536.0000', '2', '上分8000', '1', 'admin', '1', 'admin', '自动审核', '1540901118', '1540901118', '1540901118');
+INSERT INTO `ck_change_amount_record` VALUES ('8', '5', '1', '8000.0000', '8000.0000', '2', '', '1', 'admin', '1', 'admin', '自动审核', '1540984908', '1540984908', '1540984908');
+INSERT INTO `ck_change_amount_record` VALUES ('9', '4', '1', '2000.0000', '2000.0000', '2', '', '1', 'admin', '1', 'admin', '自动审核', '1540984917', '1540984917', '1540984917');
+
+-- ----------------------------
 -- Table structure for `ck_company_bank`
 -- ----------------------------
 DROP TABLE IF EXISTS `ck_company_bank`;
@@ -711,6 +930,7 @@ CREATE TABLE `ck_company_bank` (
 -- ----------------------------
 -- Records of ck_company_bank
 -- ----------------------------
+INSERT INTO `ck_company_bank` VALUES ('22222222', '张三', '8888888888888', '中国银行', '', '', '', '1', '1', null, '', null, null);
 
 -- ----------------------------
 -- Table structure for `ck_daily`
@@ -752,11 +972,14 @@ CREATE TABLE `ck_game_type` (
   `created_at` int(10) unsigned DEFAULT NULL COMMENT '创建日期',
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of ck_game_type
 -- ----------------------------
+INSERT INTO `ck_game_type` VALUES ('1', '百家乐', 'baccarat', null, null);
+INSERT INTO `ck_game_type` VALUES ('2', '龙虎', 'dragon_tiger', null, null);
+INSERT INTO `ck_game_type` VALUES ('3', '单挑', 'one_on_one', null, null);
 
 -- ----------------------------
 -- Table structure for `ck_menu`
@@ -776,7 +999,7 @@ CREATE TABLE `ck_menu` (
   `created_at` int(11) unsigned NOT NULL COMMENT '创建时间',
   `updated_at` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '最后修改时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=88 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=96 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- ----------------------------
 -- Records of ck_menu
@@ -784,11 +1007,10 @@ CREATE TABLE `ck_menu` (
 INSERT INTO `ck_menu` VALUES ('1', '0', '0', '平台设置', '', 'fa fa-cogs', '9', '_blank', '0', '1', '1505570067', '1539919792');
 INSERT INTO `ck_menu` VALUES ('2', '0', '1', '网站设置', 'setting/website', '', '1', '_blank', '0', '1', '1505570108', '1539867437');
 INSERT INTO `ck_menu` VALUES ('3', '0', '1', '代理设置', 'setting/agent', '', '2', '_blank', '0', '1', '1505570155', '1538959820');
-INSERT INTO `ck_menu` VALUES ('4', '0', '1', '邮件设置', 'setting/smtp', '', '4', '_blank', '0', '1', '1505570187', '1539160863');
+INSERT INTO `ck_menu` VALUES ('4', '0', '1', '邮件设置', 'setting/smtp', '', '5', '_blank', '0', '1', '1505570187', '1540887434');
 INSERT INTO `ck_menu` VALUES ('5', '0', '48', '菜单管理', '', '', '1', '_blank', '0', '1', '1505570320', '1539937262');
 INSERT INTO `ck_menu` VALUES ('6', '0', '5', '后台菜单', 'admin-menu/index', '', '0', '_blank', '0', '1', '1505570366', '1538201502');
 INSERT INTO `ck_menu` VALUES ('7', '0', '5', '代理菜单', 'agent-menu/index', '', '0', '_blank', '0', '1', '1505570382', '1538201522');
-INSERT INTO `ck_menu` VALUES ('8', '1', '0', '报表查询', '', 'fa fa-table', '3', '_blank', '0', '1', '1505570558', '1538988531');
 INSERT INTO `ck_menu` VALUES ('9', '0', '8', '文章', 'article/index', '', '0', '_blank', '0', '0', '1505570610', '1538279579');
 INSERT INTO `ck_menu` VALUES ('10', '0', '8', '分类', 'category/index', '', '0', '_blank', '0', '0', '1505570638', '1538279576');
 INSERT INTO `ck_menu` VALUES ('11', '0', '8', '评论', 'comment/index', '', '0', '_blank', '0', '0', '1505570661', '1538279574');
@@ -801,15 +1023,14 @@ INSERT INTO `ck_menu` VALUES ('17', '0', '14', '管理员列表', 'admin-user/in
 INSERT INTO `ck_menu` VALUES ('19', '0', '48', '清理缓存', 'cache/clean', '', '3', '_blank', '0', '1', '1505570947', '1539938585');
 INSERT INTO `ck_menu` VALUES ('22', '0', '48', '日志管理', 'log/index', '', '5', '_blank', '0', '1', '1505571212', '1539938294');
 INSERT INTO `ck_menu` VALUES ('23', '0', '0', '首页', 'site/main', 'fa fa-home', '0', '_self', '0', '1', '1505636890', '1539918308');
-INSERT INTO `ck_menu` VALUES ('27', '1', '0', '代理管理', 'agent/index', 'fa fa-sitemap', '1', '_self', '0', '1', '1505637000', '1539154093');
+INSERT INTO `ck_menu` VALUES ('27', '1', '0', '代理', 'agent/index', 'fa fa-ship', '1', '_self', '0', '1', '1505637000', '1541050948');
 INSERT INTO `ck_menu` VALUES ('28', '0', '27', 'Banner管理', 'banner/index', '', '0', '_self', '0', '0', '1505637000', '1538279468');
 INSERT INTO `ck_menu` VALUES ('29', '0', '27', '广告管理', 'ad/index', '', '0', '_self', '0', '0', '1505637000', '1538279470');
 INSERT INTO `ck_menu` VALUES ('31', '1', '0', '首页', 'site/main', 'fa fa-home', '0', '_blank', '0', '1', '1538277444', '1538277574');
 INSERT INTO `ck_menu` VALUES ('33', '1', '13', '用户列表', 'user/index', '', '0', '_blank', '0', '1', '1538279316', '1538279316');
 INSERT INTO `ck_menu` VALUES ('34', '1', '13', '今日注册', 'user/today', '', '0', '_blank', '0', '1', '1538279343', '1538279343');
-INSERT INTO `ck_menu` VALUES ('35', '1', '8', '投注记录', 'report/betlist', '', '0', '_blank', '0', '1', '1538279590', '1539310071');
-INSERT INTO `ck_menu` VALUES ('36', '1', '8', '返佣明细', 'report/rebate', '', '0', '_blank', '0', '1', '1538279634', '1538987911');
-INSERT INTO `ck_menu` VALUES ('42', '1', '0', '会员管理', 'user/index', 'fa fa-user', '0', '_blank', '0', '1', '1538895037', '1539155034');
+INSERT INTO `ck_menu` VALUES ('36', '1', '27', '返佣记录', 'rebate/index', '', '2', '_blank', '0', '1', '1538279634', '1541060106');
+INSERT INTO `ck_menu` VALUES ('42', '1', '0', '会员', 'user/index', 'fa fa-user', '0', '_blank', '0', '1', '1538895037', '1541050933');
 INSERT INTO `ck_menu` VALUES ('47', '0', '1', '游戏设置', 'setting/game', '', '3', '_blank', '0', '1', '1539160762', '1539160862');
 INSERT INTO `ck_menu` VALUES ('48', '0', '0', '系统管理', '', 'fa fa-cog', '10', '_blank', '0', '1', '1539867193', '1539867227');
 INSERT INTO `ck_menu` VALUES ('49', '0', '13', '会员列表', 'user/index', '', '0', '_blank', '0', '1', '1539918991', '1539937504');
@@ -819,10 +1040,9 @@ INSERT INTO `ck_menu` VALUES ('52', '0', '0', '统计报表', '', 'fa fa-line-ch
 INSERT INTO `ck_menu` VALUES ('53', '0', '0', '运营管理', '', 'fa fa-street-view', '3', '_blank', '0', '1', '1539919537', '1539919580');
 INSERT INTO `ck_menu` VALUES ('54', '0', '13', '今日注册', 'user/today', '', '2', '_blank', '0', '1', '1539920006', '1539937534');
 INSERT INTO `ck_menu` VALUES ('55', '0', '13', '在线会员', 'user/online', '', '3', '_blank', '0', '1', '1539920023', '1539937552');
-INSERT INTO `ck_menu` VALUES ('56', '0', '13', '登陆查询', 'user/loging', '', '4', '_blank', '0', '1', '1539920151', '1539937573');
 INSERT INTO `ck_menu` VALUES ('57', '0', '50', '代理列表', 'agent/index', '', '0', '_blank', '0', '1', '1539920171', '1539920171');
-INSERT INTO `ck_menu` VALUES ('58', '0', '50', '代理佣金', 'agent/rebate', '', '1', '_blank', '0', '1', '1539920210', '1539937599');
-INSERT INTO `ck_menu` VALUES ('59', '0', '50', '交易记录', 'agent/trade', '', '2', '_blank', '0', '1', '1539920228', '1539937617');
+INSERT INTO `ck_menu` VALUES ('58', '0', '50', '代理佣金', 'rebate/index', '', '1', '_blank', '0', '1', '1539920210', '1540904198');
+INSERT INTO `ck_menu` VALUES ('59', '0', '50', '交易记录', 'agent-trade/index', '', '2', '_blank', '0', '1', '1539920228', '1540904592');
 INSERT INTO `ck_menu` VALUES ('60', '0', '53', '站内消息', 'message/index', '', '4', '_blank', '0', '1', '1539920255', '1539921275');
 INSERT INTO `ck_menu` VALUES ('61', '0', '53', '系统公告', 'notice/index', '', '5', '_blank', '0', '1', '1539920271', '1539937717');
 INSERT INTO `ck_menu` VALUES ('62', '0', '51', '银行卡管理', 'bank/index', '', '0', '_blank', '0', '1', '1539920304', '1539920304');
@@ -837,7 +1057,6 @@ INSERT INTO `ck_menu` VALUES ('71', '0', '53', '游戏类型', 'game-type/index'
 INSERT INTO `ck_menu` VALUES ('73', '0', '52', '用户统计', 'stat/user', '', '2', '_blank', '0', '1', '1539922246', '1539938324');
 INSERT INTO `ck_menu` VALUES ('74', '0', '52', '代理统计', 'stat/agent', '', '1', '_blank', '0', '1', '1539922259', '1539938262');
 INSERT INTO `ck_menu` VALUES ('75', '0', '52', '平台统计', 'stat/platform', '', '0', '_blank', '0', '1', '1539922437', '1539938311');
-INSERT INTO `ck_menu` VALUES ('76', '0', '13', '会员报表', 'user/report', '', '1', '_blank', '0', '1', '1539922562', '1539937523');
 INSERT INTO `ck_menu` VALUES ('77', '0', '52', '投注报表', 'report/bet', '', '4', '_blank', '0', '1', '1539922706', '1539938351');
 INSERT INTO `ck_menu` VALUES ('78', '0', '51', '盘点记录', 'check/index', '', '6', '_blank', '0', '1', '1539922830', '1539938229');
 INSERT INTO `ck_menu` VALUES ('79', '0', '52', '赢输报表', 'report/winloss', '', '5', '_blank', '0', '1', '1539922888', '1539938412');
@@ -848,6 +1067,15 @@ INSERT INTO `ck_menu` VALUES ('83', '0', '48', '计划任务', 'tast/index', '',
 INSERT INTO `ck_menu` VALUES ('84', '0', '48', '数据管理', '', '', '2', '_blank', '0', '1', '1539923133', '1539923292');
 INSERT INTO `ck_menu` VALUES ('85', '0', '84', '数据备份', 'data/backup', '', '0', '_blank', '0', '1', '1539923144', '1539938535');
 INSERT INTO `ck_menu` VALUES ('86', '0', '84', '数据恢复', 'data/recover', '', '1', '_blank', '0', '1', '1539923153', '1539938559');
+INSERT INTO `ck_menu` VALUES ('87', '0', '1', '财务设置', 'setting/finance', '', '4', '_blank', '0', '1', '1540887404', '1540887435');
+INSERT INTO `ck_menu` VALUES ('88', '1', '42', '会员列表', 'user/index', '', '0', '_blank', '0', '1', '1541050982', '1541050982');
+INSERT INTO `ck_menu` VALUES ('89', '1', '42', '投注记录', 'user/bet-list', '', '1', '_blank', '0', '1', '1541051004', '1541058967');
+INSERT INTO `ck_menu` VALUES ('90', '1', '42', '交易记录', 'user/trade-list', '', '2', '_blank', '0', '1', '1541051031', '1541058977');
+INSERT INTO `ck_menu` VALUES ('91', '1', '27', '下级代理', 'agent/index', '', '0', '_blank', '0', '1', '1541051094', '1541051094');
+INSERT INTO `ck_menu` VALUES ('92', '1', '27', '交易记录', 'agent-trade/index', '', '1', '_blank', '0', '1', '1541051117', '1541060082');
+INSERT INTO `ck_menu` VALUES ('93', '1', '27', '代理设置', 'agent/setting', '', '4', '_blank', '0', '1', '1541051145', '1541051145');
+INSERT INTO `ck_menu` VALUES ('94', '1', '42', '会员设置', '', '', '4', '_blank', '0', '1', '1541051158', '1541051158');
+INSERT INTO `ck_menu` VALUES ('95', '1', '42', '登陆记录', 'user/log-list', '', '3', '_blank', '0', '1', '1541058229', '1541058958');
 
 -- ----------------------------
 -- Table structure for `ck_message`
@@ -986,7 +1214,7 @@ CREATE TABLE `ck_options` (
   `tips` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '提示备注信息',
   `sort` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '排序',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- ----------------------------
 -- Records of ck_options
@@ -1020,8 +1248,8 @@ INSERT INTO `ck_options` VALUES ('26', '3', 'sidebar_right_1', '{\"ad\":\"\\/upl
 INSERT INTO `ck_options` VALUES ('27', '3', 'sidebar_right_2', '{\"ad\":\"\\/uploads\\/setting\\/ad\\/5a291f9236479_22.jpg\",\"link\":\"\",\"target\":\"_blank\",\"desc\":\"\\u6700\\u597d\\u7684\\u8fd0\\u52a8\\u624b\\u8868\",\"created_at\":1512644498,\"updated_at\":1512647586}', '1', '1', '网站右侧广告位2', '0');
 INSERT INTO `ck_options` VALUES ('28', '0', 'agent_status', '0', '1', '0', '', '0');
 INSERT INTO `ck_options` VALUES ('29', '0', 'agent_max_level', '3', '1', '0', '', '0');
-INSERT INTO `ck_options` VALUES ('30', '0', 'agent_max_rebate', '35', '1', '0', '', '0');
-INSERT INTO `ck_options` VALUES ('31', '0', 'agent_default_rebate', '30', '1', '0', '', '0');
+INSERT INTO `ck_options` VALUES ('30', '0', 'agent_max_rebate', '0.35', '1', '0', '', '0');
+INSERT INTO `ck_options` VALUES ('31', '0', 'agent_default_rebate', '0.3', '1', '0', '', '0');
 INSERT INTO `ck_options` VALUES ('32', '0', 'agent_backend_url', 'http://127.0.0.1/admin', '1', '0', '', '0');
 INSERT INTO `ck_options` VALUES ('33', '0', 'agent_user_reg_url', 'http://127.0.0.1/mobile/use/signup', '1', '0', '', '0');
 INSERT INTO `ck_options` VALUES ('34', '0', 'agent_reg_url', 'http://127.0.0.1/mobile/agent/signup', '1', '0', '', '0');
@@ -1031,9 +1259,17 @@ INSERT INTO `ck_options` VALUES ('37', '0', 'game_dogfall_min_limit', '10', '1',
 INSERT INTO `ck_options` VALUES ('38', '0', 'game_dogfall_max_limit', '5000', '1', '0', '', '0');
 INSERT INTO `ck_options` VALUES ('39', '0', 'game_pair_min_limit', '10', '1', '0', '', '0');
 INSERT INTO `ck_options` VALUES ('40', '0', 'game_pair_max_limit', '5000', '1', '0', '', '0');
-INSERT INTO `ck_options` VALUES ('41', '0', 'agent_xima_rate', '1', '1', '0', '', '0');
+INSERT INTO `ck_options` VALUES ('41', '0', 'agent_xima_rate', '0.01', '1', '0', '', '0');
 INSERT INTO `ck_options` VALUES ('42', '0', 'agent_xima_type', '2', '1', '0', '', '0');
 INSERT INTO `ck_options` VALUES ('43', '0', 'agent_xima_status', '1', '1', '0', '', '0');
+INSERT INTO `ck_options` VALUES ('44', '0', 'finance_deposit_max', '500000', '1', '0', '', '0');
+INSERT INTO `ck_options` VALUES ('45', '0', 'finance_deposit_min', '100', '1', '0', '', '0');
+INSERT INTO `ck_options` VALUES ('46', '0', 'finance_withdraw_max', '50000', '1', '0', '', '0');
+INSERT INTO `ck_options` VALUES ('47', '0', 'finance_withdraw_min', '100', '1', '0', '', '0');
+INSERT INTO `ck_options` VALUES ('48', '0', 'finance_add_amount_open_aduit', '0', '1', '0', '', '0');
+INSERT INTO `ck_options` VALUES ('49', '0', 'finance_reduce_amount_open_aduit', '0', '1', '0', '', '0');
+INSERT INTO `ck_options` VALUES ('50', '0', 'finance_add_amount_max', '10000', '1', '0', '', '0');
+INSERT INTO `ck_options` VALUES ('51', '0', 'finance_reduce_amount_max', '10000', '1', '0', '', '0');
 
 -- ----------------------------
 -- Table structure for `ck_platform`
@@ -1048,19 +1284,61 @@ CREATE TABLE `ck_platform` (
   `app_secret` varchar(255) DEFAULT NULL COMMENT 'ap密钥',
   `login_url` varchar(255) DEFAULT NULL COMMENT '登陆地址',
   `status` tinyint(3) unsigned NOT NULL DEFAULT '1' COMMENT '平台状态 1 激活 0 停用',
-  `buy_amount` decimal(19,2) unsigned DEFAULT NULL COMMENT '购买额度',
-  `total_amount` decimal(19,2) unsigned DEFAULT NULL COMMENT '累计购买额度',
-  `available_amount` decimal(19,2) unsigned DEFAULT NULL COMMENT '平台可用额度',
-  `frozen_amount` decimal(19,2) unsigned DEFAULT NULL COMMENT '平台冻结额度',
   `updated_at` int(10) unsigned DEFAULT NULL COMMENT '更新日期',
   `created_at` int(10) unsigned DEFAULT NULL COMMENT '创建日期',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of ck_platform
 -- ----------------------------
-INSERT INTO `ck_platform` VALUES ('1', 'hj', '皇家国际', null, null, null, null, '1', null, null, '2536201.00', null, null, null);
+INSERT INTO `ck_platform` VALUES ('1', '皇家国际', 'HJ', '', '', '', '', '1', null, null);
+INSERT INTO `ck_platform` VALUES ('2', '威尼斯人', 'WNSR', '', '', '', '', '1', null, null);
+INSERT INTO `ck_platform` VALUES ('3', '机械版百乐', 'JXB', '', '', '', '', '1', null, null);
+INSERT INTO `ck_platform` VALUES ('4', 'AG旗舰厅', 'AG', '', '', '', '', '1', null, null);
+INSERT INTO `ck_platform` VALUES ('5', '欧博', 'OB', '', '', '', '', '1', null, null);
+INSERT INTO `ck_platform` VALUES ('6', '彩票投注', 'CP', '', '', '', '', '1', null, null);
+
+-- ----------------------------
+-- Table structure for `ck_platform_account`
+-- ----------------------------
+DROP TABLE IF EXISTS `ck_platform_account`;
+CREATE TABLE `ck_platform_account` (
+  `platform_id` int(10) unsigned NOT NULL COMMENT '代理ID',
+  `available_amount` decimal(19,4) DEFAULT NULL COMMENT '可用余额',
+  `frozen_amount` decimal(19,4) DEFAULT NULL COMMENT '冻结金额',
+  `updated_at` int(10) unsigned DEFAULT NULL COMMENT '更新日期',
+  `created_at` int(10) unsigned DEFAULT NULL COMMENT '创建日期',
+  PRIMARY KEY (`platform_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='游戏平台账户表';
+
+-- ----------------------------
+-- Records of ck_platform_account
+-- ----------------------------
+INSERT INTO `ck_platform_account` VALUES ('1', '5636898.0000', null, null, null);
+INSERT INTO `ck_platform_account` VALUES ('2', '68635.0000', null, null, null);
+INSERT INTO `ck_platform_account` VALUES ('3', '850000.0000', null, null, null);
+
+-- ----------------------------
+-- Table structure for `ck_platform_account_record`
+-- ----------------------------
+DROP TABLE IF EXISTS `ck_platform_account_record`;
+CREATE TABLE `ck_platform_account_record` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '游戏平台账户变更记录ID',
+  `platform_id` int(10) unsigned NOT NULL COMMENT '代理ID',
+  `name` varchar(255) DEFAULT NULL COMMENT '变更名称',
+  `amount` decimal(19,4) DEFAULT NULL COMMENT '变更额度',
+  `switch` tinyint(3) unsigned DEFAULT NULL COMMENT '收支 1 收入 2支出',
+  `after_amount` decimal(19,4) DEFAULT NULL COMMENT '变更后余额',
+  `remark` varchar(255) DEFAULT NULL COMMENT '备注',
+  `updated_at` int(10) unsigned DEFAULT NULL COMMENT '更新日期',
+  `created_at` int(10) unsigned DEFAULT NULL COMMENT '创建日期',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='游戏平台额度变更记录表';
+
+-- ----------------------------
+-- Records of ck_platform_account_record
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for `ck_platform_daily`
@@ -1099,18 +1377,20 @@ CREATE TABLE `ck_platform_user` (
   `game_password` varchar(255) DEFAULT NULL COMMENT '游戏登陆密码',
   `user_status` tinyint(3) unsigned DEFAULT NULL COMMENT '用户状态 1 正常 2 冻结  3 锁定 4 注销',
   `first_login_ip` varchar(64) DEFAULT NULL COMMENT '首次登陆IP',
-  `last_login_at` int(10) unsigned DEFAULT NULL COMMENT '最后登陆事件',
+  `last_login_at` int(10) unsigned DEFAULT NULL COMMENT '最后登陆时间',
   `last_login_ip` varchar(64) DEFAULT NULL COMMENT '最后登陆IP',
   `available_amount` decimal(19,2) unsigned DEFAULT NULL COMMENT '用户余额',
   `frozen_amount` decimal(19,2) unsigned DEFAULT NULL COMMENT '冻结余额',
   `updated_at` int(10) unsigned DEFAULT NULL COMMENT '更新日期',
   `created_at` int(10) unsigned DEFAULT NULL COMMENT '创建日期',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of ck_platform_user
 -- ----------------------------
+INSERT INTO `ck_platform_user` VALUES ('1', '1', '1', null, 'demo', 'xxdasd', '1', null, null, null, '2536.00', null, null, null);
+INSERT INTO `ck_platform_user` VALUES ('2', '2', '1', null, 'demo', 'xxdadasd', '1', null, null, null, '12345.00', null, null, null);
 
 -- ----------------------------
 -- Table structure for `ck_rebate`
@@ -1122,19 +1402,62 @@ CREATE TABLE `ck_rebate` (
   `agent_id` int(10) unsigned DEFAULT NULL COMMENT '代理ID',
   `agent_name` varchar(255) DEFAULT NULL COMMENT '代理账号',
   `agent_level` tinyint(4) DEFAULT NULL COMMENT '代理层级',
+  `rebate_rate` decimal(6,4) unsigned DEFAULT NULL COMMENT '占成',
   `self_bet_amount` decimal(10,3) DEFAULT NULL COMMENT '自身有效投注',
-  `sub_bet_amount` decimal(10,3) DEFAULT NULL COMMENT '下级有效投注',
   `self_profit_loss` decimal(10,3) DEFAULT NULL COMMENT '自身会员损益',
+  `sub_bet_amount` decimal(19,4) DEFAULT NULL COMMENT '下级有效投注总额',
   `sub_profit_loss` decimal(10,3) DEFAULT NULL COMMENT '下级代理会员损益',
-  `total_sub_amount` decimal(10,3) DEFAULT NULL COMMENT '累计佣金',
-  `cur_sub_amount` decimal(10,3) DEFAULT NULL COMMENT '当期佣金',
-  `cur_rebate_amount` decimal(10,3) DEFAULT NULL COMMENT '本期返佣',
-  `total_rebate_amount` decimal(10,3) DEFAULT NULL COMMENT '累计返佣',
+  `sub_rebate_amount` decimal(10,3) DEFAULT NULL COMMENT '下级返佣',
+  `self_rebate_amount` decimal(10,3) DEFAULT NULL COMMENT '自身返佣',
+  `total_rebate_amount` decimal(10,3) DEFAULT NULL COMMENT '合计返佣',
+  `created_at` int(10) unsigned DEFAULT NULL COMMENT '计佣时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of ck_rebate
+-- ----------------------------
+INSERT INTO `ck_rebate` VALUES ('1', '201809', '1', 'agent', '1', '0.3000', '85000.000', '20000.000', '150000.0000', '30000.000', '900.000', '6000.000', '6900.000', '1539153959');
+
+-- ----------------------------
+-- Table structure for `ck_system_account`
+-- ----------------------------
+DROP TABLE IF EXISTS `ck_system_account`;
+CREATE TABLE `ck_system_account` (
+  `id` char(1) NOT NULL DEFAULT 'K' COMMENT '主键',
+  `available_amount` decimal(19,4) NOT NULL DEFAULT '0.0000' COMMENT '可用额度',
+  `frozen_amount` decimal(19,4) unsigned NOT NULL DEFAULT '0.0000' COMMENT '冻结额度',
+  `updated_at` int(10) unsigned DEFAULT NULL COMMENT '更新日期',
+  `created_at` int(10) unsigned DEFAULT NULL COMMENT '创建日期',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='系统账户表';
+
+-- ----------------------------
+-- Records of ck_system_account
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `ck_system_account_record`
+-- ----------------------------
+DROP TABLE IF EXISTS `ck_system_account_record`;
+CREATE TABLE `ck_system_account_record` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '系统账户变更ID',
+  `name` varchar(255) DEFAULT NULL COMMENT '账户变更名称',
+  `amount` decimal(19,2) DEFAULT NULL COMMENT '变更额度',
+  `switch` tinyint(3) unsigned DEFAULT NULL COMMENT '收支 1 收入 2 支出',
+  `after_amount` decimal(19,2) DEFAULT NULL COMMENT '交易后余额',
+  `remark` varchar(255) DEFAULT NULL COMMENT '备注信息',
+  `confirm_by_id` int(10) unsigned DEFAULT NULL COMMENT '确认者ID',
+  `confirm_by_name` varchar(64) DEFAULT NULL COMMENT '确认者名称',
+  `confirm_at` int(11) unsigned DEFAULT NULL COMMENT '确认时间',
+  `confirm_remark` varchar(255) DEFAULT NULL COMMENT '确认备注',
+  `updated_at` int(10) unsigned DEFAULT NULL COMMENT '更新日期',
+  `created_at` int(10) unsigned DEFAULT NULL COMMENT '创建日期',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='系统账户变更记录表';
+
+-- ----------------------------
+-- Records of ck_system_account_record
 -- ----------------------------
 
 -- ----------------------------
@@ -1185,6 +1508,65 @@ CREATE TABLE `ck_task_error` (
 -- ----------------------------
 
 -- ----------------------------
+-- Table structure for `ck_trade`
+-- ----------------------------
+DROP TABLE IF EXISTS `ck_trade`;
+CREATE TABLE `ck_trade` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '交易ID',
+  `user_id` bigint(20) unsigned NOT NULL COMMENT '会员ID',
+  `switch` tinyint(3) unsigned NOT NULL COMMENT '收支类型 1收入 2支出',
+  `trade_no` varchar(255) DEFAULT NULL COMMENT '交易单号',
+  `trade_type_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '交易类型ID',
+  `remark` varchar(255) DEFAULT NULL COMMENT '备注信息',
+  `amount` decimal(19,4) NOT NULL COMMENT '收支金额',
+  `after_amount` decimal(19,4) NOT NULL COMMENT '交易后余额',
+  `updated_at` int(10) unsigned DEFAULT NULL COMMENT '更新日期',
+  `created_at` int(10) unsigned DEFAULT NULL COMMENT '创建日期',
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COMMENT='交易表';
+
+-- ----------------------------
+-- Records of ck_trade
+-- ----------------------------
+INSERT INTO `ck_trade` VALUES ('1', '1', '1', '456254', '1', '存款，银行：招商银行，账号后三位：789，审核：王五', '5000.0000', '5000.0000', null, '1539153959');
+INSERT INTO `ck_trade` VALUES ('2', '1', '2', '23', '3', '上分到皇家国际', '3000.0000', '2000.0000', null, '1539154559');
+INSERT INTO `ck_trade` VALUES ('3', '1', '1', '29', '4', '从皇家国际回收分数', '1500.0000', '3500.0000', null, '1539164559');
+INSERT INTO `ck_trade` VALUES ('4', '1', '1', '88', '5', '人工增加额度，操作员：李三', '500.0000', '4000.0000', null, '1539174559');
+INSERT INTO `ck_trade` VALUES ('5', '1', '2', '45852', '2', '取款，银行：建设银行，审核：王五', '2500.0000', '1500.0000', null, '1539274559');
+INSERT INTO `ck_trade` VALUES ('6', '1', '2', '4', '6', '非审核下分600', '600.0000', '4636.0000', null, null);
+INSERT INTO `ck_trade` VALUES ('7', '1', '1', '5', '5', '非审核上分900分', '900.0000', '5536.0000', null, null);
+
+-- ----------------------------
+-- Table structure for `ck_trade_type`
+-- ----------------------------
+DROP TABLE IF EXISTS `ck_trade_type`;
+CREATE TABLE `ck_trade_type` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '交易种类ID',
+  `name` varchar(64) NOT NULL COMMENT '类型名称',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4;
+
+-- ----------------------------
+-- Records of ck_trade_type
+-- ----------------------------
+INSERT INTO `ck_trade_type` VALUES ('1', '存款');
+INSERT INTO `ck_trade_type` VALUES ('2', '取款');
+INSERT INTO `ck_trade_type` VALUES ('3', '上分');
+INSERT INTO `ck_trade_type` VALUES ('4', '下分');
+INSERT INTO `ck_trade_type` VALUES ('5', '人工增加');
+INSERT INTO `ck_trade_type` VALUES ('6', '人工减少');
+INSERT INTO `ck_trade_type` VALUES ('7', '充值优惠');
+INSERT INTO `ck_trade_type` VALUES ('8', '洗码结算');
+INSERT INTO `ck_trade_type` VALUES ('9', '下级提成');
+INSERT INTO `ck_trade_type` VALUES ('10', '好友转入');
+INSERT INTO `ck_trade_type` VALUES ('11', '好友转出');
+INSERT INTO `ck_trade_type` VALUES ('12', '平台奖励');
+INSERT INTO `ck_trade_type` VALUES ('13', '订购商品');
+INSERT INTO `ck_trade_type` VALUES ('14', '订购服务');
+INSERT INTO `ck_trade_type` VALUES ('15', '其它');
+
+-- ----------------------------
 -- Table structure for `ck_user`
 -- ----------------------------
 DROP TABLE IF EXISTS `ck_user`;
@@ -1192,6 +1574,7 @@ CREATE TABLE `ck_user` (
   `id` bigint(11) NOT NULL AUTO_INCREMENT COMMENT '自增用户id',
   `username` varchar(255) COLLATE utf8_unicode_ci NOT NULL COMMENT '用户名',
   `nickname` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT '昵称',
+  `api_token` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT '接口令牌',
   `auth_key` varchar(32) COLLATE utf8_unicode_ci NOT NULL COMMENT 'cookie验证auth_key',
   `password_hash` varchar(255) COLLATE utf8_unicode_ci NOT NULL COMMENT '加密后密码',
   `password_pay` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT '支付密码',
@@ -1199,7 +1582,7 @@ CREATE TABLE `ck_user` (
   `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL COMMENT '用户邮箱',
   `avatar` varchar(255) COLLATE utf8_unicode_ci DEFAULT '' COMMENT '用户头像url',
   `status` tinyint(4) unsigned NOT NULL DEFAULT '1' COMMENT '会员状态\r\n            1、正常\r\n            2、冻结\r\n            3、锁定\r\n            4、注销',
-  `xima_rate` decimal(4,3) DEFAULT NULL COMMENT '洗码率',
+  `xima_rate` decimal(6,4) DEFAULT NULL COMMENT '洗码率',
   `xima_type` tinyint(3) unsigned DEFAULT NULL COMMENT '洗码类别 1 单边 2 双边',
   `xima_status` tinyint(3) unsigned DEFAULT NULL COMMENT '查看洗码 0 否 1是',
   `min_limit` int(10) unsigned DEFAULT NULL COMMENT '最小限红',
@@ -1210,8 +1593,8 @@ CREATE TABLE `ck_user` (
   `pair_max_limit` int(10) unsigned DEFAULT NULL COMMENT '最大和限红',
   `invite_agent_id` int(10) unsigned DEFAULT NULL COMMENT '邀请代理ID',
   `invite_user_id` bigint(20) unsigned DEFAULT NULL COMMENT '邀请用户ID',
-  `created_at` int(11) NOT NULL COMMENT '创建时间',
-  `updated_at` int(11) NOT NULL COMMENT '最后修改时间',
+  `created_at` int(11) DEFAULT NULL COMMENT '创建时间',
+  `updated_at` int(11) DEFAULT NULL COMMENT '最后修改时间',
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`),
   UNIQUE KEY `password_reset_token` (`password_reset_token`)
@@ -1220,10 +1603,10 @@ CREATE TABLE `ck_user` (
 -- ----------------------------
 -- Records of ck_user
 -- ----------------------------
-INSERT INTO `ck_user` VALUES ('1', 'sentry', null, '123', '22334', '444', null, '', '', '1', null, null, null, null, null, null, null, null, null, '1', '1', '0', '0');
-INSERT INTO `ck_user` VALUES ('3', 'demo', null, '33', '444', '554', null, 'aaa@cc.com', '', '1', null, null, null, null, null, null, null, null, null, '1', '1', '0', '0');
-INSERT INTO `ck_user` VALUES ('4', 'aaaaa', null, '', '', null, null, '', '', '1', null, null, null, null, null, null, null, null, null, '1', '1', '1539173959', '1539173959');
-INSERT INTO `ck_user` VALUES ('5', '12345', null, 'hg7FzRlHigQsFtsTDhG3Kwgntp-wzKNO', '$2y$13$Ua8FnsVfC8tX/CR1ykQUXO33NkBD0LVPvv6oYtglCmqu1rQsiuV8W', null, null, '', '', '1', '0.008', '2', '1', '10', '10000', '10', '5000', '10', '5000', '1', null, '1539239742', '1539240983');
+INSERT INTO `ck_user` VALUES ('1', '测试专用号', 'ForTest', null, '123', '$13$Ua8FnsVfC8tX/CR1ykQUXO33NkBD0LVPvv6oYtglCmqu1rQsiuV8W', '444', null, '', '', '1', '0.0080', '1', '1', null, null, null, null, null, null, '1', '1', '1539133959', '1540976611');
+INSERT INTO `ck_user` VALUES ('3', 'knifeman', '小李飞刀', null, '33', '$13$Ua8FnsVfC8tX/CR1ykQUXO33NkBD0LVPvv6oYtglCmqu1rQsiuV8W', '554', null, 'aaa@cc.com', '', '1', null, null, null, null, null, null, null, null, null, '1', '1', '1539153959', '1539173959');
+INSERT INTO `ck_user` VALUES ('4', 'snow', '西门飞雪', null, '43333', '$13$Ua8FnsVfC8tX/CR1ykQUXO33NkBD0LVPvv6oYtglCmqu1rQsiuV8W', null, null, '', '', '1', null, null, null, null, null, null, null, null, null, '1', '1', '1539173959', '1539173959');
+INSERT INTO `ck_user` VALUES ('5', '12345', '12345', 'pgS9jTCRxiteWdDO2DZZ_sTXuBVr41i7_1540469716', 'hg7FzRlHigQsFtsTDhG3Kwgntp-wzKNO', '$2y$13$Ua8FnsVfC8tX/CR1ykQUXO33NkBD0LVPvv6oYtglCmqu1rQsiuV8W', null, null, '', '', '1', '0.0100', '2', '1', '10', '10000', '10', '5000', '10', '5000', '1', null, '1539239742', '1540469716');
 
 -- ----------------------------
 -- Table structure for `ck_user_account`
@@ -1231,11 +1614,10 @@ INSERT INTO `ck_user` VALUES ('5', '12345', null, 'hg7FzRlHigQsFtsTDhG3Kwgntp-wz
 DROP TABLE IF EXISTS `ck_user_account`;
 CREATE TABLE `ck_user_account` (
   `user_id` bigint(20) NOT NULL COMMENT '会员编号',
-  `username` varchar(64) DEFAULT NULL COMMENT '会员账号',
-  `available_amount` decimal(10,3) DEFAULT NULL COMMENT '可用余额',
-  `frozen_amount` decimal(10,3) DEFAULT NULL COMMENT '冻结金额',
+  `available_amount` decimal(19,4) DEFAULT NULL COMMENT '可用余额',
+  `frozen_amount` decimal(19,4) DEFAULT NULL COMMENT '冻结金额',
   `user_point` int(11) DEFAULT NULL COMMENT '会员积分',
-  `xima_account` decimal(19,2) DEFAULT NULL COMMENT '洗码值',
+  `xima_account` decimal(19,4) DEFAULT NULL COMMENT '洗码值',
   `xima_rate` decimal(4,2) DEFAULT NULL COMMENT '洗码比',
   `updated_at` int(10) unsigned DEFAULT NULL COMMENT '更新日期',
   `created_at` int(10) unsigned DEFAULT NULL COMMENT '创建日期',
@@ -1245,116 +1627,42 @@ CREATE TABLE `ck_user_account` (
 -- ----------------------------
 -- Records of ck_user_account
 -- ----------------------------
-INSERT INTO `ck_user_account` VALUES ('484020991350013952', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('486579189646884864', null, '33442.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('486910926415462400', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('487589032641953792', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('487589032654536704', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('487590114654945280', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('487590385107861504', null, '139811.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('487590453785395200', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('487590502347046912', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('487594592904937472', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('487594640942301184', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('487594820143939584', null, '17850.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('487595362211594240', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('487595410316066816', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('487596004980293632', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('487600131751804928', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('487600131814719488', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('487600397771341824', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('487623482620772352', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('487625035440193536', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('487671083869143040', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('487676198235668480', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('488015450551091200', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('488095073217544192', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('488095142117376000', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('488095209079439360', null, '59820.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('488095270349832192', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('488337527766253568', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('488341274059866112', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('488341295064940544', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('488341323523293184', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('488390573808418816', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('488401011694632960', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('488423961768493056', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('488424191352111104', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('488424885190656000', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('488427777674969088', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('488440492149702656', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('488440754801213440', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('488442987735416832', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('488443026637586432', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('488443189997338624', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('488443243483103232', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('488443259475984384', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('488448175107997696', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('488448592994893824', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('488453397876310016', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('488457348398972928', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('488459540082196480', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('488460267605196800', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('488461997571047424', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('488633852206514176', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('488677956105797632', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('488702705854840832', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('488706018037989376', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('488706471354171392', null, '10000.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('488723631480766464', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('488751283566542848', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('489011405089931264', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('489043280739172352', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('489043865056051200', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('489076565443870720', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('489097921954840576', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('489098056436809728', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('489105147184545792', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('489128615355613184', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('489171105295106048', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('489406578378670080', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('489406613900230656', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('489419686866321408', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('489421821490233344', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('489424429403602944', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('489519230996185088', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('489533894756925440', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('489542532850515968', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('489748070393708544', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('489757074947833856', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('489829931040112640', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('489845285363646464', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('489863958627352576', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('489870298254934016', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('489904952836096000', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('489923187438518272', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('489923508302774272', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('490097028890624000', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('490120269164183552', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('490120852302462976', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('490121015880318976', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('490173559298064384', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('490174355171442688', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('490176563149537280', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('490225630680449024', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('490451812394991616', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('490458948814503936', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('490458953600204800', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('490459215479963648', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('490459593231564800', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('490459774991728640', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('491184697011863552', null, '400800.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('491300336934322176', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('491314180259840000', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('491315200432013312', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('491341138834227200', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('491344839279902720', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('491741297229430784', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('491969472064651264', null, '600.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('492373016747966464', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('493072988229337088', null, '99195.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('493210536314404864', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
-INSERT INTO `ck_user_account` VALUES ('494411311317254144', null, '0.000', '0.000', '0', '0.00', '0.00', null, null);
+INSERT INTO `ck_user_account` VALUES ('1', '8536.0000', '200.0000', '0', '600.0000', '0.50', '1540901118', null);
+INSERT INTO `ck_user_account` VALUES ('3', '586965.0000', '0.0000', '0', '900.0000', '0.60', null, null);
+INSERT INTO `ck_user_account` VALUES ('4', '2000.0000', null, null, null, '0.50', '1540984917', null);
+INSERT INTO `ck_user_account` VALUES ('5', '8000.0000', null, null, null, '0.60', '1540984908', null);
+
+-- ----------------------------
+-- Table structure for `ck_user_account_record`
+-- ----------------------------
+DROP TABLE IF EXISTS `ck_user_account_record`;
+CREATE TABLE `ck_user_account_record` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '交易ID',
+  `user_id` bigint(20) unsigned NOT NULL COMMENT '会员ID',
+  `switch` tinyint(3) unsigned NOT NULL COMMENT '收支类型 1收入 2支出',
+  `trade_no` varchar(255) DEFAULT NULL COMMENT '交易单号',
+  `trade_type_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '交易类型ID',
+  `remark` varchar(255) DEFAULT NULL COMMENT '备注信息',
+  `amount` decimal(19,4) NOT NULL COMMENT '收支金额',
+  `after_amount` decimal(19,4) NOT NULL COMMENT '交易后余额',
+  `updated_at` int(10) unsigned DEFAULT NULL COMMENT '更新日期',
+  `created_at` int(10) unsigned DEFAULT NULL COMMENT '创建日期',
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COMMENT='用户账户变更记录表';
+
+-- ----------------------------
+-- Records of ck_user_account_record
+-- ----------------------------
+INSERT INTO `ck_user_account_record` VALUES ('1', '1', '1', '456254', '1', '存款，银行：招商银行，账号后三位：789，审核：王五', '5000.0000', '5000.0000', null, '1539153959');
+INSERT INTO `ck_user_account_record` VALUES ('2', '1', '2', '23', '3', '上分到皇家国际', '3000.0000', '2000.0000', null, '1539154559');
+INSERT INTO `ck_user_account_record` VALUES ('3', '1', '1', '29', '4', '从皇家国际回收分数', '1500.0000', '3500.0000', null, '1539164559');
+INSERT INTO `ck_user_account_record` VALUES ('4', '1', '1', '88', '5', '人工增加额度，操作员：李三', '500.0000', '4000.0000', null, '1539174559');
+INSERT INTO `ck_user_account_record` VALUES ('5', '1', '2', '45852', '2', '取款，银行：建设银行，审核：王五', '2500.0000', '1500.0000', null, '1539274559');
+INSERT INTO `ck_user_account_record` VALUES ('6', '1', '2', '6', '6', '下分5000', '5000.0000', '536.0000', '1540901085', '1540901085');
+INSERT INTO `ck_user_account_record` VALUES ('7', '1', '1', '7', '5', '上分8000', '8000.0000', '8536.0000', '1540901118', '1540901118');
+INSERT INTO `ck_user_account_record` VALUES ('8', '5', '1', '8', '5', '', '8000.0000', '8000.0000', '1540984908', '1540984908');
+INSERT INTO `ck_user_account_record` VALUES ('9', '4', '1', '9', '5', '', '2000.0000', '2000.0000', '1540984917', '1540984917');
 
 -- ----------------------------
 -- Table structure for `ck_user_bank`
@@ -1388,15 +1696,15 @@ DROP TABLE IF EXISTS `ck_user_deposit`;
 CREATE TABLE `ck_user_deposit` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '存款记录ID',
   `user_id` bigint(20) NOT NULL COMMENT '会员ID',
-  `username` varchar(255) NOT NULL COMMENT '会员名称',
-  `apply_amount` decimal(19,2) NOT NULL COMMENT '申请存款金额',
+  `apply_amount` decimal(19,4) NOT NULL COMMENT '申请存款金额',
   `status` int(11) unsigned NOT NULL DEFAULT '1' COMMENT '存款状态 1 申请中 2 已存入 0 已取消',
-  `confirm_amount` decimal(19,2) unsigned DEFAULT NULL COMMENT '确认金额',
+  `confirm_amount` decimal(19,4) unsigned DEFAULT NULL COMMENT '确认金额',
+  `remark` varchar(255) DEFAULT NULL COMMENT '备注信息',
   `audit_by_id` int(11) unsigned DEFAULT NULL COMMENT '处理人员ID',
   `audit_by_username` varchar(64) DEFAULT NULL COMMENT '处理人员',
   `audit_remark` varchar(255) DEFAULT NULL COMMENT '处理备注',
   `audit_at` int(20) unsigned DEFAULT NULL COMMENT '处理时间',
-  `pay_channel` tinyint(3) unsigned NOT NULL COMMENT '支付渠道 1 银行转账 2 支付宝 3 微信',
+  `pay_channel` tinyint(3) unsigned NOT NULL DEFAULT '1' COMMENT '支付渠道 1 银行转账 2 支付宝 3 微信',
   `pay_username` varchar(255) DEFAULT NULL COMMENT '支付账号',
   `pay_nickname` varchar(255) DEFAULT NULL COMMENT '支付用户昵称',
   `pay_info` varchar(255) DEFAULT NULL COMMENT '支付信息',
@@ -1412,120 +1720,120 @@ CREATE TABLE `ck_user_deposit` (
 -- ----------------------------
 -- Records of ck_user_deposit
 -- ----------------------------
-INSERT INTO `ck_user_deposit` VALUES ('490225814445490176', '490225630680449024', 'ppp001', '7890.00', '1', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('490227034463666176', '490176563149537280', 'zzz001', '55555.00', '1', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('490573283058515968', '487594640942301184', '006', '8000.00', '1', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('490574315285118976', '487594640942301184', '006', '4555.00', '1', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('490574421585559552', '487594640942301184', '006', '4555.00', '1', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('490574575726231552', '487594640942301184', '006', '87563.00', '1', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('490574693678448640', '487594640942301184', '006', '7892444.00', '1', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('490579407627354112', '487594640942301184', '006', '666666.00', '1', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('490580220798042112', '487594640942301184', '006', '666666.00', '2', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('490580230302334976', '487594640942301184', '006', '666666.00', '2', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('490580238753857536', '487594640942301184', '006', '666666.00', '2', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('490580247339597824', '487594640942301184', '006', '666666.00', '2', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('490804573183672320', '487594820143939584', '007', '100.00', '1', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('490804798380048384', '487594820143939584', '007', '200.00', '1', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('490804939296079872', '487594820143939584', '007', '300.00', '1', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('490996255485329408', '487594820143939584', '007', '5555.00', '2', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('490996347365752832', '487594820143939584', '007', '555555.00', '2', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('490996642221129728', '487594820143939584', '007', '555555.00', '1', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('491261915566178304', '486579189646884864', 'purity', '11.00', '1', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('491263867775614976', '486579189646884864', 'purity', '1122.00', '1', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('491264467967934464', '486579189646884864', 'purity', '111.00', '2', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('491264562008424448', '486579189646884864', 'purity', '111.00', '1', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('491264593465704448', '486579189646884864', 'purity', '111.00', '2', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('491267905401389056', '486579189646884864', 'purity', '111.00', '1', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('491290345439494144', '487594592904937472', '005', '6666.00', '2', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('491296884753694720', '487594592904937472', '005', '52869.00', '2', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('491297345573486592', '490176563149537280', 'zzz001', '456666.00', '2', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('491297695915311104', '487594592904937472', '005', '52869.00', '1', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('491297753943506944', '486579189646884864', 'purity', '11.00', '1', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('491344964219830272', '491344839279902720', 'chenggong', '500.00', '1', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('491526055685783552', '487594820143939584', '007', '500.00', '1', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('491656535462641664', '486910926415462400', 'test', '55588888.00', '2', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('491974906045530112', '487595410316066816', '009', '325.00', '1', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('492348522197155840', '487625035440193536', 'xjq', '10000.00', '1', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('492348729735512064', '487625035440193536', 'xjq', '100000.00', '1', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('492348998103859200', '487625035440193536', 'xjq', '1000.00', '1', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('492380688083845120', '487594640942301184', '006', '1200.00', '1', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('492380838617415680', '487594640942301184', '006', '1200.00', '1', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('492383589753683968', '487594640942301184', '006', '1200.00', '1', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('492384217720684544', '487594640942301184', '006', '1800.00', '1', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('492694865885265920', '488095209079439360', '110', '500.00', '1', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('492721613083508736', '488095209079439360', '110', '123.00', '1', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('492721939849150464', '488095209079439360', '110', '123.00', '1', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('492721942600613888', '488095209079439360', '110', '123.00', '1', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('492722066529714176', '488095209079439360', '110', '123.00', '1', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('492727721231646720', '488095209079439360', '110', '200.00', '1', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('492730442638688256', '488095209079439360', '110', '150.00', '1', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('492730533143379968', '488095209079439360', '110', '150.00', '1', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('492730607529361408', '488095209079439360', '110', '150.00', '1', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('492730743680663552', '488095209079439360', '110', '150.00', '1', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('492731234141601792', '488095209079439360', '110', '150.00', '1', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('492732287633326080', '488095209079439360', '110', '500.00', '1', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('492732414183866368', '488095209079439360', '110', '500.00', '1', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('492732442101153792', '488095209079439360', '110', '500.00', '1', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('492732475655585792', '488095209079439360', '110', '500.00', '1', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('492732572254601216', '488095209079439360', '110', '500.00', '1', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('492732765981114368', '488095209079439360', '110', '500.00', '1', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('492732791146938368', '488095209079439360', '110', '500.00', '1', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('492744806540247040', '488095209079439360', '110', '1000.00', '2', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('492745228264931328', '488095209079439360', '110', '1000.00', '1', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('492745602409431040', '488095209079439360', '110', '1000.00', '1', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('492749249159626752', '488095209079439360', '110', '800.00', '2', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('492781168513515520', '488095209079439360', '110', '666.00', '1', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('492781945378308096', '488095209079439360', '110', '666.00', '1', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('492782040471568384', '488095209079439360', '110', '666.00', '1', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('492784187560951808', '488095209079439360', '110', '1000.00', '1', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('492785334308831232', '488095209079439360', '110', '1000.00', '1', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('492789203881426944', '488095209079439360', '110', '318.00', '1', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('492790800598433792', '488095209079439360', '110', '318.00', '2', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('492791866740178944', '488095209079439360', '110', '318.00', '2', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('492791940597678080', '488095209079439360', '110', '318.00', '1', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('493036187049525248', '487590502347046912', '004', '500.00', '1', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('493036614931447808', '487590502347046912', '004', '500.00', '1', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('493036681318891520', '487590502347046912', '004', '500.00', '1', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('493036737879080960', '487590502347046912', '004', '500.00', '1', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('493177116486008832', '487594820143939584', '007', '600.00', '1', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('493177370174291968', '487594820143939584', '007', '600.00', '1', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('493177733900140544', '487594820143939584', '007', '600.00', '1', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('493177968256876544', '487594820143939584', '007', '600.00', '1', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('493178035890028544', '487594820143939584', '007', '600.00', '1', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('493178083600236544', '487594820143939584', '007', '600.00', '1', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('493178152609120256', '487594820143939584', '007', '600.00', '1', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('493178227188039680', '487594820143939584', '007', '600.00', '1', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('493178633645457408', '487594820143939584', '007', '500000.00', '1', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('493178970825555968', '487594820143939584', '007', '6000.00', '1', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('493179042522988544', '487594820143939584', '007', '6000.00', '1', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('493179114614685696', '487594820143939584', '007', '6000.00', '1', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('493179645387079680', '487594820143939584', '007', '6000.00', '1', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('493199829359394816', '487594820143939584', '007', '2000.00', '1', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('493200141767933952', '487594820143939584', '007', '2000.00', '1', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('493200535051042816', '487594820143939584', '007', '2000.00', '2', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('493202775266557952', '487594640942301184', '006', '1200.00', '1', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('493202868854063104', '487594640942301184', '006', '1200.00', '1', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('493202956540182528', '487594640942301184', '006', '1200.00', '1', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('493203393402109952', '487594640942301184', '006', '1200.00', '1', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('493211292992012288', '493210536314404864', '103z', '100000.00', '1', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('493213533408854016', '487594820143939584', '007', '200000.00', '1', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('494133062062309376', '487623482620772352', 'tony', '9999999.00', '1', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('494413019653079040', '494411311317254144', 'wade', '5000000.00', '1', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('494631155866271744', '488095209079439360', '110', '58000.00', '2', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('494631507021791232', '488095209079439360', '110', '58000.00', '2', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('494631669622374400', '488095209079439360', '110', '58000.00', '2', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('494631670016638976', '488095209079439360', '110', '58000.00', '2', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('494631670079553536', '488095209079439360', '110', '58000.00', '2', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('494631670868082688', '488095209079439360', '110', '58000.00', '2', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('494631671128129536', '488095209079439360', '110', '58000.00', '2', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('494631694918221824', '488095209079439360', '110', '58000.00', '2', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('494631791596929024', '488095209079439360', '110', '58000.00', '2', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('494631791861170176', '488095209079439360', '110', '58000.00', '2', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('494631791991193600', '488095209079439360', '110', '58000.00', '1', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('494631792058302464', '488095209079439360', '110', '58000.00', '1', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('494631792318349312', '488095209079439360', '110', '58000.00', '1', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('494631792448372736', '488095209079439360', '110', '58000.00', '1', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_deposit` VALUES ('494631792775528448', '488095209079439360', '110', '58000.00', '1', null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null);
+INSERT INTO `ck_user_deposit` VALUES ('490225814445490176', '490225630680449024', '7890.0000', '1', null, 'ppp001', null, null, null, null, '1', null, null, null, null, null, null, null, null, '1539274559');
+INSERT INTO `ck_user_deposit` VALUES ('490227034463666176', '490176563149537280', '55555.0000', '1', null, 'zzz001', null, null, null, null, '1', null, null, null, null, null, null, null, null, '1539274559');
+INSERT INTO `ck_user_deposit` VALUES ('490573283058515968', '1', '8000.0000', '1', null, '006', null, null, null, null, '1', null, null, null, null, null, null, null, null, '1539274559');
+INSERT INTO `ck_user_deposit` VALUES ('490574315285118976', '1', '4555.0000', '1', null, '006', null, null, null, null, '1', null, null, null, null, null, null, null, null, '1539274559');
+INSERT INTO `ck_user_deposit` VALUES ('490574421585559552', '1', '4555.0000', '1', null, '006', null, null, null, null, '1', null, null, null, null, null, null, null, null, '1539274559');
+INSERT INTO `ck_user_deposit` VALUES ('490574575726231552', '1', '87563.0000', '1', null, '006', null, null, null, null, '1', null, null, null, null, null, null, null, null, '1539274559');
+INSERT INTO `ck_user_deposit` VALUES ('490574693678448640', '1', '7892444.0000', '1', null, '006', null, null, null, null, '1', null, null, null, null, null, null, null, null, '1539274559');
+INSERT INTO `ck_user_deposit` VALUES ('490579407627354112', '1', '666666.0000', '1', null, '006', null, null, null, null, '1', null, null, null, null, null, null, null, null, '1539274559');
+INSERT INTO `ck_user_deposit` VALUES ('490580220798042112', '1', '666666.0000', '2', '666666.0000', '006', null, '王五', '已入账', '1539374559', '1', '测试账号', '测试账号', '236', null, null, null, null, null, '1539274559');
+INSERT INTO `ck_user_deposit` VALUES ('490580230302334976', '1', '666666.0000', '2', '666666.0000', '006', null, '王五', '已入账', '1539294559', '1', '测试账号', '测试账号', '236', null, null, null, null, null, '1539274559');
+INSERT INTO `ck_user_deposit` VALUES ('490580238753857536', '1', '666666.0000', '2', '666666.0000', '006', null, '王五', '已入账', '1539275559', '1', '测试账号', '测试账号', '236', null, null, null, null, null, '1539274559');
+INSERT INTO `ck_user_deposit` VALUES ('490580247339597824', '1', '666666.0000', '2', '666666.0000', '006', null, '王五', '已入账', '1539276559', '1', '测试账号', '测试账号', '236', null, null, null, null, null, '1539274559');
+INSERT INTO `ck_user_deposit` VALUES ('490804573183672320', '487594820143939584', '100.0000', '1', null, '007', null, null, null, null, '1', null, null, null, null, null, null, null, null, '1539274559');
+INSERT INTO `ck_user_deposit` VALUES ('490804798380048384', '487594820143939584', '200.0000', '1', null, '007', null, null, null, null, '1', null, null, null, null, null, null, null, null, '1539274559');
+INSERT INTO `ck_user_deposit` VALUES ('490804939296079872', '487594820143939584', '300.0000', '1', null, '007', null, null, null, null, '1', null, null, null, null, null, null, null, null, '1539274559');
+INSERT INTO `ck_user_deposit` VALUES ('490996255485329408', '487594820143939584', '5555.0000', '2', '5555.0000', '007', null, null, null, null, '1', null, null, null, null, null, null, null, null, '1539274559');
+INSERT INTO `ck_user_deposit` VALUES ('490996347365752832', '487594820143939584', '555555.0000', '2', '555555.0000', '007', null, null, null, null, '1', null, null, null, null, null, null, null, null, '1539274559');
+INSERT INTO `ck_user_deposit` VALUES ('490996642221129728', '487594820143939584', '555555.0000', '1', null, '007', null, null, null, null, '1', null, null, null, null, null, null, null, null, '1539274559');
+INSERT INTO `ck_user_deposit` VALUES ('491261915566178304', '486579189646884864', '11.0000', '1', null, 'purity', null, null, null, null, '1', null, null, null, null, null, null, null, null, '1539274559');
+INSERT INTO `ck_user_deposit` VALUES ('491263867775614976', '486579189646884864', '1122.0000', '1', null, 'purity', null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `ck_user_deposit` VALUES ('491264467967934464', '486579189646884864', '111.0000', '2', '111.0000', 'purity', null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `ck_user_deposit` VALUES ('491264562008424448', '486579189646884864', '111.0000', '1', null, 'purity', null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `ck_user_deposit` VALUES ('491264593465704448', '486579189646884864', '111.0000', '2', '111.0000', 'purity', null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `ck_user_deposit` VALUES ('491267905401389056', '486579189646884864', '111.0000', '1', null, 'purity', null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `ck_user_deposit` VALUES ('491290345439494144', '487594592904937472', '6666.0000', '2', '6666.0000', '005', null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `ck_user_deposit` VALUES ('491296884753694720', '487594592904937472', '52869.0000', '2', '52869.0000', '005', null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `ck_user_deposit` VALUES ('491297345573486592', '490176563149537280', '456666.0000', '2', '456666.0000', 'zzz001', null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `ck_user_deposit` VALUES ('491297695915311104', '487594592904937472', '52869.0000', '1', null, '005', null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `ck_user_deposit` VALUES ('491297753943506944', '486579189646884864', '11.0000', '1', null, 'purity', null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `ck_user_deposit` VALUES ('491344964219830272', '491344839279902720', '500.0000', '1', null, 'chenggong', null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `ck_user_deposit` VALUES ('491526055685783552', '487594820143939584', '500.0000', '1', null, '007', null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `ck_user_deposit` VALUES ('491656535462641664', '486910926415462400', '55588888.0000', '2', '55588888.0000', 'test', null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `ck_user_deposit` VALUES ('491974906045530112', '487595410316066816', '325.0000', '1', null, '009', null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `ck_user_deposit` VALUES ('492348522197155840', '487625035440193536', '10000.0000', '1', null, 'xjq', null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `ck_user_deposit` VALUES ('492348729735512064', '487625035440193536', '100000.0000', '1', null, 'xjq', null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `ck_user_deposit` VALUES ('492348998103859200', '487625035440193536', '1000.0000', '1', null, 'xjq', null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `ck_user_deposit` VALUES ('492380688083845120', '1', '1200.0000', '1', null, '006', null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `ck_user_deposit` VALUES ('492380838617415680', '1', '1200.0000', '1', null, '006', null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `ck_user_deposit` VALUES ('492383589753683968', '1', '1200.0000', '1', null, '006', null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `ck_user_deposit` VALUES ('492384217720684544', '1', '1800.0000', '1', null, '006', null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `ck_user_deposit` VALUES ('492694865885265920', '488095209079439360', '500.0000', '1', null, '110', null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `ck_user_deposit` VALUES ('492721613083508736', '488095209079439360', '123.0000', '1', null, '110', null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `ck_user_deposit` VALUES ('492721939849150464', '488095209079439360', '123.0000', '1', null, '110', null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `ck_user_deposit` VALUES ('492721942600613888', '488095209079439360', '123.0000', '1', null, '110', null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `ck_user_deposit` VALUES ('492722066529714176', '488095209079439360', '123.0000', '1', null, '110', null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `ck_user_deposit` VALUES ('492727721231646720', '488095209079439360', '200.0000', '1', null, '110', null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `ck_user_deposit` VALUES ('492730442638688256', '488095209079439360', '150.0000', '1', null, '110', null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `ck_user_deposit` VALUES ('492730533143379968', '488095209079439360', '150.0000', '1', null, '110', null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `ck_user_deposit` VALUES ('492730607529361408', '488095209079439360', '150.0000', '1', null, '110', null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `ck_user_deposit` VALUES ('492730743680663552', '488095209079439360', '150.0000', '1', null, '110', null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `ck_user_deposit` VALUES ('492731234141601792', '488095209079439360', '150.0000', '1', null, '110', null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `ck_user_deposit` VALUES ('492732287633326080', '488095209079439360', '500.0000', '1', null, '110', null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `ck_user_deposit` VALUES ('492732414183866368', '488095209079439360', '500.0000', '1', null, '110', null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `ck_user_deposit` VALUES ('492732442101153792', '488095209079439360', '500.0000', '1', null, '110', null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `ck_user_deposit` VALUES ('492732475655585792', '488095209079439360', '500.0000', '1', null, '110', null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `ck_user_deposit` VALUES ('492732572254601216', '488095209079439360', '500.0000', '1', null, '110', null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `ck_user_deposit` VALUES ('492732765981114368', '488095209079439360', '500.0000', '1', null, '110', null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `ck_user_deposit` VALUES ('492732791146938368', '488095209079439360', '500.0000', '1', null, '110', null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `ck_user_deposit` VALUES ('492744806540247040', '488095209079439360', '1000.0000', '2', '1000.0000', '110', null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `ck_user_deposit` VALUES ('492745228264931328', '488095209079439360', '1000.0000', '1', null, '110', null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `ck_user_deposit` VALUES ('492745602409431040', '488095209079439360', '1000.0000', '1', null, '110', null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `ck_user_deposit` VALUES ('492749249159626752', '488095209079439360', '800.0000', '2', '800.0000', '110', null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `ck_user_deposit` VALUES ('492781168513515520', '488095209079439360', '666.0000', '1', null, '110', null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `ck_user_deposit` VALUES ('492781945378308096', '488095209079439360', '666.0000', '1', null, '110', null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `ck_user_deposit` VALUES ('492782040471568384', '488095209079439360', '666.0000', '1', null, '110', null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `ck_user_deposit` VALUES ('492784187560951808', '488095209079439360', '1000.0000', '1', null, '110', null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `ck_user_deposit` VALUES ('492785334308831232', '488095209079439360', '1000.0000', '1', null, '110', null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `ck_user_deposit` VALUES ('492789203881426944', '488095209079439360', '318.0000', '1', null, '110', null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `ck_user_deposit` VALUES ('492790800598433792', '488095209079439360', '318.0000', '2', '318.0000', '110', null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `ck_user_deposit` VALUES ('492791866740178944', '488095209079439360', '318.0000', '2', '318.0000', '110', null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `ck_user_deposit` VALUES ('492791940597678080', '488095209079439360', '318.0000', '1', null, '110', null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `ck_user_deposit` VALUES ('493036187049525248', '487590502347046912', '500.0000', '1', null, '004', null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `ck_user_deposit` VALUES ('493036614931447808', '487590502347046912', '500.0000', '1', null, '004', null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `ck_user_deposit` VALUES ('493036681318891520', '487590502347046912', '500.0000', '1', null, '004', null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `ck_user_deposit` VALUES ('493036737879080960', '487590502347046912', '500.0000', '1', null, '004', null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `ck_user_deposit` VALUES ('493177116486008832', '487594820143939584', '600.0000', '1', null, '007', null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `ck_user_deposit` VALUES ('493177370174291968', '487594820143939584', '600.0000', '1', null, '007', null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `ck_user_deposit` VALUES ('493177733900140544', '487594820143939584', '600.0000', '1', null, '007', null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `ck_user_deposit` VALUES ('493177968256876544', '487594820143939584', '600.0000', '1', null, '007', null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `ck_user_deposit` VALUES ('493178035890028544', '487594820143939584', '600.0000', '1', null, '007', null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `ck_user_deposit` VALUES ('493178083600236544', '487594820143939584', '600.0000', '1', null, '007', null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `ck_user_deposit` VALUES ('493178152609120256', '487594820143939584', '600.0000', '1', null, '007', null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `ck_user_deposit` VALUES ('493178227188039680', '487594820143939584', '600.0000', '1', null, '007', null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `ck_user_deposit` VALUES ('493178633645457408', '487594820143939584', '500000.0000', '1', null, '007', null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `ck_user_deposit` VALUES ('493178970825555968', '487594820143939584', '6000.0000', '1', null, '007', null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `ck_user_deposit` VALUES ('493179042522988544', '487594820143939584', '6000.0000', '1', null, '007', null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `ck_user_deposit` VALUES ('493179114614685696', '487594820143939584', '6000.0000', '1', null, '007', null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `ck_user_deposit` VALUES ('493179645387079680', '487594820143939584', '6000.0000', '1', null, '007', null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `ck_user_deposit` VALUES ('493199829359394816', '487594820143939584', '2000.0000', '1', null, '007', null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `ck_user_deposit` VALUES ('493200141767933952', '487594820143939584', '2000.0000', '1', null, '007', null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `ck_user_deposit` VALUES ('493200535051042816', '487594820143939584', '2000.0000', '2', '2000.0000', '007', null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `ck_user_deposit` VALUES ('493202775266557952', '1', '1200.0000', '1', null, '006', null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `ck_user_deposit` VALUES ('493202868854063104', '1', '1200.0000', '1', null, '006', null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `ck_user_deposit` VALUES ('493202956540182528', '1', '1200.0000', '1', null, '006', null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `ck_user_deposit` VALUES ('493203393402109952', '1', '1200.0000', '1', null, '006', null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `ck_user_deposit` VALUES ('493211292992012288', '493210536314404864', '100000.0000', '1', null, '103z', null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `ck_user_deposit` VALUES ('493213533408854016', '487594820143939584', '200000.0000', '1', null, '007', null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `ck_user_deposit` VALUES ('494133062062309376', '487623482620772352', '9999999.0000', '1', null, 'tony', null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `ck_user_deposit` VALUES ('494413019653079040', '494411311317254144', '5000000.0000', '1', null, 'wade', null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `ck_user_deposit` VALUES ('494631155866271744', '488095209079439360', '58000.0000', '2', '58000.0000', '110', null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `ck_user_deposit` VALUES ('494631507021791232', '488095209079439360', '58000.0000', '2', '58000.0000', '110', null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `ck_user_deposit` VALUES ('494631669622374400', '488095209079439360', '58000.0000', '2', '58000.0000', '110', null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `ck_user_deposit` VALUES ('494631670016638976', '488095209079439360', '58000.0000', '2', '58000.0000', '110', null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `ck_user_deposit` VALUES ('494631670079553536', '488095209079439360', '58000.0000', '2', '58000.0000', '110', null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `ck_user_deposit` VALUES ('494631670868082688', '488095209079439360', '58000.0000', '2', '58000.0000', '110', null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `ck_user_deposit` VALUES ('494631671128129536', '488095209079439360', '58000.0000', '2', '58000.0000', '110', null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `ck_user_deposit` VALUES ('494631694918221824', '488095209079439360', '58000.0000', '2', '58000.0000', '110', null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `ck_user_deposit` VALUES ('494631791596929024', '488095209079439360', '58000.0000', '2', '58000.0000', '110', null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `ck_user_deposit` VALUES ('494631791861170176', '488095209079439360', '58000.0000', '2', '58000.0000', '110', null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `ck_user_deposit` VALUES ('494631791991193600', '488095209079439360', '58000.0000', '1', null, '110', null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `ck_user_deposit` VALUES ('494631792058302464', '488095209079439360', '58000.0000', '1', null, '110', null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `ck_user_deposit` VALUES ('494631792318349312', '488095209079439360', '58000.0000', '1', null, '110', null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `ck_user_deposit` VALUES ('494631792448372736', '488095209079439360', '58000.0000', '1', null, '110', null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
+INSERT INTO `ck_user_deposit` VALUES ('494631792775528448', '488095209079439360', '58000.0000', '1', null, '110', null, null, null, null, '1', null, null, null, null, null, null, null, null, null);
 
 -- ----------------------------
 -- Table structure for `ck_user_detail`
@@ -1548,111 +1856,25 @@ CREATE TABLE `ck_user_detail` (
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for `ck_user_game_platform`
--- ----------------------------
-DROP TABLE IF EXISTS `ck_user_game_platform`;
-CREATE TABLE `ck_user_game_platform` (
-  `user_id` bigint(20) NOT NULL,
-  `game_platform_id` int(11) NOT NULL,
-  `user_name` varchar(50) NOT NULL,
-  `login_pwd` varchar(100) NOT NULL,
-  `first_login` bigint(20) DEFAULT NULL,
-  `first_ip` varchar(50) DEFAULT NULL,
-  `last_login` bigint(20) DEFAULT NULL,
-  `last_ip` varchar(50) DEFAULT NULL,
-  `user_status` tinyint(4) unsigned NOT NULL DEFAULT '1',
-  `online_stauts` tinyint(4) unsigned NOT NULL DEFAULT '2',
-  `available_amount` decimal(10,3) unsigned NOT NULL DEFAULT '0.000',
-  PRIMARY KEY (`user_id`,`game_platform_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT;
-
--- ----------------------------
--- Records of ck_user_game_platform
--- ----------------------------
-INSERT INTO `ck_user_game_platform` VALUES ('0', '1', 'HJ113', '123456', '1537336011', '101.89.19.149', null, null, '1', '2', '0.000');
-INSERT INTO `ck_user_game_platform` VALUES ('486579189646884864', '1', 'HJpurity937', '123456', '1537251068', '113.111.183.156', null, null, '1', '2', '725.000');
-INSERT INTO `ck_user_game_platform` VALUES ('486910926415462400', '1', 'HJtest785', '123456', '1537346668', '59.41.23.223', null, null, '1', '2', '0.000');
-INSERT INTO `ck_user_game_platform` VALUES ('487590114654945280', '1', '001811', '123456', '1537458010', '222.220.52.246', null, null, '1', '2', '0.000');
-INSERT INTO `ck_user_game_platform` VALUES ('487590385107861504', '1', 'HJ002612', '123456', '1537351521', '117.136.73.205', null, null, '1', '2', '0.000');
-INSERT INTO `ck_user_game_platform` VALUES ('487590453785395200', '1', 'HJ003940', '123456', '1537255659', '222.220.52.102', null, null, '1', '2', '0.000');
-INSERT INTO `ck_user_game_platform` VALUES ('487590502347046912', '1', '004601', '123456', '1537538461', '112.96.194.63', null, null, '1', '2', '0.000');
-INSERT INTO `ck_user_game_platform` VALUES ('487594592904937472', '1', 'HJ005768', '123456', '1537261237', '222.220.19.225', null, null, '1', '2', '0.000');
-INSERT INTO `ck_user_game_platform` VALUES ('487594640942301184', '1', 'HJ006298', '123456', '1537274230', '222.220.19.11', null, null, '1', '2', '300.000');
-INSERT INTO `ck_user_game_platform` VALUES ('487594820143939584', '1', 'HJ007432', '123456', '1537204965', '222.220.19.237', null, null, '1', '2', '1100.000');
-INSERT INTO `ck_user_game_platform` VALUES ('487595362211594240', '1', 'HJ008926', '123456', '1537231179', '222.220.18.186', null, null, '1', '2', '1400.000');
-INSERT INTO `ck_user_game_platform` VALUES ('487595410316066816', '1', 'HJ009642', '123456', '1537337247', '222.220.18.145', null, null, '1', '2', '325.000');
-INSERT INTO `ck_user_game_platform` VALUES ('487625035440193536', '1', 'xjq', '123456', '1537428146', '59.41.23.223', null, null, '1', '2', '0.000');
-INSERT INTO `ck_user_game_platform` VALUES ('487676198235668480', '1', 'HJpurity1828', '123456', '1537252187', '113.111.183.156', null, null, '1', '2', '100.000');
-INSERT INTO `ck_user_game_platform` VALUES ('488095209079439360', '1', 'HJ110467', '123456', '1537186663', '222.220.19.78', null, null, '1', '2', '200.000');
-INSERT INTO `ck_user_game_platform` VALUES ('488095270349832192', '1', 'HJ111741', '123456', '1537255496', '222.220.52.182', null, null, '1', '2', '0.000');
-INSERT INTO `ck_user_game_platform` VALUES ('488706471354171392', '1', 'HJmrhuang316', '123456', '1537336755', '59.41.23.223', null, null, '1', '2', '0.000');
-INSERT INTO `ck_user_game_platform` VALUES ('489098056436809728', '1', 'HJcp001780', '123456', '1537261578', '222.220.52.195', null, null, '1', '2', '0.000');
-INSERT INTO `ck_user_game_platform` VALUES ('489105147184545792', '1', 'HJpurity6754', '123456', '1537336507', '59.41.23.223', null, null, '1', '2', '0.000');
-INSERT INTO `ck_user_game_platform` VALUES ('489171105295106048', '1', 'HJpurity3762', '123456', '1537175216', '113.111.183.156', null, null, '1', '2', '0.000');
-INSERT INTO `ck_user_game_platform` VALUES ('489533894756925440', '1', 'HJxds001785', '123456', '1537255043', '222.220.58.170', null, null, '1', '2', '0.000');
-INSERT INTO `ck_user_game_platform` VALUES ('489748070393708544', '1', 'purity2', '123456', '1537950848', '59.41.21.146', null, null, '1', '2', '0.000');
-INSERT INTO `ck_user_game_platform` VALUES ('490120852302462976', '1', 'HJt723', '123456', '1537181854', '113.111.183.156', null, null, '1', '2', '700.000');
-INSERT INTO `ck_user_game_platform` VALUES ('490173559298064384', '1', 'HJ111111109', '123456', '1537237361', '113.111.183.156', null, null, '1', '2', '0.000');
-INSERT INTO `ck_user_game_platform` VALUES ('490225630680449024', '1', 'HJppp001872', '123456', '1537186318', '222.220.59.101', null, null, '1', '2', '0.000');
-INSERT INTO `ck_user_game_platform` VALUES ('491184697011863552', '1', 'A001435', '123456', '1537517727', '14.152.94.185', null, null, '1', '2', '0.000');
-INSERT INTO `ck_user_game_platform` VALUES ('491300336934322176', '1', 'HJgogogo858', '123456', '1537253096', '222.220.59.101', null, null, '1', '2', '5950.000');
-INSERT INTO `ck_user_game_platform` VALUES ('491341138834227200', '1', 'HJdashu001311', '123456', '1537186486', '222.220.18.122', null, null, '1', '2', '0.000');
-INSERT INTO `ck_user_game_platform` VALUES ('491344839279902720', '1', 'HJchenggong690', '123456', '1537187412', '222.220.53.120', null, null, '1', '2', '500.000');
-INSERT INTO `ck_user_game_platform` VALUES ('491969472064651264', '1', 'HJaabbcc747', '123456', '1537336354', '59.41.23.223', null, null, '1', '2', '0.000');
-INSERT INTO `ck_user_game_platform` VALUES ('492373016747966464', '1', 'wantong001', '123456', '1537432521', '222.220.18.184', null, null, '1', '2', '0.000');
-INSERT INTO `ck_user_game_platform` VALUES ('4865791896468848640', '1', 'HJ646', '123456', '1537256353', '113.111.183.156', null, null, '1', '2', '0.000');
-INSERT INTO `ck_user_game_platform` VALUES ('4869109264154624000', '1', 'HJ841', '123456', '1537321232', '59.41.23.223', null, null, '1', '2', '0.000');
-INSERT INTO `ck_user_game_platform` VALUES ('4875954103160668160', '1', 'HJ774', '123456', '1537262583', '222.220.18.112', null, null, '1', '2', '0.000');
-INSERT INTO `ck_user_game_platform` VALUES ('4876761982356684800', '1', 'HJ408', '123456', '1537259169', '113.111.183.156', null, null, '1', '2', '0.000');
-INSERT INTO `ck_user_game_platform` VALUES ('4890980564368097280', '1', 'HJ391', '123456', '1537272366', '222.220.59.188', null, null, '1', '2', '0.000');
-INSERT INTO `ck_user_game_platform` VALUES ('4891051471845457920', '1', 'HJ242', '123456', '1537335777', '59.41.23.223', null, null, '1', '2', '0.000');
-INSERT INTO `ck_user_game_platform` VALUES ('4895338947569254400', '1', 'HJ748', '123456', '1537262443', '222.220.18.112', null, null, '1', '2', '0.000');
-
--- ----------------------------
--- Table structure for `ck_user_income`
--- ----------------------------
-DROP TABLE IF EXISTS `ck_user_income`;
-CREATE TABLE `ck_user_income` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '会员账户变更日志表',
-  `user_id` bigint(20) unsigned NOT NULL COMMENT '会员ID',
-  `username` varchar(64) DEFAULT NULL COMMENT '会员名称',
-  `income_type` tinyint(3) unsigned NOT NULL COMMENT '收支类型 1收入 2支出',
-  `trade_no` varchar(255) DEFAULT NULL COMMENT '交易单号',
-  `remark` varchar(255) DEFAULT NULL COMMENT '备注信息',
-  `amount` decimal(19,2) NOT NULL COMMENT '收支金额',
-  `after_amount` decimal(19,2) NOT NULL COMMENT '剩余金额',
-  `updated_at` int(10) unsigned DEFAULT NULL COMMENT '更新日期',
-  `created_at` int(10) unsigned DEFAULT NULL COMMENT '创建日期',
-  PRIMARY KEY (`id`),
-  KEY `user_id` (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='会员收支明细';
-
--- ----------------------------
--- Records of ck_user_income
--- ----------------------------
-
--- ----------------------------
 -- Table structure for `ck_user_login_log`
 -- ----------------------------
 DROP TABLE IF EXISTS `ck_user_login_log`;
 CREATE TABLE `ck_user_login_log` (
   `id` bigint(20) NOT NULL COMMENT '记录编号',
   `user_id` bigint(20) DEFAULT NULL COMMENT '会员编号',
-  `user_name` varchar(50) DEFAULT NULL COMMENT '会员名称',
-  `login_time` bigint(20) DEFAULT NULL COMMENT '登录时间',
+  `username` varchar(64) DEFAULT NULL COMMENT '会员名称',
   `login_ip` varchar(50) DEFAULT NULL COMMENT '登录IP',
-  `client_type` tinyint(4) DEFAULT NULL COMMENT '登录客户端类型\r\n            1、手机登录\r\n            2、PC登录\r\n            3、微信登录',
-  `client_version` varchar(50) DEFAULT NULL COMMENT '客户端版本号',
-  `system_version` varchar(50) DEFAULT NULL COMMENT '系统版本号',
-  `phone_brand` varchar(50) DEFAULT NULL COMMENT '手机型号',
-  `phone_pixel` varchar(50) DEFAULT NULL COMMENT '手机分辨率',
-  `phone_serial_number` varchar(50) DEFAULT NULL COMMENT '手机序列号',
+  `client_type` tinyint(4) DEFAULT NULL COMMENT '登录客户端类型\r\n            1、H5  2、安卓 3、iOS',
+  `client_version` varchar(255) DEFAULT NULL COMMENT '客户端版本号',
+  `created_at` int(11) DEFAULT NULL COMMENT '创建时间',
+  `updated_at` int(11) DEFAULT NULL COMMENT '最后修改时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='会员登录日志';
 
 -- ----------------------------
 -- Records of ck_user_login_log
 -- ----------------------------
+INSERT INTO `ck_user_login_log` VALUES ('1', '1', '测试专用号', '127.0.0.1', '1', '1.0', '1539239742', null);
 
 -- ----------------------------
 -- Table structure for `ck_user_stat`
@@ -1671,125 +1893,16 @@ CREATE TABLE `ck_user_stat` (
   `withdrawal_amount` decimal(10,3) DEFAULT NULL COMMENT '取款总额',
   `bet_number` int(10) unsigned DEFAULT NULL COMMENT '投注次数',
   `bet_amount` decimal(10,3) unsigned DEFAULT NULL COMMENT '投注总额',
+  `created_at` int(11) unsigned DEFAULT NULL COMMENT '创建日期',
+  `updated_at` int(11) unsigned DEFAULT NULL COMMENT '修改日期',
   PRIMARY KEY (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='会员统计表';
 
 -- ----------------------------
 -- Records of ck_user_stat
 -- ----------------------------
-INSERT INTO `ck_user_stat` VALUES ('484020991350013952', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('486579189646884864', '0', null, '1538033772', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('486910926415462400', '0', null, '1538086053', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('487589032641953792', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('487589032654536704', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('487590114654945280', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('487590385107861504', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('487590453785395200', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('487590502347046912', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('487594592904937472', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('487594640942301184', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('487594820143939584', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('487595362211594240', '0', null, '1538170049', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('487595410316066816', '0', null, '1538210784', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('487596004980293632', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('487600131751804928', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('487600131814719488', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('487600397771341824', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('487623482620772352', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('487625035440193536', '0', null, '1538037178', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('487671083869143040', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('487676198235668480', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('488015450551091200', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('488095073217544192', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('488095142117376000', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('488095209079439360', '0', null, '1538042515', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('488095270349832192', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('488337527766253568', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('488341274059866112', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('488341295064940544', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('488341323523293184', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('488390573808418816', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('488401011694632960', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('488423961768493056', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('488424191352111104', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('488424885190656000', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('488427777674969088', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('488440492149702656', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('488440754801213440', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('488442987735416832', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('488443026637586432', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('488443189997338624', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('488443243483103232', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('488443259475984384', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('488448175107997696', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('488448592994893824', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('488453397876310016', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('488457348398972928', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('488459540082196480', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('488460267605196800', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('488461997571047424', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('488633852206514176', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('488677956105797632', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('488702705854840832', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('488706018037989376', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('488706471354171392', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('488723631480766464', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('488751283566542848', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('489011405089931264', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('489043280739172352', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('489043865056051200', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('489076565443870720', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('489097921954840576', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('489098056436809728', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('489105147184545792', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('489128615355613184', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('489171105295106048', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('489406578378670080', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('489406613900230656', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('489419686866321408', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('489421821490233344', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('489424429403602944', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('489519230996185088', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('489533894756925440', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('489542532850515968', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('489748070393708544', '0', null, '1538089630', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('489757074947833856', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('489829931040112640', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('489845285363646464', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('489863958627352576', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('489870298254934016', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('489904952836096000', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('489923187438518272', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('489923508302774272', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('490097028890624000', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('490120269164183552', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('490120852302462976', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('490121015880318976', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('490173559298064384', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('490174355171442688', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('490176563149537280', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('490225630680449024', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('490451812394991616', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('490458948814503936', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('490458953600204800', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('490459215479963648', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('490459593231564800', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('490459774991728640', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('491184697011863552', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('491300336934322176', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('491314180259840000', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('491315200432013312', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('491341138834227200', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('491344839279902720', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('491741297229430784', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('491969472064651264', '0', null, '1538263504', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('492373016747966464', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('493072988229337088', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('493210536314404864', '0', null, '1538239068', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('494411311317254144', '0', null, '1538031613', null, null, '0', '0.00', null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('494983835981709312', '0', null, '1538054942947', null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('495659328775127040', '0', null, '1538215993026', null, null, null, null, null, null, null, null);
-INSERT INTO `ck_user_stat` VALUES ('495770112943456256', '0', null, '1538242406014', null, null, null, null, null, null, null, null);
+INSERT INTO `ck_user_stat` VALUES ('1', '1539239742', '34', '127.0.0.1', '1', '88', '5', '58563.00', '2', '345435.000', '23', '58985.000', null, null);
+INSERT INTO `ck_user_stat` VALUES ('3', '1539289742', '12', '12.12.1.0', '1', '34', '4', '4564.00', '3', '58258.000', '56', '889898.000', null, null);
 
 -- ----------------------------
 -- Table structure for `ck_user_token`
@@ -1891,12 +2004,12 @@ INSERT INTO `ck_user_token` VALUES ('494855135160172544', '487595410316066816', 
 -- ----------------------------
 DROP TABLE IF EXISTS `ck_user_withdraw`;
 CREATE TABLE `ck_user_withdraw` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '存款单号',
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '取款单号',
   `user_id` bigint(20) unsigned NOT NULL COMMENT '用户ID',
-  `username` varchar(255) NOT NULL COMMENT '用户姓名',
-  `apply_amount` decimal(19,2) NOT NULL COMMENT '申请取款金额',
+  `apply_amount` decimal(19,4) NOT NULL COMMENT '申请取款金额',
   `status` int(11) unsigned NOT NULL DEFAULT '1' COMMENT '取款状态 1 申请中 2 已完成  0 已取消',
-  `transfer_amount` decimal(19,2) DEFAULT NULL COMMENT '实际转账金额',
+  `transfer_amount` decimal(19,4) DEFAULT NULL COMMENT '实际转账金额',
+  `remark` varchar(255) DEFAULT NULL COMMENT '备注信息',
   `audit_by_id` int(11) unsigned DEFAULT NULL COMMENT '处理人员ID',
   `audit_by_username` varchar(64) DEFAULT NULL COMMENT '处理人员',
   `audit_remark` varchar(255) DEFAULT NULL COMMENT '处理备注',
@@ -1908,86 +2021,86 @@ CREATE TABLE `ck_user_withdraw` (
   `updated_at` int(10) unsigned DEFAULT NULL COMMENT '更新日期',
   `created_at` int(10) unsigned DEFAULT NULL COMMENT '创建日期',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=494631662022295553 DEFAULT CHARSET=utf8 COMMENT='用户存款记录表';
+) ENGINE=InnoDB AUTO_INCREMENT=494631662022295553 DEFAULT CHARSET=utf8 COMMENT='用户取款记录表';
 
 -- ----------------------------
 -- Records of ck_user_withdraw
 -- ----------------------------
-INSERT INTO `ck_user_withdraw` VALUES ('490570974056415232', '487594640942301184', '006', '444.00', '1', '0.00', '1', null, 'tt', '4294967295', null, null, null, null, null, null);
-INSERT INTO `ck_user_withdraw` VALUES ('490574129360011264', '487594640942301184', '006', '456064.00', '1', '0.00', '1', null, '', '4294967295', null, null, null, null, null, null);
-INSERT INTO `ck_user_withdraw` VALUES ('490574880849264640', '487594640942301184', '006', '4000.00', '1', '0.00', '1', null, '444', '4294967295', null, null, null, null, null, null);
-INSERT INTO `ck_user_withdraw` VALUES ('490580517087870976', '487594640942301184', '006', '666666.00', '1', '0.00', '1', null, '333333333', '4294967295', null, null, null, null, null, null);
-INSERT INTO `ck_user_withdraw` VALUES ('490580611522625536', '487594640942301184', '006', '666666.00', '1', '0.00', '1', null, '333333333', '4294967295', null, null, null, null, null, null);
-INSERT INTO `ck_user_withdraw` VALUES ('490581156916363264', '487594640942301184', '006', '7318451.00', '1', '0.00', '1', null, '444', '4294967295', null, null, null, null, null, null);
-INSERT INTO `ck_user_withdraw` VALUES ('490996986955169792', '487594820143939584', '007', '800000.00', '1', '0.00', '1', null, 'dddddd', '4294967295', null, null, null, null, null, null);
-INSERT INTO `ck_user_withdraw` VALUES ('491278779679768576', '486579189646884864', 'purity', '111.00', '2', '0.00', '1', null, '111', '4294967295', null, null, null, null, null, null);
-INSERT INTO `ck_user_withdraw` VALUES ('491279117778419712', '486579189646884864', 'purity', '333.00', '2', '0.00', '1', null, '2222', '4294967295', null, null, null, null, null, null);
-INSERT INTO `ck_user_withdraw` VALUES ('491289902957199360', '487594592904937472', '005', '9999.00', '1', '0.00', '1', null, '对对对', '4294967295', null, null, null, null, null, null);
-INSERT INTO `ck_user_withdraw` VALUES ('491296203305123840', '487594592904937472', '005', '2000.00', '2', '0.00', '1', null, '天河', '4294967295', null, null, null, null, null, null);
-INSERT INTO `ck_user_withdraw` VALUES ('491298017538736128', '490176563149537280', 'zzz001', '689.00', '2', '0.00', '1', null, '555片', '4294967295', null, null, null, null, null, null);
-INSERT INTO `ck_user_withdraw` VALUES ('491298155309039616', '486579189646884864', 'purity', '10000.00', '2', '0.00', '1', null, '天河', '4294967295', null, null, null, null, null, null);
-INSERT INTO `ck_user_withdraw` VALUES ('491299008036208640', '490176563149537280', 'zzz001', '689.00', '2', '0.00', '1', null, '555片', '4294967295', null, null, null, null, null, null);
-INSERT INTO `ck_user_withdraw` VALUES ('491299187468533760', '490176563149537280', 'zzz001', '689.00', '2', '0.00', '1', null, '555片', '4294967295', null, null, null, null, null, null);
-INSERT INTO `ck_user_withdraw` VALUES ('491299302417629184', '490176563149537280', 'zzz001', '689.00', '1', '0.00', '1', null, '555片', '4294967295', null, null, null, null, null, null);
-INSERT INTO `ck_user_withdraw` VALUES ('491300355267624960', '486579189646884864', 'purity', '11.00', '1', '0.00', '1', null, '中国农行', '4294967295', null, null, null, null, null, null);
-INSERT INTO `ck_user_withdraw` VALUES ('491300595735461888', '491300336934322176', 'gogogo', '2222222.00', '1', '0.00', '1', null, '321的', '4294967295', null, null, null, null, null, null);
-INSERT INTO `ck_user_withdraw` VALUES ('491665014155902976', '486910926415462400', 'test', '96666.00', '1', '0.00', '1', null, 'lomomo', '4294967295', null, null, null, null, null, null);
-INSERT INTO `ck_user_withdraw` VALUES ('491920334170095616', '487595410316066816', '009', '1000.00', '1', '0.00', '1', null, '农业银行', '4294967295', null, null, null, null, null, null);
-INSERT INTO `ck_user_withdraw` VALUES ('492381192054636544', '487594640942301184', '006', '2000.00', '1', '0.00', '1', null, '白日事故', '4294967295', null, null, null, null, null, null);
-INSERT INTO `ck_user_withdraw` VALUES ('492383674952581120', '487594640942301184', '006', '2000.00', '1', '0.00', '1', null, '白日事故', '4294967295', null, null, null, null, null, null);
-INSERT INTO `ck_user_withdraw` VALUES ('492695538873925632', '488095209079439360', '110', '600.00', '1', '0.00', '1', null, '农业银行', '4294967295', null, null, null, null, null, null);
-INSERT INTO `ck_user_withdraw` VALUES ('492730939361722368', '488095209079439360', '110', '50.00', '1', '0.00', '1', null, '中国银行', '4294967295', null, null, null, null, null, null);
-INSERT INTO `ck_user_withdraw` VALUES ('492730947553198080', '488095209079439360', '110', '50.00', '1', '0.00', '1', null, '中国银行', '4294967295', null, null, null, null, null, null);
-INSERT INTO `ck_user_withdraw` VALUES ('492731015316373504', '488095209079439360', '110', '50.00', '1', '0.00', '1', null, '中国银行', '4294967295', null, null, null, null, null, null);
-INSERT INTO `ck_user_withdraw` VALUES ('492731175618478080', '488095209079439360', '110', '50.00', '1', '0.00', '1', null, '中国银行', '4294967295', null, null, null, null, null, null);
-INSERT INTO `ck_user_withdraw` VALUES ('492732110948270080', '488095209079439360', '110', '699.00', '1', '0.00', '1', null, '中国银行', '4294967295', null, null, null, null, null, null);
-INSERT INTO `ck_user_withdraw` VALUES ('492732220721594368', '488095209079439360', '110', '699.00', '2', '0.00', '1', null, '中国银行', '4294967295', null, null, null, null, null, null);
-INSERT INTO `ck_user_withdraw` VALUES ('492732635039137792', '488095209079439360', '110', '699.00', '2', '0.00', '1', null, '中国银行', '4294967295', null, null, null, null, null, null);
-INSERT INTO `ck_user_withdraw` VALUES ('492732718073774080', '488095209079439360', '110', '699.00', '2', '0.00', '1', null, '中国银行', '4294967295', null, null, null, null, null, null);
-INSERT INTO `ck_user_withdraw` VALUES ('492745065408495616', '488095209079439360', '110', '800.00', '1', '0.00', '1', null, '中国银行', '4294967295', null, null, null, null, null, null);
-INSERT INTO `ck_user_withdraw` VALUES ('492745286528008192', '488095209079439360', '110', '800.00', '2', '0.00', '1', null, '中国银行', '4294967295', null, null, null, null, null, null);
-INSERT INTO `ck_user_withdraw` VALUES ('492745653202452480', '488095209079439360', '110', '800.00', '2', '0.00', '1', null, '中国银行', '4294967295', null, null, null, null, null, null);
-INSERT INTO `ck_user_withdraw` VALUES ('492746044321300480', '488095209079439360', '110', '800.00', '2', '0.00', '1', null, '中国银行', '4294967295', null, null, null, null, null, null);
-INSERT INTO `ck_user_withdraw` VALUES ('492747019627003904', '488095209079439360', '110', '800.00', '2', '0.00', '1', null, '中国银行', '4294967295', null, null, null, null, null, null);
-INSERT INTO `ck_user_withdraw` VALUES ('492749516680724480', '488095209079439360', '110', '600.00', '2', '0.00', '1', null, '中国银行', '4294967295', null, null, null, null, null, null);
-INSERT INTO `ck_user_withdraw` VALUES ('492781531060764672', '488095209079439360', '110', '350.00', '1', '0.00', '1', null, '农业银行', '4294967295', null, null, null, null, null, null);
-INSERT INTO `ck_user_withdraw` VALUES ('492782149523472384', '488095209079439360', '110', '350.00', '2', '0.00', '1', null, '农业银行', '4294967295', null, null, null, null, null, null);
-INSERT INTO `ck_user_withdraw` VALUES ('492784418314780672', '488095209079439360', '110', '350.00', '1', '0.00', '1', null, '农业银行', '4294967295', null, null, null, null, null, null);
-INSERT INTO `ck_user_withdraw` VALUES ('492785625225756672', '488095209079439360', '110', '500.00', '1', '0.00', '1', null, '农业银行', '4294967295', null, null, null, null, null, null);
-INSERT INTO `ck_user_withdraw` VALUES ('492786374957596672', '488095209079439360', '110', '500.00', '1', '0.00', '1', null, '农业银行', '4294967295', null, null, null, null, null, null);
-INSERT INTO `ck_user_withdraw` VALUES ('492789594081722368', '488095209079439360', '110', '200.00', '2', '0.00', '1', null, '农业银行', '4294967295', null, null, null, null, null, null);
-INSERT INTO `ck_user_withdraw` VALUES ('492791331505045504', '488095209079439360', '110', '200.00', '2', '0.00', '1', null, '农业银行', '4294967295', null, null, null, null, null, null);
-INSERT INTO `ck_user_withdraw` VALUES ('492791801464225792', '488095209079439360', '110', '200.00', '2', '0.00', '1', null, '农业银行', '4294967295', null, null, null, null, null, null);
-INSERT INTO `ck_user_withdraw` VALUES ('492791832858591232', '488095209079439360', '110', '200.00', '2', '0.00', '1', null, '农业银行', '4294967295', null, null, null, null, null, null);
-INSERT INTO `ck_user_withdraw` VALUES ('492792005152210944', '488095209079439360', '110', '200.00', '2', '0.00', '1', null, '农业银行', '4294967295', null, null, null, null, null, null);
-INSERT INTO `ck_user_withdraw` VALUES ('493036446177820672', '487590502347046912', '004', '500.00', '1', '0.00', '1', null, '农业银行', '4294967295', null, null, null, null, null, null);
-INSERT INTO `ck_user_withdraw` VALUES ('493177048064327680', '487594820143939584', '007', '6000.00', '1', '0.00', '1', null, '农业银行', '4294967295', null, null, null, null, null, null);
-INSERT INTO `ck_user_withdraw` VALUES ('493177049507168256', '487594820143939584', '007', '6000.00', '1', '0.00', '1', null, '农业银行', '4294967295', null, null, null, null, null, null);
-INSERT INTO `ck_user_withdraw` VALUES ('493177075197280256', '487594820143939584', '007', '6000.00', '1', '0.00', '1', null, '农业银行', '4294967295', null, null, null, null, null, null);
-INSERT INTO `ck_user_withdraw` VALUES ('493177145779027968', '487594820143939584', '007', '6000.00', '1', '0.00', '1', null, '农业银行', '4294967295', null, null, null, null, null, null);
-INSERT INTO `ck_user_withdraw` VALUES ('493177167601991680', '487594820143939584', '007', '6000.00', '1', '0.00', '1', null, '农业银行', '4294967295', null, null, null, null, null, null);
-INSERT INTO `ck_user_withdraw` VALUES ('493177302541139968', '487594820143939584', '007', '6000.00', '1', '0.00', '1', null, '农业银行', '4294967295', null, null, null, null, null, null);
-INSERT INTO `ck_user_withdraw` VALUES ('493177468153233408', '487594820143939584', '007', '6000.00', '1', '0.00', '1', null, '农业银行', '4294967295', null, null, null, null, null, null);
-INSERT INTO `ck_user_withdraw` VALUES ('493177630221139968', '487594820143939584', '007', '6000.00', '1', '0.00', '1', null, '农业银行', '4294967295', null, null, null, null, null, null);
-INSERT INTO `ck_user_withdraw` VALUES ('493177881816465408', '487594820143939584', '007', '6000.00', '1', '0.00', '1', null, '农业银行', '4294967295', null, null, null, null, null, null);
-INSERT INTO `ck_user_withdraw` VALUES ('493179445570437120', '487594820143939584', '007', '6000.00', '1', '0.00', '1', null, '农业银行', '4294967295', null, null, null, null, null, null);
-INSERT INTO `ck_user_withdraw` VALUES ('493180622919958528', '487594820143939584', '007', '6000.00', '1', '0.00', '1', null, '农业银行', '4294967295', null, null, null, null, null, null);
-INSERT INTO `ck_user_withdraw` VALUES ('493180667354415104', '487594820143939584', '007', '6000.00', '1', '0.00', '1', null, '农业银行', '4294967295', null, null, null, null, null, null);
-INSERT INTO `ck_user_withdraw` VALUES ('493200054476079104', '487594820143939584', '007', '800.00', '1', '0.00', '1', null, '您把', '4294967295', null, null, null, null, null, null);
-INSERT INTO `ck_user_withdraw` VALUES ('493200289222885376', '487594820143939584', '007', '800.00', '2', '0.00', '1', null, '您把', '4294967295', null, null, null, null, null, null);
-INSERT INTO `ck_user_withdraw` VALUES ('493200327957282816', '487594820143939584', '007', '800.00', '1', '0.00', '1', null, '您把', '4294967295', null, null, null, null, null, null);
-INSERT INTO `ck_user_withdraw` VALUES ('493203535026978816', '487594640942301184', '006', '696.00', '1', '0.00', '1', null, 'DSP', '4294967295', null, null, null, null, null, null);
-INSERT INTO `ck_user_withdraw` VALUES ('493217849477693440', '487594820143939584', '007', '179200.00', '1', '0.00', '1', null, '聊聊', '4294967295', null, null, null, null, null, null);
-INSERT INTO `ck_user_withdraw` VALUES ('493237534348804096', '493210536314404864', '103z', '400000.00', '1', '0.00', '1', null, '骨头', '4294967295', null, null, null, null, null, null);
-INSERT INTO `ck_user_withdraw` VALUES ('494631481591726080', '488095209079439360', '110', '5000.00', '1', '0.00', '1', null, '农业银行', '4294967295', null, null, null, null, null, null);
-INSERT INTO `ck_user_withdraw` VALUES ('494631490047442944', '488095209079439360', '110', '5000.00', '2', '0.00', '1', null, '农业银行', '4294967295', null, null, null, null, null, null);
-INSERT INTO `ck_user_withdraw` VALUES ('494631491028910080', '488095209079439360', '110', '5000.00', '2', '0.00', '1', null, '农业银行', '4294967295', null, null, null, null, null, null);
-INSERT INTO `ck_user_withdraw` VALUES ('494631491423174656', '488095209079439360', '110', '5000.00', '2', '0.00', '1', null, '农业银行', '4294967295', null, null, null, null, null, null);
-INSERT INTO `ck_user_withdraw` VALUES ('494631492404641792', '488095209079439360', '110', '5000.00', '2', '0.00', '1', null, '农业银行', '4294967295', null, null, null, null, null, null);
-INSERT INTO `ck_user_withdraw` VALUES ('494631492471750656', '488095209079439360', '110', '5000.00', '2', '0.00', '1', null, '农业银行', '4294967295', null, null, null, null, null, null);
-INSERT INTO `ck_user_withdraw` VALUES ('494631493126062080', '488095209079439360', '110', '5000.00', '2', '0.00', '1', null, '农业银行', '4294967295', null, null, null, null, null, null);
-INSERT INTO `ck_user_withdraw` VALUES ('494631493193170944', '488095209079439360', '110', '5000.00', '2', '0.00', '1', null, '农业银行', '4294967295', null, null, null, null, null, null);
-INSERT INTO `ck_user_withdraw` VALUES ('494631493453217792', '488095209079439360', '110', '5000.00', '2', '0.00', '1', null, '农业银行', '4294967295', null, null, null, null, null, null);
-INSERT INTO `ck_user_withdraw` VALUES ('494631494371770368', '488095209079439360', '110', '5000.00', '2', '0.00', '1', null, '农业银行', '4294967295', null, null, null, null, null, null);
-INSERT INTO `ck_user_withdraw` VALUES ('494631622696501248', '488095209079439360', '110', '5000.00', '1', '0.00', '1', null, '农业银行', '4294967295', null, null, null, null, null, null);
-INSERT INTO `ck_user_withdraw` VALUES ('494631662022295552', '488095209079439360', '110', '5000.00', '1', '0.00', '1', null, '农业银行', '4294967295', null, null, null, null, null, null);
+INSERT INTO `ck_user_withdraw` VALUES ('490570974056415232', '1', '444.0000', '1', '0.0000', '006', '1', '王五', 'tt', '4294967295', '1', null, null, null, null, '1539262983');
+INSERT INTO `ck_user_withdraw` VALUES ('490574129360011264', '1', '456064.0000', '2', '456064.0000', '006', '1', '王五', '', '4294967295', '1', null, null, null, null, '1539262983');
+INSERT INTO `ck_user_withdraw` VALUES ('490574880849264640', '1', '4000.0000', '2', '4000.0000', '006', '1', '王五', '444', '4294967295', '1', null, null, null, null, '1539262983');
+INSERT INTO `ck_user_withdraw` VALUES ('490580517087870976', '1', '666666.0000', '2', '666666.0000', '006', '1', '王五', '333333333', '1494967295', '1', null, null, null, null, '1539262983');
+INSERT INTO `ck_user_withdraw` VALUES ('490580611522625536', '1', '666666.0000', '2', '666666.0000', '006', '1', '王五', '333333333', '1494967295', '1', null, null, null, null, '1539262983');
+INSERT INTO `ck_user_withdraw` VALUES ('490581156916363264', '1', '7318451.0000', '1', '0.0000', '006', '1', '王五', '444', '1494967295', '1', null, null, null, null, '1539262983');
+INSERT INTO `ck_user_withdraw` VALUES ('490996986955169792', '487594820143939584', '800000.0000', '1', '0.0000', '007', '1', null, 'dddddd', '494967295', null, null, null, null, null, null);
+INSERT INTO `ck_user_withdraw` VALUES ('491278779679768576', '486579189646884864', '111.0000', '2', '111.0000', 'purity', '1', null, '111', '494967295', null, null, null, null, null, null);
+INSERT INTO `ck_user_withdraw` VALUES ('491279117778419712', '486579189646884864', '333.0000', '2', '333.0000', 'purity', '1', null, '2222', '4294967295', null, null, null, null, null, null);
+INSERT INTO `ck_user_withdraw` VALUES ('491289902957199360', '487594592904937472', '9999.0000', '1', '0.0000', '005', '1', null, '对对对', '4294967295', null, null, null, null, null, null);
+INSERT INTO `ck_user_withdraw` VALUES ('491296203305123840', '487594592904937472', '2000.0000', '2', '2000.0000', '005', '1', null, '天河', '4294967295', null, null, null, null, null, null);
+INSERT INTO `ck_user_withdraw` VALUES ('491298017538736128', '490176563149537280', '689.0000', '2', '689.0000', 'zzz001', '1', null, '555片', '4294967295', null, null, null, null, null, null);
+INSERT INTO `ck_user_withdraw` VALUES ('491298155309039616', '486579189646884864', '10000.0000', '2', '10000.0000', 'purity', '1', null, '天河', '4294967295', null, null, null, null, null, null);
+INSERT INTO `ck_user_withdraw` VALUES ('491299008036208640', '490176563149537280', '689.0000', '2', '689.0000', 'zzz001', '1', null, '555片', '4294967295', null, null, null, null, null, null);
+INSERT INTO `ck_user_withdraw` VALUES ('491299187468533760', '490176563149537280', '689.0000', '2', '689.0000', 'zzz001', '1', null, '555片', '4294967295', null, null, null, null, null, null);
+INSERT INTO `ck_user_withdraw` VALUES ('491299302417629184', '490176563149537280', '689.0000', '1', '0.0000', 'zzz001', '1', null, '555片', '4294967295', null, null, null, null, null, null);
+INSERT INTO `ck_user_withdraw` VALUES ('491300355267624960', '486579189646884864', '11.0000', '1', '0.0000', 'purity', '1', null, '中国农行', '4294967295', null, null, null, null, null, null);
+INSERT INTO `ck_user_withdraw` VALUES ('491300595735461888', '491300336934322176', '2222222.0000', '1', '0.0000', 'gogogo', '1', null, '321的', '4294967295', null, null, null, null, null, null);
+INSERT INTO `ck_user_withdraw` VALUES ('491665014155902976', '486910926415462400', '96666.0000', '1', '0.0000', 'test', '1', null, 'lomomo', '4294967295', null, null, null, null, null, null);
+INSERT INTO `ck_user_withdraw` VALUES ('491920334170095616', '487595410316066816', '1000.0000', '1', '0.0000', '009', '1', null, '农业银行', '4294967295', null, null, null, null, null, null);
+INSERT INTO `ck_user_withdraw` VALUES ('492381192054636544', '1', '2000.0000', '1', '0.0000', '006', '1', '王五', '白日事故', '4294967295', '1', null, null, null, null, '1539262983');
+INSERT INTO `ck_user_withdraw` VALUES ('492383674952581120', '1', '2000.0000', '1', '0.0000', '006', '1', '王五', '白日事故', '4294967295', '1', null, null, null, null, '1539262983');
+INSERT INTO `ck_user_withdraw` VALUES ('492695538873925632', '488095209079439360', '600.0000', '1', '0.0000', '110', '1', null, '农业银行', '4294967295', null, null, null, null, null, null);
+INSERT INTO `ck_user_withdraw` VALUES ('492730939361722368', '488095209079439360', '50.0000', '1', '0.0000', '110', '1', null, '中国银行', '4294967295', null, null, null, null, null, null);
+INSERT INTO `ck_user_withdraw` VALUES ('492730947553198080', '488095209079439360', '50.0000', '1', '0.0000', '110', '1', null, '中国银行', '4294967295', null, null, null, null, null, null);
+INSERT INTO `ck_user_withdraw` VALUES ('492731015316373504', '488095209079439360', '50.0000', '1', '0.0000', '110', '1', null, '中国银行', '4294967295', null, null, null, null, null, null);
+INSERT INTO `ck_user_withdraw` VALUES ('492731175618478080', '488095209079439360', '50.0000', '1', '0.0000', '110', '1', null, '中国银行', '4294967295', null, null, null, null, null, null);
+INSERT INTO `ck_user_withdraw` VALUES ('492732110948270080', '488095209079439360', '699.0000', '1', '0.0000', '110', '1', null, '中国银行', '4294967295', null, null, null, null, null, null);
+INSERT INTO `ck_user_withdraw` VALUES ('492732220721594368', '488095209079439360', '699.0000', '2', '699.0000', '110', '1', null, '中国银行', '4294967295', null, null, null, null, null, null);
+INSERT INTO `ck_user_withdraw` VALUES ('492732635039137792', '488095209079439360', '699.0000', '2', '699.0000', '110', '1', null, '中国银行', '4294967295', null, null, null, null, null, null);
+INSERT INTO `ck_user_withdraw` VALUES ('492732718073774080', '488095209079439360', '699.0000', '2', '699.0000', '110', '1', null, '中国银行', '4294967295', null, null, null, null, null, null);
+INSERT INTO `ck_user_withdraw` VALUES ('492745065408495616', '488095209079439360', '800.0000', '1', '0.0000', '110', '1', null, '中国银行', '4294967295', null, null, null, null, null, null);
+INSERT INTO `ck_user_withdraw` VALUES ('492745286528008192', '488095209079439360', '800.0000', '2', '800.0000', '110', '1', null, '中国银行', '4294967295', null, null, null, null, null, null);
+INSERT INTO `ck_user_withdraw` VALUES ('492745653202452480', '488095209079439360', '800.0000', '2', '800.0000', '110', '1', null, '中国银行', '4294967295', null, null, null, null, null, null);
+INSERT INTO `ck_user_withdraw` VALUES ('492746044321300480', '488095209079439360', '800.0000', '2', '800.0000', '110', '1', null, '中国银行', '4294967295', null, null, null, null, null, null);
+INSERT INTO `ck_user_withdraw` VALUES ('492747019627003904', '488095209079439360', '800.0000', '2', '800.0000', '110', '1', null, '中国银行', '4294967295', null, null, null, null, null, null);
+INSERT INTO `ck_user_withdraw` VALUES ('492749516680724480', '488095209079439360', '600.0000', '2', '600.0000', '110', '1', null, '中国银行', '4294967295', null, null, null, null, null, null);
+INSERT INTO `ck_user_withdraw` VALUES ('492781531060764672', '488095209079439360', '350.0000', '1', '0.0000', '110', '1', null, '农业银行', '4294967295', null, null, null, null, null, null);
+INSERT INTO `ck_user_withdraw` VALUES ('492782149523472384', '488095209079439360', '350.0000', '2', '350.0000', '110', '1', null, '农业银行', '4294967295', null, null, null, null, null, null);
+INSERT INTO `ck_user_withdraw` VALUES ('492784418314780672', '488095209079439360', '350.0000', '1', '0.0000', '110', '1', null, '农业银行', '4294967295', null, null, null, null, null, null);
+INSERT INTO `ck_user_withdraw` VALUES ('492785625225756672', '488095209079439360', '500.0000', '1', '0.0000', '110', '1', null, '农业银行', '4294967295', null, null, null, null, null, null);
+INSERT INTO `ck_user_withdraw` VALUES ('492786374957596672', '488095209079439360', '500.0000', '1', '0.0000', '110', '1', null, '农业银行', '4294967295', null, null, null, null, null, null);
+INSERT INTO `ck_user_withdraw` VALUES ('492789594081722368', '488095209079439360', '200.0000', '2', '200.0000', '110', '1', null, '农业银行', '4294967295', null, null, null, null, null, null);
+INSERT INTO `ck_user_withdraw` VALUES ('492791331505045504', '488095209079439360', '200.0000', '2', '200.0000', '110', '1', null, '农业银行', '4294967295', null, null, null, null, null, null);
+INSERT INTO `ck_user_withdraw` VALUES ('492791801464225792', '488095209079439360', '200.0000', '2', '200.0000', '110', '1', null, '农业银行', '4294967295', null, null, null, null, null, null);
+INSERT INTO `ck_user_withdraw` VALUES ('492791832858591232', '488095209079439360', '200.0000', '2', '200.0000', '110', '1', null, '农业银行', '4294967295', null, null, null, null, null, null);
+INSERT INTO `ck_user_withdraw` VALUES ('492792005152210944', '488095209079439360', '200.0000', '2', '200.0000', '110', '1', null, '农业银行', '4294967295', null, null, null, null, null, null);
+INSERT INTO `ck_user_withdraw` VALUES ('493036446177820672', '487590502347046912', '500.0000', '1', '0.0000', '004', '1', null, '农业银行', '4294967295', null, null, null, null, null, null);
+INSERT INTO `ck_user_withdraw` VALUES ('493177048064327680', '487594820143939584', '6000.0000', '1', '0.0000', '007', '1', null, '农业银行', '4294967295', null, null, null, null, null, null);
+INSERT INTO `ck_user_withdraw` VALUES ('493177049507168256', '487594820143939584', '6000.0000', '1', '0.0000', '007', '1', null, '农业银行', '4294967295', null, null, null, null, null, null);
+INSERT INTO `ck_user_withdraw` VALUES ('493177075197280256', '487594820143939584', '6000.0000', '1', '0.0000', '007', '1', null, '农业银行', '4294967295', null, null, null, null, null, null);
+INSERT INTO `ck_user_withdraw` VALUES ('493177145779027968', '487594820143939584', '6000.0000', '1', '0.0000', '007', '1', null, '农业银行', '4294967295', null, null, null, null, null, null);
+INSERT INTO `ck_user_withdraw` VALUES ('493177167601991680', '487594820143939584', '6000.0000', '1', '0.0000', '007', '1', null, '农业银行', '4294967295', null, null, null, null, null, null);
+INSERT INTO `ck_user_withdraw` VALUES ('493177302541139968', '487594820143939584', '6000.0000', '1', '0.0000', '007', '1', null, '农业银行', '4294967295', null, null, null, null, null, null);
+INSERT INTO `ck_user_withdraw` VALUES ('493177468153233408', '487594820143939584', '6000.0000', '1', '0.0000', '007', '1', null, '农业银行', '4294967295', null, null, null, null, null, null);
+INSERT INTO `ck_user_withdraw` VALUES ('493177630221139968', '487594820143939584', '6000.0000', '1', '0.0000', '007', '1', null, '农业银行', '4294967295', null, null, null, null, null, null);
+INSERT INTO `ck_user_withdraw` VALUES ('493177881816465408', '487594820143939584', '6000.0000', '1', '0.0000', '007', '1', null, '农业银行', '4294967295', null, null, null, null, null, null);
+INSERT INTO `ck_user_withdraw` VALUES ('493179445570437120', '487594820143939584', '6000.0000', '1', '0.0000', '007', '1', null, '农业银行', '4294967295', null, null, null, null, null, null);
+INSERT INTO `ck_user_withdraw` VALUES ('493180622919958528', '487594820143939584', '6000.0000', '1', '0.0000', '007', '1', null, '农业银行', '4294967295', null, null, null, null, null, null);
+INSERT INTO `ck_user_withdraw` VALUES ('493180667354415104', '487594820143939584', '6000.0000', '1', '0.0000', '007', '1', null, '农业银行', '4294967295', null, null, null, null, null, null);
+INSERT INTO `ck_user_withdraw` VALUES ('493200054476079104', '487594820143939584', '800.0000', '1', '0.0000', '007', '1', null, '您把', '4294967295', null, null, null, null, null, null);
+INSERT INTO `ck_user_withdraw` VALUES ('493200289222885376', '487594820143939584', '800.0000', '2', '800.0000', '007', '1', null, '您把', '4294967295', null, null, null, null, null, null);
+INSERT INTO `ck_user_withdraw` VALUES ('493200327957282816', '487594820143939584', '800.0000', '1', '0.0000', '007', '1', null, '您把', '4294967295', null, null, null, null, null, null);
+INSERT INTO `ck_user_withdraw` VALUES ('493203535026978816', '1', '696.0000', '1', '0.0000', '006', '1', '王五', 'DSP', '4294967295', '1', null, null, null, null, '1539262983');
+INSERT INTO `ck_user_withdraw` VALUES ('493217849477693440', '487594820143939584', '179200.0000', '1', '0.0000', '007', '1', null, '聊聊', '4294967295', null, null, null, null, null, null);
+INSERT INTO `ck_user_withdraw` VALUES ('493237534348804096', '493210536314404864', '400000.0000', '1', '0.0000', '103z', '1', null, '骨头', '4294967295', null, null, null, null, null, null);
+INSERT INTO `ck_user_withdraw` VALUES ('494631481591726080', '488095209079439360', '5000.0000', '1', '0.0000', '110', '1', null, '农业银行', '4294967295', null, null, null, null, null, null);
+INSERT INTO `ck_user_withdraw` VALUES ('494631490047442944', '488095209079439360', '5000.0000', '2', '5000.0000', '110', '1', null, '农业银行', '4294967295', null, null, null, null, null, null);
+INSERT INTO `ck_user_withdraw` VALUES ('494631491028910080', '488095209079439360', '5000.0000', '2', '5000.0000', '110', '1', null, '农业银行', '4294967295', null, null, null, null, null, null);
+INSERT INTO `ck_user_withdraw` VALUES ('494631491423174656', '488095209079439360', '5000.0000', '2', '5000.0000', '110', '1', null, '农业银行', '4294967295', null, null, null, null, null, null);
+INSERT INTO `ck_user_withdraw` VALUES ('494631492404641792', '488095209079439360', '5000.0000', '2', '5000.0000', '110', '1', null, '农业银行', '4294967295', null, null, null, null, null, null);
+INSERT INTO `ck_user_withdraw` VALUES ('494631492471750656', '488095209079439360', '5000.0000', '2', '5000.0000', '110', '1', null, '农业银行', '4294967295', null, null, null, null, null, null);
+INSERT INTO `ck_user_withdraw` VALUES ('494631493126062080', '488095209079439360', '5000.0000', '2', '5000.0000', '110', '1', null, '农业银行', '4294967295', null, null, null, null, null, null);
+INSERT INTO `ck_user_withdraw` VALUES ('494631493193170944', '488095209079439360', '5000.0000', '2', '5000.0000', '110', '1', null, '农业银行', '4294967295', null, null, null, null, null, null);
+INSERT INTO `ck_user_withdraw` VALUES ('494631493453217792', '488095209079439360', '5000.0000', '2', '5000.0000', '110', '1', null, '农业银行', '4294967295', null, null, null, null, null, null);
+INSERT INTO `ck_user_withdraw` VALUES ('494631494371770368', '488095209079439360', '5000.0000', '2', '5000.0000', '110', '1', null, '农业银行', '4294967295', null, null, null, null, null, null);
+INSERT INTO `ck_user_withdraw` VALUES ('494631622696501248', '488095209079439360', '5000.0000', '1', '0.0000', '110', '1', null, '农业银行', '4294967295', null, null, null, null, null, null);
+INSERT INTO `ck_user_withdraw` VALUES ('494631662022295552', '488095209079439360', '5000.0000', '1', '0.0000', '110', '1', null, '农业银行', '4294967295', null, null, null, null, null, null);
