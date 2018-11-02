@@ -34,6 +34,10 @@ class Message extends \yii\db\ActiveRecord
     const SEND_ALL = 3;
     const SEND_GROUP = 4;
 
+    const LEVEL_LOW = 1;
+    const LEVEL_MID = 2;
+    const LEVEL_HIGH = 3;
+
     /**
      * {@inheritdoc}
      */
@@ -71,13 +75,69 @@ class Message extends \yii\db\ActiveRecord
             'deleted_at' => '删除时间',
             'level' => '优先级',
             'user_type' => '用户类型',
-            'notify_obj' => '通告对象类型',
+            'notify_obj' => '通告对象',
             'user_group' => '用户组',
             'sender_id' => '发送者ID',
             'sender_name' => '发送者名称',
             'updated_at' => '更新日期',
-            'created_at' => '创建日期',
+            'created_at' => '发送时间',
         ];
+    }
+
+    /**
+     * @param null $key
+     * @return array|mixed
+     */
+    public static function getUserTypes($key = null)
+    {
+        $items = [
+            self::OBJ_MEMBER => '会员',
+            self::OBJ_AGENT => '代理',
+            self::OBJ_ADMIN => '管理员',
+        ];
+        return $items[$key] ?? $items;
+    }
+
+    /**
+     * @param null $key
+     * @return array|mixed
+     */
+    public static function getNotifyObjs($key = null)
+    {
+        $items = [
+            self::SEND_ONE => '单用户',
+            self::SEND_MULTI => '多用户',
+            self::SEND_ALL => '全体',
+            self::SEND_GROUP => '群组',
+        ];
+        return $items[$key] ?? $items;
+    }
+
+    /**
+     * @param null $key
+     * @return array|mixed
+     */
+    public static function getLevels($key = null)
+    {
+        $items = [
+            self::LEVEL_LOW => '普通',
+            self::LEVEL_MID => '重要',
+            self::LEVEL_HIGH => '紧急',
+        ];
+        return $items[$key] ?? $items;
+    }
+
+    /**
+     * @param null $key
+     * @return array|mixed
+     */
+    public static function getStatus($key = null)
+    {
+        $items = [
+            1 => '已取消',
+            2 => '已删除',
+        ];
+        return $items[$key] ?? $items;
     }
 
 

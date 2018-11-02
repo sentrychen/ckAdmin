@@ -14,6 +14,7 @@
 
 use backend\models\User;
 use common\grid\ActionColumn;
+use common\grid\CheckboxColumn;
 use common\grid\DateColumn;
 use common\grid\GridView;
 use common\widgets\Bar;
@@ -32,15 +33,27 @@ $this->params['breadcrumbs'][] = '会员列表';
 
                 <div class="toolbar clearfix">
                     <?= Bar::widget([
-                        'template' => '{refresh} {create} ',
+                        'template' => '{refresh} {create} {message}',
+                        'buttons' => [
+                            'message' => function () {
+                                return Html::a('<i class="fa fa-send"></i> 发消息', 'javascript:void(0)', [
+                                    'data-title' => '给选中用户发消息',
+                                    'data-pjax' => '0',
+                                    'data-confirm' => null,
+                                    'onclick' => "if ($('#userGrid').yiiGridView('getSelectedRows').length()) {viewLayer('" . Url::to(['message']) . "',$(this));return false;}",
+                                    'class' => 'btn btn-primary btn-sm multi-operate',
+                                ]);
+                            },
+                        ]
                     ]) ?>
                     <?= $this->render('_search', ['model' => $searchModel]); ?>
                 </div>
                 <?= GridView::widget([
+                    'id' => 'userGrid',
                     'dataProvider' => $dataProvider,
                     'filterModel' => null,
                     'columns' => [
-
+                        ['class' => CheckboxColumn::className()],
                         [
                             'attribute' => 'id',
                         ],

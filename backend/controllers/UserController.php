@@ -15,6 +15,7 @@ use backend\actions\SortAction;
 use backend\actions\UpdateAction;
 use backend\actions\ViewAction;
 use backend\models\ChangeAmountRecord;
+use backend\models\Message;
 use backend\models\PlatformUser;
 use backend\models\search\BetListSearch;
 use backend\models\search\LoginLogSearch;
@@ -212,6 +213,29 @@ class UserController extends Controller
         $model->loadDefaultValues();
         return $this->render('change-amount', [
             'model' => $model,'userModel'=>$userModel
+        ]);
+    }
+
+    public function actionMessage()
+    {
+        $model = new Message();
+        $model->scenario = 'create';
+        if (yii::$app->getRequest()->getIsPost()) {
+            if ($model->load(yii::$app->getRequest()->post()) && $model->save()) {
+                yii::$app->getSession()->setFlash('success', yii::t('app', 'Success'));
+                return $this->redirect(['index']);
+            } else {
+                $errors = $model->getErrors();
+                $err = '';
+                foreach ($errors as $v) {
+                    $err .= $v[0] . '<br>';
+                }
+                yii::$app->getSession()->setFlash('error', $err);
+            }
+        }
+        $model->loadDefaultValues();
+        return $this->render('message', [
+            'model' => $model
         ]);
     }
 

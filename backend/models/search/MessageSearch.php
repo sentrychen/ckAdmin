@@ -12,6 +12,10 @@ use backend\models\Message;
  */
 class MessageSearch extends Message
 {
+
+    public $status;
+    public $username;
+
     /**
      * @inheritdoc
      */
@@ -41,7 +45,7 @@ class MessageSearch extends Message
      */
     public function search($params)
     {
-        $query = Message::find();
+        $query = Message::find()->where(['!=', 'sender_id', 0]);
 
         // add conditions that should always apply here
 

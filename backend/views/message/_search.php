@@ -1,55 +1,32 @@
 <?php
+/**
+ * Author: lf
+ * Blog: https://blog.feehi.com
+ * Email: job@feehi.com
+ * Created at: 2018-10-13 23:18
+ */
 
+use backend\models\Agent;
+use backend\models\Message;
+use common\models\User;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+use common\widgets\SearchForm;
+use yii\helpers\Url;
+use common\libs\Constants;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\search\MessageSearch */
-/* @var $form yii\widgets\ActiveForm */
+/* @var $form common\widgets\SearchForm */
 ?>
+<div class="toolbar-searchs">
+    <?php $form = SearchForm::begin([]); ?>
 
-<div class="message-search">
+    <?= $form->field($model, 'title')->textInput() ?>
 
-    <?php $form = ActiveForm::begin([
-        'action' => ['index'],
-        'method' => 'get',
-    ]); ?>
-
-    <?= $form->field($model, 'id') ?>
-
-    <?= $form->field($model, 'title') ?>
-
-    <?= $form->field($model, 'content') ?>
-
-    <?= $form->field($model, 'is_canceled') ?>
-
-    <?= $form->field($model, 'canceled_at') ?>
-
-    <?php // echo $form->field($model, 'is_deleted') ?>
-
-    <?php // echo $form->field($model, 'deleted_at') ?>
-
-    <?php // echo $form->field($model, 'level') ?>
-
-    <?php // echo $form->field($model, 'user_type') ?>
-
-    <?php // echo $form->field($model, 'notify_obj') ?>
-
-    <?php // echo $form->field($model, 'user_group') ?>
-
-    <?php // echo $form->field($model, 'sender_id') ?>
-
-    <?php // echo $form->field($model, 'sender_name') ?>
-
-    <?php // echo $form->field($model, 'updated_at') ?>
-
-    <?php // echo $form->field($model, 'created_at') ?>
-
-    <div class="form-group">
-        <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton('Reset', ['class' => 'btn btn-default']) ?>
-    </div>
-
-    <?php ActiveForm::end(); ?>
-
+    <?= $form->field($model, 'user_type')->dropDownList(Message::getUserTypes()) ?>
+    <?= $form->field($model, 'status')->label('消息状态')->dropDownList(Message::getStatus(), ['prompt' => null]) ?>
+    <?= $form->field($model, 'created_at')->dateRange() ?>
+    <?= $form->searchButtons() ?>
+    <?php SearchForm::end(); ?>
 </div>
