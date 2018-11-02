@@ -22,10 +22,10 @@ use common\libs\Constants;
 <div class="toolbar-searchs">
     <?php $form = SearchForm::begin([]); ?>
 
-    <?= $form->field($model, 'title')->textInput() ?>
+    <?= $form->field($model, 'keyword')->label('关键词')->textInput() ?>
 
     <?= $form->field($model, 'user_type')->dropDownList(Message::getUserTypes()) ?>
-    <?= $form->field($model, 'status')->label('消息状态')->dropDownList(Message::getStatus(), ['prompt' => null]) ?>
+    <?= $form->field($model, 'is_deleted')->label('状态')->dropDownList(Message::getStatus(), ['prompt' => null]) ?>
     <?= $form->field($model, 'created_at')->dateRange() ?>
     <?= $form->searchButtons() ?>
     <?php SearchForm::end(); ?>

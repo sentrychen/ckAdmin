@@ -53,7 +53,7 @@ class Message extends \yii\db\ActiveRecord
     {
         return [
             [['title'], 'required'],
-            [['is_canceled', 'canceled_at', 'is_deleted', 'deleted_at', 'level', 'user_type', 'notify_obj', 'user_group', 'sender_id', 'updated_at', 'created_at'], 'integer'],
+            [['is_deleted', 'deleted_at', 'level', 'user_type', 'notify_obj', 'user_group', 'sender_id', 'updated_at', 'created_at'], 'integer'],
             [['title'], 'string', 'max' => 255],
             [['content'], 'string', 'max' => 512],
             [['sender_name'], 'string', 'max' => 64],
@@ -69,8 +69,6 @@ class Message extends \yii\db\ActiveRecord
             'id' => '消息ID',
             'title' => '消息标题',
             'content' => '消息内容',
-            'is_canceled' => '是否取消',
-            'canceled_at' => '取消时间',
             'is_deleted' => '是否删除',
             'deleted_at' => '删除时间',
             'level' => '优先级',
@@ -134,8 +132,7 @@ class Message extends \yii\db\ActiveRecord
     public static function getStatus($key = null)
     {
         $items = [
-            1 => '已取消',
-            2 => '已删除',
+            1 => '已删除',
         ];
         return $items[$key] ?? $items;
     }

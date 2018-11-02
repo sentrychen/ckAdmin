@@ -1,5 +1,6 @@
 <?php
 
+use backend\models\Message;
 use common\widgets\Bar;
 use common\grid\{
     CheckboxColumn, ActionColumn, GridView
@@ -40,15 +41,42 @@ $this->params['breadcrumbs'][] = '站内消息';
                     'columns' => [
                         ['class' => CheckboxColumn::className()],
 
-                        'title',
-                        'content',
+                        [
+                            'attribute' => 'title',
+                            'format' => 'raw',
+                            'width' => '15%',
+                        ],
+                        [
+                            'attribute' => 'content',
+                            'format' => 'raw',
+                            'width' => '30%',
+                        ],
                         //'is_canceled',
                         //'canceled_at',
                         // 'is_deleted',
                         // 'deleted_at',
-                        'level',
-                        'user_type',
-                        'notify_obj',
+                        [
+                            'attribute' => 'level',
+                            'format' => 'raw',
+                            'value' => function ($model) {
+                                $class = ['info', 'info', 'warning', 'danger'];
+                                return '<span class="badge label-' . ($class[$model->level] ?? 'info') . '">' . Message::getLevels($model->level) . '</span>';
+                            }
+                        ],
+                        [
+                            'attribute' => 'user_type',
+                            'value' => function ($model) {
+
+                                return Message::getUserTypes($model->user_type);
+                            }
+                        ],
+                        [
+                            'attribute' => 'notify_obj',
+                            'value' => function ($model) {
+
+                                return Message::getNotifyObjs($model->notify_obj);
+                            }
+                        ],
                         // 'user_group',
                         // 'sender_id',
                         'sender_name',
@@ -56,7 +84,8 @@ $this->params['breadcrumbs'][] = '站内消息';
                         'created_at:date',
 
                         ['class' => ActionColumn::className(),
-                            'width' => '180',
+                            'width' => '120',
+                            'template' => '{view-layer} {delete}'
                         ],
                     ],
                 ]); ?>

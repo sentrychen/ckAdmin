@@ -2,6 +2,8 @@
 
 namespace backend\models\search;
 
+use backend\behaviors\TimeSearchBehavior;
+use backend\components\search\SearchEvent;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
@@ -15,6 +17,7 @@ class MessageSearch extends Message
 
     public $status;
     public $username;
+    public $keyword;
 
     /**
      * @inheritdoc
@@ -22,8 +25,15 @@ class MessageSearch extends Message
     public function rules()
     {
         return [
-            [['id', 'is_canceled', 'canceled_at', 'is_deleted', 'deleted_at', 'level', 'user_type', 'notify_obj', 'user_group', 'sender_id', 'updated_at', 'created_at'], 'integer'],
-            [['title', 'content', 'sender_name'], 'safe'],
+
+            [['keyword', 'user_type', 'is_deleted', 'created_at'], 'safe'],
+        ];
+    }
+
+    public function behaviors()
+    {
+        return [
+            TimeSearchBehavior::class
         ];
     }
 
@@ -63,24 +73,12 @@ class MessageSearch extends Message
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
-            'is_canceled' => $this->is_canceled,
-            'canceled_at' => $this->canceled_at,
             'is_deleted' => $this->is_deleted,
-            'deleted_at' => $this->deleted_at,
-            'level' => $this->level,
             'user_type' => $this->user_type,
-            'notify_obj' => $this->notify_obj,
-            'user_group' => $this->user_group,
-            'sender_id' => $this->sender_id,
-            'updated_at' => $this->updated_at,
-            'created_at' => $this->created_at,
         ]);
 
-        $query->andFilterWhere(['like', 'title', $this->title])
-            ->andFilterWhere(['like', 'content', $this->content])
-            ->andFilterWhere(['like', 'sender_name', $this->sender_name]);
-
+        $query->andFilterWhere(['or', ['like', 'title', $this->keyword], ['like', 'content', $this->keyword]]);
+        $this->trigger(SearchEvent::BEFORE_SEARCH, new SearchEvent(['query' => $query]));
         return $dataProvider;
     }
 }
