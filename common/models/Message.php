@@ -3,6 +3,7 @@
 namespace common\models;
 
 use Yii;
+use yii\behaviors\TimestampBehavior;
 
 /**
  * This is the model class for table "{{%message}}".
@@ -46,13 +47,23 @@ class Message extends \yii\db\ActiveRecord
         return '{{%message}}';
     }
 
+
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return [
+            TimestampBehavior::class,
+        ];
+    }
     /**
      * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            [['title'], 'required'],
+            [['title','content','level','user_type'], 'required'],
             [['is_deleted', 'deleted_at', 'level', 'user_type', 'notify_obj', 'user_group', 'sender_id', 'updated_at', 'created_at'], 'integer'],
             [['title'], 'string', 'max' => 255],
             [['content'], 'string', 'max' => 512],
@@ -80,6 +91,12 @@ class Message extends \yii\db\ActiveRecord
             'updated_at' => '更新日期',
             'created_at' => '发送时间',
         ];
+    }
+
+    public function beforeSave($insert)
+    {
+
+        return parent::beforeSave($insert);
     }
 
     /**

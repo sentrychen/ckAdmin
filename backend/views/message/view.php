@@ -1,5 +1,6 @@
 <?php
 
+use backend\models\Message;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
@@ -15,7 +16,6 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?= Html::a('Delete', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
@@ -30,19 +30,33 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'id',
             'title',
-            'content',
-            'is_canceled',
-            'canceled_at',
-            'is_deleted',
-            'deleted_at',
+            'content:html',
+            [
+                'attribute' => 'is_deleted',
+                'value' => function ($model) {
+
+                    return \common\libs\Constants::getYesNoItems($model->is_deleted);
+                }
+            ],
+            'deleted_at:date',
             'level',
-            'user_type',
-            'notify_obj',
-            'user_group',
+            [
+                'attribute' => 'user_type',
+                'value' => function ($model) {
+
+                    return Message::getUserTypes($model->user_type);
+                }
+            ],
+            [
+                'attribute' => 'notify_obj',
+                'value' => function ($model) {
+
+                    return Message::getNotifyObjs($model->notify_obj);
+                }
+            ],
             'sender_id',
             'sender_name',
-            'updated_at',
-            'created_at',
+            'created_at:date',
         ],
     ]) ?>
 

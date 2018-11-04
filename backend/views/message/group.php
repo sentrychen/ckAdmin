@@ -7,8 +7,8 @@ use yii\helpers\Url;
 /* @var $model backend\models\Message */
 
 $this->params['breadcrumbs'] = [
-    ['label' => yii::t('app', 'Message'), 'url' => Url::to(['index'])],
-    ['label' => yii::t('app', 'Create') . yii::t('app', 'Message')],
+    ['label' => '消息管理', 'url' => Url::to(['index'])],
+    ['label' => '群发消息'],
 ];
 ?>
 <?= $this->render('_form', [

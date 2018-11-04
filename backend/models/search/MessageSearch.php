@@ -73,7 +73,7 @@ class MessageSearch extends Message
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'is_deleted' => $this->is_deleted,
+            'is_deleted' => $this->is_deleted?1:0,
             'user_type' => $this->user_type,
         ]);
 
