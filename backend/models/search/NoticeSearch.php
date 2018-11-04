@@ -2,6 +2,8 @@
 
 namespace backend\models\search;
 
+use backend\behaviors\TimeSearchBehavior;
+use backend\components\search\SearchEvent;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
@@ -12,17 +14,24 @@ use backend\models\Notice;
  */
 class NoticeSearch extends Notice
 {
+
+    public $keyword;
     /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
-            [['id', 'notice_obj', 'expire_at', 'set_top', 'is_deleted', 'deleted_at', 'is_cancled', 'cancled_at', 'publish_by', 'updated_at', 'created_at'], 'integer'],
+            [['id', 'user_type', 'expire_at', 'set_top', 'is_deleted', 'deleted_at',  'publish_by', 'updated_at', 'created_at'], 'safe'],
             [['content', 'publish_name'], 'safe'],
         ];
     }
-
+    public function behaviors()
+    {
+        return [
+            TimeSearchBehavior::class
+        ];
+    }
     /**
      * @inheritdoc
      */
@@ -59,21 +68,12 @@ class NoticeSearch extends Notice
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
-            'notice_obj' => $this->notice_obj,
-            'expire_at' => $this->expire_at,
-            'set_top' => $this->set_top,
-            'is_deleted' => $this->is_deleted,
-            'deleted_at' => $this->deleted_at,
-            'is_cancled' => $this->is_cancled,
-            'cancled_at' => $this->cancled_at,
-            'publish_by' => $this->publish_by,
-            'updated_at' => $this->updated_at,
-            'created_at' => $this->created_at,
+            'is_deleted' => $this->is_deleted?1:0,
+            'user_type' => $this->user_type,
         ]);
 
-        $query->andFilterWhere(['like', 'content', $this->content])
-            ->andFilterWhere(['like', 'publish_name', $this->publish_name]);
+        $query->andFilterWhere(['or', ['like', 'title', $this->keyword], ['like', 'content', $this->keyword]]);
+        $this->trigger(SearchEvent::BEFORE_SEARCH, new SearchEvent(['query' => $query]));
 
         return $dataProvider;
     }

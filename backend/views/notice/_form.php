@@ -17,40 +17,16 @@ use common\widgets\ActiveForm;
                     ]
                 ]); ?>
                 <div class="hr-line-dashed"></div>
-                    <?= $form->field($model, 'content')->textInput(['maxlength' => true]) ?>
+                    <?= $form->field($model, 'content')->textarea([]) ?>
                         <div class="hr-line-dashed"></div>
 
-                        <?= $form->field($model, 'notice_obj')->textInput() ?>
+                <?= $form->field($model, 'user_type')->radioList(\backend\models\Notice::getUserTypes()) ?>
                         <div class="hr-line-dashed"></div>
 
-                        <?= $form->field($model, 'expire_at')->textInput() ?>
+                        <?= $form->field($model, 'expire_at')->dateRange(['singleDatePicker'=>true],['value'=>date('Y-m-d',strtotime('+6 day'))]) ?>
                         <div class="hr-line-dashed"></div>
 
-                        <?= $form->field($model, 'set_top')->textInput() ?>
-                        <div class="hr-line-dashed"></div>
-
-                        <?= $form->field($model, 'is_deleted')->textInput() ?>
-                        <div class="hr-line-dashed"></div>
-
-                        <?= $form->field($model, 'deleted_at')->textInput() ?>
-                        <div class="hr-line-dashed"></div>
-
-                        <?= $form->field($model, 'is_cancled')->textInput() ?>
-                        <div class="hr-line-dashed"></div>
-
-                        <?= $form->field($model, 'cancled_at')->textInput() ?>
-                        <div class="hr-line-dashed"></div>
-
-                        <?= $form->field($model, 'publish_by')->textInput() ?>
-                        <div class="hr-line-dashed"></div>
-
-                        <?= $form->field($model, 'publish_name')->textInput(['maxlength' => true]) ?>
-                        <div class="hr-line-dashed"></div>
-
-                        <?= $form->field($model, 'updated_at')->textInput() ?>
-                        <div class="hr-line-dashed"></div>
-
-                        <?= $form->field($model, 'created_at')->textInput() ?>
+                        <?= $form->field($model, 'set_top')->radioList(\common\libs\Constants::getYesNoItems()) ?>
                         <div class="hr-line-dashed"></div>
 
                         <?= $form->defaultButtons() ?>

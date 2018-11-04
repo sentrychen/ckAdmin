@@ -1,51 +1,32 @@
 <?php
+/**
+ * Author: lf
+ * Blog: https://blog.feehi.com
+ * Email: job@feehi.com
+ * Created at: 2018-10-13 23:18
+ */
 
+use backend\models\Agent;
+use backend\models\Notice;
+use common\models\User;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+use common\widgets\SearchForm;
+use yii\helpers\Url;
+use common\libs\Constants;
 
 /* @var $this yii\web\View */
-/* @var $model backend\models\search\NoticeSearch */
-/* @var $form yii\widgets\ActiveForm */
+/* @var $model backend\models\search\MessageSearch */
+/* @var $form common\widgets\SearchForm */
 ?>
+<div class="toolbar-searchs">
+    <?php $form = SearchForm::begin([]); ?>
 
-<div class="notice-search">
+    <?= $form->field($model, 'keyword')->label('关键词')->textInput() ?>
 
-    <?php $form = ActiveForm::begin([
-        'action' => ['index'],
-        'method' => 'get',
-    ]); ?>
-
-    <?= $form->field($model, 'id') ?>
-
-    <?= $form->field($model, 'content') ?>
-
-    <?= $form->field($model, 'notice_obj') ?>
-
-    <?= $form->field($model, 'expire_at') ?>
-
-    <?= $form->field($model, 'set_top') ?>
-
-    <?php // echo $form->field($model, 'is_deleted') ?>
-
-    <?php // echo $form->field($model, 'deleted_at') ?>
-
-    <?php // echo $form->field($model, 'is_cancled') ?>
-
-    <?php // echo $form->field($model, 'cancled_at') ?>
-
-    <?php // echo $form->field($model, 'publish_by') ?>
-
-    <?php // echo $form->field($model, 'publish_name') ?>
-
-    <?php // echo $form->field($model, 'updated_at') ?>
-
-    <?php // echo $form->field($model, 'created_at') ?>
-
-    <div class="form-group">
-        <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton('Reset', ['class' => 'btn btn-default']) ?>
-    </div>
-
-    <?php ActiveForm::end(); ?>
-
+    <?= $form->field($model, 'user_type')->dropDownList(Notice::getUserTypes()) ?>
+    <?= $form->field($model, 'is_deleted')->label('状态')->dropDownList(Notice::getStatus(), ['prompt' => null]) ?>
+    <?= $form->field($model, 'created_at')->dateRange() ?>
+    <?= $form->searchButtons() ?>
+    <?php SearchForm::end(); ?>
 </div>

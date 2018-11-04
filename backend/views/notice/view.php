@@ -6,8 +6,8 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model backend\models\Notice */
 
-$this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Notices', 'url' => ['index']];
+$this->title = '系统公告';
+$this->params['breadcrumbs'][] = ['label' => '系统公告', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="notice-view">
@@ -15,7 +15,6 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?= Html::a('Delete', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
@@ -30,17 +29,26 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'id',
             'content',
-            'notice_obj',
-            'expire_at',
+            [
+                'attribute' => 'user_type',
+                'value' => function ($model) {
+
+                    return \backend\models\Notice::getUserTypes($model->user_type);
+                }
+            ],
+            'expire_at:date',
             'set_top',
-            'is_deleted',
-            'deleted_at',
-            'is_cancled',
-            'cancled_at',
+            [
+                'attribute' => 'is_deleted',
+                'value' => function ($model) {
+
+                    return \common\libs\Constants::getYesNoItems($model->is_deleted);
+                }
+            ],
+            'deleted_at:date',
             'publish_by',
             'publish_name',
-            'updated_at',
-            'created_at',
+            'created_at:date',
         ],
     ]) ?>
 

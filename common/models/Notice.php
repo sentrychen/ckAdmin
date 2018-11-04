@@ -4,13 +4,14 @@ namespace common\models;
 
 use common\libs\Constants;
 use Yii;
+use yii\behaviors\TimestampBehavior;
 
 /**
  * This is the model class for table "{{%notice}}".
  *
  * @property int $id 公告ID
  * @property string $content 公告内容
- * @property int $notice_obj 公告对象 0 全体 1 会员 2 代理 3 管理员
+ * @property int $user_type 公告对象 0 全体 1 会员 2 代理 3 管理员
  * @property int $set_top 置顶
  * @property int $expire_at 公告截止日期
  * @property int $is_deleted 删除标记 1 删除
@@ -25,6 +26,7 @@ use Yii;
 class Notice extends \yii\db\ActiveRecord
 {
 
+    const OBJ_ALL = 0;
     const OBJ_MEMBER = 1;
     const OBJ_AGENT = 2;
     const OBJ_ADMIN = 3;
@@ -38,6 +40,15 @@ class Notice extends \yii\db\ActiveRecord
     }
 
     /**
+     * @return array
+     */
+    public function behaviors()
+    {
+        return [
+            TimestampBehavior::class,
+        ];
+    }
+    /**
      *
      * 获取最近的公告，如果不设限制，则返回全部未到期公告
      * @param int $limit
@@ -48,10 +59,9 @@ class Notice extends \yii\db\ActiveRecord
     {
 
         $query = static::find()->where(['and',
-            ['notice_obj' => [0, $obj]],
+            ['user_type' => [0, $obj]],
             ['>', 'expire_at', time()],
-            ['is_deleted' => Constants::YesNo_No],
-            ['is_cancled' => Constants::YesNo_No]
+            ['is_deleted' => Constants::YesNo_No]
         ]);
 
         $count = $query->count('id');
@@ -67,8 +77,8 @@ class Notice extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['content'], 'required'],
-            [['notice_obj', 'set_top', 'expire_at', 'is_deleted', 'deleted_at', 'is_cancled', 'cancled_at', 'publish_by', 'updated_at', 'created_at'], 'integer'],
+            [['content','set_top','expire_at','user_type'], 'required'],
+            [['user_type', 'set_top',  'is_deleted', 'deleted_at', 'is_cancled', 'cancled_at', 'publish_by', 'updated_at', 'created_at'], 'integer'],
             [['content'], 'string', 'max' => 512],
             [['publish_name'], 'string', 'max' => 64],
         ];
@@ -82,7 +92,7 @@ class Notice extends \yii\db\ActiveRecord
         return [
             'id' => '公告ID',
             'content' => '公告内容',
-            'notice_obj' => '公告对象',
+            'user_type' => '公告对象',
             'set_top' => '置顶',
             'expire_at' => '公告截止日期',
             'is_deleted' => '删除标记',
@@ -94,5 +104,45 @@ class Notice extends \yii\db\ActiveRecord
             'updated_at' => '更新日期',
             'created_at' => '创建日期',
         ];
+    }
+
+    /**
+     * @param null $key
+     * @return array|mixed
+     */
+    public static function getUserTypes($key = null)
+    {
+        $items = [
+            self::OBJ_ALL => '全部',
+            self::OBJ_MEMBER => '会员',
+            self::OBJ_AGENT => '代理',
+            self::OBJ_ADMIN => '管理员',
+        ];
+        return $items[$key] ?? $items;
+    }
+
+    /**
+     * @param null $key
+     * @return array|mixed
+     */
+    public static function getStatus($key = null)
+    {
+        $items = [
+            1 => '已删除',
+        ];
+        return $items[$key] ?? $items;
+    }
+
+    public function beforeSave($insert)
+    {
+
+        $this->expire_at = strtotime($this->expire_at);
+        if ($this->expire_at < time())
+            $this->expire_at = time() + 7*24*3600;
+
+        $this->publish_by = yii::$app->getUser()->getId();
+        $this->publish_name = yii::$app->getUser()->getIdentity()->username;
+
+        return parent::beforeSave($insert);
     }
 }
