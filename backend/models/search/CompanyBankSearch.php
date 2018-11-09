@@ -2,6 +2,7 @@
 
 namespace backend\models\search;
 
+use backend\behaviors\TimeSearchBehavior;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
@@ -18,10 +19,11 @@ class CompanyBankSearch extends CompanyBank
     public function rules()
     {
         return [
-            [['id', 'card_type', 'status', 'created_by_id', 'created_at', 'updated_at'], 'integer'],
+            [['id', 'card_type', 'status', 'created_by_id', 'created_at', 'updated_at'], 'safe'],
             [['bank_username', 'bank_account', 'bank_name', 'province', 'city', 'branch_name', 'created_by_ip'], 'safe'],
         ];
     }
+
 
     /**
      * @inheritdoc
@@ -59,21 +61,14 @@ class CompanyBankSearch extends CompanyBank
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
             'card_type' => $this->card_type,
             'status' => $this->status,
-            'created_by_id' => $this->created_by_id,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
         ]);
 
         $query->andFilterWhere(['like', 'bank_username', $this->bank_username])
             ->andFilterWhere(['like', 'bank_account', $this->bank_account])
-            ->andFilterWhere(['like', 'bank_name', $this->bank_name])
-            ->andFilterWhere(['like', 'province', $this->province])
-            ->andFilterWhere(['like', 'city', $this->city])
-            ->andFilterWhere(['like', 'branch_name', $this->branch_name])
-            ->andFilterWhere(['like', 'created_by_ip', $this->created_by_ip]);
+            ->andFilterWhere(['like', 'bank_name', $this->bank_name]);
+
 
         return $dataProvider;
     }

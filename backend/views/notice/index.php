@@ -41,7 +41,16 @@ $this->params['breadcrumbs'][] = '系统公告';
                             }
                         ],
                         'expire_at:date',
-                        'set_top',
+                        [
+                            'attribute' => 'set_top',
+                            'format' => 'raw',
+                            'value' => function ($model) {
+                                if ($model->set_top)
+                                    return '<i class="fa fa-check text-danger"></i>';
+                                else
+                                    return '&nbsp;';
+                            }
+                        ],
 
                         'publish_name',
 

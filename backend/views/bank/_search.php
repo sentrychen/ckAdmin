@@ -1,51 +1,33 @@
 <?php
+/**
+ * Author: lf
+ * Blog: https://blog.feehi.com
+ * Email: job@feehi.com
+ * Created at: 2018-10-13 23:18
+ */
 
+use backend\models\Agent;
+use backend\models\CompanyBank;
+use backend\models\Notice;
+use common\models\User;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+use common\widgets\SearchForm;
+use yii\helpers\Url;
+use common\libs\Constants;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\search\CompanyBankSearch */
-/* @var $form yii\widgets\ActiveForm */
+/* @var $form common\widgets\SearchForm */
 ?>
+<div class="toolbar-searchs">
+    <?php $form = SearchForm::begin([]); ?>
 
-<div class="company-bank-search">
-
-    <?php $form = ActiveForm::begin([
-        'action' => ['index'],
-        'method' => 'get',
-    ]); ?>
-
-    <?= $form->field($model, 'id') ?>
-
-    <?= $form->field($model, 'bank_username') ?>
-
-    <?= $form->field($model, 'bank_account') ?>
-
-    <?= $form->field($model, 'bank_name') ?>
-
-    <?= $form->field($model, 'province') ?>
-
-    <?php // echo $form->field($model, 'city') ?>
-
-    <?php // echo $form->field($model, 'branch_name') ?>
-
-    <?php // echo $form->field($model, 'card_type') ?>
-
-    <?php // echo $form->field($model, 'status') ?>
-
-    <?php // echo $form->field($model, 'created_by_id') ?>
-
-    <?php // echo $form->field($model, 'created_by_ip') ?>
-
-    <?php // echo $form->field($model, 'created_at') ?>
-
-    <?php // echo $form->field($model, 'updated_at') ?>
-
-    <div class="form-group">
-        <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton('Reset', ['class' => 'btn btn-default']) ?>
-    </div>
-
-    <?php ActiveForm::end(); ?>
-
+    <?= $form->field($model, 'bank_username')->textInput() ?>
+    <?= $form->field($model, 'bank_account')->textInput() ?>
+    <?= $form->field($model, 'bank_name')->textInput() ?>
+    <?= $form->field($model, 'card_type')->dropDownList(CompanyBank::getCardTypes()) ?>
+    <?= $form->field($model, 'status')->dropDownList(CompanyBank::getStatuses()) ?>
+    <?= $form->searchButtons() ?>
+    <?php SearchForm::end(); ?>
 </div>

@@ -1,45 +1,29 @@
 <?php
+/**
+ * Author: lf
+ * Blog: https://blog.feehi.com
+ * Email: job@feehi.com
+ * Created at: 2018-10-13 23:18
+ */
 
+use backend\models\Agent;
+use backend\models\Message;
+use common\models\User;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+use common\widgets\SearchForm;
+use yii\helpers\Url;
+use common\libs\Constants;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\search\PlatformSearch */
-/* @var $form yii\widgets\ActiveForm */
+/* @var $form common\widgets\SearchForm */
 ?>
+<div class="toolbar-searchs">
+    <?php $form = SearchForm::begin(['action' => ['amount'],]); ?>
 
-<div class="platform-search">
-
-    <?php $form = ActiveForm::begin([
-        'action' => ['index'],
-        'method' => 'get',
-    ]); ?>
-
-    <?= $form->field($model, 'id') ?>
-
-    <?= $form->field($model, 'name') ?>
-
-    <?= $form->field($model, 'code') ?>
-
-    <?= $form->field($model, 'api_host') ?>
-
-    <?= $form->field($model, 'app_id') ?>
-
-    <?php // echo $form->field($model, 'app_secret') ?>
-
-    <?php // echo $form->field($model, 'login_url') ?>
-
-    <?php // echo $form->field($model, 'status') ?>
-
-    <?php // echo $form->field($model, 'updated_at') ?>
-
-    <?php // echo $form->field($model, 'created_at') ?>
-
-    <div class="form-group">
-        <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton('Reset', ['class' => 'btn btn-default']) ?>
-    </div>
-
-    <?php ActiveForm::end(); ?>
-
+    <?= $form->field($model, 'name')->textInput() ?>
+    <?= $form->field($model, 'code')->textInput() ?>
+    <?= $form->searchButtons(['amount']) ?>
+    <?php SearchForm::end(); ?>
 </div>

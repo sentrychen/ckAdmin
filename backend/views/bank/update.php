@@ -6,8 +6,8 @@ use yii\helpers\Url;
 /* @var $model backend\models\CompanyBank */
 
 $this->params['breadcrumbs'] = [
-    ['label' => yii::t('app', 'Company Bank'), 'url' => Url::to(['index'])],
-    ['label' => yii::t('app', 'Update') . yii::t('app', 'Company Bank')],
+    ['label' => '银行卡管理', 'url' => Url::to(['index'])],
+    ['label' => '编辑银行卡'],
 ];
 ?>
 <?= $this->render('_form', [

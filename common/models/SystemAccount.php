@@ -3,6 +3,7 @@
 namespace common\models;
 
 use Yii;
+use yii\behaviors\TimestampBehavior;
 
 /**
  * This is the model class for table "{{%system_account}}".
@@ -36,6 +37,14 @@ class SystemAccount extends \yii\db\ActiveRecord
             [['id'], 'unique'],
         ];
     }
+
+    public function behaviors()
+    {
+        return [
+            TimestampBehavior::class,
+        ];
+    }
+
 
     /**
      * {@inheritdoc}

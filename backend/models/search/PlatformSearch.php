@@ -2,6 +2,7 @@
 
 namespace backend\models\search;
 
+use backend\models\PlatformAccount;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
@@ -18,7 +19,7 @@ class PlatformSearch extends Platform
     public function rules()
     {
         return [
-            [['id', 'status', 'updated_at', 'created_at'], 'integer'],
+            [['id', 'status', 'updated_at', 'created_at'], 'safe'],
             [['name', 'code', 'api_host', 'app_id', 'app_secret', 'login_url'], 'safe'],
         ];
     }
@@ -39,15 +40,29 @@ class PlatformSearch extends Platform
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
+    public function search($params, $status = null)
     {
-        $query = Platform::find();
+        $query = Platform::find()->joinWith('account');
 
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
+
+        $sort = $dataProvider->getSort();
+
+        $sort->attributes += [
+            'account.available_amount' => [
+                'asc' => [PlatformAccount::tableName() . '.available_amount' => SORT_ASC],
+                'desc' => [PlatformAccount::tableName() . '.available_amount' => SORT_DESC],
+            ],
+            'account.frozen_amount' => [
+                'asc' => [PlatformAccount::tableName() . '.frozen_amount' => SORT_ASC],
+                'desc' => [PlatformAccount::tableName() . '.frozen_amount' => SORT_DESC],
+            ],
+        ];
+
 
         $this->load($params);
 
@@ -57,20 +72,14 @@ class PlatformSearch extends Platform
             return $dataProvider;
         }
 
+        if ($status) $this->status = $status;
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
             'status' => $this->status,
-            'updated_at' => $this->updated_at,
-            'created_at' => $this->created_at,
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'code', $this->code])
-            ->andFilterWhere(['like', 'api_host', $this->api_host])
-            ->andFilterWhere(['like', 'app_id', $this->app_id])
-            ->andFilterWhere(['like', 'app_secret', $this->app_secret])
-            ->andFilterWhere(['like', 'login_url', $this->login_url]);
+            ->andFilterWhere(['like', 'code', $this->code]);
 
         return $dataProvider;
     }

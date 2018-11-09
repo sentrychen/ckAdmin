@@ -29,6 +29,8 @@ $this->params['breadcrumbs'][] = '游戏平台管理';
                         'code',
                         'api_host',
                         'account.available_amount:currency',
+                        'account.frozen_amount:currency',
+
                         [
                             'attribute' => 'status',
                             'value' => function ($model) {

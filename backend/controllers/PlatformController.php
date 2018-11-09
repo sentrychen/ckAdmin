@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use backend\models\PlatformAccountRecord;
 use Yii;
 use backend\models\search\PlatformSearch;
 use backend\models\Platform;
@@ -21,14 +22,14 @@ class PlatformController extends \yii\web\Controller
             'index' => [
                 'class' => IndexAction::className(),
                 'data' => function(){
-                    
-                        $searchModel = new PlatformSearch();
-                        $dataProvider = $searchModel->search(yii::$app->getRequest()->getQueryParams());
-                        return [
-                            'dataProvider' => $dataProvider,
-                            'searchModel' => $searchModel,
-                        ];
-                    
+
+                    $searchModel = new PlatformSearch();
+                    $dataProvider = $searchModel->search(yii::$app->getRequest()->getQueryParams());
+                    return [
+                        'dataProvider' => $dataProvider,
+                        'searchModel' => $searchModel,
+                    ];
+
                 }
             ],
             'create' => [
@@ -48,5 +49,44 @@ class PlatformController extends \yii\web\Controller
                 'modelClass' => Platform::className(),
             ],
         ];
+    }
+
+    public function actionAmount()
+    {
+        $searchModel = new PlatformSearch();
+        $dataProvider = $searchModel->search(yii::$app->getRequest()->getQueryParams(), Platform::STATUS_ENABLED);
+
+        return $this->render('amount', ['dataProvider' => $dataProvider, 'searchModel' => $searchModel]);
+
+    }
+
+    public function actionChangeAmount($platform_id)
+    {
+        $model = new PlatformAccountRecord();
+        $model->platform_id = $platform_id;
+        $model->scenario = 'create';
+        if (yii::$app->getRequest()->getIsPost()) {
+            if ($model->load(yii::$app->getRequest()->post()) && $model->validate()) {
+                $model->name = "手工调整额度";
+                $model->remark .= " [处理人员：" . yii::$app->getUser()->getIdentity()->username . ']';
+                if ($model->save(false)) {
+                    yii::$app->getSession()->setFlash('success', yii::t('app', 'Success'));
+                    return $this->redirect(['amount']);
+                }
+
+            }
+            $errors = $model->getErrors();
+            $err = '';
+            foreach ($errors as $v) {
+                $err .= $v[0] . '<br>';
+            }
+            yii::$app->getSession()->setFlash('error', $err);
+
+        }
+        $platformModel = Platform::findOne(['id' => $platform_id]);
+        $model->loadDefaultValues();
+        return $this->render('change-amount', [
+            'model' => $model, 'platformModel' => $platformModel
+        ]);
     }
 }

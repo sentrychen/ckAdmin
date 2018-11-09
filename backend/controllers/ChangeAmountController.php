@@ -3,8 +3,8 @@
 namespace backend\controllers;
 
 use Yii;
-use backend\models\search\UserWithdrawSearch;
-use backend\models\UserWithdraw;
+use backend\models\search\ChangeAmountRecordSearch;
+use backend\models\ChangeAmountRecord;
 use backend\actions\CreateAction;
 use backend\actions\UpdateAction;
 use backend\actions\IndexAction;
@@ -13,61 +13,59 @@ use backend\actions\SortAction;
 use yii\web\BadRequestHttpException;
 
 /**
- * WithdrawController implements the CRUD actions for UserWithdraw model.
+ * ChangeAmountController implements the CRUD actions for ChangeAmountRecord model.
  */
-class WithdrawController extends \yii\web\Controller
+class ChangeAmountController extends \yii\web\Controller
 {
     public function actions()
     {
         return [
             'index' => [
                 'class' => IndexAction::className(),
-                'data' => function(){
-                    
-                        $searchModel = new UserWithdrawSearch();
+                'data' => function () {
+
+                    $searchModel = new ChangeAmountRecordSearch();
                     $params = yii::$app->getRequest()->getQueryParams();
                     if (empty($params)) {
-                        $params = ['UserWithdrawSearch' => ['status' => UserWithdraw::STATUS_UNCHECKED]];
+                        $params = ['ChangeAmountRecordSearch' => ['status' => ChangeAmountRecordSearch::STATUS_UNCHECKED]];
                     }
                     $dataProvider = $searchModel->search($params);
-                        return [
-                            'dataProvider' => $dataProvider,
-                            'searchModel' => $searchModel,
-                        ];
-                    
+                    return [
+                        'dataProvider' => $dataProvider,
+                        'searchModel' => $searchModel,
+                    ];
+
                 }
             ],
             'create' => [
                 'class' => CreateAction::className(),
-                'modelClass' => UserWithdraw::className(),
+                'modelClass' => ChangeAmountRecord::className(),
             ],
             'update' => [
                 'class' => UpdateAction::className(),
-                'modelClass' => UserWithdraw::className(),
+                'modelClass' => ChangeAmountRecord::className(),
             ],
             'delete' => [
                 'class' => DeleteAction::className(),
-                'modelClass' => UserWithdraw::className(),
+                'modelClass' => ChangeAmountRecord::className(),
             ],
             'sort' => [
                 'class' => SortAction::className(),
-                'modelClass' => UserWithdraw::className(),
+                'modelClass' => ChangeAmountRecord::className(),
             ],
         ];
     }
 
     public function actionAudit($id)
     {
-        $model = UserWithdraw::findOne(['id' => $id, 'status' => UserWithdraw::STATUS_UNCHECKED]);
+        $model = ChangeAmountRecord::findOne(['id' => $id, 'status' => ChangeAmountRecord::STATUS_UNCHECKED]);
+        $model->scenario = 'audit';
         if (!$model)
-            throw new BadRequestHttpException('存款记录不存在或无须审核');
-        if (!$model->bank || $model->bank->bank_account != $model->bank_account || $model->bank->bank_name != $model->bank_name)
-            throw new BadRequestHttpException('用户银行卡信息错误');
+            throw new BadRequestHttpException('上下分记录不存在或无须审核');
         if (yii::$app->getRequest()->getIsPost() && $model->load(yii::$app->getRequest()->post())) {
-
-            if ($model->status != UserWithdraw::STATUS_UNCHECKED) {
+            if ($model->status != ChangeAmountRecord::STATUS_UNCHECKED) {
                 $model->audit_by_id = yii::$app->getUser()->getId();
-                $model->audit_by_username = yii::$app->getUser()->getIdentity()->username;
+                $model->audit_by_name = yii::$app->getUser()->getIdentity()->username;
                 $model->audit_at = time();
             }
 
@@ -75,7 +73,6 @@ class WithdrawController extends \yii\web\Controller
                 yii::$app->getSession()->setFlash('success', yii::t('app', 'Success'));
                 return $this->redirect(['index']);
             }
-
             $errors = $model->getErrors();
             $err = '';
             foreach ($errors as $v) {

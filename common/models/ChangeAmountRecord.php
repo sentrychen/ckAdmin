@@ -3,8 +3,10 @@
 namespace common\models;
 
 use common\libs\Constants;
+use Exception;
 use Yii;
 use yii\behaviors\TimestampBehavior;
+use yii\db\Exception as dbException;
 
 /**
  * This is the model class for table "{{%change_amount_record}}".
@@ -29,7 +31,15 @@ class ChangeAmountRecord extends \yii\db\ActiveRecord
 {
     const SWITCH_UP = 1;
     const SWITCH_DOWN = 2;
+    const STATUS_UNCHECKED = 1;
+    const STATUS_CHECKED = 2;
+    const STATUS_CANCLED = 0;
+
+    public $username;
     public $available_amount;
+    public $amount_min;
+    public $amount_max;
+
     /**
      * {@inheritdoc}
      */
@@ -44,12 +54,13 @@ class ChangeAmountRecord extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id','switch','amount'], 'required','on'=>'create'],
-            [['id', 'user_id', 'switch','status', 'submit_by_id', 'audit_by_id', 'audit_at', 'created_at', 'updated_at'], 'integer'],
+            [['user_id', 'switch', 'amount'], 'required', 'on' => 'create'],
+            [['id', 'user_id', 'switch', 'status', 'submit_by_id', 'audit_by_id', 'audit_at', 'created_at', 'updated_at'], 'integer'],
             [['amount', 'after_amount'], 'number'],
             [['remark', 'audit_remark'], 'string', 'max' => 255],
             [['submit_by_name', 'audit_by_name'], 'string', 'max' => 64],
-            [['amount'],'checkAmount'],
+            [['amount'], 'checkAmount', 'on' => 'create'],
+            [['status'], 'required', 'on' => 'audit'],
             [['id'], 'unique'],
         ];
     }
@@ -64,25 +75,27 @@ class ChangeAmountRecord extends \yii\db\ActiveRecord
     public function scenarios()
     {
         return [
-            'create' => ['switch','available_amount','amount', 'remark'],
+            'create' => ['switch', 'available_amount', 'amount', 'remark'],
+            'audit' => ['status', 'remark'],
         ];
     }
 
     public function checkAmount($attribute, $params)
     {
         if ($this->switch) {
-            if ($this->switch == 1){
+            if ($this->switch == 1) {
                 if (yii::$app->option->finance_add_amount_max > 0 && $this->amount > yii::$app->option->finance_add_amount_max)
-                    $this->addError($attribute, '上分额度超出系统限制最大额度：' .yii::$app->option->finance_add_amount_max);
-            }else if($this->switch == 2){
+                    $this->addError($attribute, '上分额度超出系统限制最大额度：' . yii::$app->option->finance_add_amount_max);
+            } else if ($this->switch == 2) {
                 if (yii::$app->option->finance_reduce_amount_max > 0 && $this->amount > yii::$app->option->finance_reduce_amount_max)
-                    $this->addError($attribute, '下分额度超出系统限制最大额度：' .yii::$app->option->finance_reduce_amount_max);
+                    $this->addError($attribute, '下分额度超出系统限制最大额度：' . yii::$app->option->finance_reduce_amount_max);
                 if ($this->amount > $this->available_amount)
-                    $this->addError($attribute, '下分额度超出当前用户可用额度'. $this->available_amount);
+                    $this->addError($attribute, '下分额度超出当前用户可用额度' . $this->available_amount);
             }
 
         }
     }
+
     /**
      * {@inheritdoc}
      */
@@ -94,7 +107,7 @@ class ChangeAmountRecord extends \yii\db\ActiveRecord
             'switch' => '上下分',
             'amount' => '额度',
             'after_amount' => '余额',
-            'status' =>'审核状态',
+            'status' => '审核状态',
             'remark' => '备注',
             'submit_by_id' => '提交者ID',
             'submit_by_name' => '提交者名称',
@@ -106,21 +119,33 @@ class ChangeAmountRecord extends \yii\db\ActiveRecord
             'updated_at' => '最后修改时间',
         ];
     }
+
     /**
      * @return array
      */
     public static function getSwitchs($key = null)
     {
-        $ary =  [
+        $ary = [
             self::SWITCH_UP => '上分',
             self::SWITCH_DOWN => '下分',
         ];
-        return $ary[$key]??$ary;
+        return $ary[$key] ?? $ary;
     }
 
     public function getUser()
     {
         return $this->hasOne(User::class, ['id' => 'user_id']);
+    }
+
+
+    public static function getStatuses($key = null)
+    {
+        $status = [
+            self::STATUS_UNCHECKED => '待审核',
+            self::STATUS_CHECKED => '已完成',
+            self::STATUS_CANCLED => '已取消',
+        ];
+        return $status[$key] ?? $status;
     }
 
     public function beforeSave($insert)
@@ -129,14 +154,14 @@ class ChangeAmountRecord extends \yii\db\ActiveRecord
             return parent::beforeSave($insert);
 
         $admin = yii::$app->getUser()->getIdentity();
-        $account = UserAccount::findOne(['user_id'=>$this->user_id]);
+        $account = UserAccount::findOne(['user_id' => $this->user_id]);
         //上分
-        if ($this->switch == 1){
+        if ($this->switch == 1) {
             //待审核
-            if (yii::$app->option->finance_add_amount_open_aduit){
+            if (yii::$app->option->finance_add_amount_open_aduit) {
                 $this->status = 1;
                 $account->frozen_amount += $this->amount;
-            }else{
+            } else {
                 $this->status = 2;
                 $account->available_amount += $this->amount;
                 $this->audit_by_id = $admin->id;
@@ -146,13 +171,13 @@ class ChangeAmountRecord extends \yii\db\ActiveRecord
             }
             $this->after_amount = $account->available_amount;
 
-        }else if($this->switch == 2) //下分
+        } else if ($this->switch == 2) //下分
         {
             $account->available_amount -= $this->amount;
-            if (yii::$app->option->finance_reduce_amount_open_aduit){
+            if (yii::$app->option->finance_reduce_amount_open_aduit) {
                 $this->status = 1;
                 $account->frozen_amount += $this->amount;
-            }else{
+            } else {
                 $this->status = 2;
                 $this->audit_by_id = $admin->id;
                 $this->audit_by_name = $admin->username;
@@ -161,14 +186,14 @@ class ChangeAmountRecord extends \yii\db\ActiveRecord
             }
             $this->after_amount = $account->available_amount;
 
-        }else{
+        } else {
             return false;
         }
 
         $this->submit_by_id = $admin->id;
         $this->submit_by_name = $admin->username;
 
-        if(! $account->save(false)){
+        if (!$account->save(false)) {
             return false;
         }
 
@@ -179,17 +204,77 @@ class ChangeAmountRecord extends \yii\db\ActiveRecord
     {
         parent::afterSave($insert, $changedAttributes);
 
-        if ($insert){
-            if ($this->status ==2){
+        if ($insert) {
+            if ($this->status == 2) {
                 $record = new UserAccountRecord();
                 $record->user_id = $this->user_id;
                 $record->switch = $this->switch;
-                $record->trade_no =$this->id;
-                $record->trade_type_id = $this->switch ==1 ?Constants::TRADE_TYPE_ADMINADD:Constants::TRADE_TYPE_ADMINREDUCE;
+                $record->trade_no = $this->id;
+                $record->trade_type_id = $this->switch == 1 ? Constants::TRADE_TYPE_ADMINADD : Constants::TRADE_TYPE_ADMINREDUCE;
                 $record->remark = $this->remark;
                 $record->amount = $this->amount;
                 $record->after_amount = $this->after_amount;
                 $record->save(false);
+            }
+        } else {
+            //通过上下分申请
+            if ($this->status == self::STATUS_CHECKED && $changedAttributes['status'] != self::STATUS_CHECKED) {
+
+                //开始事务
+                $tr = Yii::$app->db->beginTransaction();
+                try {
+
+                    $userAccount = UserAccount::findOne(['user_id' => $this->user_id]);
+                    if (!$userAccount)
+                        throw new dbException('用户资金账户不存在！');
+                    //更新用户额度
+                    $userAccount->frozen_amount -= $this->amount;
+                    if ($this->switch == self::SWITCH_UP)
+                        $this->available_amount += $this->amount;
+                    if (!$userAccount->save(false))
+                        throw new dbException('更新用户资金账户失败！');
+                    //添加用户交易记录
+
+                    $userRecord = new UserAccountRecord();
+                    $userRecord->user_id = $this->user_id;
+                    $userRecord->switch = $this->switch;
+                    $userRecord->trade_no = $this->id;
+                    $userRecord->trade_type_id = $this->switch == 1 ? Constants::TRADE_TYPE_ADMINADD : Constants::TRADE_TYPE_ADMINREDUCE;
+                    $userRecord->remark = $this->remark;
+                    $userRecord->amount = $this->amount;
+                    $userRecord->after_amount = $userAccount->available_amount;
+                    if (!$userRecord->save(false))
+                        throw new dbException('更新用户交易记录失败！');
+                    $tr->commit();
+                } catch (Exception $e) {
+                    Yii::error($e->getMessage());
+                    //回滚
+                    $tr->rollBack();
+                    $this->setAttributes($changedAttributes);
+                    $this->save(false);
+                }
+            }
+            //取消上下分申请
+            if ($this->status == self::STATUS_CANCLED && $changedAttributes['status'] != self::STATUS_CANCLED) {
+                $tr = Yii::$app->db->beginTransaction();
+                try {
+                    $userAccount = UserAccount::findOne(['user_id' => $this->user_id]);
+                    if (!$userAccount)
+                        throw new dbException('用户资金账户不存在！');
+                    //更新用户额度
+                    $userAccount->frozen_amount -= $this->amount;
+                    if ($this->switch == self::SWITCH_DOWN)
+                        $this->available_amount += $this->amount;
+                    if (!$userAccount->save(false))
+                        throw new dbException('更新用户资金账户失败！');
+                    $tr->commit();
+                } catch (Exception $e) {
+                    Yii::error($e->getMessage());
+                    //回滚
+                    $tr->rollBack();
+                    $this->setAttributes($changedAttributes);
+                    $this->save(false);
+                }
             }
         }
     }

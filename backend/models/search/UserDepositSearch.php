@@ -4,33 +4,38 @@ namespace backend\models\search;
 
 use backend\behaviors\TimeSearchBehavior;
 use backend\components\search\SearchEvent;
-use Yii;
+use backend\models\UserDeposit;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use backend\models\UserDeposit;
 
 /**
  * UserDepositSearch represents the model behind the search form about `backend\models\UserDeposit`.
  */
 class UserDepositSearch extends UserDeposit
 {
+
+    public $apply_amount_min;
+
+    public $apply_amount_max;
+    public $username;
+
     /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
-            [['id', 'user_id', 'status', 'audit_by_id', 'audit_at', 'pay_channel', 'save_bank_id', 'feedback', 'feedback_at', 'updated_at', 'created_at'], 'safe'],
-            [[ 'audit_by_username', 'audit_remark', 'pay_username', 'pay_nickname', 'pay_info', 'feedback_remark'], 'safe'],
-            [['apply_amount', 'confirm_amount'], 'safe'],
+            [['id', 'user_id', 'status', 'created_at', 'username', 'audit_by_username', 'apply_amount_min', 'apply_amount_max'], 'safe'],
         ];
     }
+
     public function behaviors()
     {
         return [
             TimeSearchBehavior::class
         ];
     }
+
     /**
      * @inheritdoc
      */
@@ -48,15 +53,23 @@ class UserDepositSearch extends UserDeposit
      * @param $userid int
      * @return ActiveDataProvider
      */
-    public function search($params,$userid = null)
+    public function search($params, $userid = null)
     {
-        $query = UserDeposit::find();
+        $query = UserDeposit::find()->joinWith('user');
 
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
+        $sort = $dataProvider->getSort();
+
+        $sort->attributes += [
+            'user.username' => [
+                'asc' => ['username' => SORT_ASC],
+                'desc' => ['username' => SORT_DESC],
+            ],
+        ];
 
         $this->load($params);
         if ($userid)
@@ -67,25 +80,15 @@ class UserDepositSearch extends UserDeposit
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
             'user_id' => $this->user_id,
-            'apply_amount' => $this->apply_amount,
-            'status' => $this->status,
-            'confirm_amount' => $this->confirm_amount,
-            'audit_by_id' => $this->audit_by_id,
-            'audit_at' => $this->audit_at,
-            'pay_channel' => $this->pay_channel,
-            'save_bank_id' => $this->save_bank_id,
-            'feedback' => $this->feedback,
-            'feedback_at' => $this->feedback_at,
+            UserDeposit::tableName() . '.status' => $this->status,
+
         ]);
 
-        $query->    andFilterWhere(['like', 'audit_by_username', $this->audit_by_username])
-            ->andFilterWhere(['like', 'audit_remark', $this->audit_remark])
-            ->andFilterWhere(['like', 'pay_username', $this->pay_username])
-            ->andFilterWhere(['like', 'pay_nickname', $this->pay_nickname])
-            ->andFilterWhere(['like', 'pay_info', $this->pay_info])
-            ->andFilterWhere(['like', 'feedback_remark', $this->feedback_remark]);
+        $query->andFilterWhere(['like', 'audit_by_username', $this->audit_by_username])
+            ->andFilterWhere(['like', 'username', $this->username])
+            ->andFilterWhere(['between', 'apply_amount', $this->apply_amount_min, $this->apply_amount_max]);
+
         $this->trigger(SearchEvent::BEFORE_SEARCH, new SearchEvent(['query' => $query]));
         return $dataProvider;
     }

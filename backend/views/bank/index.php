@@ -1,9 +1,10 @@
 <?php
 
-use common\widgets\Bar;
-use common\grid\CheckboxColumn;
+use backend\models\CompanyBank;
 use common\grid\ActionColumn;
+use common\grid\CheckboxColumn;
 use common\grid\GridView;
+use common\widgets\Bar;
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\search\CompanyBankSearch */
@@ -17,7 +18,12 @@ $this->params['breadcrumbs'][] = '银行卡管理';
         <div class="ibox">
             <?= $this->render('/widgets/_ibox-title') ?>
             <div class="ibox-content">
-                <?= Bar::widget() ?>
+                <div class="toolbar clearfix">
+                    <?= Bar::widget([
+                        'template' => '{refresh} {create} ',
+                    ]) ?>
+                    <?= $this->render('_search', ['model' => $searchModel]); ?>
+                </div>
                 <?= GridView::widget([
                     'dataProvider' => $dataProvider,
                     'filterModel' => null,
@@ -28,18 +34,26 @@ $this->params['breadcrumbs'][] = '银行卡管理';
                         'bank_username',
                         'bank_account',
                         'bank_name',
-                        'province',
-                        // 'city',
-                        // 'branch_name',
-                        // 'card_type',
-                        // 'status',
-                        // 'created_by_id',
-                        // 'created_by_ip',
-                        // 'created_at',
-                        // 'updated_at',
+                        [
+                            'attribute' => 'card_type',
+                            'value' => function ($model) {
 
-                        ['class' => ActionColumn::className(),],
+                                return CompanyBank::getCardTypes($model->card_type);
+                            }
+                        ],
+                        [
+                            'attribute' => 'status',
+                            'value' => function ($model) {
+
+                                return CompanyBank::getStatuses($model->status);
+                            }
+                        ],
+                        [
+                            'class' => ActionColumn::class,
+                            'template' => '{view-layer} {update}',
+                        ],
                     ],
+
                 ]); ?>
             </div>
         </div>

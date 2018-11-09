@@ -1,5 +1,6 @@
 <?php
 
+use backend\models\CompanyBank;
 use common\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
@@ -17,9 +18,6 @@ use common\widgets\ActiveForm;
                     ]
                 ]); ?>
                 <div class="hr-line-dashed"></div>
-                    <?= $form->field($model, 'id')->textInput() ?>
-                        <div class="hr-line-dashed"></div>
-
                         <?= $form->field($model, 'bank_username')->textInput(['maxlength' => true]) ?>
                         <div class="hr-line-dashed"></div>
 
@@ -38,22 +36,12 @@ use common\widgets\ActiveForm;
                         <?= $form->field($model, 'branch_name')->textInput(['maxlength' => true]) ?>
                         <div class="hr-line-dashed"></div>
 
-                        <?= $form->field($model, 'card_type')->textInput() ?>
+
+                <?= $form->field($model, 'card_type')->radioList(CompanyBank::getCardTypes()) ?>
                         <div class="hr-line-dashed"></div>
 
-                        <?= $form->field($model, 'status')->textInput() ?>
-                        <div class="hr-line-dashed"></div>
 
-                        <?= $form->field($model, 'created_by_id')->textInput() ?>
-                        <div class="hr-line-dashed"></div>
-
-                        <?= $form->field($model, 'created_by_ip')->textInput(['maxlength' => true]) ?>
-                        <div class="hr-line-dashed"></div>
-
-                        <?= $form->field($model, 'created_at')->textInput() ?>
-                        <div class="hr-line-dashed"></div>
-
-                        <?= $form->field($model, 'updated_at')->textInput() ?>
+                <?= $form->field($model, 'status')->radioList(CompanyBank::getStatuses()) ?>
                         <div class="hr-line-dashed"></div>
 
                         <?= $form->defaultButtons() ?>

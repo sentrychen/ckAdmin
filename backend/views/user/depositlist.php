@@ -25,7 +25,7 @@ use yii\widgets\Pjax;
         <?php Pjax::begin(['id' => 'depositPjax']); ?>
         <div class="toolbar clearfix">
             <div class="pull-left" style="line-height:44px">
-                合计确认存款 <span class="label label-warning"><?=Yii::$app->formatter->asCurrency($total['amount'])?></span>
+                合计确认存款 <span class="label label-warning"><?= Yii::$app->formatter->asCurrency($total) ?></span>
             </div>
             <?= $this->render('_search_depositlist', ['model' => $searchModel]); ?>
         </div>

@@ -7,4 +7,6 @@ use Yii;
 
 class PlatformAccountRecord extends \common\models\PlatformAccountRecord
 {
+
+
 }

@@ -122,8 +122,8 @@ class UserController extends Controller
         $searchModel = new UserDepositSearch();
         $dataProvider = $searchModel->search(yii::$app->getRequest()->getQueryParams(),$id);
         $query = clone $dataProvider->query;
-        $total = $query->select('SUM(confirm_amount ) as amount')->asArray()->one();
-
+        //$total = $query->select('SUM(confirm_amount)')->asArray()->one();
+        $total = $query->sum('confirm_amount');
         return $this->render('depositlist',['dataProvider' => $dataProvider,'searchModel' => $searchModel,'total'=>$total]);
     }
 
@@ -136,7 +136,7 @@ class UserController extends Controller
         $searchModel = new UserWithdrawSearch();
         $dataProvider = $searchModel->search(yii::$app->getRequest()->getQueryParams(),$id);
         $query = clone $dataProvider->query;
-        $total = $query->select('SUM(transfer_amount ) as amount')->asArray()->one();
+        $total = $query->sum('transfer_amount');
 
         return $this->render('withdrawlist',['dataProvider' => $dataProvider,'searchModel' => $searchModel,'total'=>$total]);
     }

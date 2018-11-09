@@ -22,7 +22,7 @@ class Message extends \common\models\Message
     {
 
         $query = static::find()->joinWith('messageFlag')
-            ->where([Message::tableName() . '.user_type' => static::OBJ_AGENT, Message::tableName() . '.is_canceled' => Constants::YesNo_No, Message::tableName() . '.is_deleted' => Constants::YesNo_No])
+            ->where([Message::tableName() . '.user_type' => static::OBJ_AGENT, Message::tableName() . '.is_deleted' => Constants::YesNo_No])
             ->andWhere(['or', ['notify_obj' => [static::SEND_ONE, static::SEND_MULTI], MessageFlag::tableName() . '.is_read' => Constants::YesNo_No, MessageFlag::tableName() . '.is_deleted' => Constants::YesNo_No],
                 ['notify_obj' => static::SEND_ALL, MessageFlag::tableName() . '.id' => null]]);
         $count = $query->count(Message::tableName() . '.id');

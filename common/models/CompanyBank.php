@@ -2,7 +2,7 @@
 
 namespace common\models;
 
-use Yii;
+use yii\behaviors\TimestampBehavior;
 
 /**
  * This is the model class for table "{{%company_bank}}".
@@ -23,6 +23,13 @@ use Yii;
  */
 class CompanyBank extends \yii\db\ActiveRecord
 {
+
+    const CARD_DEBIT = 1;
+    const CARD_CREDIT = 2;
+
+    const STATUS_ENABLED = 1;
+    const STATUS_DISABLED = 0;
+
     /**
      * {@inheritdoc}
      */
@@ -37,12 +44,19 @@ class CompanyBank extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id', 'bank_username', 'bank_account', 'bank_name'], 'required'],
+            [['bank_username', 'bank_account', 'bank_name'], 'required'],
             [['id', 'card_type', 'status', 'created_by_id', 'created_at', 'updated_at'], 'integer'],
             [['bank_username', 'bank_account', 'bank_name', 'created_by_ip'], 'string', 'max' => 64],
             [['province', 'city'], 'string', 'max' => 32],
             [['branch_name'], 'string', 'max' => 128],
             [['id'], 'unique'],
+        ];
+    }
+
+    public function behaviors()
+    {
+        return [
+            TimestampBehavior::class,
         ];
     }
 
@@ -59,12 +73,47 @@ class CompanyBank extends \yii\db\ActiveRecord
             'province' => '开户省份',
             'city' => '开户城市',
             'branch_name' => '网点名称',
-            'card_type' => '银行卡类型 1:借记卡  2：信用卡',
-            'status' => '账号状态 1：启用 0：停用',
+            'card_type' => '银行卡类型',
+            'status' => '账号状态',
             'created_by_id' => '创建者ID',
             'created_by_ip' => '创建者IP',
             'created_at' => '创建日期',
             'updated_at' => '修改日期',
         ];
     }
+
+    /**
+     * @param null $key
+     * @return array|mixed
+     */
+    public static function getCardTypes($key = null)
+    {
+        $items = [
+            self::CARD_DEBIT => '借记卡',
+            self::CARD_CREDIT => '信用卡',
+        ];
+        return $items[$key] ?? $items;
+    }
+
+    public static function getStatuses($key = null)
+    {
+        $status = [
+            self::STATUS_ENABLED => '启用',
+            self::STATUS_DISABLED => '停用',
+        ];
+        return $status[$key] ?? $status;
+    }
+
+    public static function getBanks()
+    {
+        $banks = self::find()->where(['status' => self::STATUS_ENABLED])->all();
+        $map = [];
+        foreach ($banks as $bank) {
+            $map[$bank->id] = $bank->bank_username . ' ' . $bank->bank_account . ' ' . $bank->bank_name;
+        }
+
+        return $map;
+
+    }
+
 }

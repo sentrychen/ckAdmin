@@ -2,7 +2,10 @@
 
 namespace common\models;
 
+use common\libs\Constants;
+use Exception;
 use Yii;
+use yii\db\Exception as dbException;
 
 /**
  * This is the model class for table "{{%user_withdraw}}".
@@ -53,12 +56,31 @@ class UserWithdraw extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'apply_amount'], 'required'],
+            [['user_id', 'apply_amount', 'status'], 'required'],
             [['user_id', 'status', 'audit_by_id', 'audit_at', 'user_bank_id', 'updated_at', 'created_at'], 'integer'],
             [['apply_amount', 'transfer_amount'], 'number'],
             [['remark', 'audit_remark'], 'string', 'max' => 255],
             [['audit_by_username', 'bank_name', 'bank_account', 'apply_ip'], 'string', 'max' => 64],
+            [['transfer_amount'], 'checkAmount'],
         ];
+    }
+
+    /**
+     * @param $attribute
+     * @param $params
+     */
+    public function checkAmount($attribute, $params)
+    {
+        if ($this->status == 2) {
+            if ($this->transfer_amount > $this->apply_amount) {
+                $this->addError('transfer_amount', '出款金额不能大于申请金额');
+            }
+
+            if ($this->transfer_amount > $this->user->account->frozen_amount) {
+                $this->addError('transfer_amount', '出款金额不能大于用户被冻结金额');
+            }
+
+        }
     }
 
     /**
@@ -71,8 +93,8 @@ class UserWithdraw extends \yii\db\ActiveRecord
             'user_id' => '用户ID',
             'remark' => '备注',
             'apply_amount' => '申请取款金额',
-            'status' => '取款状态',
-            'transfer_amount' => '实际转账金额',
+            'status' => '审核状态',
+            'transfer_amount' => '出款金额',
             'audit_by_id' => '处理人员ID',
             'audit_by_username' => '处理人员',
             'audit_remark' => '处理备注',
@@ -85,14 +107,116 @@ class UserWithdraw extends \yii\db\ActiveRecord
             'apply_ip' => '申请时登陆IP',
         ];
     }
+
     public static function getStatuses($key = null)
     {
-        $status =  [
+        $status = [
             self::STATUS_UNCHECKED => '申请中',
             self::STATUS_CHECKED => '已完成',
             self::STATUS_CANCLED => '已取消',
         ];
-        return $status[$key]??$status;
+        return $status[$key] ?? $status;
     }
 
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUser()
+    {
+        return $this->hasOne(User::class, ['id' => 'user_id']);
+    }
+
+    public function getBank()
+    {
+        return $this->hasOne(UserBank::class, ['id' => 'user_bank_id', 'user_id' => 'user_id']);
+    }
+
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+        //通过取款申请
+        if ($this->status == self::STATUS_CHECKED && $changedAttributes['status'] != self::STATUS_CHECKED) {
+
+            //开始事务
+            $tr = Yii::$app->db->beginTransaction();
+            try {
+                //更新系统资金账户
+                $sysAccount = SystemAccount::findOne(['id' => 'K']);
+                if (!$sysAccount)
+                    throw new dbException('系统资金账户不存在！');
+
+                $sysAccount->available_amount -= $this->transfer_amount;
+                if (!$sysAccount->save(false))
+                    throw new dbException('更新系统资金账户失败！');
+
+                //增加平台交易记录
+                $sysRecord = new SystemAccountRecord();
+                $sysRecord->name = "用户取款";
+                $sysRecord->trade_no = $this->id;
+                $sysRecord->amount = $this->transfer_amount;
+                $sysRecord->switch = SystemAccountRecord::SWITCH_OUT;
+                $sysRecord->after_amount = $sysAccount->available_amount;
+                $sysRecord->remark = $this->remark;
+                $sysRecord->confirm_at = time();
+                $sysRecord->confirm_by_id = $this->audit_by_id;
+                $sysRecord->confirm_by_name = $this->audit_by_username;
+                $sysRecord->confirm_remark = $this->audit_remark;
+                if (!$sysRecord->save(false))
+                    throw new dbException('更新系统资金账户记录失败！');
+
+                $userAccount = UserAccount::findOne(['user_id' => $this->user_id]);
+                if (!$userAccount)
+                    throw new dbException('用户资金账户不存在！');
+                //更新用户额度
+                $userAccount->frozen_amount -= $this->transfer_amount;
+                $userAccount->available_amount += $this->apply_amount - $this->transfer_amount;
+                if (!$userAccount->save(false))
+                    throw new dbException('更新用户资金账户失败！');
+                //添加用户交易记录
+
+                $userRecord = new UserAccountRecord();
+                $userRecord->user_id = $this->user_id;
+                $userRecord->switch = UserAccountRecord::SWITCH_OUT;
+                $userRecord->trade_no = $this->id;
+                $userRecord->trade_type_id = Constants::TRADE_TYPE_WITHDRAW;
+                $userRecord->remark = $this->remark;
+                $userRecord->amount = $this->transfer_amount;
+                $userRecord->after_amount = $userAccount->available_amount;
+                if (!$userRecord->save(false))
+                    throw new dbException('更新用户交易记录失败！');
+                $tr->commit();
+            } catch (Exception $e) {
+                Yii::error($e->getMessage());
+                //回滚
+
+                $tr->rollBack();
+                $this->setAttributes($changedAttributes);
+                $this->save(false);
+            }
+
+
+        }
+        //取消取款申请
+        if ($this->status == self::STATUS_CANCLED && $changedAttributes['status'] != self::STATUS_CANCLED) {
+            $tr = Yii::$app->db->beginTransaction();
+            try {
+                $userAccount = UserAccount::findOne(['user_id' => $this->user_id]);
+                if (!$userAccount)
+                    throw new dbException('用户资金账户不存在！');
+                //更新用户额度
+                $userAccount->frozen_amount -= $this->apply_amount;
+                $userAccount->available_amount += $this->apply_amount;
+                if (!$userAccount->save(false))
+                    throw new dbException('更新用户资金账户失败！');
+                $tr->commit();
+            } catch (Exception $e) {
+                Yii::error($e->getMessage());
+                //回滚
+
+                $tr->rollBack();
+                $this->setAttributes($changedAttributes);
+                $this->save(false);
+            }
+        }
+    }
 }

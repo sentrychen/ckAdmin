@@ -2,7 +2,10 @@
 
 namespace common\models;
 
+use common\libs\Constants;
+use Exception;
 use Yii;
+use yii\db\Exception as dbException;
 
 /**
  * This is the model class for table "{{%user_deposit}}".
@@ -38,6 +41,7 @@ class UserDeposit extends \yii\db\ActiveRecord
     const CHANNEL_BANK = 1;
     const CHANNEL_ALIPAY = 2;
     const CHANNEL_WEIXIN = 3;
+
     /**
      * {@inheritdoc}
      */
@@ -57,9 +61,9 @@ class UserDeposit extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'apply_amount', 'pay_channel'], 'required'],
+            [['user_id', 'status', 'apply_amount', 'pay_channel'], 'required'],
             [['user_id', 'status', 'audit_by_id', 'audit_at', 'pay_channel', 'save_bank_id', 'feedback', 'feedback_at', 'updated_at', 'created_at'], 'integer'],
-            [['apply_amount', 'confirm_amount'], 'number'],
+            [['apply_amount', 'confirm_amount'], 'number', 'min' => 0],
             [['remark', 'audit_remark', 'pay_username', 'pay_nickname', 'pay_info', 'feedback_remark'], 'string', 'max' => 255],
             [['audit_by_username'], 'string', 'max' => 64],
         ];
@@ -75,7 +79,7 @@ class UserDeposit extends \yii\db\ActiveRecord
             'user_id' => '会员ID',
             'remark' => '备注',
             'apply_amount' => '申请存款金额',
-            'status' => '存款状态',
+            'status' => '审核状态',
             'confirm_amount' => '确认金额',
             'audit_by_id' => '处理人员ID',
             'audit_by_username' => '处理人员',
@@ -96,22 +100,22 @@ class UserDeposit extends \yii\db\ActiveRecord
 
     public static function getStatuses($key = null)
     {
-        $status =  [
+        $status = [
             self::STATUS_UNCHECKED => '申请中',
             self::STATUS_CHECKED => '已存入',
             self::STATUS_CANCLED => '已取消',
         ];
-        return $status[$key]??$status;
+        return $status[$key] ?? $status;
     }
 
     public static function getPayChannels($key = null)
     {
-        $channels =  [
+        $channels = [
             self::CHANNEL_BANK => '银行',
             self::CHANNEL_ALIPAY => '支付宝',
             self::CHANNEL_WEIXIN => '微信支付',
         ];
-        return $channels[$key]??$channels;
+        return $channels[$key] ?? $channels;
     }
 
     /**
@@ -120,5 +124,71 @@ class UserDeposit extends \yii\db\ActiveRecord
     public function getUser()
     {
         return $this->hasOne(User::class, ['id' => 'user_id']);
+    }
+
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+        //存款成功
+        if ($this->status == self::STATUS_CHECKED && $changedAttributes['status'] != self::STATUS_CHECKED) {
+
+            //开始事务
+            $tr = Yii::$app->db->beginTransaction();
+            try {
+                //更新系统资金账户
+                $sysAccount = SystemAccount::findOne(['id' => 'K']);
+                if (!$sysAccount)
+                    throw new dbException('系统资金账户不存在！');
+
+                $sysAccount->available_amount += $this->confirm_amount;
+                if (!$sysAccount->save(false))
+                    throw new dbException('更新系统资金账户失败！');
+
+                //增加平台交易记录
+                $sysRecord = new SystemAccountRecord();
+                $sysRecord->name = "用户存款";
+                $sysRecord->trade_no = $this->id;
+                $sysRecord->amount = $this->confirm_amount;
+                $sysRecord->switch = SystemAccountRecord::SWITCH_IN;
+                $sysRecord->after_amount = $sysAccount->available_amount;
+                $sysRecord->remark = $this->remark;
+                $sysRecord->confirm_at = time();
+                $sysRecord->confirm_by_id = $this->audit_by_id;
+                $sysRecord->confirm_by_name = $this->audit_by_username;
+                $sysRecord->confirm_remark = $this->audit_remark;
+                if (!$sysRecord->save(false))
+                    throw new dbException('更新系统资金账户记录失败！');
+
+                $userAccount = UserAccount::findOne(['user_id' => $this->user_id]);
+                if (!$userAccount)
+                    throw new dbException('用户资金账户不存在！');
+                //更新用户额度
+                $userAccount->available_amount += $this->confirm_amount;
+                if (!$userAccount->save(false))
+                    throw new dbException('更新用户资金账户失败！');
+                //添加用户交易记录
+
+                $userRecord = new UserAccountRecord();
+                $userRecord->user_id = $this->user_id;
+                $userRecord->switch = UserAccountRecord::SWITCH_IN;
+                $userRecord->trade_no = $this->id;
+                $userRecord->trade_type_id = Constants::TRADE_TYPE_DESOPIT;
+                $userRecord->remark = $this->remark;
+                $userRecord->amount = $this->confirm_amount;
+                $userRecord->after_amount = $userAccount->available_amount;
+                if (!$userRecord->save(false))
+                    throw new dbException('更新用户交易记录失败！');
+                $tr->commit();
+            } catch (Exception $e) {
+                Yii::error($e->getMessage());
+                //回滚
+
+                $tr->rollBack();
+                $this->setAttributes($changedAttributes);
+                $this->save(false);
+            }
+
+
+        }
     }
 }

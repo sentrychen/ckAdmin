@@ -1,50 +1,101 @@
 <?php
+/**
+ * Author: lf
+ * Blog: https://blog.feehi.com
+ * Email: job@feehi.com
+ * Created at: 2016-03-23 17:51
+ */
 
+/**
+ * @var $this yii\web\View
+ * @var $dataProvider yii\data\ActiveDataProvider
+ * @var $searchModel backend\models\search\UserWithdrawSearch
+ * @var $total array
+ */
+
+use backend\models\UserWithdraw;
 use common\widgets\Bar;
 use common\grid\{
-    CheckboxColumn, ActionColumn, GridView
+    CheckboxColumn, ActionColumn, DateColumn, GridView
 };
+use yii\helpers\Html;
+use yii\helpers\Url;
 
-/* @var $this yii\web\View */
-/* @var $searchModel backend\models\search\UserWithdrawSearch */
-/* @var $dataProvider yii\data\ActiveDataProvider */
-
-$this->title = 'User Withdraws';
-$this->params['breadcrumbs'][] = 'User Withdraws';
 ?>
+
 <div class="row">
     <div class="col-sm-12">
         <div class="ibox">
             <?= $this->render('/widgets/_ibox-title') ?>
             <div class="ibox-content">
-                <?= Bar::widget() ?>
+                <div class="toolbar clearfix">
+                    <?= Bar::widget([
+                        'template' => '{refresh}',
+                    ]) ?>
+                    <?= $this->render('_search', ['model' => $searchModel]); ?>
+                </div>
                 <?= GridView::widget([
                     'dataProvider' => $dataProvider,
                     'filterModel' => null,
                     'columns' => [
-                        ['class' => CheckboxColumn::className()],
 
-                        'id',
-                        'user_id',
-                        'username',
-                        'apply_amount',
-                        'status',
-                        // 'transfer_amount',
-                        // 'audit_by_id',
-                        // 'audit_by_username',
-                        // 'audit_remark',
-                        // 'audit_at',
-                        // 'user_bank_id',
-                        // 'bank_name',
-                        // 'bank_account',
-                        // 'apply_ip',
-                        // 'updated_at',
-                        // 'created_at',
+                        [
+                            'attribute' => 'id',
+                        ],
+                        [
+                            'attribute' => 'user.username',
+                        ],
+                        [
+                            'attribute' => 'apply_amount',
+                            'format' => 'currency',
+                        ],
+                        [
+                            'attribute' => 'transfer_amount',
+                            'format' => 'currency',
+                        ],
+                        [
+                            'attribute' => 'user.account.frozen_amount',
+                            'format' => 'currency',
+                        ],
+                        [
+                            'attribute' => 'status',
+                            'value' => function ($model) {
+                                return UserWithdraw::getStatuses($model->status);
+                            }
+                        ],
 
-                        ['class' => ActionColumn::className(),],
+                        [
+                            'attribute' => 'audit_by_username',
+                        ],
+                        [
+                            'attribute' => 'audit_remark',
+                        ],
+
+                        [
+                            'class' => DateColumn::class,
+                            'attribute' => 'created_at'
+
+                        ],
+                        [
+                            'class' => ActionColumn::class,
+                            'width' => '80',
+                            'buttons' => [
+
+                                'audit' => function ($url, $model, $key) {
+                                    if ($model->status == UserWithdraw::STATUS_UNCHECKED)
+                                        return Html::a('<i class="fa fa-check"></i> 审核', Url::to(['audit', 'id' => $model->id]), [
+                                            'title' => '存款审核',
+                                            'data-pjax' => '0',
+                                            'class' => 'btn btn-warning btn-sm',
+                                        ]);
+                                    else
+                                        return "";
+                                },
+
                     ],
+                            'template' => '{view-layer} {audit}',
+                        ],
+                    ]
                 ]); ?>
-            </div>
-        </div>
     </div>
 </div>
