@@ -45,7 +45,7 @@ $this->params['breadcrumbs'] = [
                 <div class="hr-line-dashed"></div>
                 <?= $form->field($model, 'switch')->radioList(PlatformAccountRecord::getSwitchs()) ?>
                 <div class="hr-line-dashed"></div>
-                <?= $form->field($model, 'amount')->textInput(['beforeAddon' => '￥']) ?>
+                <?= $form->field($model, 'amount')->label('调整额度')->textInput(['beforeAddon' => '￥']) ?>
                 <div class="hr-line-dashed"></div>
                 <?= $form->field($model, 'available_amount')->label('调整前额度')->textInput(['beforeAddon' => '￥', 'readonly' => 'readonly', 'value' => (int)$platformModel->account->available_amount]) ?>
                 <div class="hr-line-dashed"></div>

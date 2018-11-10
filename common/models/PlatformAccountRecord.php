@@ -10,6 +10,7 @@ use yii\behaviors\TimestampBehavior;
  * @property int $id 游戏平台账户变更记录ID
  * @property int $platform_id 代理ID
  * @property string $name 变更名称
+ * @property string $trade_no 交易单号
  * @property string $amount 变更额度
  * @property int $switch 收支 1 收入 2支出
  * @property string $after_amount 变更后余额
@@ -81,11 +82,12 @@ class PlatformAccountRecord extends \yii\db\ActiveRecord
     {
         return [
             'id' => '游戏平台账户变更记录ID',
-            'platform_id' => '代理ID',
-            'name' => '变更名称',
-            'amount' => '变更额度',
+            'platform_id' => '游戏平台',
+            'name' => '交易名称',
+            'trade_no' => '交易单号',
+            'amount' => '交易额度',
             'switch' => '收支',
-            'after_amount' => '变更后余额',
+            'after_amount' => '交易后余额',
             'remark' => '备注',
             'updated_at' => '更新日期',
             'created_at' => '创建日期',
@@ -121,4 +123,11 @@ class PlatformAccountRecord extends \yii\db\ActiveRecord
         return parent::beforeSave($insert);
     }
 
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getPlatform()
+    {
+        return $this->hasOne(Platform::class, ['id' => 'platform_id']);
+    }
 }

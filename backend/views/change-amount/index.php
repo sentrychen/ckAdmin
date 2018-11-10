@@ -30,7 +30,7 @@ $this->params['breadcrumbs'][] = '上下分审核';
                     'dataProvider' => $dataProvider,
                     'filterModel' => null,
                     'columns' => [
-                        ['class' => CheckboxColumn::className()],
+
                         'id',
                         'user.username',
                         [

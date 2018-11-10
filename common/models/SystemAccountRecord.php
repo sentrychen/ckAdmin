@@ -3,6 +3,7 @@
 namespace common\models;
 
 use Yii;
+use yii\behaviors\TimestampBehavior;
 
 /**
  * This is the model class for table "{{%system_account_record}}".
@@ -49,6 +50,15 @@ class SystemAccountRecord extends \yii\db\ActiveRecord
     }
 
     /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return [
+            TimestampBehavior::class,
+        ];
+    }
+    /**
      * {@inheritdoc}
      */
     public function attributeLabels()
@@ -58,7 +68,7 @@ class SystemAccountRecord extends \yii\db\ActiveRecord
             'name' => '账户变更名称',
             'amount' => '变更额度',
             'trade_no' => '交易编号',
-            'switch' => '收支 1 收入 2 支出',
+            'switch' => '收支',
             'after_amount' => '交易后余额',
             'remark' => '备注信息',
             'confirm_by_id' => '确认者ID',

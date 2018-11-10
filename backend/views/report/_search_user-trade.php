@@ -13,21 +13,20 @@ use yii\helpers\ArrayHelper;
 use common\widgets\SearchForm;
 
 
-
 /* @var $this yii\web\View */
-/* @var $model backend\models\search\BetListSearch */
+/* @var $model backend\models\search\UserAccountRecordSearch */
 /* @var $form common\widgets\SearchForm */
 
 ?>
-<div class="toolbar-searchs" style="width:680px">
+<div class="toolbar-searchs">
     <?php $form = SearchForm::begin([
-            'action' => ['trade-list','id'=>$model->user_id],
-            'options'=>['class' => 'form-inline pull-right','data-pjax' => true]
+        'action' => ['user-trade'],
     ]); ?>
-
+    <?= $form->field($model, 'username')->label('会员名称')->textInput() ?>
     <?= $form->field($model, 'switch')->label('收支')->dropDownList(UserAccountRecord::getSwitchStatus()) ?>
     <?= $form->field($model, 'trade_type_id')->dropDownList(Constants::getTradeTypeItems()) ?>
+    <?= $form->field($model, 'remark')->textInput() ?>
     <?= $form->field($model, 'created_at')->dateRange() ?>
-    <?=$form->searchButtons(false)?>
+    <?= $form->searchButtons(['user-trade']) ?>
     <?php SearchForm::end(); ?>
 </div>

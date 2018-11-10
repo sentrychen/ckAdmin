@@ -10,14 +10,13 @@ namespace backend\models\search;
 
 use backend\behaviors\TimeSearchBehavior;
 use backend\components\search\SearchEvent;
-use backend\models\UserAccountRecord;
+use backend\models\SystemAccountRecord;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 
-class UserAccountRecordSearch extends UserAccountRecord
+class SystemAccountRecordSearch extends SystemAccountRecord
 {
 
-    public $username;
     public function init()
     {
         parent::init();
@@ -36,7 +35,7 @@ class UserAccountRecordSearch extends UserAccountRecord
     public function rules()
     {
         return [
-            [['user_id', 'trade_type_id', 'switch', 'username', 'remark', 'created_at'], 'safe'],
+            [['name', 'switch', 'remark', 'created_at'], 'safe'],
         ];
     }
 
@@ -50,13 +49,9 @@ class UserAccountRecordSearch extends UserAccountRecord
      * @param $userid
      * @return ActiveDataProvider
      */
-    public function search($params, $userid = null)
+    public function search($params)
     {
         $query = self::find();
-        if (empty($userid)) {
-            $query->joinWith('user');
-        }
-
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'sort' => [
@@ -65,31 +60,16 @@ class UserAccountRecordSearch extends UserAccountRecord
                 ],
             ]
         ]);
-        if (empty($userid)) {
-            $sort = $dataProvider->getSort();
-
-            $sort->attributes += [
-                'user.username' => [
-                    'asc' => ['username' => SORT_ASC],
-                    'desc' => ['username' => SORT_DESC],
-                ],
-            ];
-        }
-
+        $sort = $dataProvider->getSort();
 
 
         $this->load($params);
-        if ($userid)
-            $this->user_id = $userid;
         if (!$this->validate()) {
             return $dataProvider;
         }
-        $query->andFilterWhere(['user_id' => $this->user_id])
-            ->andFilterWhere(['trade_type_id' => $this->trade_type_id])
+        $query->andFilterWhere(['like', 'name', $this->name])
             ->andFilterWhere(['like', 'remark', $this->remark])
             ->andFilterWhere(['switch' => $this->switch]);
-        if (empty($userid))
-            $query->andFilterWhere(['like', 'username', $this->username]);
 
         $this->trigger(SearchEvent::BEFORE_SEARCH, new SearchEvent(['query' => $query]));
         return $dataProvider;

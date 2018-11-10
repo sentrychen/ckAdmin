@@ -2,17 +2,17 @@
 
 namespace common\models;
 
-use Yii;
-
 /**
- * This is the model class for table "{{%daily}}".
+ * This is the model class for table "{{%agent_daily}}".
  *
  * @property int $ymd 日期
+ * @property int $agent_id 代理ID
  * @property int $dnu 日新增用户
  * @property int $dau 日活跃用户
  * @property int $ndu 日首存用户数
  * @property int $nda 日首存额度
  * @property int $dbu 日投注用户数
+ * @property int $dbo 日投注单数
  * @property int $dba 日投注额度
  * @property int $ddu 日存款用户数
  * @property int $dda 日存款额度
@@ -20,26 +20,17 @@ use Yii;
  * @property int $dwa 日取款额度
  * @property int $dpa 日赢额度
  * @property int $dla 日输额度
+ * @property string $dxm 日洗码值
+ * @property int $dna 日新增代理
  */
-class Daily extends \yii\db\ActiveRecord
+class AgentDaily extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
-        return '{{%daily}}';
-    }
-
-    public static function getSumData($startDate, $endDate = 'now')
-    {
-        $startDate = (int)date('Ymd', strtotime($startDate));
-        $endDate = (int)date('Ymd', strtotime($endDate));
-        $data = static::find()
-            ->select('sum(dnu) as dnu, sum(dau) as dau, sum(ndu) as ndu, sum(nda) as nda,sum(dbu) as dbu, 
-            sum(dba) as dba, sum(ddu) as ddu, sum(dda) as dda, sum(dwu) as dwu, sum(dwa) as dwa, sum(dpa) as dpa, sum(dla) as dla')
-            ->where(['between', 'ymd', $startDate, $endDate])->asArray()->one();
-        return $data;
+        return '{{%agent_daily}}';
     }
 
     /**
@@ -48,9 +39,10 @@ class Daily extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['ymd'], 'required'],
-            [['ymd', 'dnu', 'dau', 'ndu', 'nda', 'dbu', 'dba', 'ddu', 'dda', 'dwu', 'dwa', 'dpa', 'dla'], 'integer'],
-            [['ymd'], 'unique'],
+            [['ymd', 'agent_id'], 'required'],
+            [['ymd', 'agent_id', 'dnu', 'dau', 'ndu', 'nda', 'dbu', 'dbo', 'dba', 'ddu', 'dda', 'dwu', 'dwa', 'dpa', 'dla', 'dna'], 'integer'],
+            [['dxm'], 'number'],
+            [['ymd', 'agent_id'], 'unique', 'targetAttribute' => ['ymd', 'agent_id']],
         ];
     }
 
@@ -61,11 +53,13 @@ class Daily extends \yii\db\ActiveRecord
     {
         return [
             'ymd' => '日期',
+            'agent_id' => '代理ID',
             'dnu' => '新增用户',
             'dau' => '活跃用户',
             'ndu' => '首存用户数',
             'nda' => '首存额度',
             'dbu' => '投注用户数',
+            'dbo' => '投注单数',
             'dba' => '投注额度',
             'ddu' => '存款用户数',
             'dda' => '存款额度',
@@ -73,6 +67,16 @@ class Daily extends \yii\db\ActiveRecord
             'dwa' => '取款额度',
             'dpa' => '赢额度',
             'dla' => '输额度',
+            'dxm' => '洗码值',
+            'dna' => '新增代理',
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAgent()
+    {
+        return $this->hasOne(Agent::class, ['id' => 'agent_id']);
     }
 }

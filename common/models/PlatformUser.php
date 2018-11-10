@@ -53,12 +53,12 @@ class PlatformUser extends \yii\db\ActiveRecord
     {
         return [
             'id' => '游戏平台用户ID',
-            'platform_id' => '游戏平台ID',
+            'platform_id' => '游戏平台',
             'user_id' => '用户ID',
             'username' => '用户名称',
             'game_account' => '游戏登陆账号',
             'game_password' => '游戏登陆密码',
-            'user_status' => '用户状态 1 正常 2 冻结  3 锁定 4 注销',
+            'user_status' => '用户状态',
             'first_login_ip' => '首次登陆IP',
             'last_login_at' => '最后登陆时间',
             'last_login_ip' => '最后登陆IP',

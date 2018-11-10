@@ -201,8 +201,8 @@ class Constants
             self::TRADE_TYPE_WITHDRAW => '取款',
             self::TRADE_TYPE_ADDAMOUNT => '上分',
             self::TRADE_TYPE_REDUCEAMOUNT => '下分',
-            self::TRADE_TYPE_ADDAMOUNT => '人工增加',
-            self::TRADE_TYPE_REDUCEAMOUNT => '人工减少',
+            self::TRADE_TYPE_ADMINADD => '人工增加',
+            self::TRADE_TYPE_ADMINREDUCE => '人工减少',
         ];
         return self::getItems($items, $key);
     }

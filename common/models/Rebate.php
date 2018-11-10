@@ -3,6 +3,7 @@
 namespace common\models;
 
 use Yii;
+use yii\behaviors\TimestampBehavior;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -33,6 +34,16 @@ class Rebate extends \yii\db\ActiveRecord
         return '{{%rebate}}';
     }
 
+
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return [
+            TimestampBehavior::class,
+        ];
+    }
     /**
      * {@inheritdoc}
      */

@@ -4,6 +4,7 @@ namespace common\models;
 
 use Yii;
 use yii\behaviors\TimestampBehavior;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "{{%platform}}".
@@ -101,5 +102,12 @@ class Platform extends \yii\db\ActiveRecord
             $account->platform_id = $this->id;
             $account->save(false);
         }
+    }
+
+    public static function getPlatformNames()
+    {
+        return ArrayHelper::map(self::find()->orderBy("id asc")
+            ->andFilterWhere(['status' => Platform::STATUS_ENABLED])
+            ->asArray()->all(), 'id', 'name');
     }
 }
