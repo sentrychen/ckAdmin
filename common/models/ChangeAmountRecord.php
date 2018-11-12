@@ -230,7 +230,7 @@ class ChangeAmountRecord extends \yii\db\ActiveRecord
                     //更新用户额度
                     $userAccount->frozen_amount -= $this->amount;
                     if ($this->switch == self::SWITCH_UP)
-                        $this->available_amount += $this->amount;
+                        $userAccount->available_amount += $this->amount;
                     if (!$userAccount->save(false))
                         throw new dbException('更新用户资金账户失败！');
                     //添加用户交易记录
