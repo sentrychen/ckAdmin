@@ -7,6 +7,7 @@
  */
 namespace backend\controllers;
 
+use backend\models\search\AdminUserSearch;
 use yii;
 use backend\models\form\PasswordResetRequestForm;
 use backend\models\form\ResetPasswordForm;
@@ -28,7 +29,7 @@ class AdminUserController extends \yii\web\Controller
             'index' => [
                 'class' => IndexAction::className(),
                 'data' => function(){
-                    $searchModel = new UserSearch();
+                    $searchModel = new AdminUserSearch();
                     $dataProvider = $searchModel->search(yii::$app->getRequest()->getQueryParams());
                     return [
                         'dataProvider' => $dataProvider,
