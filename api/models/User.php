@@ -95,4 +95,31 @@ class User extends \common\models\User implements IdentityInterface
         return $this->auth_key;
     }
 
+    public function beforeSave($insert)
+    {
+        if ($insert) {
+            $option = yii::$app->option;
+            $attrs = ['min_limit', 'max_limit', 'dogfall_min_limit', 'dogfall_max_limit', 'pair_min_limit', 'pair_max_limit'];
+            foreach ($attrs as $attr) {
+                if ($this->{$attr} === null && isset($option->{'game_' . $attr})) {
+                    $this->{$attr} = $option->{'game_' . $attr};
+                }
+            }
+
+            $agent = Agent::findOne($this->invite_agent_id);
+            if ($agent) {
+                $this->xima_status = $agent->xima_status;
+                $this->xima_type = $agent->xima_type;
+                $this->xima_rate = $agent->xima_rate;
+            } else {
+                $this->xima_status = $option->agent_xima_status;
+                $this->xima_type = $option->agent_xima_type;
+                $this->xima_rate = $option->agent_xima_rate;
+            }
+
+
+        }
+        return parent::beforeSave($insert);
+    }
+
 }

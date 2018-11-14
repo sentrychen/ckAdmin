@@ -26,6 +26,8 @@ $this->params['breadcrumbs'][] = '代理设置';
 
                 <?= $form->field($model, 'agent_status')->dropDownList(Constants::getAgentStatusItems()) ?>
                 <div class="hr-line-dashed"></div>
+                <?= $form->field($model, 'agent_default_code') ?>
+                <div class="hr-line-dashed"></div>
                 <?= $form->field($model, 'agent_max_level') ?>
                 <div class="hr-line-dashed"></div>
                 <?= $form->field($model, 'agent_max_rebate')->textInput(['afterAddon' => '%','value'=>$model->agent_max_rebate * 100]) ?>

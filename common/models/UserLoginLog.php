@@ -75,4 +75,12 @@ class UserLoginLog extends \yii\db\ActiveRecord
         ];
         return $ary[$key]??$ary;
     }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUser()
+    {
+        return $this->hasOne(User::class, ['id' => 'user_id']);
+    }
 }

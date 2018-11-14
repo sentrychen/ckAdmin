@@ -7,11 +7,14 @@
  */
 namespace api\controllers;
 
+use api\models\form\AgentRegisterForm;
+use Yii;
+use yii\web\IdentityInterface;
 use yii\web\Response;
 
-class AgentController extends \yii\rest\ActiveController
+class AgentController extends ActiveController
 {
-    public $modelClass = "api\models\Article";
+    public $modelClass = "api\models\Agent";
 
     public function behaviors()
     {
@@ -28,17 +31,24 @@ class AgentController extends \yii\rest\ActiveController
     public function verbs()
     {
         return [
-            'index' => ['GET', 'HEAD'],
-            'login' => ['POST'],
             'register' => ['POST'],
         ];
     }
 
     public function actionRegister()
     {
-        return [
-            "success" => true
-        ];
+        $model = new AgentRegisterForm();
+        $model->setAttributes(Yii::$app->request->post());
+
+        if ($user = $model->register()) {
+            if (empty($user->errors)) {
+                return $user;
+            } else {
+                return $user->errors;
+            }
+        } else {
+            return $model->errors;
+        }
     }
 
 

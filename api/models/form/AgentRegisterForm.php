@@ -5,12 +5,11 @@ namespace api\models\form;
 use api\models\Agent;
 use Yii;
 use yii\base\Model;
-use api\models\User;
 
 /**
  * Register form
  */
-class RegisterForm extends Model
+class AgentRegisterForm extends Model
 {
     public $username;
     public $password;
@@ -39,12 +38,12 @@ class RegisterForm extends Model
             [
                 'username',
                 'unique',
-                'targetClass' => User::class,
-                'message' => '用户名已经被使用'
+                'targetClass' => Agent::class,
+                'message' => '代理名称已经被使用'
             ],
             ['username', 'string', 'min' => 2, 'max' => 32],
             ['password', 'string', 'min' => 6],
-            ['promo_code', 'string', 'length' => 10],
+            ['promo_code', 'integer', 'min' => 10000],
             [
                 'promo_code',
                 'exist',
@@ -70,7 +69,7 @@ class RegisterForm extends Model
     /**
      * Signs user up.
      *
-     * @return User|null the saved model or null if saving fails
+     * @return Agent|null the saved model or null if saving fails
      */
     public function register()
     {
@@ -78,7 +77,7 @@ class RegisterForm extends Model
             return null;
         }
 
-        $user = new User();
+        $user = new Agent();
         $user->username = $this->username;
         $user->password = $this->password;
         if (empty($this->promo_code)) {
@@ -88,7 +87,7 @@ class RegisterForm extends Model
 
         if (!$agent_id) $agent_id = 0;
 
-        $user->invite_agent_id = $agent_id;
+        $user->parent_id = $agent_id;
 
         return $user->save() ? $user : null;
     }

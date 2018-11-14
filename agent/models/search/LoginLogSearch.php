@@ -11,6 +11,7 @@ namespace agent\models\search;
 use agent\behaviors\TimeSearchBehavior;
 use agent\components\search\SearchEvent;
 use agent\models\UserLoginLog;
+use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 
@@ -52,7 +53,7 @@ class LoginLogSearch extends UserLoginLog
      */
     public function search($params, $userid = null)
     {
-        $query = self::find();
+        $query = self::find()->joinWith('user u')->where(['u.invite_agent_id' => yii::$app->getUser()->getId()]);
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'sort' => [

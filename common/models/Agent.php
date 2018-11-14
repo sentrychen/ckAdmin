@@ -145,6 +145,7 @@ class Agent extends ActiveRecord
     public function scenarios()
     {
         return [
+            'default' => ['username'],
             'update' => ['password', 'realname', 'repassword', 'status', 'rebate_rate', 'xima_status', 'xima_type', 'xima_rate'],
             'create' => ['username', 'realname', 'password', 'repassword', 'parent_id', 'status', 'rebate_rate', 'xima_status', 'xima_type', 'xima_rate'],
         ];
@@ -197,7 +198,40 @@ class Agent extends ActiveRecord
         ];
     }
 
+    /**
+     * Generates new password reset token
+     */
+    public function generatePasswordResetToken()
+    {
+        $this->password_reset_token = Yii::$app->security->generateRandomString() . '_' . time();
+    }
 
+    /**
+     * Removes password reset token
+     */
+    public function removePasswordResetToken()
+    {
+        $this->password_reset_token = null;
+    }
+
+
+    /**
+     * Generates "remember me" authentication key
+     */
+    public function generateAuthKey()
+    {
+        $this->auth_key = Yii::$app->security->generateRandomString();
+    }
+
+    /**
+     * Generates password hash from password and sets it to the model
+     *
+     * @param string $password
+     */
+    public function setPassword($password)
+    {
+        $this->password_hash = Yii::$app->security->generatePasswordHash($password);
+    }
 
     /**
      * @inheritdoc
@@ -226,13 +260,9 @@ class Agent extends ActiveRecord
                     return false;
                 }
             }
-            while (true) {
-                $code = strtoupper(Yii::$app->security->generateRandomString(10));
-                if (!static::find()->andWhere(['promo_code' => $code])->exists()) {
-                    $this->promo_code = $code;
-                    break;
-                }
-            }
+
+            $this->promo_code = static::find()->max('promo_code') + 1;
+
             $this->generateAuthKey();
             $this->setPassword($this->password);
         } else {

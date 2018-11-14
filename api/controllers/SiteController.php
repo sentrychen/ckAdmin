@@ -8,6 +8,7 @@
 namespace api\controllers;
 
 use api\models\form\LoginForm;
+use api\models\form\RegisterForm;
 use api\models\User;
 use Yii;
 use yii\base\UserException;
@@ -34,7 +35,7 @@ class SiteController extends ActiveController
     public function actionIndex()
     {
         return [
-            "feehi api service"
+            "onetop api service"
         ];
     }
 
@@ -57,9 +58,19 @@ class SiteController extends ActiveController
 
     public function actionRegister()
     {
-        return [
-            "success" => true
-        ];
+        $model = new RegisterForm();
+        $model->setAttributes(Yii::$app->request->post());
+
+        if ($user = $model->register()) {
+            if ($user instanceof IdentityInterface) {
+                Yii::$app->request->setQueryParams(Yii::$app->request->post());
+                return $this->actionLogin();
+            } else {
+                return $user->errors;
+            }
+        } else {
+            return $model->errors;
+        }
     }
 
 

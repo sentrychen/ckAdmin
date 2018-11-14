@@ -8,11 +8,14 @@
 
 namespace backend\models\form;
 
+use backend\models\Agent;
 use common\models\Options;
 
 class SettingAgentForm extends \common\models\Options
 {
     public $agent_status;  //代理状态，0：正常代理，1：关闭代理注册，2：关闭代理登陆，9：停止代理
+
+    public $agent_default_code;   //默认推广码
 
     public $agent_max_level;   //最大代理层级
 
@@ -39,6 +42,7 @@ class SettingAgentForm extends \common\models\Options
     {
         return [
             'agent_status' => '代理状态',
+            'agent_default_code' => '默认邀请码',
             'agent_max_level' => '最大代理层级',
             'agent_max_rebate' => '最大占成',
             'agent_default_rebate' => '默认占成',
@@ -65,10 +69,18 @@ class SettingAgentForm extends \common\models\Options
                 ],
                 'url'
             ],
-            [['agent_status', 'agent_max_level', 'agent_xima_type', 'agent_xima_status'], 'integer'],
+            [['agent_status', 'agent_default_code', 'agent_max_level', 'agent_xima_type', 'agent_xima_status'], 'integer'],
             [['agent_max_rebate', 'agent_default_rebate', 'agent_xima_rate'], 'double', 'min' => 0, 'max' => 100],
             [['agent_max_rebate', 'agent_default_rebate', 'agent_xima_rate'], 'filter', 'filter' =>function($value){return $value/100;}],
             ['agent_default_rebate', 'compare', 'compareAttribute' => 'agent_max_rebate', 'operator' => '<='],
+            [
+                'agent_default_code',
+                'exist',
+                'targetClass' => Agent::class,
+                'targetAttribute' => 'promo_code',
+                'message' => '邀请码不存在'
+            ],
+
         ];
     }
 

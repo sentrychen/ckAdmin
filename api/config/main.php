@@ -10,6 +10,8 @@ return [
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'controllerNamespace' => 'api\controllers',
+    'language' => 'zh-CN',//默认语言
+    'timeZone' => 'Asia/Shanghai',//默认时区
     'homeUrl' => '/api',
     'components' => [
         'user' => [
@@ -40,9 +42,10 @@ return [
                 '' => 'site/index',
                 'login' => 'site/login',
                 'register' => 'site/register',
+                'agent/register' => 'agent/register',
                 [
                     'class' => yii\rest\UrlRule::className(),
-                    'controller' => ['user', 'article'],
+                    'controller' => ['user'],
                 ],
             ],
         ],

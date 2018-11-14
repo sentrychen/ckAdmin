@@ -63,12 +63,11 @@ class BetListSearch extends BetList
 
     /**
      * @param $params
-     * @param int $userid
      * @return ActiveDataProvider
      */
-    public function search($params, $userid = null)
+    public function search($params)
     {
-        $query = self::find();
+        $query = self::find()->joinWith('user u')->where(['u.invite_agent_id' => yii::$app->getUser()->getId()]);
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'sort' => [
@@ -81,7 +80,6 @@ class BetListSearch extends BetList
 
 
         $this->load($params);
-        $this->user_id = $userid;
         if (!$this->validate()) {
             return $dataProvider;
         }

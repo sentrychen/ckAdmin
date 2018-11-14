@@ -37,6 +37,12 @@ class User extends \common\models\User
         parent::loadDefaultValues();
     }
 
-
+    public function beforeSave($insert)
+    {
+        if ($insert) {
+            $this->invite_agent_id = yii::$app->getUser()->getId();
+        }
+        return parent::beforeSave($insert);
+    }
 }
 

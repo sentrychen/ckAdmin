@@ -243,7 +243,7 @@ class User extends ActiveRecord
     public function beforeSave($insert)
     {
         if ($insert) {
-            $this->invite_agent_id = yii::$app->getUser()->getId();
+            //$this->invite_agent_id = yii::$app->getUser()->getId();
             $this->generateAuthKey();
             $this->setPassword($this->password);
 
@@ -296,7 +296,6 @@ class User extends ActiveRecord
     {
         return Yii::$app->security->validatePassword($password, $this->password_hash);
     }
-
 
 }
 

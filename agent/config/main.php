@@ -73,25 +73,25 @@ return [
             'forceCopy' => false,
         ],
     ],
-    'on beforeRequest' => [feehi\components\Feehi::class, 'backendInit'],
-    'as access' => [
-        'class' => backend\components\AccessControl::class,
-        'allowActions' => [
-            'site/login',
-            'site/captcha',
-            'site/error',
-            'site/index',
-            'site/main',
-            'site/logout',
-            'site/language',
-            'admin-user/request-password-reset',
-            'admin-user/reset-password',
-            'admin-user/update-self',
-            'assets/*',
-            'debug/*',
-            'gii/*',
-        ],
-        'superAdminUserIds' => [1],//超级管理员用户id，拥有所有权限，不受权限管理的控制
-    ],
+    /*    'on beforeRequest' => [feehi\components\Feehi::class, 'backendInit'],
+        'as access' => [
+            'class' => backend\components\AccessControl::class,
+            'allowActions' => [
+                'site/login',
+                'site/captcha',
+                'site/error',
+                'site/index',
+                'site/main',
+                'site/logout',
+                'site/language',
+                'admin-user/request-password-reset',
+                'admin-user/reset-password',
+                'admin-user/update-self',
+                'assets/*',
+                'debug/*',
+                'gii/*',
+            ],
+            'superAdminUserIds' => [1],//超级管理员用户id，拥有所有权限，不受权限管理的控制
+        ],*/
     'params' => $params,
 ];
