@@ -45,7 +45,7 @@ return [
                 'agent/register' => 'agent/register',
                 [
                     'class' => yii\rest\UrlRule::className(),
-                    'controller' => ['user'],
+                    'controller' => ['user', 'withdraw'],
                 ],
             ],
         ],

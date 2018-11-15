@@ -3,8 +3,8 @@
 namespace backend\controllers;
 
 use Yii;
-use backend\models\search\UserWithdrawSearch;
-use backend\models\UserWithdraw;
+use backend\models\search\WithdrawSearch;
+use backend\models\Withdraw;
 use backend\actions\CreateAction;
 use backend\actions\UpdateAction;
 use backend\actions\IndexAction;
@@ -23,11 +23,11 @@ class WithdrawController extends \yii\web\Controller
             'index' => [
                 'class' => IndexAction::className(),
                 'data' => function(){
-                    
-                        $searchModel = new UserWithdrawSearch();
+
+                    $searchModel = new WithdrawSearch();
                     $params = yii::$app->getRequest()->getQueryParams();
                     if (empty($params)) {
-                        $params = ['UserWithdrawSearch' => ['status' => UserWithdraw::STATUS_UNCHECKED]];
+                        $params = ['UserWithdrawSearch' => ['status' => Withdraw::STATUS_UNCHECKED]];
                     }
                     $dataProvider = $searchModel->search($params);
                         return [
@@ -39,33 +39,33 @@ class WithdrawController extends \yii\web\Controller
             ],
             'create' => [
                 'class' => CreateAction::className(),
-                'modelClass' => UserWithdraw::className(),
+                'modelClass' => Withdraw::className(),
             ],
             'update' => [
                 'class' => UpdateAction::className(),
-                'modelClass' => UserWithdraw::className(),
+                'modelClass' => Withdraw::className(),
             ],
             'delete' => [
                 'class' => DeleteAction::className(),
-                'modelClass' => UserWithdraw::className(),
+                'modelClass' => Withdraw::className(),
             ],
             'sort' => [
                 'class' => SortAction::className(),
-                'modelClass' => UserWithdraw::className(),
+                'modelClass' => Withdraw::className(),
             ],
         ];
     }
 
     public function actionAudit($id)
     {
-        $model = UserWithdraw::findOne(['id' => $id, 'status' => UserWithdraw::STATUS_UNCHECKED]);
+        $model = Withdraw::findOne(['id' => $id, 'status' => Withdraw::STATUS_UNCHECKED]);
         if (!$model)
             throw new BadRequestHttpException('存款记录不存在或无须审核');
         if (!$model->bank || $model->bank->bank_account != $model->bank_account || $model->bank->bank_name != $model->bank_name)
             throw new BadRequestHttpException('用户银行卡信息错误');
         if (yii::$app->getRequest()->getIsPost() && $model->load(yii::$app->getRequest()->post())) {
 
-            if ($model->status != UserWithdraw::STATUS_UNCHECKED) {
+            if ($model->status != Withdraw::STATUS_UNCHECKED) {
                 $model->audit_by_id = yii::$app->getUser()->getId();
                 $model->audit_by_username = yii::$app->getUser()->getIdentity()->username;
                 $model->audit_at = time();

@@ -49,6 +49,8 @@ $this->title = '代理管理';
             <div class="hr-line-dashed"></div>
             <?= $form->field($model, 'status')->radioList(Agent::getStatuses()) ?>
             <div class="hr-line-dashed"></div>
+            <?= $form->field($model, 'sub_permission')->radioList(Constants::getYesNoItems()) ?>
+            <div class="hr-line-dashed"></div>
             <?= $form->field($model, 'rebate_rate')->textInput(['afterAddon' => '%']) ?>
             <div class="hr-line-dashed"></div>
             <?php

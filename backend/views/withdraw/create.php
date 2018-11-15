@@ -4,7 +4,7 @@ use yii\helpers\Url;
 
 
 /* @var $this yii\web\View */
-/* @var $model backend\models\UserWithdraw */
+/* @var $model backend\models\Withdraw */
 
 $this->params['breadcrumbs'] = [
     ['label' => yii::t('app', 'User Withdraw'), 'url' => Url::to(['index'])],

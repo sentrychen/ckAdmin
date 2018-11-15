@@ -12,7 +12,7 @@ use yii\web\Response;
 
 class WithdrawController extends ActiveController
 {
-    public $modelClass = "api\models\User";
+    public $modelClass = "api\models\Withdraw";
 
     public function behaviors()
     {

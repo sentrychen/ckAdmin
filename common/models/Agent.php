@@ -20,6 +20,7 @@ use yii\db\ActiveRecord;
  * @property string $mobile 手机号码
  * @property string $avatar 头像
  * @property string $promo_code 推广码
+ * @property string sub_permission 是否允许下级代理
  * @property int $parent_id 上层账号
  * @property int $top_id 总代账号
  * @property int $agent_level 代理层级
@@ -77,7 +78,8 @@ class Agent extends ActiveRecord
             [['username', 'password', 'repassword'], 'required', 'on' => ['create']],
             [['username'], 'unique', 'on' => 'create'],
             [['repassword'], 'compare', 'compareAttribute' => 'password'],
-            [['parent_id', 'top_id', 'agent_level', 'xima_status', 'xima_type', 'default_player_level', 'rebate_id', 'reg_time', 'status', 'created_at', 'updated_at'], 'integer'],
+            [['parent_id', 'top_id', 'sub_permission', 'agent_level', 'xima_status', 'xima_type', 'default_player_level', 'rebate_id', 'reg_time', 'status', 'created_at', 'updated_at'], 'integer'],
+            [['parent_id'], 'checkParent', 'on' => 'create'],
             [['xima_rate', 'rebate_rate', 'available_amount', 'frozen_amount', 'rebate_amount'], 'number'],
             [['username'], 'string', 'max' => 64],
             [['password_hash', 'password_reset_token', 'realname', 'email', 'avatar', 'memo'], 'string', 'max' => 255],
@@ -92,6 +94,7 @@ class Agent extends ActiveRecord
             [['rebate_rate','xima_rate'], 'filter','filter'=>function($value){return $value/100;}],
             [['rebate_rate'], 'checkRebateRate'],
             [['xima_rate'], 'checkXimaRate'],
+
 
 
         ];
@@ -113,6 +116,7 @@ class Agent extends ActiveRecord
             'mobile' => '手机号码',
             'avatar' => '头像',
             'promo_code' => '推广码',
+            'sub_permission' => '下级代理权限',
             'parent_id' => '上层账号',
             'top_id' => '总代账号',
             'agent_level' => '代理层级',
@@ -159,6 +163,16 @@ class Agent extends ActiveRecord
         return [
             TimestampBehavior::class,
         ];
+    }
+
+    public function checkParent($attribute, $params)
+    {
+
+        if ($this->parent_id) {
+            $parent = $this->getParent()->one();
+            if ($parent->sub_permission)
+                $this->addError($attribute, '该上级代理不具备发展下级代理权限');
+        }
     }
 
     public function checkRebateRate($attribute, $params)
@@ -248,6 +262,8 @@ class Agent extends ActiveRecord
                 $this->agent_level = 1;
             } else {
                 $parent = $this->getParent()->one();
+                //不允许创建下级代理
+                if ($parent->sub_permission != 1) return false;
                 if (!$parent->top_id) {
                     $this->top_id = $parent->id;
                 } else {

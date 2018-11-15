@@ -3,7 +3,7 @@
 use common\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model backend\models\UserWithdraw */
+/* @var $model backend\models\Withdraw */
 /* @var $form common\widgets\ActiveForm */
 ?>
 <div class="row">
