@@ -56,7 +56,9 @@ class UserSearch extends User
 
     /**
      * @param $params
-     * @return \yii\data\ActiveDataProvider
+     * @param null $agent_id
+     * @param null $online
+     * @return ActiveDataProvider
      */
     public function search($params, $agent_id = null, $online = null)
     {
@@ -104,7 +106,6 @@ class UserSearch extends User
             return $dataProvider;
         }
         $query->andFilterWhere(['like', User::tableName() . '.username', $this->username])
-            ->andFilterWhere([User::tableName() . '.invite_agent_id' => $this->invite_agent_id])
             ->andFilterWhere(['between', UserAccount::tableName() . '.available_amount', $this->available_amount_min, $this->available_amount_max])
             ->andFilterWhere([User::tableName() . '.invite_agent_id' => $agent_id])
             ->andFilterWhere([UserStat::tableName() . '.oneline_status' => $online])

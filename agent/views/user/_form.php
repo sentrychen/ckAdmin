@@ -11,8 +11,8 @@
  * @var $model agent\models\User
  */
 
+use agent\models\User;
 use common\widgets\ActiveForm;
-use backend\models\AdminUser;
 use common\libs\Constants;
 
 $this->title = 'AdminUser';
@@ -42,7 +42,7 @@ $this->title = 'AdminUser';
             <div class="hr-line-dashed"></div>
             <?= $form->field($model, 'repassword')->passwordInput(['maxlength' => 512]) ?>
             <div class="hr-line-dashed"></div>
-            <?= $form->field($model, 'status')->radioList(AdminUser::getStatuses()) ?>
+            <?= $form->field($model, 'status')->radioList(User::getStatuses()) ?>
             <div class="hr-line-dashed"></div>
             <?= $form->field($model, 'min_limit') ?>
             <div class="hr-line-dashed"></div>
