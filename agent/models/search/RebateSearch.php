@@ -11,6 +11,7 @@ namespace agent\models\search;
 use agent\behaviors\TimeSearchBehavior;
 use agent\components\search\SearchEvent;
 use agent\models\Rebate;
+use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 
@@ -58,17 +59,19 @@ class RebateSearch extends Rebate
                 ]
             ]
         ]);
-        /*
         $this->load($params);
-        if (! $this->validate()) {
+        if (!$this->validate()) {
+            // uncomment the following line if you do not want to return any records when validation fails
+            // $query->where('0=1');
             return $dataProvider;
         }
-        $query->andFilterWhere(['id'=> $this->id])
-            ->andFilterWhere(['like', 'username', $this->username])
-            ->andFilterWhere(['like', 'realname', $this->realname])
-            ->andFilterWhere(['like', 'promo_code', $this->promo_code]);
-*/
-        //  $this->trigger(SearchEvent::BEFORE_SEARCH, new SearchEvent(['query'=>$query]));
+
+        // grid filtering conditions
+        $query->andFilterWhere([
+            'ym' => $this->ym,
+            'agent_id' => yii::$app->getUser() - getId(),
+        ]);
+
         return $dataProvider;
     }
 
