@@ -9,11 +9,11 @@
 /**
  * @var $this yii\web\View
  * @var $dataProvider yii\data\ActiveDataProvider
- * @var $searchModel backend\models\search\WithdrawSearch
+ * @var $searchModel backend\models\search\UserWithdrawSearch
  * @var $total array
  */
 
-use backend\models\Withdraw;
+use backend\models\UserWithdraw;
 use common\grid\DateColumn;
 use common\grid\GridView;
 use yii\widgets\Pjax;
@@ -50,7 +50,7 @@ use yii\widgets\Pjax;
                 [
                     'attribute' => 'status',
                     'value' => function($model){
-                        return Withdraw::getStatuses($model->status);
+                        return UserWithdraw::getStatuses($model->status);
                     }
                 ],
 

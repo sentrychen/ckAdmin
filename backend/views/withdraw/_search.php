@@ -6,14 +6,13 @@
  * Created at: 2018-10-13 23:18
  */
 
-use backend\models\UserDeposit;
 use common\models\UserWithdraw;
 use common\widgets\SearchForm;
 
 
 
 /* @var $this yii\web\View */
-/* @var $model backend\models\search\WithdrawSearch */
+/* @var $model backend\models\search\UserWithdrawSearch */
 /* @var $form common\widgets\SearchForm */
 
 ?>

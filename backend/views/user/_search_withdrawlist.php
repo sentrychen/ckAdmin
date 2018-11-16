@@ -13,7 +13,7 @@ use common\widgets\SearchForm;
 
 
 /* @var $this yii\web\View */
-/* @var $model backend\models\search\WithdrawSearch */
+/* @var $model backend\models\search\UserWithdrawSearch */
 /* @var $form common\widgets\SearchForm */
 
 ?>
