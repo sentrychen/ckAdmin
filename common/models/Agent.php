@@ -170,7 +170,7 @@ class Agent extends ActiveRecord
 
         if ($this->parent_id) {
             $parent = $this->getParent()->one();
-            if ($parent->sub_permission)
+            if ($parent->sub_permission != 1)
                 $this->addError($attribute, '该上级代理不具备发展下级代理权限');
         }
     }
