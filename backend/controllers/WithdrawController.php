@@ -3,8 +3,8 @@
 namespace backend\controllers;
 
 use Yii;
-use backend\models\search\WithdrawSearch;
-use backend\models\Withdraw;
+use backend\models\search\UserWithdrawSearch;
+use backend\models\UserWithdraw;
 use backend\actions\CreateAction;
 use backend\actions\UpdateAction;
 use backend\actions\IndexAction;
@@ -24,10 +24,10 @@ class WithdrawController extends \yii\web\Controller
                 'class' => IndexAction::className(),
                 'data' => function(){
 
-                    $searchModel = new WithdrawSearch();
+                    $searchModel = new UserWithdrawSearch();
                     $params = yii::$app->getRequest()->getQueryParams();
                     if (empty($params)) {
-                        $params = ['UserWithdrawSearch' => ['status' => Withdraw::STATUS_UNCHECKED]];
+                        $params = ['UserWithdrawSearch' => ['status' => UserWithdraw::STATUS_UNCHECKED]];
                     }
                     $dataProvider = $searchModel->search($params);
                         return [
@@ -39,19 +39,19 @@ class WithdrawController extends \yii\web\Controller
             ],
             'create' => [
                 'class' => CreateAction::className(),
-                'modelClass' => Withdraw::className(),
+                'modelClass' => UserWithdraw::className(),
             ],
             'update' => [
                 'class' => UpdateAction::className(),
-                'modelClass' => Withdraw::className(),
+                'modelClass' => UserWithdraw::className(),
             ],
             'delete' => [
                 'class' => DeleteAction::className(),
-                'modelClass' => Withdraw::className(),
+                'modelClass' => UserWithdraw::className(),
             ],
             'sort' => [
                 'class' => SortAction::className(),
-                'modelClass' => Withdraw::className(),
+                'modelClass' => UserWithdraw::className(),
             ],
         ];
     }

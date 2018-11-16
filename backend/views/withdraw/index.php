@@ -9,11 +9,11 @@
 /**
  * @var $this yii\web\View
  * @var $dataProvider yii\data\ActiveDataProvider
- * @var $searchModel backend\models\search\WithdrawSearch
+ * @var $searchModel backend\models\search\UserWithdrawSearch
  * @var $total array
  */
 
-use backend\models\Withdraw;
+use backend\models\UserWithdraw;
 use common\widgets\Bar;
 use common\grid\{
     CheckboxColumn, ActionColumn, DateColumn, GridView
@@ -60,7 +60,7 @@ use yii\helpers\Url;
                         [
                             'attribute' => 'status',
                             'value' => function ($model) {
-                                return Withdraw::getStatuses($model->status);
+                                return UserWithdraw::getStatuses($model->status);
                             }
                         ],
 
@@ -82,7 +82,7 @@ use yii\helpers\Url;
                             'buttons' => [
 
                                 'audit' => function ($url, $model, $key) {
-                                    if ($model->status == Withdraw::STATUS_UNCHECKED)
+                                    if ($model->status == UserWithdraw::STATUS_UNCHECKED)
                                         return Html::a('<i class="fa fa-check"></i> 审核', Url::to(['audit', 'id' => $model->id]), [
                                             'title' => '存款审核',
                                             'data-pjax' => '0',

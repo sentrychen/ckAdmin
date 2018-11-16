@@ -7,12 +7,12 @@ use backend\components\search\SearchEvent;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use backend\models\Withdraw;
+use backend\models\UserWithdraw;
 
 /**
  * UserWithdrawSearch represents the model behind the search form about `backend\models\UserWithdraw`.
  */
-class WithdrawSearch extends Withdraw
+class UserWithdrawSearch extends UserWithdraw
 {
 
     public $apply_amount_min;
@@ -54,7 +54,7 @@ class WithdrawSearch extends Withdraw
      */
     public function search($params,$userid=null)
     {
-        $query = Withdraw::find()->joinWith('user');
+        $query = UserWithdraw::find()->joinWith('user');
 
         // add conditions that should always apply here
 
@@ -83,7 +83,7 @@ class WithdrawSearch extends Withdraw
         // grid filtering conditions
         $query->andFilterWhere([
             'user_id' => $this->user_id,
-            Withdraw::tableName() . '.status' => $this->status,
+            UserWithdraw::tableName() . '.status' => $this->status,
         ]);
 
         $query->andFilterWhere(['like', 'audit_by_username', $this->audit_by_username])

@@ -22,7 +22,7 @@ use backend\models\search\LoginLogSearch;
 use backend\models\search\UserAccountRecordSearch;
 use backend\models\search\UserDepositSearch;
 use backend\models\search\UserSearch;
-use backend\models\search\WithdrawSearch;
+use backend\models\search\UserWithdrawSearch;
 use backend\models\UserAccountRecord;
 use backend\models\User;
 use common\models\Agent;
@@ -133,7 +133,7 @@ class UserController extends Controller
      */
     public function actionWithdrawList($id)
     {
-        $searchModel = new WithdrawSearch();
+        $searchModel = new UserWithdrawSearch();
         $dataProvider = $searchModel->search(yii::$app->getRequest()->getQueryParams(),$id);
         $query = clone $dataProvider->query;
         $total = $query->sum('transfer_amount');
