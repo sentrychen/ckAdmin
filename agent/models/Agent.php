@@ -142,4 +142,16 @@ class Agent extends \common\models\Agent implements IdentityInterface
     {
         return Yii::$app->security->validatePassword($password, $this->password_hash);
     }
+
+    /**
+     * @inheritdoc
+     */
+    public function beforeSave($insert)
+    {
+
+        if ($insert) {
+            $this->parent_id = yii::$app->getUser()->getId();
+        }
+        return parent::beforeSave($insert);
+    }
 }
