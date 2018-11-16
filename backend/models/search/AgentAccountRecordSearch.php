@@ -72,7 +72,7 @@ class AgentAccountRecordSearch extends AgentAccountRecord
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'agent_id' => yii::$app->getUser()->getId(),
+            'agent_id' => $this->agent_id,
             'switch' => $this->switch,
 
         ]);

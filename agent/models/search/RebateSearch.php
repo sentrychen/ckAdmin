@@ -69,7 +69,7 @@ class RebateSearch extends Rebate
         // grid filtering conditions
         $query->andFilterWhere([
             'ym' => $this->ym,
-            'agent_id' => yii::$app->getUser() - getId(),
+            'agent_id' => yii::$app->getUser()->getId(),
         ]);
 
         return $dataProvider;
