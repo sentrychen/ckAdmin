@@ -32,7 +32,7 @@ class UserController extends Controller
                 'class' => IndexAction::class,
                 'data' => function () {
                     $searchModel = new UserSearch();
-                    $dataProvider = $searchModel->search(yii::$app->getRequest()->getQueryParams());
+                    $dataProvider = $searchModel->search(yii::$app->getRequest()->getQueryParams(), yii::$app->getUser()->getId());
                     return [
                         'dataProvider' => $dataProvider,
                         'searchModel' => $searchModel,
