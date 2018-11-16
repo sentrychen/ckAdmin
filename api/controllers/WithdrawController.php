@@ -13,11 +13,4 @@ use yii\web\Response;
 class WithdrawController extends ActiveController
 {
     public $modelClass = "api\models\Withdraw";
-
-    public function behaviors()
-    {
-        $behaviors = parent::behaviors();
-        $behaviors['contentNegotiator']['formats']['text/html'] = Response::FORMAT_JSON;//默认浏览器打开返回json
-        return $behaviors;
-    }
 }
