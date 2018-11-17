@@ -49,6 +49,11 @@ $this->params['breadcrumbs'][] = '会员投注记录';
                             'attribute' => 'username',
                         ],
                         [
+                            'attribute' => 'agent_name',
+                            'value' => 'user.inviteAgent.username',
+                            'label' => '所属代理',
+                        ],
+                        [
                             'attribute' => 'platform_id',
                             'value' => 'platform.name',
                             'label' => '游戏平台',

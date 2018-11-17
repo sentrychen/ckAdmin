@@ -45,6 +45,11 @@ $this->params['breadcrumbs'][] = '会员交易记录';
                     'columns' => [
                         'user.username',
                         [
+                            'attribute' => 'agent_name',
+                            'value' => 'user.inviteAgent.username',
+                            'label' => '所属代理',
+                        ],
+                        [
                             'attribute' => 'trade_no',
                         ],
                         [

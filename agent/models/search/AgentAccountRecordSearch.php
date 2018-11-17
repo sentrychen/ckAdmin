@@ -2,6 +2,7 @@
 
 namespace agent\models\search;
 
+use agent\models\Agent;
 use backend\behaviors\TimeSearchBehavior;
 use backend\components\search\SearchEvent;
 use Yii;
@@ -72,12 +73,18 @@ class AgentAccountRecordSearch extends AgentAccountRecord
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'agent_id' => yii::$app->getUser()->getId(),
             'switch' => $this->switch,
 
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name]);
+        if (empty($this->agent_id)) {
+            $agent_ids = yii\helpers\ArrayHelper::getColumn(Agent::getAgentTree(null, yii::$app->getUser()->getId(), null, true), 'id');
+            $query->andFilterWhere(['agent_id' => $agent_ids]);
+        } else {
+            $query->andFilterWhere(['agent_id' => $this->agent_id]);
+        }
+
         $this->trigger(SearchEvent::BEFORE_SEARCH, new SearchEvent(['query' => $query]));
         return $dataProvider;
     }

@@ -38,7 +38,12 @@ $this->params['breadcrumbs'][] = '会员登陆记录';
                     'filterModel' => null,
                     'columns' => [
                         'user_id',
-                        'username',
+                        'user.username',
+                        [
+                            'attribute' => 'agent_name',
+                            'value' => 'user.inviteAgent.username',
+                            'label' => '所属代理',
+                        ],
                         [
                             'class' => DateColumn::class,
                             'attribute' => 'created_at'

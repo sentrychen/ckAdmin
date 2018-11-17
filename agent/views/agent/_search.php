@@ -17,6 +17,7 @@ use common\widgets\SearchForm;
     <?php $form = SearchForm::begin([]); ?>
 
     <?= $form->field($model, 'username')->textInput() ?>
+    <?= $form->field($model, 'parent_id')->label('上级代理')->dropDownList(Agent::getAgentTreeList(null, yii::$app->getUser()->getId(), null, true)) ?>
     <?= $form->field($model, 'promo_code')->textInput() ?>
     <?= $form->field($model, 'status')->dropDownList(Agent::getStatuses()) ?>
     <?= $form->field($model, 'created_at')->dateRange() ?>

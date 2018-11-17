@@ -41,7 +41,7 @@ class AgentSearch extends Agent
     public function rules()
     {
         return [
-            [['id', 'username', 'realname', 'promo_code', 'status', 'created_at'], 'safe'],
+            [['id', 'username', 'parent_id', 'realname', 'promo_code', 'status', 'created_at'], 'safe'],
         ];
     }
 
@@ -56,7 +56,7 @@ class AgentSearch extends Agent
      */
     public function search($params)
     {
-        $query = self::find()->andWhere(['parent_id' => yii::$app->getUser()->getIdentity()->id]);
+        $query = self::find();
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'sort' => [
@@ -70,9 +70,15 @@ class AgentSearch extends Agent
             return $dataProvider;
         }
         $query->andFilterWhere(['id' => $this->id])
-            ->andFilterWhere(['like', 'username', $this->username])
             ->andFilterWhere(['like', 'realname', $this->realname])
+            ->andFilterWhere(['like', 'username', $this->realname])
             ->andFilterWhere(['like', 'promo_code', $this->promo_code]);
+        if (empty($this->parent_id)) {
+            $agent_ids = yii\helpers\ArrayHelper::getColumn(Agent::getAgentTree(null, yii::$app->getUser()->getId(), null, true), 'id');
+            $query->andFilterWhere(['parent_id' => $agent_ids]);
+        } else {
+            $query->andFilterWhere(['parent_id' => $this->parent_id]);
+        }
 
         $this->trigger(SearchEvent::BEFORE_SEARCH, new SearchEvent(['query' => $query]));
         return $dataProvider;

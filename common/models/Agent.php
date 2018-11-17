@@ -338,26 +338,27 @@ class Agent extends ActiveRecord
      * @param int $status
      * @param int $parent_id
      * @param int $level
+     * @param bool $self
      * @return array
      */
-    public static function getAgentTree($status = null,$parent_id = 0,$level = null)
+    public static function getAgentTree($status = null, $parent_id = 0, $level = null, $self = false)
     {
         $categories = self::_getAgents($status,$level);
         $familyTree = new FamilyTree($categories);
-        $array = $familyTree->getDescendants($parent_id);
+        $array = $familyTree->getDescendants($parent_id, 1, $self);
         return $array;
-        //return ArrayHelper::index($array, 'id');
     }
 
     /**
      * @param int $status
      * @param int $parent_id
      * @param int $level
+     * @param bool $self
      * @return array
      */
-    public static function getAgentTreeList($status = null,$parent_id = 0,$level = null)
+    public static function getAgentTreeList($status = null, $parent_id = 0, $level = 1, $self = false)
     {
-        $categories = self::getAgentTree($status,$parent_id,$level);
+        $categories = self::getAgentTree($status, $parent_id, $level, $self);
 
         $data = [];
 

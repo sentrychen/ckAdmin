@@ -45,7 +45,7 @@ class UserSearch extends User
     public function rules()
     {
         return [
-            [['status', 'available_amount_min', 'available_amount_max', 'invite_agent_id', 'username', 'created_at'], 'safe'],
+            [['status', 'available_amount_min', 'invite_agent_id', 'available_amount_max', 'invite_agent_id', 'agent_name', 'username', 'created_at'], 'safe'],
         ];
     }
 
@@ -105,12 +105,20 @@ class UserSearch extends User
         if (!$this->validate()) {
             return $dataProvider;
         }
+        if (empty($this->invite_agent_id) && !empty($agent_id))
+            $this->invite_agent_id = $agent_id;
+
+
         $query->andFilterWhere(['like', User::tableName() . '.username', $this->username])
             ->andFilterWhere(['between', UserAccount::tableName() . '.available_amount', $this->available_amount_min, $this->available_amount_max])
-            ->andFilterWhere([User::tableName() . '.invite_agent_id' => $agent_id])
             ->andFilterWhere([UserStat::tableName() . '.oneline_status' => $online])
             ->andFilterWhere([User::tableName() . '.status' => $this->status]);
-
+        if (empty($this->invite_agent_id)) {
+            $agent_ids = yii\helpers\ArrayHelper::getColumn(Agent::getAgentTree(null, yii::$app->getUser()->getId(), null, true), 'id');
+            $query->andFilterWhere([User::tableName() . '.invite_agent_id' => $agent_ids]);
+        } else {
+            $query->andFilterWhere([User::tableName() . '.invite_agent_id' => $this->invite_agent_id]);
+        }
         $this->trigger(SearchEvent::BEFORE_SEARCH, new SearchEvent(['query' => $query]));
         return $dataProvider;
     }

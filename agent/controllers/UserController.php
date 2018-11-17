@@ -28,17 +28,6 @@ class UserController extends Controller
     public function actions()
     {
         return [
-            'index' => [
-                'class' => IndexAction::class,
-                'data' => function () {
-                    $searchModel = new UserSearch();
-                    $dataProvider = $searchModel->search(yii::$app->getRequest()->getQueryParams(), yii::$app->getUser()->getId());
-                    return [
-                        'dataProvider' => $dataProvider,
-                        'searchModel' => $searchModel,
-                    ];
-                }
-            ],
             'view-layer' => [
                 'class' => ViewAction::class,
                 'modelClass' => User::class,
@@ -61,14 +50,23 @@ class UserController extends Controller
         ];
     }
 
+
+    public function actionIndex($id = null)
+    {
+        $searchModel = new UserSearch();
+        $dataProvider = $searchModel->search(yii::$app->getRequest()->getQueryParams(), $id);
+        return $this->render('index', ['dataProvider' => $dataProvider, 'searchModel' => $searchModel]);
+    }
+
+
     /**
      * @param $id
      * @return array|string
      */
-    public function actionTradeList()
+    public function actionTradeList($id = null)
     {
         $searchModel = new UserAccountRecordSearch();
-        $dataProvider = $searchModel->search(yii::$app->getRequest()->getQueryParams());
+        $dataProvider = $searchModel->search(yii::$app->getRequest()->getQueryParams(), $id);
 
         $query = clone $dataProvider->query;
 
@@ -83,10 +81,10 @@ class UserController extends Controller
      * @param $id
      * @return array|string
      */
-    public function actionBetList()
+    public function actionBetList($id = null)
     {
         $searchModel = new BetListSearch();
-        $dataProvider = $searchModel->search(yii::$app->getRequest()->getQueryParams());
+        $dataProvider = $searchModel->search(yii::$app->getRequest()->getQueryParams(), $id);
         $query = clone $dataProvider->query;
         $query->select('sum(bet_amount) as betAmount,sum(profit) as profit');
         $total = $query->createCommand()->queryOne();
@@ -97,10 +95,10 @@ class UserController extends Controller
      * @param $id
      * @return array|string
      */
-    public function actionLogList()
+    public function actionLogList($id = null)
     {
         $searchModel = new LoginLogSearch();
-        $dataProvider = $searchModel->search(yii::$app->getRequest()->getQueryParams());
+        $dataProvider = $searchModel->search(yii::$app->getRequest()->getQueryParams(), $id);
 
         return $this->render('loglist', ['dataProvider' => $dataProvider, 'searchModel' => $searchModel]);
     }
