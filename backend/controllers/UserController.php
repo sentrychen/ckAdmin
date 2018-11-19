@@ -16,6 +16,7 @@ use backend\actions\UpdateAction;
 use backend\actions\ViewAction;
 use backend\models\ChangeAmountRecord;
 use backend\models\Message;
+use backend\models\MessageFlag;
 use backend\models\PlatformUser;
 use backend\models\search\BetListSearch;
 use backend\models\search\LoginLogSearch;
@@ -41,10 +42,12 @@ class UserController extends Controller
                 'class' => IndexAction::className(),
                 'data' => function () {
                     $searchModel = new UserSearch();
+                    $model = new Message();
                     $dataProvider = $searchModel->search(yii::$app->getRequest()->getQueryParams());
                     return [
                         'dataProvider' => $dataProvider,
                         'searchModel' => $searchModel,
+                        'model'=>$model
                     ];
                 }
             ],
@@ -237,6 +240,50 @@ class UserController extends Controller
         return $this->render('message', [
             'model' => $model
         ]);
+    }
+
+    public function actionSendMessage()
+    {
+        $model = new Message();
+        $model->loadDefaultValues();
+        $request = Yii::$app->request;
+        $id_str = $request->get('userIds')?$request->get('userIds'):'';
+        return $this->render('send_message', [
+            'model' => $model,
+            'id_str'=>implode(',',$id_str)
+        ]);
+    }
+
+    public function actionSaveMessage()
+    {
+        $message = new Message();
+        $message_flag = new MessageFlag();
+        if (yii::$app->getRequest()->getIsPost()) {
+            $message->notify_obj = Message::SEND_MULTI;
+            $message->user_type = Message::OBJ_MEMBER;
+            $message->sender_id = yii::$app->getUser()->getId();
+            $message->sender_name = yii::$app->getUser()->getIdentity()->username;
+            $message->created_at = time();
+
+            if ($message->load(yii::$app->getRequest()->post(), '') && $message->save()) {
+                $row = message::find()->where(['is_deleted' => 0, 'user_type' => 1])->orderBy('id DESC')->limit(1)->one();
+                $request = Yii::$app->request;
+                $ids_str = $request->post('ids_str');
+                $user_ids = explode(',', $ids_str);
+                foreach ($user_ids as $key => $user_id) {
+                    $flag = clone $message_flag;
+                    $flag->user_id = $user_id;
+                    $flag->user_type = Message::OBJ_MEMBER;
+                    $flag->message_id = $row->id;
+                    $flag->created_at = time();
+                    $flag->save();
+                }
+                yii::$app->getSession()->setFlash('success', yii::t('app', 'Success'));
+                return 'succ';
+            } else {
+                return 'fail';
+            }
+        }
     }
 
 }
