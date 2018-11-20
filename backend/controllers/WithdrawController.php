@@ -10,6 +10,7 @@ use backend\actions\UpdateAction;
 use backend\actions\IndexAction;
 use backend\actions\DeleteAction;
 use backend\actions\SortAction;
+use backend\actions\ViewAction;
 use yii\web\BadRequestHttpException;
 
 /**
@@ -36,6 +37,10 @@ class WithdrawController extends \yii\web\Controller
                         ];
                     
                 }
+            ],
+            'view-layer' => [
+                'class' => ViewAction::className(),
+                'modelClass' => UserWithdraw::className(),
             ],
             'create' => [
                 'class' => CreateAction::className(),

@@ -10,6 +10,7 @@ use backend\actions\UpdateAction;
 use backend\actions\IndexAction;
 use backend\actions\DeleteAction;
 use backend\actions\SortAction;
+use backend\actions\ViewAction;
 /**
  * BankController implements the CRUD actions for CompanyBank model.
  */
@@ -30,6 +31,10 @@ class BankController extends \yii\web\Controller
                         ];
                     
                 }
+            ],
+            'view-layer' => [
+                'class' => ViewAction::className(),
+                'modelClass' => CompanyBank::className(),
             ],
             'create' => [
                 'class' => CreateAction::className(),

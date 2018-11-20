@@ -7,6 +7,7 @@ use backend\actions\DeleteAction;
 use backend\actions\IndexAction;
 use backend\actions\SortAction;
 use backend\actions\UpdateAction;
+use backend\actions\ViewAction;
 use backend\models\search\UserDepositSearch;
 use backend\models\UserDeposit;
 use Yii;
@@ -36,6 +37,10 @@ class DepositController extends \yii\web\Controller
                     ];
 
                 }
+            ],
+            'view-layer' => [
+                'class' => ViewAction::className(),
+                'modelClass' => UserDeposit::className(),
             ],
             'create' => [
                 'class' => CreateAction::className(),
