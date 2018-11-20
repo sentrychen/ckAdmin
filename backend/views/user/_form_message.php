@@ -11,7 +11,7 @@ use common\widgets\ActiveForm;
         <div class="ibox">
             <div class="ibox-content">
                 <?php $form = ActiveForm::begin([
-                    'action' => ['save-message'],//提交地址(*可省略*)
+                    'action' => ['send-message'],//提交地址(*可省略*)
                     'method'=>'post',  //提交方法(*可省略默认POST*)
                     'id' => 'form-save', //设置ID属性
                     'options' => [
@@ -40,6 +40,7 @@ use common\widgets\ActiveForm;
     #form-save .col-sm-2{width:100px;}
     #form-save .col-sm-5{width: 380px;}
 </style>
+<script src="/admin/assets/3291a725/jquery.js"></script>
 <script>
     $(function(){
         $(document).on('beforeSubmit', 'form#form-save', function () {
@@ -65,17 +66,17 @@ use common\widgets\ActiveForm;
                 type: 'post',
                 data: data_obj,
                 success: function (response) {
-                    if (response == 'succ') {
-                        layer.alert('发送成功！',{icon:1} ,function(index){
+                    if (response) {
+                        layer.alert('发送消息成功！',{icon:1} ,function(index){
                             window.location.reload();
                             //layer.close(index);
                         });
                     }else{
-                        layer.alert(response,{icon:1});
+                        layer.alert('发送消息失败',{icon:1});
                     }
                 },
                 error: function () {
-                    layer.alert('系统错误');
+                    layer.alert('发送失败');
                     return false;
                 }
             });

@@ -246,40 +246,36 @@ class UserController extends Controller
 
     public function actionSendMessage()
     {
-        $model = new Message();
-        $model->loadDefaultValues();
+        $message = new Message();
+        $message->loadDefaultValues();
         $request = Yii::$app->request;
         $id_str = $request->get('userIds') ? $request->get('userIds') : '';
-        return $this->render('send_message', [
-            'model' => $model,
-            'id_str' => implode(',', $id_str)
-        ]);
-    }
-
-    public function actionSaveMessage()
-    {
-        $message = new Message();
-        $message_flag = new MessageFlag();
         if (yii::$app->getRequest()->getIsPost()) {
             $message->notify_obj = Message::SEND_MULTI;
             $message->user_type = Message::OBJ_MEMBER;
             $message->sender_id = yii::$app->getUser()->getId();
             $message->sender_name = yii::$app->getUser()->getIdentity()->username;
             $message->ids = Yii::$app->request->post('ids_str');
-
-            if ($message->load(yii::$app->getRequest()->post(), '') && $message->save()) {
+            if ($message->load(yii::$app->getRequest()->post(),'') && $message->save() && $message->afterSave(true,[])) {
                 yii::$app->getSession()->setFlash('success', yii::t('app', 'Success'));
-                return [];
+                return ['status'=>'succ'];
             } else {
                 $errors = $message->getErrors();
                 $err = '';
                 foreach ($errors as $v) {
                     $err .= $v[0] . '<br>';
                 }
-
-                throw new UnprocessableEntityHttpException($err);
+                //throw new UnprocessableEntityHttpException($err);
+                return ['status'=>'fail'];
             }
+        }else{
+            return $this->render('_form_message', [
+                'model' => $message,
+                'id_str' => implode(',', $id_str)
+            ]);
         }
+
     }
+
 
 }
