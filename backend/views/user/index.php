@@ -157,7 +157,10 @@ $(function(){
                     closeBtn: 1,
                     area: ['35%', '60%'],
                     anim: 1,
-                    content: data
+                    content: data,
+                    cancel: function(){
+                        window.location.reload();
+                    }
                 });
             }
         );
