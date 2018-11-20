@@ -49,8 +49,8 @@ class Message extends \yii\db\ActiveRecord
 
 
     /**
-     * @inheritdoc
-     */
+ * @inheritdoc
+ */
     public function behaviors()
     {
         return [
