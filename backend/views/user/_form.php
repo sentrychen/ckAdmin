@@ -48,8 +48,6 @@ $this->title = '会员';
             <div class="hr-line-dashed"></div>
             <?= $form->field($model, 'invite_agent_id')->label('所属代理')->dropDownList(Agent::getAgentTreeList(Agent::STATUS_NORMAL),$temp) ?>
             <div class="hr-line-dashed"></div>
-            <?= $form->field($model, 'email')->textInput(['maxlength' => 512,'value'=>0]) ?>
-            <div class="hr-line-dashed"></div>
             <?= $form->field($model, 'status')->radioList(User::getStatuses()) ?>
             <div class="hr-line-dashed"></div>
             <div class="row">
