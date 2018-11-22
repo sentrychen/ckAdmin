@@ -3,6 +3,7 @@
 namespace common\models;
 
 use Yii;
+use yii\behaviors\TimestampBehavior;
 
 /**
  * This is the model class for table "{{%message_flag}}".
@@ -37,6 +38,16 @@ class MessageFlag extends \yii\db\ActiveRecord
             [['message_id', 'user_id'], 'required'],
             [['message_id', 'user_id', 'is_read', 'read_at', 'is_deleted', 'deleted_at', 'user_type', 'updated_at', 'created_at'], 'integer'],
             [['message_id', 'user_id'], 'unique', 'targetAttribute' => ['message_id', 'user_id']],
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return [
+            TimestampBehavior::class,
         ];
     }
 

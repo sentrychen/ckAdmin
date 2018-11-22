@@ -20,7 +20,7 @@ use common\grid\GridView;
 use common\widgets\Bar;
 use yii\helpers\Html;
 use yii\helpers\Url;
-
+use yii\bootstrap\Modal;
 $this->title = 'Users';
 $this->params['breadcrumbs'][] = '会员列表';
 
@@ -30,18 +30,20 @@ $this->params['breadcrumbs'][] = '会员列表';
         <div class="ibox">
             <?= $this->render('/widgets/_ibox-title') ?>
             <div class="ibox-content">
-
                 <div class="toolbar clearfix">
                     <?= Bar::widget([
                         'template' => '{refresh} {create} {message}',
                         'buttons' => [
                             'message' => function () {
-                                return Html::a('<i class="fa fa-send"></i> 发消息', 'javascript:void(0)', [
+                                return Html::a('<i class="fa fa-send"></i> 发消息', '#', [
                                     'data-title' => '给选中用户发消息',
                                     'data-pjax' => '0',
+                                    'id' => 'create',
+                                    'data-toggle' => 'modal',
+                                    'data-target' => '#create-modal',
                                     'data-confirm' => null,
-                                    'onclick' => "if ($('#userGrid').yiiGridView('getSelectedRows').length()) {viewLayer('" . Url::to(['message']) . "',$(this));return false;}",
-                                    'class' => 'btn btn-primary btn-sm multi-operate',
+                                   // 'onclick' => "if ($('#userGrid').yiiGridView('getSelectedRows').length()) {}",
+                                    'class' => 'btn btn-success',
                                 ]);
                             },
                         ]
@@ -129,3 +131,40 @@ $this->params['breadcrumbs'][] = '会员列表';
         </div>
     </div>
 </div>
+
+
+<script src="/admin/assets/3291a725/jquery.js"></script>
+<script>
+$(function(){
+    $('#create').on('click', function () {
+        var chk_value = [];
+        var num = $('input[name="selection[]"]:checked').length;
+        if(num == false){
+            layer.alert('请先选择要操作的记录!',{icon:2});
+            return false;
+        }
+        $('input[name="selection[]"]:checked').each(function(){
+            chk_value.push($(this).val());
+        });
+
+        var requestUrl =  "<?= Url::to(['/user/send-message']);?>";
+        $.get(requestUrl, {userIds:chk_value},
+            function (data) {
+                layer.open({
+                    type: 1,
+                    title: "<font size='4' color='green'><b>发消息</b></font>",
+                    skin: 'layui-layer-demo',
+                    closeBtn: 1,
+                    area: ['35%', '60%'],
+                    anim: 1,
+                    content: data,
+                    cancel: function(){
+                        window.location.reload();
+                    }
+                });
+            }
+        );
+    });
+});
+</script>
+
