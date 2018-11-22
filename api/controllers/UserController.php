@@ -83,4 +83,4 @@ class UserController extends ActiveController
             throw new RestHttpException($err, 400);
         }
     }
-
+}
