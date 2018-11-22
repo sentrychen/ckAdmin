@@ -19,4 +19,10 @@ class UserController extends ActiveController
         $behaviors['contentNegotiator']['formats']['text/html'] = Response::FORMAT_JSON;//默认浏览器打开返回json
         return $behaviors;
     }
+
+    public function actions()
+    {
+        return [];
+    }
+
 }

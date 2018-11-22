@@ -41,6 +41,7 @@ return [
             'rules' => [
                 '' => 'site/index',
                 'login' => 'site/login',
+                'logout' => 'site/logout',
                 'register' => 'site/register',
                 'agent/register' => 'agent/register',
                 [

@@ -7,13 +7,11 @@
  */
 namespace api\controllers;
 
+use api\components\RestHttpException;
 use api\models\form\LoginForm;
 use api\models\form\RegisterForm;
-use api\models\User;
 use Yii;
-use yii\base\UserException;
 use yii\web\IdentityInterface;
-use yii\web\Response;
 
 class SiteController extends ActiveController
 {
@@ -27,8 +25,10 @@ class SiteController extends ActiveController
     public function verbs()
     {
         return [
-            'login' => ['GET'],
+            'login' => ['POST'],
+            'logout' => ['POST'],
             'register' => ['POST'],
+
         ];
     }
 
@@ -42,34 +42,57 @@ class SiteController extends ActiveController
     public function actionLogin()
     {
         $model = new LoginForm;
-        $model->setAttributes(Yii::$app->request->get());
+        $model->setAttributes(Yii::$app->request->post());
+        $user = $model->login();
 
-        if ($user = $model->login()) {
-            if ($user instanceof IdentityInterface) {
-                return $user->api_token;
-            } else {
-                return $user->errors;
-            }
-        } else {
-            return $model->errors;
+        if ($user instanceof IdentityInterface) {
+            return $user->api_token;
         }
 
+        $errorReasons = $model->getErrors();
+        if (empty($errorReasons)) {
+            throw new RestHttpException();
+        } else {
+            $err = '';
+            foreach ($errorReasons as $errorReason) {
+                $err .= $errorReason[0] . '<br>';
+            }
+            $err = rtrim($err, '<br>');
+            throw new RestHttpException($err, 400);
+        }
+    }
+
+    public function actionLogout()
+    {
+        $user = Yii::$app->getUser()->getIdentity();
+        if (!$user) {
+            $user->api_token = null;
+            $user->save(false);
+            Yii::$app->getUser()->logout(false);
+        }
+        return 'logout';
     }
 
     public function actionRegister()
     {
         $model = new RegisterForm();
         $model->setAttributes(Yii::$app->request->post());
+        $user = $model->register();
+        if ($user instanceof IdentityInterface) {
+            Yii::$app->request->setQueryParams(Yii::$app->request->post());
+            return $this->actionLogin();
+        }
 
-        if ($user = $model->register()) {
-            if ($user instanceof IdentityInterface) {
-                Yii::$app->request->setQueryParams(Yii::$app->request->post());
-                return $this->actionLogin();
-            } else {
-                return $user->errors;
-            }
+        $errorReasons = $model->getErrors();
+        if (empty($errorReasons)) {
+            throw new RestHttpException();
         } else {
-            return $model->errors;
+            $err = '';
+            foreach ($errorReasons as $errorReason) {
+                $err .= $errorReason[0] . '<br>';
+            }
+            $err = rtrim($err, '<br>');
+            throw new RestHttpException($err, 400);
         }
     }
 

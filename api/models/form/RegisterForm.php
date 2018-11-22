@@ -44,7 +44,7 @@ class RegisterForm extends Model
             ],
             ['username', 'string', 'min' => 2, 'max' => 32],
             ['password', 'string', 'min' => 6],
-            ['promo_code', 'string', 'length' => 10],
+            ['promo_code', 'integer'],
             [
                 'promo_code',
                 'exist',
