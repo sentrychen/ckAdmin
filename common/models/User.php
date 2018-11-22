@@ -73,6 +73,7 @@ class User extends ActiveRecord
     {
         return [
             [['username', 'password', 'repassword'], 'required', 'on' => ['create']],
+            [['username'], 'required', 'on' => ['update', 'self-update']],
             [['username'], 'unique', 'on' => 'create'],
             [['repassword'], 'compare', 'compareAttribute' => 'password'],
             [['status', 'xima_type', 'xima_status', 'min_limit', 'max_limit', 'dogfall_min_limit', 'dogfall_max_limit', 'pair_min_limit', 'pair_min_limit', 'invite_agent_id', 'invite_user_id', 'created_at', 'updated_at'], 'integer'],
