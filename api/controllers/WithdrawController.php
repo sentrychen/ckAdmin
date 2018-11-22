@@ -13,4 +13,8 @@ use yii\web\Response;
 class WithdrawController extends ActiveController
 {
     public $modelClass = "api\models\Withdraw";
+    public $serializer = [
+        'class' => 'yii\rest\Serializer',
+        'collectionEnvelope' => 'items'
+    ];
 }

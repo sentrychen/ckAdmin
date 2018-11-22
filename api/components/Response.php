@@ -19,10 +19,23 @@ class Response extends \yii\web\Response
     public function beforeSend($event){
         $response = $event->sender;
         if ($response->data !== null) {
-            $response->data = [
-                'success' => $response->isSuccessful,
-                'data' => $response->data,
-            ];
+            $data = $response->data;
+            if ($response->isSuccessful) {
+                $response->data = [
+                    'code' => 0,
+                    'data' => $data,
+                ];
+            } else {
+
+                $response->data = [
+                    'code' => empty($data['code']) ? $response->statusCode : $data['code'],
+                    'data' => $response->statusCode == 500 ? '服务器繁忙，请稍后再试！' : $data['message'],
+                ];
+                if (YII_DEBUG) {
+                    $response->data['debug'] = $data;
+                }
+
+            }
             $response->statusCode = 200;
         }
     }

@@ -13,12 +13,11 @@
  */
 
 use agent\models\User;
+use common\grid\ActionColumn;
 use common\grid\DateColumn;
 use common\grid\GridView;
-use yii\helpers\Html;
 use common\widgets\Bar;
-
-use common\grid\ActionColumn;
+use yii\helpers\Html;
 
 $this->title = '会员';
 $this->params['breadcrumbs'][] = '会员列表';
@@ -46,6 +45,11 @@ $this->params['breadcrumbs'][] = '会员列表';
                         ],
                         [
                             'attribute' => 'username',
+                        ],
+                        [
+                            'attribute' => 'agent_name',
+                            'value' => 'inviteAgent.username',
+                            'label' => '所属代理',
                         ],
                         [
                             'attribute' => 'status',
@@ -85,6 +89,18 @@ $this->params['breadcrumbs'][] = '会员列表';
                         [
                             'class' => ActionColumn::class,
                             'template' => '{update}',
+                            'buttons' => [
+                                'update' => function ($url, $model, $key, $index, $gridView) {
+                                    if ($model->invite_agent_id == yii::$app->getUser()->getId())
+                                        return Html::a('<i class="fa fa-pencil"></i> ' . Yii::t('app', 'Update'), $url, [
+                                            'title' => Yii::t('app', 'Update'),
+                                            'data-pjax' => '0',
+                                            'class' => 'btn btn-primary btn-sm',
+                                        ]);
+                                    else
+                                        return '';
+                                },
+                            ],
                         ],
                     ]
                 ]); ?>

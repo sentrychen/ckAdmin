@@ -20,6 +20,7 @@ return [
             'loginUrl' => null,
             'enableAutoLogin' => true,
             'enableSession' => false,
+
         ],
         'log' => [//此项具体详细配置，请访问http://wiki.feehi.com/index.php?title=Yii2_log
             'traceLevel' => YII_DEBUG ? 3 : 0,
@@ -41,14 +42,20 @@ return [
             'rules' => [
                 '' => 'site/index',
                 'login' => 'site/login',
+                'logout' => 'site/logout',
                 'register' => 'site/register',
-                'agent/register' => 'agent/register',
+                '<controller:\w+>/<id:\d+>' => '<controller>/<view>',
+                '<controller:\w+>/<action:\w+>/<id:\d+>' => '<controller>/<action>',
+                '<controller:\w+>/<action:\w+>' => '<controller>/<action>',
+                'message/unread'=>'message/unread',
+                'message/list'=>'message/list',
                 [
                     'class' => yii\rest\UrlRule::className(),
                     'controller' => ['user', 'withdraw'],
                 ],
             ],
         ],
+
         'request' => [
             'parsers' => [
                 'application/json' => 'yii\web\JsonParser',

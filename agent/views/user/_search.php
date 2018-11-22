@@ -7,12 +7,9 @@
  */
 
 
+use agent\models\Agent;
 use common\models\User;
-use yii\helpers\ArrayHelper;
-use yii\helpers\Html;
 use common\widgets\SearchForm;
-use yii\helpers\Url;
-use common\libs\Constants;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\search\UserSearch */
@@ -22,6 +19,7 @@ use common\libs\Constants;
     <?php $form = SearchForm::begin([]); ?>
 
     <?= $form->field($model, 'username')->textInput() ?>
+    <?= $form->field($model, 'invite_agent_id')->label('所属代理')->dropDownList(Agent::getAgentTreeList(null, yii::$app->getUser()->getId(), null, true)) ?>
     <?= $form->field($model, 'status')->dropDownList(User::getStatuses()) ?>
     <?= $form->field($model, 'available_amount')->label('可用余额')->numRange(['style' => 'width:100px;']) ?>
     <?= $form->field($model, 'created_at')->dateRange() ?>

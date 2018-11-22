@@ -10,6 +10,7 @@ namespace agent\models\search;
 
 use agent\behaviors\TimeSearchBehavior;
 use agent\components\search\SearchEvent;
+use agent\models\Agent;
 use agent\models\BetList;
 use agent\models\UserAccountRecord;
 use yii;
@@ -22,6 +23,7 @@ class BetListSearch extends BetList
 {
 
     public $winloss;
+    public $agent_id;
 
     public static function getWinLossList()
     {
@@ -52,7 +54,7 @@ class BetListSearch extends BetList
     public function rules()
     {
         return [
-            [['user_id', 'platform_id', 'game_type', 'username', 'winloss', 'bet_at'], 'safe'],
+            [['user_id', 'agent_id', 'platform_id', 'game_type', 'username', 'winloss', 'bet_at'], 'safe'],
         ];
     }
 
@@ -63,11 +65,12 @@ class BetListSearch extends BetList
 
     /**
      * @param $params
+     * @param null $agent_id
      * @return ActiveDataProvider
      */
-    public function search($params)
+    public function search($params, $agent_id = null)
     {
-        $query = self::find()->joinWith('user u')->where(['u.invite_agent_id' => yii::$app->getUser()->getId()]);
+        $query = self::find()->joinWith('user u');
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'sort' => [
@@ -78,17 +81,28 @@ class BetListSearch extends BetList
         ]);
         $sort = $dataProvider->getSort();
 
-
         $this->load($params);
         if (!$this->validate()) {
             return $dataProvider;
         }
+
+        if (empty($this->agent_id) && !empty($agent_id))
+            $this->agent_id = $agent_id;
+
         $query->andFilterWhere(['user_id' => $this->user_id])
-            ->andFilterWhere(['like', 'username', $this->username])
+            ->andFilterWhere(['like', 'u.username', $this->username])
             ->andFilterWhere(['game_type' => $this->game_type])
             ->andFilterWhere(['platform_id' => $this->platform_id]);
         if (!empty($this->winloss))
             $query->andFilterWhere([$this->winloss, 'profit', 0]);
+        if (empty($this->agent_id)) {
+            $agent_ids = yii\helpers\ArrayHelper::getColumn(Agent::getAgentTree(null, yii::$app->getUser()->getId(), null, true), 'id');
+            $query->andFilterWhere(['invite_agent_id' => $agent_ids]);
+        } else {
+            $query->andFilterWhere(['invite_agent_id' => $this->agent_id]);
+        }
+
+
 
         $this->trigger(SearchEvent::BEFORE_SEARCH, new SearchEvent(['query' => $query]));
         return $dataProvider;

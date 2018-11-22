@@ -23,7 +23,7 @@ class ActiveController extends \yii\rest\ActiveController
             'class' => QueryParamAuth::class,
             'tokenParam' => 'token',
             'optional' => [
-                'login','register'
+                'login', 'logout', 'register'
             ],
         ];
 

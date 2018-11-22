@@ -11,6 +11,7 @@ use common\widgets\SearchForm;
 
 <div class="toolbar-searchs">
     <?php $form = SearchForm::begin([]); ?>
+    <?= $form->field($model, 'agent_id')->label('代理')->dropDownList(Agent::getAgentTreeList(null, yii::$app->getUser()->getId(), null, true)) ?>
     <?= $form->field($model, 'name')->textInput() ?>
     <?= $form->field($model, 'switch')->label('收支')->dropDownList(AgentAccountRecord::getSwitchStatus()) ?>
     <?= $form->field($model, 'created_at')->dateRange() ?>

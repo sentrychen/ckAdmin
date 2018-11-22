@@ -10,6 +10,7 @@ namespace agent\models\search;
 
 use agent\behaviors\TimeSearchBehavior;
 use agent\components\search\SearchEvent;
+use agent\models\Agent;
 use agent\models\UserLoginLog;
 use Yii;
 use yii\base\Model;
@@ -18,6 +19,8 @@ use yii\data\ActiveDataProvider;
 class LoginLogSearch extends UserLoginLog
 {
 
+    public $agent_id;
+    public $username;
 
     public function init()
     {
@@ -37,7 +40,7 @@ class LoginLogSearch extends UserLoginLog
     public function rules()
     {
         return [
-            [['client_type', 'created_at'], 'safe'],
+            [['username', 'agent_id', 'client_type', 'created_at'], 'safe'],
         ];
     }
 
@@ -51,9 +54,9 @@ class LoginLogSearch extends UserLoginLog
      * @param int $userid
      * @return ActiveDataProvider
      */
-    public function search($params, $userid = null)
+    public function search($params, $agent_id = null)
     {
-        $query = self::find()->joinWith('user u')->where(['u.invite_agent_id' => yii::$app->getUser()->getId()]);
+        $query = self::find()->joinWith('user u');
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'sort' => [
@@ -62,17 +65,23 @@ class LoginLogSearch extends UserLoginLog
                 ],
             ]
         ]);
-        $sort = $dataProvider->getSort();
-
 
         $this->load($params);
-        $this->user_id = $userid;
+
         if (!$this->validate()) {
             return $dataProvider;
         }
+        if (empty($this->agent_id) && !empty($agent_id))
+            $this->agent_id = $agent_id;
         $query->andFilterWhere(['user_id' => $this->user_id])
+            ->andFilterWhere(['like', 'u.username', $this->username])
             ->andFilterWhere(['client_type' => $this->client_type]);
-
+        if (empty($this->agent_id)) {
+            $agent_ids = yii\helpers\ArrayHelper::getColumn(Agent::getAgentTree(null, yii::$app->getUser()->getId(), null, true), 'id');
+            $query->andFilterWhere(['u.invite_agent_id' => $agent_ids]);
+        } else {
+            $query->andFilterWhere(['u.invite_agent_id' => $this->agent_id]);
+        }
         $this->trigger(SearchEvent::BEFORE_SEARCH, new SearchEvent(['query' => $query]));
         return $dataProvider;
     }

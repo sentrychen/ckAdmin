@@ -22,6 +22,7 @@ class FamilyTree
     private $_parentSign = "parent_id";
 
 
+
     /**
      * FamilyTree constructor.
      *
@@ -68,6 +69,7 @@ class FamilyTree
         return $this;
     }
 
+
     /**
      * 获取某节点的所有子节点
      *
@@ -90,11 +92,23 @@ class FamilyTree
      *
      * @param $id
      * @param int $level
+     * @param bool $self
      * @return array
      */
-    public function getDescendants($id, $level = 1)
+    public function getDescendants($id, $level = 1, $self = false)
     {
         $nodes = [];
+        if ($self) {
+            foreach ($this->_tree as $key => $value) {
+                if ($value['id'] == $id) {
+                    $value['level'] = $level;
+                    $nodes[] = $value;
+                    $level++;
+                    break;
+                }
+            }
+        }
+
         foreach ($this->_tree as $key => $value) {
             if ($value[$this->_parentSign] == $id) {
                 $value['level'] = $level;

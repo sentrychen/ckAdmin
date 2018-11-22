@@ -18,6 +18,7 @@ use common\grid\GridView;
 use agent\models\Agent;
 use common\widgets\Bar;
 use common\grid\ActionColumn;
+use yii\helpers\Html;
 
 $this->title = '代理列表';
 $this->params['breadcrumbs'][] = '代理列表';
@@ -92,6 +93,18 @@ $this->params['breadcrumbs'][] = '代理列表';
                             'class' => ActionColumn::class,
                             'width' => '135',
                             'template' => '{view-layer} {update}',
+                            'buttons' => [
+                                'update' => function ($url, $model, $key, $index, $gridView) {
+                                    if ($model->parent_id == yii::$app->getUser()->getId())
+                                        return Html::a('<i class="fa fa-pencil"></i> ' . Yii::t('app', 'Update'), $url, [
+                                            'title' => Yii::t('app', 'Update'),
+                                            'data-pjax' => '0',
+                                            'class' => 'btn btn-primary btn-sm',
+                                        ]);
+                                    else
+                                        return '';
+                                },
+                            ],
                         ],
                     ]
                 ]); ?>
