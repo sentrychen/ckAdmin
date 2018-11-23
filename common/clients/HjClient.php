@@ -32,6 +32,8 @@ class HjClient implements ClientInterface
     public function register($username, $password, $user)
     {
 
+        $this->setError(false);
+
         $url = "{$this->apiHost}/regedit?sign={$this->sign}&username={$username}&password={$password}&ratio_switch={$user->xima_type}&ratio={$user->xima_rate}&ratio_setting={$user->xima_status}";
 
         $res = Util::request($url);
@@ -53,6 +55,7 @@ class HjClient implements ClientInterface
     public function findUser($username)
     {
 
+        $this->setError(false);
         $url = "{$this->apiHost}/finduser?sign={$this->sign}&username={$username}";
         return $this->request($url);
     }
@@ -67,7 +70,7 @@ class HjClient implements ClientInterface
      */
     public function editPwd($username, $newpwd, $oldpwd)
     {
-
+        $this->setError(false);
         $url = "{$this->apiHost}/editpwd?sign={$this->sign}&username={$username}&newpwd={$newpwd}&oldpwd={$oldpwd}";
         return $this->request($url);
     }
@@ -81,6 +84,7 @@ class HjClient implements ClientInterface
      */
     public function addAmount($amount, $user)
     {
+        $this->setError(false);
         $amount = (float)$amount;
         $url = "{$this->apiHost}/addintegral?sign={$this->sign}&username={$user->game_account}&password={$user->game_password}&integral={$amount}";
 
@@ -103,6 +107,7 @@ class HjClient implements ClientInterface
      */
     public function reduceAmount($amount, $user)
     {
+        $this->setError(false);
         $amount = (float)$amount;
         $url = "{$this->apiHost}/reduceintegral?sign={$this->sign}&username={$user->game_account}&password={$user->game_password}&integral={$amount}";
         $res = Util::request($url);
@@ -124,6 +129,7 @@ class HjClient implements ClientInterface
     public function queryAmount($user)
     {
 
+        $this->setError(false);
         $url = "{$this->apiHost}/query?sign={$this->sign}&username={$user->game_account}";
         $res = Util::request($url);
         if ($res) {
@@ -144,6 +150,7 @@ class HjClient implements ClientInterface
      */
     public function betList($begindate, $enddate)
     {
+        $this->setError(false);
         $begin = strtotime($begindate);
         $end = strtotime($enddate);
         $days = ceil(($end - $begin) / 86400);
@@ -162,6 +169,7 @@ class HjClient implements ClientInterface
      */
     public function queryXibu($client_id)
     {
+        $this->setError(false);
         $url = "{$this->apiHost}/query_xibu?sign={$this->sign}&client_id={$client_id}";
         return $this->request($url);
     }
@@ -174,6 +182,7 @@ class HjClient implements ClientInterface
      */
     public function newPassword($username, $newpwd)
     {
+        $this->setError(false);
         if ($username == "") {
             return $this->_resMsg('用户名不能为空！');
         }
@@ -193,6 +202,7 @@ class HjClient implements ClientInterface
      */
     public function login($user, $redirectUrl = null)
     {
+        $this->setError(false);
         $password = md5(md5($user->game_password));
 
         return $this->loginHost . '?loginUrl=' . urlencode($redirectUrl) . '&username=' . $user->game_account . '&password=' . $password . '&sign=' . $this->sign;

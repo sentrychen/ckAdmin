@@ -34,17 +34,16 @@ class PlatformService extends PlatformUser
     {
 
         //注册用户
-        if (!$this->register()) return false;
+        $this->register();
 
         //开始上分
-        if (!$this->addAmount()) return false;
+        $this->addAmount();
 
         //登陆
-        if (!$loginData = $this->getClient()->login($this, $redirectUrl)) {
-            if ($this->getClient()->getError())
-                $this->addError('user_id', $this->getClient()->getError());
-            return false;
-        }
+        $loginData = $this->getClient()->login($this, $redirectUrl);
+
+        if ($this->getClient()->getError())
+            throw new InvalidCallException($this->getClient()->getError());
 
         $this->last_login_at = time();
         $this->last_login_ip = yii::$app->request->getUserIP();
@@ -57,13 +56,15 @@ class PlatformService extends PlatformUser
         if (!$this->id) {
             $user = $this->user;
             if (!$user) {
-                return false;
+                throw new InvalidArgumentException('无效的用户ID');
             }
             $password = yii::$app->security->generateRandomString(8);
             $loop = 0;
             do {
                 if ($loop > 5) {
-                    return false;
+                    if ($this->getClient()->getError())
+                        throw new InvalidCallException($this->getClient()->getError());
+                    throw new InvalidCallException('账号注册失败！');
                 }
                 //生成用户名
                 $username = $user->username . ($loop ? rand(100, 999) : '');
@@ -72,9 +73,8 @@ class PlatformService extends PlatformUser
                     $this->game_password = $password;
                     $this->first_login_ip = yii::$app->request->getUserIP();
                     $this->save(false);
+                    $this->getClient()->setError(false);
                     return true;
-                } else {
-                    $this->addError('user_id', $this->getClient()->getError());
                 }
                 $loop++;
             } while ($loop);
@@ -117,16 +117,16 @@ class PlatformService extends PlatformUser
             $this->available_amount += $amount;
             if (!$this->save(false))
                 throw new dbException('更新用户平台账户失败！');
-            if (!$this->getClient()->addAmount($amount, $this)) {
-                throw new dbException($this->getClient()->getError() || '调用上分接口失败！');
+            if (false === $this->getClient()->addAmount($amount, $this)) {
+                throw new InvalidCallException($this->getClient()->getError());
             }
             $tr->commit();
         } catch (\Exception $e) {
             Yii::error($e->getMessage());
-            $this->addError('user_id', $e->getMessage());
+            // $this->addError('user_id', $e->getMessage());
             //回滚
             $tr->rollBack();
-            return false;
+            throw new InvalidCallException($e->getMessage());
         }
         return true;
     }
