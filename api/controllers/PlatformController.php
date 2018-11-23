@@ -56,7 +56,16 @@ class PlatformController extends ActiveController
 
     public function actionAmount()
     {
+        $gameType = yii::$app->request->get('game_type', null);
 
+        $services = PlatformService::find()->joinWith('platform')
+            ->where(['user_id' => yii::$app->getUser()->getId(), 'status' => Platform::STATUS_ENABLED])
+            ->andFilterWhere(['game_type' => $gameType])->all();
+        $amount = 0;
+        foreach ($services as $service) {
+            $amount += $service->getAmount();
+        }
+        return $amount;
     }
 
 }

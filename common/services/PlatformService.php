@@ -141,17 +141,42 @@ class PlatformService extends PlatformUser
     /**
      * 回收分数
      */
-    public function recycleAmount()
+    public function getAmount()
     {
-        return false;
+        $amount = $this->queryAmount();
+        $reduce = 0;
+        if ($amount > 0) {
+            $reduce = $this->getClient()->reduceAmount($amount, $this);
+            if ($reduce > 0) {
+                $tr = Yii::$app->db->beginTransaction();
+                try {
+                    $account = $this->user->account;
+                    $account->available_amount += $reduce;
+                    if (!$account->save(false))
+                        throw new dbException('更新用户账户失败！');
+                    $this->available_amount = 0;
+                    if (!$this->save(false))
+                        throw new dbException('更新用户平台账户失败！');
+                    $tr->commit();
+
+                } catch (\Exception $e) {
+                    Yii::error($e->getMessage());
+                    @$this->getClient()->addAmount($reduce, $this);
+                    $tr->rollBack();
+                }
+            }
+        }
+
+        return $reduce;
+
     }
 
     /**
-     * 回收分数
+     * 查询分数
      */
     public function queryAmount()
     {
-        return false;
+        return $this->getClient()->queryAmount($this);
     }
 
 }

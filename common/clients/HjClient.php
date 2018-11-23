@@ -114,11 +114,11 @@ class HjClient implements ClientInterface
         $res = Util::request($url);
         if ($res) {
             $res = Json::decode($res);
-            if ($res['status'] == 1) return true;
+            if ($res['status'] == 1) return $amount;
             $this->setError($res['err_msg']);
         } else
             $this->setError('下分接口调用失败');
-        return false;
+        return 0;
     }
 
     /**
@@ -139,7 +139,7 @@ class HjClient implements ClientInterface
             $this->setError($res['err_msg']);
         } else
             $this->setError('查询分数接口调用失败');
-        return false;
+        return 0;
     }
 
     /**
