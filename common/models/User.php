@@ -72,7 +72,7 @@ class User extends ActiveRecord
     public function rules()
     {
         return [
-            [['username', 'password', 'repassword'], 'required', 'on' => ['create']],
+            [['username', 'password'], 'required', 'on' => ['create']],
             [['username'], 'required', 'on' => ['update', 'self-update']],
             [['username'], 'unique', 'on' => 'create'],
             [['repassword'], 'compare', 'compareAttribute' => 'password'],
@@ -154,7 +154,8 @@ class User extends ActiveRecord
             'created_at' => '注册日期',
             'updated_at' => '最后修改时间',
             'password' => '密码',
-            'repassword' => '确认密码'
+            'repassword' => '确认密码',
+            'old_password' => '旧密码'
         ];
     }
 

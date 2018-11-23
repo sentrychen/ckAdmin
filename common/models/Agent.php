@@ -75,7 +75,7 @@ class Agent extends ActiveRecord
     public function rules()
     {
         return [
-            [['username', 'password', 'repassword'], 'required', 'on' => ['create']],
+            [['username', 'password'], 'required', 'on' => ['create']],
             [['username'], 'unique', 'on' => 'create'],
             [['repassword'], 'compare', 'compareAttribute' => 'password'],
             [['parent_id', 'top_id', 'sub_permission', 'agent_level', 'xima_status', 'xima_type', 'default_player_level', 'rebate_id', 'reg_time', 'status', 'created_at', 'updated_at'], 'integer'],
@@ -356,10 +356,11 @@ class Agent extends ActiveRecord
      * @param bool $self
      * @return array
      */
-    public static function getAgentTreeList($status = null, $parent_id = 0, $level = 1, $self = false)
+    public static function getAgentTreeList($status = null, $parent_id = 0, $level = null, $self = false)
     {
         $categories = self::getAgentTree($status, $parent_id, $level, $self);
 
+        //var_dump($categories);
         $data = [];
 
         $sign ='';
