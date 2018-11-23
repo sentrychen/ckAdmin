@@ -91,7 +91,8 @@ class HjClient implements ClientInterface
         $res = Util::request($url);
         if ($res) {
             $res = Json::decode($res);
-            if ($res['status'] == 1) return true;
+            if ($res['status'] == 1) return $amount;
+            if ($res['status'] == 1001) return 0;
             $this->setError($res['err_msg']);
         } else
             $this->setError('上分接口调用失败');

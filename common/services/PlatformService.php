@@ -102,25 +102,32 @@ class PlatformService extends PlatformUser
     /**
      * 上分
      */
-    public function addAmount()
+    public function addAmount($amount = 0)
     {
 
         $account = $this->user->account;
-        $amount = (int)$account->available_amount;
+        if ($amount <= 0)
+            $amount = (int)$account->available_amount;
         if ($amount <= 0) return true;
 
         $tr = Yii::$app->db->beginTransaction();
         try {
+
             $account->available_amount = 0;
             if (!$account->save(false))
                 throw new dbException('更新用户账户失败！');
             $this->available_amount += $amount;
             if (!$this->save(false))
                 throw new dbException('更新用户平台账户失败！');
-            if (false === $this->getClient()->addAmount($amount, $this)) {
+            $addAmount = $this->getClient()->addAmount($amount, $this);
+            if (false !== $addAmount) {
                 throw new InvalidCallException($this->getClient()->getError());
             }
-            $tr->commit();
+            if ($addAmount != $amount) {
+                $tr->rollBack();
+                return true;
+            } else
+                $tr->commit();
         } catch (\Exception $e) {
             Yii::error($e->getMessage());
             // $this->addError('user_id', $e->getMessage());
