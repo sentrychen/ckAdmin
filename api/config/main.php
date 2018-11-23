@@ -43,7 +43,9 @@ return [
                 'login' => 'site/login',
                 'logout' => 'site/logout',
                 'register' => 'site/register',
-                'agent/register' => 'agent/register',
+                '<controller:\w+>/<id:\d+>' => '<controller>/<view>',
+                '<controller:\w+>/<action:\w+>/<id:\d+>' => '<controller>/<action>',
+                '<controller:\w+>/<action:\w+>' => '<controller>/<action>',
                 [
                     'class' => yii\rest\UrlRule::className(),
                     'controller' => ['user', 'withdraw'],

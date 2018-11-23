@@ -186,4 +186,39 @@ class Util
         }
         return $thumbFullName;
     }
+
+    /**
+     * @param $url :请求路径
+     * @param null $post :如果不为空则提交post请求
+     * @param bool $header :请求头
+     * @param int $timeout :超时时间
+     * @return mixed
+     */
+    public static function request($url, $post = null, $header = false, $timeout = 30)
+    {
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);          //单位 秒，也可以使用
+        curl_setopt($ch, CURLOPT_HEADER, $header);
+        curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.85 Safari/537.36');
+        curl_setopt($ch, CURLOPT_COOKIEFILE, dirname(__FILE__) . "/tmp.cookie");
+        curl_setopt($ch, CURLOPT_COOKIEJAR, dirname(__FILE__) . "/tmp.cookie");
+        if (0 === strpos($url, 'https')) {
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+        }
+
+        if ($post) {
+            curl_setopt($ch, CURLOPT_POST, 1);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
+        }
+
+        $result = curl_exec($ch);
+
+        curl_close($ch);
+        return $result;
+    }
+
 }

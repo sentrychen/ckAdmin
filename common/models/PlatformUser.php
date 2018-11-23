@@ -3,6 +3,7 @@
 namespace common\models;
 
 use Yii;
+use yii\helpers\Json;
 
 /**
  * This is the model class for table "{{%platform_user}}".
@@ -13,6 +14,7 @@ use Yii;
  * @property string $username 用户名称
  * @property string $game_account 游戏登陆账号
  * @property string $game_password 游戏登陆密码
+ * @property string $auth_data 认证数据
  * @property int $user_status 用户状态 1 正常 2 冻结  3 锁定 4 注销
  * @property string $first_login_ip 首次登陆IP
  * @property int $last_login_at 最后登陆事件
@@ -24,6 +26,8 @@ use Yii;
  */
 class PlatformUser extends \yii\db\ActiveRecord
 {
+    private $_password = "mgGZbPu6GQamAhuXJlMa5kxRR3lElgAT_1542177649";
+
     /**
      * {@inheritdoc}
      */
@@ -58,6 +62,7 @@ class PlatformUser extends \yii\db\ActiveRecord
             'username' => '用户名称',
             'game_account' => '游戏登陆账号',
             'game_password' => '游戏登陆密码',
+            'auth_data' => '认证数据',
             'user_status' => '用户状态',
             'first_login_ip' => '首次登陆IP',
             'last_login_at' => '最后登陆时间',
@@ -75,6 +80,35 @@ class PlatformUser extends \yii\db\ActiveRecord
     public function getPlatform()
     {
         return $this->hasOne(Platform::class, ['id' => 'platform_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUser()
+    {
+        return $this->hasOne(User::class, ['id' => 'user_id']);
+    }
+
+    /**
+     * 加密 auth_data
+     * @param $data
+     * @return string
+     */
+    public function encodeAuthData($data)
+    {
+        $this->auth_data = Yii::$app->security->encryptByPassword(Json::encode($data), $this->_password);
+        return $this->auth_data;
+    }
+
+    /**
+     * 解密 auth_data
+     */
+    public function decodeAuthData()
+    {
+        if (!$this->auth_data) return null;
+        $data = Yii::$app->security->decryptByPassword($this->auth_data, $this->_password);
+        return Json::decode($data);
     }
 
 }

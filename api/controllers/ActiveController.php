@@ -22,9 +22,6 @@ class ActiveController extends \yii\rest\ActiveController
         $behaviors['authenticator'] = [
             'class' => QueryParamAuth::class,
             'tokenParam' => 'token',
-            'optional' => [
-                'login', 'logout', 'register'
-            ],
         ];
 
         $behaviors['corsFilter'] = [

@@ -76,6 +76,11 @@ class Platform extends \yii\db\ActiveRecord
         ];
     }
 
+    public static function findByCode($code)
+    {
+        return static::findOne(['code' => $code, 'status' => static::STATUS_ENABLED]);
+    }
+
     public static function getStatuses($key = null)
     {
         $status = [
