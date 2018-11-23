@@ -17,7 +17,6 @@ class UserController extends ActiveController
 {
     public $modelClass = "api\models\User";
 
-
     public function actions()
     {
         return [];
@@ -40,7 +39,7 @@ class UserController extends ActiveController
     {
         $user = Yii::$app->getUser()->getIdentity();
         $user->setAttributes(Yii::$app->request->post());
-        if ($user->save()){
+        if ($user->save()) {
             return $user->toArray();
         }
         $errorReasons = $user->getErrors();
@@ -67,7 +66,7 @@ class UserController extends ActiveController
         $password = $request->post('password');
         $user->password_hash = Yii::$app->security->generatePasswordHash($password);;
 
-        if ($user->save()){
+        if ($user->save()) {
             return $user->toArray();
         }
         $errorReasons = $user->getErrors();

@@ -8,5 +8,9 @@ return [
     ],
     'admin' => [
         'url' => 'http://admin.cms.feehi.com',
-    ]
+    ],
+    'clients' => [
+        'HJ' => ['class' => common\clients\HjClient::class],
+        'JXB' => ['class' => common\clients\JxbClient::class],
+    ],
 ];

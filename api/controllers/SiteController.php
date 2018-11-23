@@ -18,6 +18,13 @@ class SiteController extends ActiveController
 
     public $modelClass = "api\models\User";
 
+    public function behaviors()
+    {
+        $behaviors = parent::behaviors();
+        unset($behaviors['authenticator']);
+        return $behaviors;
+    }
+
     public function actions(){
         return [];
     }

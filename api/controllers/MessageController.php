@@ -2,27 +2,33 @@
 
 namespace api\controllers;
 
+use api\models\Message;
 use api\models\MessageFlag;
 use common\libs\Constants;
 use Yii;
-use api\models\Message;
-use yii\web\BadRequestHttpException;
-use yii\web\Response;
-use yii\web\UnprocessableEntityHttpException;
+
 /**
  * MessageController implements the CRUD actions for Message model.
  */
 class MessageController extends ActiveController
 {
     public $modelClass = "api\models\User";
+
+    public $serializer = [
+        'class' => 'yii\rest\Serializer',
+        'collectionEnvelope' => 'items'
+    ];
+
     public function actions()
     {
         return [];
     }
+
     /*
      *新消息数量
      */
-    public function actionUnread(){
+    public function actionUnread()
+    {
         return MessageFlag::userNoreadCount(Yii::$app->getUser()->getId());
     }
 
@@ -47,12 +53,18 @@ class MessageController extends ActiveController
         //$user = Yii::$app->getUser()->getIdentity();
         $request = Yii::$app->request;
         $id = $request->get('id');
-        $result = Message::find()
-            ->joinWith('messageFlag')
-            ->where([Message::tableName().'.id' => $id])
-            ->all();
+        $result = Message::findOne($id);
+        $messageFlag = $result->messageFlag;
+        if (!$messageFlag)
+            $messageFlag = new MessageFlag(['message_id' => $id, 'user_id' => yii::$app->getUser()->getId(), 'user_type' => Message::OBJ_MEMBER]);
+
+        $messageFlag->is_read = 1;
+        $messageFlag->read_at = time();
+        $messageFlag->save(false);
+
         return $result;
     }
+
     /*
      * 删除用户消息
      * @return bool
@@ -62,7 +74,15 @@ class MessageController extends ActiveController
         $user = Yii::$app->getUser()->getIdentity();
         $request = Yii::$app->request;
         $id = $request->get('id');
-        $res = MessageFlag::deleteUserMessage($id);
-        return $res;
+        $result = Message::findOne($id);
+        $messageFlag = $result->messageFlag;
+        if (!$messageFlag)
+            $messageFlag = new MessageFlag(['message_id' => $id, 'user_id' => yii::$app->getUser()->getId(), 'user_type' => Message::OBJ_MEMBER]);
+
+        $messageFlag->is_deleted = 1;
+        $messageFlag->deleted_at = time();
+        $messageFlag->save(false);
+
+        return $result;
     }
 }
