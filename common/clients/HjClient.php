@@ -39,8 +39,8 @@ class HjClient implements ClientInterface
             $res = Json::decode($res);
             if ($res['status'] == 1) return true;
             $this->setError($res['err_msg']);
-        }
-        $this->setError('注册接口调用失败');
+        } else
+            $this->setError('注册接口调用失败');
         return false;
     }
 
@@ -89,8 +89,8 @@ class HjClient implements ClientInterface
             $res = Json::decode($res);
             if ($res['status'] == 1) return true;
             $this->setError($res['err_msg']);
-        }
-        $this->setError('上分接口调用失败');
+        } else
+            $this->setError('上分接口调用失败');
         return false;
     }
 
@@ -110,8 +110,8 @@ class HjClient implements ClientInterface
             $res = Json::decode($res);
             if ($res['status'] == 1) return true;
             $this->setError($res['err_msg']);
-        }
-        $this->setError('下分接口调用失败');
+        } else
+            $this->setError('下分接口调用失败');
         return false;
     }
 
@@ -130,8 +130,8 @@ class HjClient implements ClientInterface
             $res = Json::decode($res);
             if ($res['status'] == 1) return $res['integral'];
             $this->setError($res['err_msg']);
-        }
-        $this->setError('查询分数接口调用失败');
+        } else
+            $this->setError('查询分数接口调用失败');
         return false;
     }
 
