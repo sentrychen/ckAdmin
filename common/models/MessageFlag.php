@@ -21,6 +21,8 @@ use yii\behaviors\TimestampBehavior;
  */
 class MessageFlag extends \yii\db\ActiveRecord
 {
+    const UN_READ = 0;
+    const ALREADY_READ = 1;
     /**
      * {@inheritdoc}
      */

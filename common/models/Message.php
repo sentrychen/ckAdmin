@@ -154,5 +154,4 @@ class Message extends \yii\db\ActiveRecord
         return $items[$key] ?? $items;
     }
 
-
 }
