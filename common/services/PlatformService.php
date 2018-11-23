@@ -9,7 +9,7 @@
 namespace common\services;
 
 
-use common\clients\ClientInterface;
+use common\clients\ClientAbstract;
 use common\models\PlatformUser;
 use yii;
 use yii\base\InvalidArgumentException;
@@ -21,7 +21,7 @@ class PlatformService extends PlatformUser
 {
 
     /**
-     * @var $client \common\clients\ClientInterface
+     * @var $client \common\clients\ClientAbstract
      */
     public $client;
 
@@ -86,14 +86,14 @@ class PlatformService extends PlatformUser
 
     public function getClient()
     {
-        if (!$this->client instanceof ClientInterface) {
+        if (!$this->client instanceof ClientAbstract) {
             if (!$platform = $this->platform)
                 throw new InvalidArgumentException('无效的平台ID');
             $clients = yii::$app->params['clients'];
             if (!isset($clients[$platform->code]))
                 throw new InvalidConfigException('客户端对象未配置');
             $this->client = yii::createObject($clients[$platform->code]);
-            if (!$this->client instanceof ClientInterface)
+            if (!$this->client instanceof ClientAbstract)
                 throw new InvalidCallException('创建客户端对象失败');
         }
         return $this->client;

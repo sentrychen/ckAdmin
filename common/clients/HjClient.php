@@ -8,18 +8,14 @@
 
 namespace common\clients;
 
-
-use common\helpers\Util;
 use yii\helpers\Json;
 
-class HjClient implements ClientInterface
+class HjClient extends ClientAbstract
 {
 
     protected $sign = "35274a28abbd18857d523912603758d0";
     protected $apiHost = "http://api.hj8828.com/api";
     protected $loginHost = "http://appapp.gzlwcg.com/login-third.html";
-
-    protected $_error;
 
     /**
      * 用户注册
@@ -36,7 +32,7 @@ class HjClient implements ClientInterface
 
         $url = "{$this->apiHost}/regedit?sign={$this->sign}&username={$username}&password={$password}&ratio_switch={$user->xima_type}&ratio={$user->xima_rate}&ratio_setting={$user->xima_status}";
 
-        $res = Util::request($url);
+        $res = static::request($url);
         if ($res) {
             $res = Json::decode($res);
             if ($res['status'] == 1) return true;
@@ -88,7 +84,7 @@ class HjClient implements ClientInterface
         $amount = (float)$amount;
         $url = "{$this->apiHost}/addintegral?sign={$this->sign}&username={$user->game_account}&password={$user->game_password}&integral={$amount}";
 
-        $res = Util::request($url);
+        $res = static::request($url);
         if ($res) {
             $res = Json::decode($res);
             if ($res['status'] == 1) return $amount;
@@ -111,7 +107,7 @@ class HjClient implements ClientInterface
         $this->setError(false);
         $amount = (float)$amount;
         $url = "{$this->apiHost}/reduceintegral?sign={$this->sign}&username={$user->game_account}&password={$user->game_password}&integral={$amount}";
-        $res = Util::request($url);
+        $res = static::request($url);
         if ($res) {
             $res = Json::decode($res);
             if ($res['status'] == 1) return $amount;
@@ -132,7 +128,7 @@ class HjClient implements ClientInterface
 
         $this->setError(false);
         $url = "{$this->apiHost}/query?sign={$this->sign}&username={$user->game_account}";
-        $res = Util::request($url);
+        $res = static::request($url);
         if ($res) {
             $res = Json::decode($res);
             if ($res['status'] == 1) return $res['integral'];
@@ -209,23 +205,4 @@ class HjClient implements ClientInterface
         return $this->loginHost . '?loginUrl=' . urlencode($redirectUrl) . '&username=' . $user->game_account . '&password=' . $password . '&sign=' . $this->sign;
     }
 
-    /**
-     * 获取错误
-     * @return mixed
-     */
-    public function getError()
-    {
-        return $this->_error;
-    }
-
-    /**
-     * 设置错误
-     * @param $error
-     * @return $this
-     */
-    public function setError($error)
-    {
-        $this->_error = $error;
-        return $this;
-    }
 }

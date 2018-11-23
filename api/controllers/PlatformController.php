@@ -22,7 +22,6 @@ class PlatformController extends ActiveController
         return [];
     }
 
-
     public function actionLogininfo()
     {
         $gameType = yii::$app->request->get('game_type');
