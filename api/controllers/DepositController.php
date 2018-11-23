@@ -1,15 +1,16 @@
 <?php
 /**
- * Author: lf
- * Blog: https://blog.feehi.com
- * Email: job@feehi.com
- * Created at: 2017-08-30 18:10
+ * Created by PhpStorm.
+ * User: Administrator
+ * Date: 2018/11/23
+ * Time: 11:08
  */
 namespace api\controllers;
 use api\components\RestHttpException;
+use api\models\UserDeposit;
+use Yii;
 
-
-class UserController extends ActiveController
+class DepositController extends ActiveController
 {
     public $modelClass = "api\models\User";
 
@@ -17,34 +18,32 @@ class UserController extends ActiveController
     {
         return [];
     }
+
     public function actionIndex()
     {
         return [
             "onetop api service"
         ];
     }
-    /*
-     * 查询用户信息
-     * @return obj
-     */
-    public function actionInfo()
-    {
-        return Yii::$app->getUser()->getIdentity();
-    }
 
     /*
-     * 修改个人资料
+     * 存款记录
      * @return obj
      */
-    public function actionEdit()
+    public function actionList()
     {
         $user = Yii::$app->getUser()->getIdentity();
-        $user->setAttributes(Yii::$app->request->post());
-        if ($user->save()) {
-            return $user->toArray();
+        $deposit = new UserDeposit();
+        $result = $deposit::find()
+            ->where(['user_id' => $user->getId()])
+            ->orderBy('id')
+            ->all();
+        if($result)
+        {
+            return $result;
         }
-        $errorReasons = $user->getErrors();
 
+        $errorReasons = $result->getErrors();
         if (empty($errorReasons)) {
             throw new RestHttpException();
         } else {
@@ -58,19 +57,19 @@ class UserController extends ActiveController
     }
 
     /*
-     * 修改用户密码
+     * 存款申请
+     * @return obj
      */
-    public function actionPassword()
+    public function actionApply()
     {
         $user = Yii::$app->getUser()->getIdentity();
-        $request = Yii::$app->request;
-        $password = $request->post('password');
-        $user->password_hash = Yii::$app->security->generatePasswordHash($password);;
-
-        if ($user->save()) {
-            return $user->toArray();
+        $deposit = new UserDeposit();
+        $deposit->user_id = $user->getId();
+        $deposit->setAttributes(Yii::$app->request->post());
+        if ($deposit->save()) {
+            return $deposit->toArray();
         }
-        $errorReasons = $user->getErrors();
+        $errorReasons = $deposit->getErrors();
 
         if (empty($errorReasons)) {
             throw new RestHttpException();
@@ -83,4 +82,5 @@ class UserController extends ActiveController
             throw new RestHttpException($err, 400);
         }
     }
+
 }

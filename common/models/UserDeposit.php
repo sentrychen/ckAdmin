@@ -6,6 +6,7 @@ use common\libs\Constants;
 use Exception;
 use Yii;
 use yii\db\Exception as dbException;
+use yii\behaviors\TimestampBehavior;
 
 /**
  * This is the model class for table "{{%user_deposit}}".
@@ -53,6 +54,16 @@ class UserDeposit extends \yii\db\ActiveRecord
     public static function getUncheckedCount()
     {
         return static::find()->where(['status' => static::STATUS_UNCHECKED])->count('id');
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return [
+            TimestampBehavior::class,
+        ];
     }
 
     /**

@@ -6,6 +6,7 @@ use common\libs\Constants;
 use Exception;
 use Yii;
 use yii\db\Exception as dbException;
+use yii\behaviors\TimestampBehavior;
 
 /**
  * This is the model class for table "{{%user_withdraw}}".
@@ -40,6 +41,16 @@ class UserWithdraw extends \yii\db\ActiveRecord
     public static function tableName()
     {
         return '{{%user_withdraw}}';
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return [
+            TimestampBehavior::class,
+        ];
     }
 
     /**
