@@ -40,7 +40,11 @@ class PlatformService extends PlatformUser
         if (!$this->addAmount()) return false;
 
         //登陆
-        if (!$loginData = $this->getClient()->login($this, $redirectUrl)) return false;
+        if (!$loginData = $this->getClient()->login($this, $redirectUrl)) {
+            if ($this->getClient()->getError())
+                $this->addError('user_id', $this->getClient()->getError());
+            return false;
+        }
 
         $this->last_login_at = time();
         $this->last_login_ip = yii::$app->request->getUserIP();
@@ -114,9 +118,8 @@ class PlatformService extends PlatformUser
             if (!$this->save(false))
                 throw new dbException('更新用户平台账户失败！');
             if (!$this->getClient()->addAmount($amount, $this)) {
-                throw new dbException('调用上分接口失败！');
+                throw new dbException($this->getClient()->getError() || '调用上分接口失败！');
             }
-
             $tr->commit();
         } catch (\Exception $e) {
             Yii::error($e->getMessage());
