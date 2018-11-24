@@ -82,7 +82,7 @@ class JxbClient extends ClientAbstract
     {
         $this->setError(false);
         $amount = (float)$amount;
-        $url = "{$this->apiHost}/backend/points";
+        $url = "{$this->apiHost}/admin/backend/points";
         $authData = $user->decodeAuthData();
         $data['userid'] = $authData['userid'];
         $data['score'] = $amount;
