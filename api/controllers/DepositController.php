@@ -1,49 +1,32 @@
 <?php
 /**
- * Author: lf
- * Blog: https://blog.feehi.com
- * Email: job@feehi.com
- * Created at: 2017-08-30 18:10
+ * Created by PhpStorm.
+ * User: Administrator
+ * Date: 2018/11/23
+ * Time: 11:08
  */
 
 namespace api\controllers;
 
 use api\components\RestHttpException;
-use api\models\UserWithdraw;
-use api\models\UserBank;
+use api\models\UserDeposit;
 use yii\data\ActiveDataProvider;
 use Yii;
 
-class WithdrawController extends ActiveController
+class DepositController extends ActiveController
 {
-    public $modelClass = "api\models\Withdraw";
-    public $serializer = [
-        'class' => 'yii\rest\Serializer',
-        'collectionEnvelope' => 'items'
-    ];
+    public $modelClass = "api\models\User";
 
-    public function actions()
-    {
-        return [];
-    }
-
-    public function actionIndex()
-    {
-        return [
-            "onetop api service"
-        ];
-    }
 
     /*
-     * 取款记录
+     * 存款记录
      * @return obj
      */
     public function actionList()
     {
         $user = Yii::$app->getUser()->getIdentity();
-        $withdraw = new UserWithdraw();
-        $model = $withdraw::find()->where(['user_id' => $user->getId()])->orderBy('id ASC');
-
+        $deposit = new UserDeposit();
+        $model = $deposit::find()->where(['user_id' => $user->getId()])->orderBy('id');
         $request = Yii::$app->getRequest()->getQueryParams();
         if (!empty($request)) {
             return $provider = new ActiveDataProvider([
@@ -71,25 +54,19 @@ class WithdrawController extends ActiveController
     }
 
     /*
-     * 取款申请
+     * 存款申请
      * @return obj
      */
     public function actionApply()
     {
         $user = Yii::$app->getUser()->getIdentity();
-        $request = Yii::$app->request;
-        $bank = UserBank::findOne($request->post('user_bank_id'));
-        $withdraw = new UserWithdraw();
-        $withdraw->user_id = $user->getId();
-        $withdraw->status = UserWithdraw::STATUS_UNCHECKED;
-        $withdraw->user_bank_id = $bank->id;
-        $withdraw->bank_name = $bank->bank_username;
-        $withdraw->bank_account = $bank->bank_account;
-        $withdraw->setAttributes(Yii::$app->request->post());
-        if ($withdraw->save()) {
-            return $withdraw->toArray();
+        $deposit = new UserDeposit();
+        $deposit->user_id = $user->getId();
+        $deposit->setAttributes(Yii::$app->request->post());
+        if ($deposit->save()) {
+            return $deposit->toArray();
         }
-        $errorReasons = $withdraw->getErrors();
+        $errorReasons = $deposit->getErrors();
 
         if (empty($errorReasons)) {
             throw new RestHttpException();
@@ -102,4 +79,5 @@ class WithdrawController extends ActiveController
             throw new RestHttpException($err, 400);
         }
     }
+
 }
