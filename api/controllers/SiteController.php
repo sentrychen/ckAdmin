@@ -25,10 +25,6 @@ class SiteController extends ActiveController
         return $behaviors;
     }
 
-    public function actions(){
-        return [];
-    }
-
     public function verbs()
     {
         return [
@@ -38,13 +34,6 @@ class SiteController extends ActiveController
 
         ];
     }
-    public function actionIndex()
-    {
-        return [
-            "onetop api service"
-        ];
-    }
-
 
     public function actionLogin()
     {

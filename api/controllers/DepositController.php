@@ -14,17 +14,6 @@ class DepositController extends ActiveController
 {
     public $modelClass = "api\models\User";
 
-    public function actions()
-    {
-        return [];
-    }
-
-    public function actionIndex()
-    {
-        return [
-            "onetop api service"
-        ];
-    }
 
     /*
      * 存款记录

@@ -16,17 +16,6 @@ class BetController extends ActiveController
 {
     public $modelClass = "api\models\User";
 
-    public function actions()
-    {
-        return [];
-    }
-
-    public function actionIndex()
-    {
-        return [
-            "onetop api service"
-        ];
-    }
 
     /*
      * 银行卡列表

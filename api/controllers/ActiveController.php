@@ -59,7 +59,13 @@ class ActiveController extends \yii\rest\ActiveController
         header("Access-Control-Allow-Headers: Content-Type, X-Requested-With, Cache-Control,Authorization");
         parent::init();
 
-
     }
+
+    public function actions()
+    {
+        $actions = parent::actions();
+        return ['options' => $actions['options']];
+    }
+
 
 }

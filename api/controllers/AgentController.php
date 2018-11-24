@@ -24,10 +24,6 @@ class AgentController extends ActiveController
         return $behaviors;
     }
 
-    public function actions()
-    {
-        return [];
-    }
 
     public function verbs()
     {

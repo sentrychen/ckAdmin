@@ -19,11 +19,6 @@ class MessageController extends ActiveController
         'collectionEnvelope' => 'items'
     ];
 
-    public function actions()
-    {
-        return [];
-    }
-
     /*
      *新消息数量
      */
