@@ -84,14 +84,19 @@ class JxbClient extends ClientAbstract
         $amount = (float)$amount;
         $url = "{$this->apiHost}/admin/backend/points";
         $authData = $user->decodeAuthData();
+        if (!isset($authData['userid'])) {
+            $this->setError('获取用户授权信息失败');
+            return false;
+        }
+
         $data['userid'] = $authData['userid'];
         $data['score'] = $amount;
         $data['type'] = 0;
         $res = static::get($url, $data);
         if ($res) {
             $res = Json::decode($res);
-            if ($res['code'] == 0) return $amount;
-            $this->setError($res['message']);
+            if (isset($res['code']) && $res['code'] == 0) return $amount;
+            $this->setError(isset($res['message']) ? $res['message'] : '上分失败');
         } else
             $this->setError('上分接口调用失败');
         return false;
@@ -108,16 +113,20 @@ class JxbClient extends ClientAbstract
     {
         $this->setError(false);
         $amount = (float)$amount;
-        $url = "{$this->apiHost}/backend/points";
+        $url = "{$this->apiHost}/admin/backend/points";
         $authData = $user->decodeAuthData();
+        if (!isset($authData['userid'])) {
+            $this->setError('获取用户授权信息失败');
+            return false;
+        }
         $data['userid'] = $authData['userid'];
         $data['score'] = $amount;
         $data['type'] = 1;
         $res = static::get($url, $data);
         if ($res) {
             $res = Json::decode($res);
-            if ($res['code'] == 0) return $amount;
-            $this->setError($res['message']);
+            if (isset($res['code']) && $res['code'] == 0) return $amount;
+            $this->setError(isset($res['message']) ? $res['message'] : '下分失败');
         } else
             $this->setError('下分接口调用失败');
         return false;
@@ -133,7 +142,7 @@ class JxbClient extends ClientAbstract
     {
 
         $this->setError(false);
-        $url = "{$this->apiHost}/backend/user";
+        $url = "{$this->apiHost}/admin/backend/user";
         $authData = $user->decodeAuthData();
         $data['userid'] = $authData['userid'];
         $res = static::get($url, $data);
@@ -203,8 +212,8 @@ class JxbClient extends ClientAbstract
             return false;
         }
 
-        $data['auth'] = $res['data']['data']['token'];
-        $data['userid'] = $res['data']['data']['userid'];
+        $data['auth'] = $res['data']['token'];
+        $data['userid'] = $res['data']['userid'];
         //验证登录
         $res2 = static::get("{$this->apiHost}/user/login/validateAuthorization", $data);
         if (!$res2) {
@@ -218,7 +227,7 @@ class JxbClient extends ClientAbstract
         }
 
         $user->encodeAuthData($data);
-        return $res['data']['data'];
+        return $res['data'];
     }
 
 }
