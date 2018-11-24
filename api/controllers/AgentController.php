@@ -20,14 +20,10 @@ class AgentController extends ActiveController
     {
 
         $behaviors = parent::behaviors();
-        $behaviors['authenticator']['optional'] = 'register';
+        $behaviors['authenticator']['optional'] = ['register'];
         return $behaviors;
     }
 
-    public function actions()
-    {
-        return [];
-    }
 
     public function verbs()
     {

@@ -17,10 +17,6 @@ class PlatformController extends ActiveController
 {
     public $modelClass = "api\models\Platform";
 
-    public function actions()
-    {
-        return [];
-    }
 
     public function actionLogininfo()
     {

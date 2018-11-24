@@ -7,7 +7,6 @@
  */
 
 namespace api\controllers;
-
 use api\components\RestHttpException;
 use api\models\BetList;
 use yii\data\ActiveDataProvider;
@@ -17,6 +16,7 @@ use Yii;
 class BetController extends ActiveController
 {
     public $modelClass = "api\models\User";
+
 
     /*
      * 银行卡列表

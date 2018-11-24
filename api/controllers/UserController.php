@@ -13,20 +13,10 @@ class UserController extends ActiveController
 {
     public $modelClass = "api\models\User";
 
-    public function actions()
-    {
-        return [];
-    }
-    public function actionIndex()
-    {
-        return [
-            "onetop api service"
-        ];
-    }
     /*
-     * 查询用户信息
-     * @return obj
-     */
+      * 查询用户信息
+      * @return obj
+      */
     public function actionInfo()
     {
         return Yii::$app->getUser()->getIdentity();

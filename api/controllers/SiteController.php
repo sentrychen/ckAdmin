@@ -21,30 +21,9 @@ class SiteController extends ActiveController
     public function behaviors()
     {
         $behaviors = parent::behaviors();
-        unset($behaviors['authenticator']);
+        $behaviors['authenticator']['optional'] = ['register', 'login', 'logout'];
         return $behaviors;
     }
-
-    public function actions(){
-        return [];
-    }
-
-    public function verbs()
-    {
-        return [
-            'login' => ['POST'],
-            'logout' => ['POST'],
-            'register' => ['POST'],
-
-        ];
-    }
-    public function actionIndex()
-    {
-        return [
-            "onetop api service"
-        ];
-    }
-
 
     public function actionLogin()
     {
@@ -72,7 +51,7 @@ class SiteController extends ActiveController
     public function actionLogout()
     {
         $user = Yii::$app->getUser()->getIdentity();
-        if (!$user) {
+        if ($user) {
             $user->api_token = null;
             $user->save(false);
             Yii::$app->getUser()->logout(false);

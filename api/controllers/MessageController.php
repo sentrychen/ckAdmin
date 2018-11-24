@@ -15,8 +15,6 @@ class MessageController extends ActiveController
 {
     public $modelClass = "api\models\User";
 
-
-
     /*
      *新消息数量
      */
