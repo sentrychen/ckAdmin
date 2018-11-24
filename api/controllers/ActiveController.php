@@ -13,6 +13,10 @@ use yii\filters\Cors;
 
 class ActiveController extends \yii\rest\ActiveController
 {
+    public $serializer = [
+        'class' => 'yii\rest\Serializer',
+        'collectionEnvelope' => 'items'
+    ];
 
     public function behaviors()
     {
@@ -49,18 +53,6 @@ class ActiveController extends \yii\rest\ActiveController
         return $behaviors;
     }
 
-    public function init()
-    {
-
-        /*        header("Origin:*");
-                header("Access-Control-Allow-Origin:*");
-                header("Access-Control-Request-Headers:*");
-                header("Access-Control-Allow-Methods:*");
-                header("Access-Control-Allow-Credentials:true");
-                header("Access-Control-Allow-Headers: Content-Type, X-Requested-With, Cache-Control,Authorization");*/
-        parent::init();
-
-    }
 
     public function actions()
     {
