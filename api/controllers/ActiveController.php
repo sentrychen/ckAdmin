@@ -14,6 +14,10 @@ use yii\filters\Cors;
 class ActiveController extends \yii\rest\ActiveController
 {
 
+    public $serializer = [
+        'class' => 'yii\rest\Serializer',
+        'collectionEnvelope' => 'items'
+    ];
     public function behaviors()
     {
         $behaviors = parent::behaviors();

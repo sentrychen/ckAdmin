@@ -8,6 +8,7 @@
 namespace api\controllers;
 use api\components\RestHttpException;
 use api\models\UserDeposit;
+use yii\data\ActiveDataProvider;
 use Yii;
 
 class DepositController extends ActiveController
@@ -34,16 +35,22 @@ class DepositController extends ActiveController
     {
         $user = Yii::$app->getUser()->getIdentity();
         $deposit = new UserDeposit();
-        $result = $deposit::find()
-            ->where(['user_id' => $user->getId()])
-            ->orderBy('id')
-            ->all();
-        if($result)
+        $model = $deposit::find()->where(['user_id' => $user->getId()])->orderBy('id');
+        $request = Yii::$app->getRequest()->getQueryParams();
+        if(!empty($request))
         {
-            return $result;
+            return $provider = new ActiveDataProvider([
+                'query' => $model,
+                'pagination' => [
+                    'params' => $request,
+                ],
+                'sort' => [
+                    'params' => $request,
+                ],
+            ]);
         }
 
-        $errorReasons = $result->getErrors();
+        $errorReasons = $model->getErrors();
         if (empty($errorReasons)) {
             throw new RestHttpException();
         } else {

@@ -5,6 +5,7 @@ namespace api\controllers;
 use api\models\Message;
 use api\models\MessageFlag;
 use common\libs\Constants;
+use yii\data\ActiveDataProvider;
 use Yii;
 
 /**
@@ -37,12 +38,35 @@ class MessageController extends ActiveController
      */
     public function actionList()
     {
-        $list = Message::find()->joinWith('messageFlag')
+        $model = Message::find()->joinWith('messageFlag')
             ->where([Message::tableName() . '.user_type' => Message::OBJ_MEMBER, Message::tableName() . '.is_deleted' => Constants::YesNo_No])
             ->andWhere(['or', [MessageFlag::tableName() . '.is_deleted' => Constants::YesNo_No],
-                ['notify_obj' => Message::SEND_ALL, MessageFlag::tableName() . '.id' => null]])->all();
+                ['notify_obj' => Message::SEND_ALL, MessageFlag::tableName() . '.id' => null]]);
+        $request = Yii::$app->getRequest()->getQueryParams();
+        if(!empty($request))
+        {
+            return $provider = new ActiveDataProvider([
+                'query' => $model,
+                'pagination' => [
+                    'params' => $request,
+                ],
+                'sort' => [
+                    'params' => $request,
+                ],
+            ]);
+        }
 
-        return $list;
+        $errorReasons = $model->getErrors();
+        if (empty($errorReasons)) {
+            throw new RestHttpException();
+        } else {
+            $err = '';
+            foreach ($errorReasons as $errorReason) {
+                $err .= $errorReason[0] . '<br>';
+            }
+            $err = rtrim($err, '<br>');
+            throw new RestHttpException($err, 400);
+        }
     }
 
     /*
