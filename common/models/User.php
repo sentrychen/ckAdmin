@@ -266,6 +266,8 @@ class User extends ActiveRecord
             $stat = new UserStat();
             $stat->user_id = $this->id;
             $stat->save(false);
+
+            Daily::addCounter(['dnu' => 1]);
         }
     }
 

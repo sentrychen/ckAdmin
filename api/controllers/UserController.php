@@ -7,6 +7,7 @@
  */
 namespace api\controllers;
 use api\components\RestHttpException;
+use Yii;
 
 
 class UserController extends ActiveController

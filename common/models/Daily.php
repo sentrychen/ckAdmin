@@ -2,8 +2,6 @@
 
 namespace common\models;
 
-use Yii;
-
 /**
  * This is the model class for table "{{%daily}}".
  *
@@ -54,6 +52,7 @@ class Daily extends \yii\db\ActiveRecord
         ];
     }
 
+
     /**
      * {@inheritdoc}
      */
@@ -74,5 +73,45 @@ class Daily extends \yii\db\ActiveRecord
             'dpa' => '赢额度',
             'dla' => '输额度',
         ];
+    }
+
+    /**
+     *
+     *  Daily::addCounter(['dnu'=>1]);
+     * @param $data
+     *
+     * @return bool
+     */
+    public static function addCounter($data)
+    {
+        $model = static::findOne(date('Ymd'));
+        if (!$model)
+            $model = new Daily(date('Ymd'));
+        foreach ($data as $attr => $num) {
+            if ($model->hasAttribute($attr)) {
+                $model->$attr += (int)$num;
+            }
+        }
+        return $model->save(false);
+    }
+
+    /**
+     *
+     *  Daily::updateCounter(['dau'=>10]);
+     * @param $data
+     *
+     * @return bool
+     */
+    public static function updateCounter($data)
+    {
+        $model = static::findOne(date('Ymd'));
+        if (!$model)
+            $model = new Daily(date('Ymd'));
+        foreach ($data as $attr => $num) {
+            if ($model->hasAttribute($attr)) {
+                $model->$attr = (int)$num;
+            }
+        }
+        return $model->save(false);
     }
 }
