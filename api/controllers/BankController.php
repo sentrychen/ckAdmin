@@ -8,6 +8,7 @@
 namespace api\controllers;
 use api\components\RestHttpException;
 use api\models\UserBank;
+use yii\data\ActiveDataProvider;
 use Yii;
 
 
@@ -24,16 +25,22 @@ class BankController extends ActiveController
     {
         $user = Yii::$app->getUser()->getIdentity();
         $bank = new UserBank();
-        $result = $bank::find()
-            ->where(['user_id' => $user->getId(),'status'=>1])
-            ->orderBy('id')
-            ->all();
-        if($result)
+        $model = $bank::find()->where(['user_id' => $user->getId(),'status'=>1])->orderBy('id');
+        $request = Yii::$app->getRequest()->getQueryParams();
+        if(!empty($request))
         {
-            return $result;
+            return $provider = new ActiveDataProvider([
+                'query' => $model,
+                'pagination' => [
+                    'params' => $request,
+                ],
+                'sort' => [
+                    'params' => $request,
+                ],
+            ]);
         }
 
-        $errorReasons = $result->getErrors();
+        $errorReasons = $model->getErrors();
         if (empty($errorReasons)) {
             throw new RestHttpException();
         } else {

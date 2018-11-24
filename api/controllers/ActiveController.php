@@ -13,6 +13,8 @@ use yii\filters\Cors;
 
 class ActiveController extends \yii\rest\ActiveController
 {
+    public $modelClass = null;
+
     public $serializer = [
         'class' => 'yii\rest\Serializer',
         'collectionEnvelope' => 'items'
