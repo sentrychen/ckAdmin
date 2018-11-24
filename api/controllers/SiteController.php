@@ -25,16 +25,6 @@ class SiteController extends ActiveController
         return $behaviors;
     }
 
-    public function verbs()
-    {
-        return [
-            'login' => ['POST'],
-            'logout' => ['POST'],
-            'register' => ['POST'],
-
-        ];
-    }
-
     public function actionLogin()
     {
         $model = new LoginForm;
