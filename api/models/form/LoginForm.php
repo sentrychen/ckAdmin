@@ -1,6 +1,8 @@
 <?php
 namespace api\models\form;
 
+use common\models\Daily;
+use common\models\UserLoginLog;
 use Yii;
 use yii\base\Model;
 use api\models\User;
@@ -17,11 +19,13 @@ class LoginForm extends Model
     private $_user;
 
     const GET_API_TOKEN = 'generate_api_token';
+    const AFTER_LOGIN = 'after_login';
 
     public function init ()
     {
         parent::init();
         $this->on(self::GET_API_TOKEN, [$this, 'onGenerateApiToken']);
+        $this->on(self::AFTER_LOGIN, [$this, 'onAfterLogin']);
     }
 
 
@@ -49,6 +53,7 @@ class LoginForm extends Model
             }
         }
     }
+
     /**
      * @inheritdoc
      */
@@ -59,6 +64,7 @@ class LoginForm extends Model
             'password' => '密码',
         ];
     }
+
     /**
      * Logs in a user using the provided username and password.
      *
@@ -68,6 +74,7 @@ class LoginForm extends Model
     {
         if ($this->validate()) {
             $this->trigger(self::GET_API_TOKEN);
+            $this->trigger(self::AFTER_LOGIN);
             return $this->_user;
         } else {
             return null;
@@ -98,5 +105,20 @@ class LoginForm extends Model
             $this->_user->generateApiToken();
             $this->_user->save(false);
         }
+    }
+
+    public function onAfterLogin()
+    {
+        $loginData = [
+            'user_id' => $this->_user->id,
+            'username' => $this->username,
+            'login_ip' => Yii::$app->request->getUserIP(),
+            //'client_type' => 1 todo
+        ];
+        $model = new UserLoginLog($loginData);
+        $model->save(false);
+
+        //$num = UserLoginLog::find()->where(['created_at'> strtotime(date('Y-m-d'))])->distinct('user_id')->count('user_id')->one();
+        //Daily::updateCounter(['dau'=>$num]);
     }
 }
