@@ -21,7 +21,7 @@ class SiteController extends ActiveController
     public function behaviors()
     {
         $behaviors = parent::behaviors();
-        unset($behaviors['authenticator']);
+        $behaviors['authenticator']['optional'] = ['register', 'login', 'logout'];
         return $behaviors;
     }
 

@@ -22,28 +22,29 @@ class ActiveController extends \yii\rest\ActiveController
         $behaviors['authenticator'] = [
             'class' => QueryParamAuth::class,
             'tokenParam' => 'token',
+            'except' => ['options']
         ];
 
         //不知道为什么这里的跨域设置会无效，改用init这里
-        /*
-                $behaviors['corsFilter'] = [
-                    'class' => Cors::class,
-                    'cors' => [
-                        'Origin' => ['*'],
-                        'Access-Control-Allow-Origin' => ['*'],
-                        // restrict access to
-                        'Access-Control-Request-Method' => ['POST', 'GET', 'OPTIONS'],
-                        // Allow only POST and PUT methods
-                        'Access-Control-Allow-Headers' => ['Origin', 'X-Requested-With', 'Content-Type', 'Accept','No-Cache','If-Modified-Since','Last-Modified','Cache-Control','Expires','X-E4M-With'],
-                        'Access-Control-Request-Headers' => ['*'],
-                        // Allow only headers 'X-Wsse'
-                        'Access-Control-Allow-Credentials' => true,
-                        // Allow OPTIONS caching
-                        'Access-Control-Max-Age' => 3600,
-                        // Allow the X-Pagination-Current-Page header to be exposed to the browser.
-                        'Access-Control-Expose-Headers' => ['X-Pagination-Current-Page'],
-                    ],
-                ];*/
+
+        $behaviors['corsFilter'] = [
+            'class' => Cors::class,
+            'cors' => [
+                'Origin' => ['*'],
+                'Access-Control-Allow-Origin' => ['*'],
+                // restrict access to
+                'Access-Control-Request-Method' => ['POST', 'GET', 'OPTIONS'],
+                // Allow only POST and PUT methods
+                'Access-Control-Allow-Headers' => ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'No-Cache', 'If-Modified-Since', 'Last-Modified', 'Cache-Control', 'Expires', 'X-E4M-With'],
+                'Access-Control-Request-Headers' => ['*'],
+                // Allow only headers 'X-Wsse'
+                'Access-Control-Allow-Credentials' => true,
+                // Allow OPTIONS caching
+                'Access-Control-Max-Age' => 3600,
+                // Allow the X-Pagination-Current-Page header to be exposed to the browser.
+                'Access-Control-Expose-Headers' => ['X-Pagination-Current-Page'],
+            ],
+        ];
 
         return $behaviors;
     }
@@ -51,12 +52,12 @@ class ActiveController extends \yii\rest\ActiveController
     public function init()
     {
 
-        header("Origin:*");
-        header("Access-Control-Allow-Origin:*");
-        header("Access-Control-Request-Headers:*");
-        header("Access-Control-Allow-Methods:*");
-        header("Access-Control-Allow-Credentials:true");
-        header("Access-Control-Allow-Headers: Content-Type, X-Requested-With, Cache-Control,Authorization");
+        /*        header("Origin:*");
+                header("Access-Control-Allow-Origin:*");
+                header("Access-Control-Request-Headers:*");
+                header("Access-Control-Allow-Methods:*");
+                header("Access-Control-Allow-Credentials:true");
+                header("Access-Control-Allow-Headers: Content-Type, X-Requested-With, Cache-Control,Authorization");*/
         parent::init();
 
     }

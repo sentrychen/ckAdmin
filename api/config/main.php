@@ -47,9 +47,14 @@ return [
                 '<controller:\w+>/<action:\w+>/<id:\d+>' => '<controller>/<action>',
                 '<controller:\w+>/<action:\w+>' => '<controller>/<action>',
                 [
-                    'class' => yii\rest\UrlRule::className(),
-                    'controller' => ['user', 'withdraw'],
+                    'class' => yii\rest\UrlRule::class,
+                    'controller' => ['site', 'user'],
+                    'only' => ['options'],
+                    'patterns' => [
+                        '<action>' => 'options'
+                    ],
                 ],
+
             ],
         ],
         'request' => [
