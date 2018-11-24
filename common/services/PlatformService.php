@@ -9,7 +9,7 @@
 namespace common\services;
 
 
-use common\clients\ClientInterface;
+use common\clients\ClientAbstract;
 use common\models\PlatformUser;
 use yii;
 use yii\base\InvalidArgumentException;
@@ -21,7 +21,7 @@ class PlatformService extends PlatformUser
 {
 
     /**
-     * @var $client \common\clients\ClientInterface
+     * @var $client \common\clients\ClientAbstract
      */
     public $client;
 
@@ -34,13 +34,16 @@ class PlatformService extends PlatformUser
     {
 
         //注册用户
-        if (!$this->register()) return false;
+        $this->register();
 
         //开始上分
-        if (!$this->addAmount()) return false;
+        $this->addAmount();
 
         //登陆
-        if (!$loginData = $this->getClient()->login($this, $redirectUrl)) return false;
+        $loginData = $this->getClient()->login($this, $redirectUrl);
+
+        if ($this->getClient()->getError())
+            throw new InvalidCallException($this->getClient()->getError());
 
         $this->last_login_at = time();
         $this->last_login_ip = yii::$app->request->getUserIP();
@@ -53,13 +56,15 @@ class PlatformService extends PlatformUser
         if (!$this->id) {
             $user = $this->user;
             if (!$user) {
-                return false;
+                throw new InvalidArgumentException('无效的用户ID');
             }
             $password = yii::$app->security->generateRandomString(8);
             $loop = 0;
             do {
                 if ($loop > 5) {
-                    return false;
+                    if ($this->getClient()->getError())
+                        throw new InvalidCallException($this->getClient()->getError());
+                    throw new InvalidCallException('账号注册失败！');
                 }
                 //生成用户名
                 $username = $user->username . ($loop ? rand(100, 999) : '');
@@ -68,9 +73,8 @@ class PlatformService extends PlatformUser
                     $this->game_password = $password;
                     $this->first_login_ip = yii::$app->request->getUserIP();
                     $this->save(false);
+                    $this->getClient()->setError(false);
                     return true;
-                } else {
-                    $this->addError('user_id', $this->getClient()->getError());
                 }
                 $loop++;
             } while ($loop);
@@ -82,14 +86,14 @@ class PlatformService extends PlatformUser
 
     public function getClient()
     {
-        if (!$this->client instanceof ClientInterface) {
+        if (!$this->client instanceof ClientAbstract) {
             if (!$platform = $this->platform)
                 throw new InvalidArgumentException('无效的平台ID');
             $clients = yii::$app->params['clients'];
             if (!isset($clients[$platform->code]))
                 throw new InvalidConfigException('客户端对象未配置');
             $this->client = yii::createObject($clients[$platform->code]);
-            if (!$this->client instanceof ClientInterface)
+            if (!$this->client instanceof ClientAbstract)
                 throw new InvalidCallException('创建客户端对象失败');
         }
         return $this->client;
@@ -98,32 +102,38 @@ class PlatformService extends PlatformUser
     /**
      * 上分
      */
-    public function addAmount()
+    public function addAmount($amount = 0)
     {
 
         $account = $this->user->account;
-        $amount = (int)$account->available_amount;
+        if ($amount <= 0)
+            $amount = (int)$account->available_amount;
         if ($amount <= 0) return true;
 
         $tr = Yii::$app->db->beginTransaction();
         try {
+
             $account->available_amount = 0;
             if (!$account->save(false))
                 throw new dbException('更新用户账户失败！');
             $this->available_amount += $amount;
             if (!$this->save(false))
                 throw new dbException('更新用户平台账户失败！');
-            if (!$this->getClient()->addAmount($amount, $this)) {
-                throw new dbException('调用上分接口失败！');
+            $addAmount = $this->getClient()->addAmount($amount, $this);
+            if (false !== $addAmount) {
+                throw new InvalidCallException($this->getClient()->getError());
             }
-
-            $tr->commit();
+            if ($addAmount != $amount) {
+                $tr->rollBack();
+                return true;
+            } else
+                $tr->commit();
         } catch (\Exception $e) {
             Yii::error($e->getMessage());
-            $this->addError('user_id', $e->getMessage());
+            // $this->addError('user_id', $e->getMessage());
             //回滚
             $tr->rollBack();
-            return false;
+            throw new InvalidCallException($e->getMessage());
         }
         return true;
     }
@@ -131,17 +141,42 @@ class PlatformService extends PlatformUser
     /**
      * 回收分数
      */
-    public function recycleAmount()
+    public function getAmount()
     {
-        return false;
+        $amount = $this->queryAmount();
+        $reduce = 0;
+        if ($amount > 0) {
+            $reduce = $this->getClient()->reduceAmount($amount, $this);
+            if ($reduce > 0) {
+                $tr = Yii::$app->db->beginTransaction();
+                try {
+                    $account = $this->user->account;
+                    $account->available_amount += $reduce;
+                    if (!$account->save(false))
+                        throw new dbException('更新用户账户失败！');
+                    $this->available_amount = 0;
+                    if (!$this->save(false))
+                        throw new dbException('更新用户平台账户失败！');
+                    $tr->commit();
+
+                } catch (\Exception $e) {
+                    Yii::error($e->getMessage());
+                    @$this->getClient()->addAmount($reduce, $this);
+                    $tr->rollBack();
+                }
+            }
+        }
+
+        return $reduce;
+
     }
 
     /**
-     * 回收分数
+     * 查询分数
      */
     public function queryAmount()
     {
-        return false;
+        return $this->getClient()->queryAmount($this);
     }
 
 }

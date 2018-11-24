@@ -8,18 +8,14 @@
 
 namespace common\clients;
 
-
-use common\helpers\Util;
 use yii\helpers\Json;
 
-class HjClient implements ClientInterface
+class HjClient extends ClientAbstract
 {
 
     protected $sign = "35274a28abbd18857d523912603758d0";
     protected $apiHost = "http://api.hj8828.com/api";
     protected $loginHost = "http://appapp.gzlwcg.com/login-third.html";
-
-    protected $_error;
 
     /**
      * 用户注册
@@ -32,15 +28,17 @@ class HjClient implements ClientInterface
     public function register($username, $password, $user)
     {
 
+        $this->setError(false);
+
         $url = "{$this->apiHost}/regedit?sign={$this->sign}&username={$username}&password={$password}&ratio_switch={$user->xima_type}&ratio={$user->xima_rate}&ratio_setting={$user->xima_status}";
 
-        $res = Util::request($url);
+        $res = static::request($url);
         if ($res) {
             $res = Json::decode($res);
             if ($res['status'] == 1) return true;
             $this->setError($res['err_msg']);
-        }
-        $this->setError('注册接口调用失败');
+        } else
+            $this->setError('注册接口调用失败');
         return false;
     }
 
@@ -53,6 +51,7 @@ class HjClient implements ClientInterface
     public function findUser($username)
     {
 
+        $this->setError(false);
         $url = "{$this->apiHost}/finduser?sign={$this->sign}&username={$username}";
         return $this->request($url);
     }
@@ -67,7 +66,7 @@ class HjClient implements ClientInterface
      */
     public function editPwd($username, $newpwd, $oldpwd)
     {
-
+        $this->setError(false);
         $url = "{$this->apiHost}/editpwd?sign={$this->sign}&username={$username}&newpwd={$newpwd}&oldpwd={$oldpwd}";
         return $this->request($url);
     }
@@ -81,16 +80,18 @@ class HjClient implements ClientInterface
      */
     public function addAmount($amount, $user)
     {
+        $this->setError(false);
         $amount = (float)$amount;
         $url = "{$this->apiHost}/addintegral?sign={$this->sign}&username={$user->game_account}&password={$user->game_password}&integral={$amount}";
 
-        $res = Util::request($url);
+        $res = static::request($url);
         if ($res) {
             $res = Json::decode($res);
-            if ($res['status'] == 1) return true;
+            if ($res['status'] == 1) return $amount;
+            if ($res['status'] == 1001) return 0;
             $this->setError($res['err_msg']);
-        }
-        $this->setError('上分接口调用失败');
+        } else
+            $this->setError('上分接口调用失败');
         return false;
     }
 
@@ -103,16 +104,17 @@ class HjClient implements ClientInterface
      */
     public function reduceAmount($amount, $user)
     {
+        $this->setError(false);
         $amount = (float)$amount;
         $url = "{$this->apiHost}/reduceintegral?sign={$this->sign}&username={$user->game_account}&password={$user->game_password}&integral={$amount}";
-        $res = Util::request($url);
+        $res = static::request($url);
         if ($res) {
             $res = Json::decode($res);
-            if ($res['status'] == 1) return true;
+            if ($res['status'] == 1) return $amount;
             $this->setError($res['err_msg']);
-        }
-        $this->setError('下分接口调用失败');
-        return false;
+        } else
+            $this->setError('下分接口调用失败');
+        return 0;
     }
 
     /**
@@ -124,15 +126,16 @@ class HjClient implements ClientInterface
     public function queryAmount($user)
     {
 
+        $this->setError(false);
         $url = "{$this->apiHost}/query?sign={$this->sign}&username={$user->game_account}";
-        $res = Util::request($url);
+        $res = static::request($url);
         if ($res) {
             $res = Json::decode($res);
             if ($res['status'] == 1) return $res['integral'];
             $this->setError($res['err_msg']);
-        }
-        $this->setError('查询分数接口调用失败');
-        return false;
+        } else
+            $this->setError('查询分数接口调用失败');
+        return 0;
     }
 
     /**
@@ -144,6 +147,7 @@ class HjClient implements ClientInterface
      */
     public function betList($begindate, $enddate)
     {
+        $this->setError(false);
         $begin = strtotime($begindate);
         $end = strtotime($enddate);
         $days = ceil(($end - $begin) / 86400);
@@ -162,6 +166,7 @@ class HjClient implements ClientInterface
      */
     public function queryXibu($client_id)
     {
+        $this->setError(false);
         $url = "{$this->apiHost}/query_xibu?sign={$this->sign}&client_id={$client_id}";
         return $this->request($url);
     }
@@ -174,6 +179,7 @@ class HjClient implements ClientInterface
      */
     public function newPassword($username, $newpwd)
     {
+        $this->setError(false);
         if ($username == "") {
             return $this->_resMsg('用户名不能为空！');
         }
@@ -193,28 +199,10 @@ class HjClient implements ClientInterface
      */
     public function login($user, $redirectUrl = null)
     {
+        $this->setError(false);
         $password = md5(md5($user->game_password));
 
         return $this->loginHost . '?loginUrl=' . urlencode($redirectUrl) . '&username=' . $user->game_account . '&password=' . $password . '&sign=' . $this->sign;
     }
 
-    /**
-     * 获取错误
-     * @return mixed
-     */
-    public function getError()
-    {
-        return $this->_error;
-    }
-
-    /**
-     * 设置错误
-     * @param $error
-     * @return $this
-     */
-    public function setError($error)
-    {
-        $this->_error = $error;
-        return $this;
-    }
 }

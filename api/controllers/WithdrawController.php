@@ -7,7 +7,6 @@
  */
 
 namespace api\controllers;
-
 use api\components\RestHttpException;
 use api\models\UserWithdraw;
 use api\models\UserBank;
@@ -17,22 +16,6 @@ use Yii;
 class WithdrawController extends ActiveController
 {
     public $modelClass = "api\models\Withdraw";
-    public $serializer = [
-        'class' => 'yii\rest\Serializer',
-        'collectionEnvelope' => 'items'
-    ];
-
-    public function actions()
-    {
-        return [];
-    }
-
-    public function actionIndex()
-    {
-        return [
-            "onetop api service"
-        ];
-    }
 
     /*
      * 取款记录
@@ -45,7 +28,8 @@ class WithdrawController extends ActiveController
         $model = $withdraw::find()->where(['user_id' => $user->getId()])->orderBy('id ASC');
 
         $request = Yii::$app->getRequest()->getQueryParams();
-        if (!empty($request)) {
+        if(!empty($request))
+        {
             return $provider = new ActiveDataProvider([
                 'query' => $model,
                 'pagination' => [

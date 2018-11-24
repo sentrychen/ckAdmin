@@ -38,13 +38,13 @@ class SiteController extends ActiveController
 
         ];
     }
-
     public function actionIndex()
     {
         return [
             "onetop api service"
         ];
     }
+
 
     public function actionLogin()
     {

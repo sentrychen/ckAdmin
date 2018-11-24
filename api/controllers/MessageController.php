@@ -15,6 +15,8 @@ class MessageController extends ActiveController
 {
     public $modelClass = "api\models\User";
 
+
+
     /*
      *新消息数量
      */
@@ -33,7 +35,8 @@ class MessageController extends ActiveController
             ->andWhere(['or', [MessageFlag::tableName() . '.is_deleted' => Constants::YesNo_No],
                 ['notify_obj' => Message::SEND_ALL, MessageFlag::tableName() . '.id' => null]]);
         $request = Yii::$app->getRequest()->getQueryParams();
-        if (!empty($request)) {
+        if(!empty($request))
+        {
             return $provider = new ActiveDataProvider([
                 'query' => $model,
                 'pagination' => [

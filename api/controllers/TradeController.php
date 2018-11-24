@@ -3,20 +3,30 @@
  * Created by PhpStorm.
  * User: Administrator
  * Date: 2018/11/23
- * Time: 12:06
+ * Time: 12:08
  */
-
 namespace api\controllers;
-
 use api\components\RestHttpException;
-use api\models\BetList;
+use api\models\Trade;
 use yii\data\ActiveDataProvider;
 use Yii;
 
 
-class BetController extends ActiveController
+class TradeController extends ActiveController
 {
     public $modelClass = "api\models\User";
+
+    public function actions()
+    {
+        return [];
+    }
+
+    public function actionIndex()
+    {
+        return [
+            "onetop api service"
+        ];
+    }
 
     /*
      * 银行卡列表
@@ -26,8 +36,8 @@ class BetController extends ActiveController
     public function actionList()
     {
         $user = Yii::$app->getUser()->getIdentity();
-        $bet_list = new BetList();
-        $model = $bet_list::find()->where(['user_id' => $user->getId()])->orderBy('id');
+        $trade = new Trade();
+        $model = $trade::find()->where(['user_id' => $user->getId()])->orderBy('id');
         $request = Yii::$app->getRequest()->getQueryParams();
         if(!empty($request))
         {

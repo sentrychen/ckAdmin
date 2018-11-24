@@ -6,12 +6,8 @@
  * Created at: 2017-08-30 18:10
  */
 namespace api\controllers;
-use agent\models\form\ResetPasswordForm;
 use api\components\RestHttpException;
-use yii\web\Response;
-use yii\web\User;
-use Yii;
-use yii\web\IdentityInterface;
+
 
 class UserController extends ActiveController
 {
@@ -21,10 +17,15 @@ class UserController extends ActiveController
     {
         return [];
     }
-
+    public function actionIndex()
+    {
+        return [
+            "onetop api service"
+        ];
+    }
     /*
      * 查询用户信息
-     * @return json
+     * @return obj
      */
     public function actionInfo()
     {
@@ -32,8 +33,8 @@ class UserController extends ActiveController
     }
 
     /*
-     * 更新用户信息
-     * @return json
+     * 修改个人资料
+     * @return obj
      */
     public function actionEdit()
     {

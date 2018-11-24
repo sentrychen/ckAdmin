@@ -14,6 +14,10 @@ use yii\filters\Cors;
 class ActiveController extends \yii\rest\ActiveController
 {
 
+    public $serializer = [
+        'class' => 'yii\rest\Serializer',
+        'collectionEnvelope' => 'items'
+    ];
     public function behaviors()
     {
         $behaviors = parent::behaviors();
@@ -24,24 +28,41 @@ class ActiveController extends \yii\rest\ActiveController
             'tokenParam' => 'token',
         ];
 
-        $behaviors['corsFilter'] = [
+        //不知道为什么这里的跨域设置会无效，改用init这里
+
+        /*$behaviors['corsFilter'] = [
             'class' => Cors::class,
             'cors' => [
-                'Origin' => ['*'],
+                'Origin' => '*',
+                'Access-Control-Allow-Origin' => '*',
                 // restrict access to
-                'Access-Control-Request-Method' => ['POST', 'GET', 'DEL'],
+                //'Access-Control-Request-Method' => ['POST', 'GET','OPTIONS'],
                 // Allow only POST and PUT methods
-                'Access-Control-Request-Headers' => ['Origin', 'X-Requested-With', 'Content-Type', 'Accept'],
+                'Access-Control-Allow-Headers' => ['Origin', 'X-Requested-With', 'Content-Type', 'Accept','No-Cache','If-Modified-Since','Last-Modified','Cache-Control','Expires','X-E4M-With'],
+                'Access-Control-Request-Headers' => ['*'],
                 // Allow only headers 'X-Wsse'
-                'Access-Control-Allow-Credentials' => true,
+                //'Access-Control-Allow-Credentials' => false,
                 // Allow OPTIONS caching
-                'Access-Control-Max-Age' => 3600,
+                //'Access-Control-Max-Age' => 3600,
                 // Allow the X-Pagination-Current-Page header to be exposed to the browser.
-                'Access-Control-Expose-Headers' => ['X-Pagination-Current-Page'],
+                // 'Access-Control-Expose-Headers' => ['X-Pagination-Current-Page'],
             ],
-        ];
+        ];*/
 
         return $behaviors;
+    }
+
+    public function init()
+    {
+
+        header("Origin:*");
+        header("Access-Control-Allow-Origin:*");
+        header("Access-Control-Request-Headers:*");
+        header("Access-Control-Allow-Credentials:true");
+        header("Access-Control-Allow-Headers: Content-Type, X-Requested-With, Cache-Control,Authorization");
+        parent::init();
+
+
     }
 
 }

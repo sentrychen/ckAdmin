@@ -15,9 +15,6 @@ use backend\models\Agent;
 use common\widgets\ActiveForm;
 use common\libs\Constants;
 use backend\models\User;
-use yii\helpers\ArrayHelper;
-use yii\helpers\Url;
-use yii\jui\AutoComplete;
 
 $this->title = '会员';
 ?>
@@ -42,9 +39,7 @@ $this->title = '会员';
             <?= $form->field($model, 'username')->textInput($temp) ?>
             <div class="hr-line-dashed"></div>
 
-            <?= $form->field($model, 'password')->passwordInput(['maxlength' => 512]) ?>
-            <div class="hr-line-dashed"></div>
-            <?= $form->field($model, 'repassword')->passwordInput(['maxlength' => 512]) ?>
+            <?= $form->field($model, 'password')->textInput(['maxlength' => 512]) ?>
             <div class="hr-line-dashed"></div>
             <?= $form->field($model, 'invite_agent_id')->label('所属代理')->dropDownList(Agent::getAgentTreeList(Agent::STATUS_NORMAL),$temp) ?>
             <div class="hr-line-dashed"></div>
