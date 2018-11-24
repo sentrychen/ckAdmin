@@ -72,7 +72,7 @@ class SiteController extends ActiveController
     public function actionLogout()
     {
         $user = Yii::$app->getUser()->getIdentity();
-        if (!$user) {
+        if ($user) {
             $user->api_token = null;
             $user->save(false);
             Yii::$app->getUser()->logout(false);
