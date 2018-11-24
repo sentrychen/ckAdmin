@@ -36,3 +36,4 @@ agent/tests/acceptance.suite.yml
 api/tests/acceptance.suite.yml
 apps/*
 common/config/conf
+*.cookie
