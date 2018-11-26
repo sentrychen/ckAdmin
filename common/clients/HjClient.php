@@ -88,8 +88,10 @@ class HjClient extends ClientAbstract
         if ($res) {
             $res = Json::decode($res);
             if ($res['status'] == 1) return $amount;
-            if ($res['status'] == 1001) return 0;
-            $this->setError($res['err_msg']);
+            //就算上分失败，也不报错。。。
+            return 0;
+            //if ($res['status'] == 1001) return 0;
+            //$this->setError($res['err_msg']);
         } else
             $this->setError('上分接口调用失败');
         return false;
