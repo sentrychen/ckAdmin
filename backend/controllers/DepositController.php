@@ -11,6 +11,7 @@ use backend\actions\ViewAction;
 use backend\models\search\UserDepositSearch;
 use backend\models\UserDeposit;
 use Yii;
+use backend\models\Daily;
 use yii\web\BadRequestHttpException;
 
 /**
@@ -75,6 +76,20 @@ class DepositController extends \yii\web\Controller
             }
 
             if ($model->save()) {
+                $start_time = strtotime(date('Y-m-d 00:00:00'));
+                $end_time = strtotime(date('Y-m-d 23:59:59'));
+                $num  = UserDeposit::find()->where(['status'=>UserDeposit::STATUS_CHECKED,'user_id'=>$model->user_id])
+                                            ->andFilterWhere(['between','audit_at',$start_time,$end_time])->count();
+                if($num == 1){
+                    Daily::addCounter(['ndu'=>1,'nda'=>$model->confirm_amount]);
+                }
+
+                $count = UserDeposit::find()->select('user_id')->where(['status'=>UserDeposit::STATUS_CHECKED])
+                    ->andFilterWhere(['between','audit_at',$start_time,$end_time])->distinct()->count();
+                $sum_amount = UserDeposit::find()->where(['status'=>UserDeposit::STATUS_CHECKED])
+                    ->andFilterWhere(['between','audit_at',$start_time,$end_time])->sum('confirm_amount');
+                Daily::updateCounter(['ddu'=>$count,'dda'=>$sum_amount]);
+
                 yii::$app->getSession()->setFlash('success', yii::t('app', 'Success'));
                 return $this->redirect(['index']);
             }

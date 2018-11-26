@@ -6,11 +6,7 @@
  * Created at: 2016-03-23 15:47
  */
 
-use backend\models\ChangeAmountRecord;
-use backend\models\User;
-use backend\models\UserDeposit;
-use backend\models\Withdraw;
-use common\models\CompanyBank;
+use backend\models\UserWithdraw;
 use common\widgets\ActiveForm;
 use common\widgets\JsBlock;
 use yii\helpers\Url;
@@ -79,7 +75,7 @@ $this->params['breadcrumbs'] = [
                     </div>
                 </div>
                 <div class="hr-line-dashed"></div>
-                <?= $form->field($model, 'status')->radioList([Withdraw::STATUS_CHECKED => '通过', Withdraw::STATUS_CANCLED => '取消']) ?>
+                <?= $form->field($model, 'status')->radioList([UserWithdraw::STATUS_CHECKED => '通过', UserWithdraw::STATUS_CANCLED => '取消']) ?>
 
                 <div class="hr-line-dashed"></div>
                 <?= $form->field($model, 'transfer_amount')->label('出款金额')->textInput(['beforeAddon' => '￥', 'value' => (int)$model->apply_amount]) ?>

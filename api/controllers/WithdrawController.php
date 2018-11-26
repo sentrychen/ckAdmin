@@ -11,6 +11,7 @@ use api\components\RestHttpException;
 use api\models\UserWithdraw;
 use api\models\UserBank;
 use yii\data\ActiveDataProvider;
+use api\models\UserAccount;
 use Yii;
 
 class WithdrawController extends ActiveController
@@ -67,10 +68,18 @@ class WithdrawController extends ActiveController
         $withdraw->user_id = $user->getId();
         $withdraw->status = UserWithdraw::STATUS_UNCHECKED;
         $withdraw->user_bank_id = $bank->id;
-        $withdraw->bank_name = $bank->bank_username;
+        $withdraw->bank_name = $bank->bank_name;
         $withdraw->bank_account = $bank->bank_account;
         $withdraw->setAttributes(Yii::$app->request->post());
         if ($withdraw->save()) {
+            $userAccount = UserAccount::findOne(['user_id' => $user->getId()]);
+            if (!$userAccount)
+                throw new dbException('用户资金账户不存在！');
+            //更新用户额度
+            $userAccount->frozen_amount += Yii::$app->request->post('apply_amount');
+            $userAccount->available_amount -= Yii::$app->request->post('apply_amount');
+            if (!$userAccount->save(false))
+                throw new dbException('更新用户资金账户失败！');
             return $withdraw->toArray();
         }
         $errorReasons = $withdraw->getErrors();
