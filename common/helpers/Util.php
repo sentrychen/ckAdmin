@@ -221,4 +221,109 @@ class Util
         return $result;
     }
 
+    /**
+     * 获取客户端类型
+     *
+     */
+    public static function getClientType()
+    {
+        $agent = $_SERVER['HTTP_USER_AGENT'];
+        if(strpos($agent, 'iPhone')||strpos($agent, 'iPad')){
+            return 'IOS';
+        }else if(strpos($agent, 'Android')){
+            return 'Android';
+        }else{
+            return 'H5';
+        }
+    }
+
+    /**
+     * 获取客户端版本号
+     *
+     */
+    public static function getClientVersion() {
+        $ua = $_SERVER['HTTP_USER_AGENT'];
+        $version = '';
+
+        //微信打开
+        if (stripos($ua, 'MicroMessenger')) {
+            preg_match('/MicroMessenger\/([\d\.]+)/i', $ua, $match);
+            return 'Wechat '. $match[1];
+        }
+
+        //获取火狐浏览器的版本号
+        if (stripos($ua, 'Firefox/')) {
+            preg_match('/Firefox\/([^;)]+)/i', $ua, $match);
+            $version = 'Firefox'.$match[1];
+        }
+        //360游览器
+        else if(stripos($ua,'360SE')) {
+            $version = '360游览器'.'';
+        }
+        //搜狗游览器
+        else if(stripos($ua, 'SE') && stripos($ua, 'MetaSr')) {
+            preg_match('/SE\s([\w\.]+)/i', $ua, $match);
+            $version = '搜狗'.$match[1];
+        }
+        //获取google chrome的版本号
+        else if (stripos($ua, 'Chrome')) {
+            preg_match('/Chrome\/([\d\.]+)/', $ua, $match);
+            $version = 'Chrome'.$match[1];
+        }
+        //遨游游览器
+        elseif (stripos($ua, 'Maxthon')) {
+            preg_match('/Maxthon([\s\d\.]+)/', $ua, $match);
+            $version = '傲游'.$match[1];
+        }
+        //欧朋游览器
+        elseif (stripos($ua, 'opera')) {
+            preg_match('/opera\/([\d\.\/]+)/', $ua, $match);
+            $version = 'Opera'.$match[1];
+        }
+        //win10 Edge浏览器 添加了chrome内核标记 在判断Chrome之前匹配
+        else if(stripos($ua, 'Edge')) {
+            preg_match('/Edge\/([\d\.]+)/', $ua, $match);
+            $version = 'Edge'.$match[1];
+        }
+        //UC游览器
+        else if(stripos($ua,'UCBrowser')) {
+            preg_match('/UCBrowser\/([\d\.]+)/', $ua, $match);
+            $version = 'UCBrowser '.$match[1];
+        }
+        //QQ游览器（note:移动端没有检测版本号）
+        else if(stripos($ua,'TencentTraveler') || stripos($ua,'QQBrowser')) {
+            preg_match('/TencentTraveler\s([\d\.]+)/', $ua, $match);
+            $version = 'QQ游览器'.$match[1];
+        }
+        //百度游览器
+        else if(stripos($ua,'baidubrowser')) {
+            preg_match('/baidubrowser\/([\d\.]+)/', $ua, $match);
+            $version = '百度游览器'.$match[1];
+        }
+        //移动设备的IE游览器
+        else if(stripos($ua, 'IEMobile')) {
+            preg_match('/IEMobile\/([\d\.]+)+/i', $ua, $match);
+            $version = 'IE'.$match[1];
+        }
+        //获取IE的版本号
+        else if (stripos($ua, 'MSIE')) {
+            preg_match('/MSIE\s+([^;)]+)+/i', $ua, $match);
+            $version = 'IE'.$match[1];
+        } else if (strpos($ua, 'Android') !== false) {//strpos()定位出第一次出现字符串的位置，这里定位为0
+            preg_match("/(?<=Android )[\d\.]{1,}/", $ua, $match);
+            $version =  'Android '.$match[0];
+        } elseif (strpos($ua, 'iPhone') !== false) {
+            preg_match("/(?<=CPU iPhone OS )[\d\_]{1,}/", $ua, $match);
+            echo 'iPhone OS '.str_replace('_', '.', $match[0]);
+        } elseif (strpos($ua, 'iPad') !== false) {
+            preg_match("/(?<=CPU OS )[\d\_]{1,}/", $ua, $match);
+            echo 'iPad OS '.str_replace('_', '.', $match[0]);
+        }
+        else {
+            $version = $ua;
+        }
+
+        return $version;
+    }
+
 }
