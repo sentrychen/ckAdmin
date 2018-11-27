@@ -16,22 +16,6 @@ use Yii;
 class WithdrawController extends ActiveController
 {
     public $modelClass = "api\models\Withdraw";
-    public $serializer = [
-        'class' => 'yii\rest\Serializer',
-        'collectionEnvelope' => 'items'
-    ];
-
-    public function actions()
-    {
-        return [];
-    }
-
-    public function actionIndex()
-    {
-        return [
-            "onetop api service"
-        ];
-    }
 
     /*
      * 取款记录
