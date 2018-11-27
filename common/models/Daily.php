@@ -86,7 +86,10 @@ class Daily extends \yii\db\ActiveRecord
     {
         $model = static::findOne(date('Ymd'));
         if (!$model)
-            $model = new Daily(date('Ymd'));
+        {
+            $model = new Daily();
+            $model->ymd = date('Ymd');
+        }
         foreach ($data as $attr => $num) {
             if ($model->hasAttribute($attr)) {
                 $model->$attr += (int)$num;
@@ -106,7 +109,10 @@ class Daily extends \yii\db\ActiveRecord
     {
         $model = static::findOne(date('Ymd'));
         if (!$model)
-            $model = new Daily(date('Ymd'));
+        {
+            $model = new Daily();
+            $model->ymd = date('Ymd');
+        }
         foreach ($data as $attr => $num) {
             if ($model->hasAttribute($attr)) {
                 $model->$attr = (int)$num;

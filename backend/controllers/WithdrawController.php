@@ -12,6 +12,7 @@ use backend\actions\DeleteAction;
 use backend\actions\SortAction;
 use backend\actions\ViewAction;
 use yii\web\BadRequestHttpException;
+use backend\models\Daily;
 
 /**
  * WithdrawController implements the CRUD actions for UserWithdraw model.
@@ -63,14 +64,14 @@ class WithdrawController extends \yii\web\Controller
 
     public function actionAudit($id)
     {
-        $model = Withdraw::findOne(['id' => $id, 'status' => Withdraw::STATUS_UNCHECKED]);
+        $model = UserWithdraw::findOne(['id' => $id, 'status' => UserWithdraw::STATUS_UNCHECKED]);
         if (!$model)
             throw new BadRequestHttpException('存款记录不存在或无须审核');
         if (!$model->bank || $model->bank->bank_account != $model->bank_account || $model->bank->bank_name != $model->bank_name)
             throw new BadRequestHttpException('用户银行卡信息错误');
         if (yii::$app->getRequest()->getIsPost() && $model->load(yii::$app->getRequest()->post())) {
 
-            if ($model->status != Withdraw::STATUS_UNCHECKED) {
+            if ($model->status != UserWithdraw::STATUS_UNCHECKED) {
                 $model->audit_by_id = yii::$app->getUser()->getId();
                 $model->audit_by_username = yii::$app->getUser()->getIdentity()->username;
                 $model->audit_at = time();

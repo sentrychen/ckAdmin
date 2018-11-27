@@ -189,6 +189,20 @@ class UserDeposit extends \yii\db\ActiveRecord
                 $userRecord->after_amount = $userAccount->available_amount;
                 if (!$userRecord->save(false))
                     throw new dbException('更新用户交易记录失败！');
+
+                $start_time = strtotime(date('Y-m-d 00:00:00'));
+                $end_time = strtotime(date('Y-m-d 23:59:59'));
+                $num  = UserDeposit::find()->where(['status'=>UserDeposit::STATUS_CHECKED,'user_id'=>$this->user_id])
+                    ->andFilterWhere(['between','audit_at',$start_time,$end_time])->count();
+                if($num == 1){
+                    Daily::addCounter(['ndu'=>1,'nda'=>$this->confirm_amount]);
+                }
+                $count = UserDeposit::find()->select('user_id')->where(['status'=>UserDeposit::STATUS_CHECKED])
+                    ->andFilterWhere(['between','audit_at',$start_time,$end_time])->distinct()->count();
+                $sum_amount = UserDeposit::find()->where(['status'=>UserDeposit::STATUS_CHECKED])
+                    ->andFilterWhere(['between','audit_at',$start_time,$end_time])->sum('confirm_amount');
+                Daily::updateCounter(['ddu'=>$count,'dda'=>$sum_amount]);
+
                 $tr->commit();
             } catch (Exception $e) {
                 Yii::error($e->getMessage());

@@ -179,7 +179,7 @@ class UserWithdraw extends \yii\db\ActiveRecord
                 if (!$userAccount)
                     throw new dbException('用户资金账户不存在！');
                 //更新用户额度
-                $userAccount->frozen_amount -= $this->transfer_amount;
+                $userAccount->frozen_amount -= $this->apply_amount;
                 $userAccount->available_amount += $this->apply_amount - $this->transfer_amount;
                 if (!$userAccount->save(false))
                     throw new dbException('更新用户资金账户失败！');
@@ -195,6 +195,15 @@ class UserWithdraw extends \yii\db\ActiveRecord
                 $userRecord->after_amount = $userAccount->available_amount;
                 if (!$userRecord->save(false))
                     throw new dbException('更新用户交易记录失败！');
+
+                $start_time = strtotime(date('Y-m-d 00:00:00'));
+                $end_time = strtotime(date('Y-m-d 23:59:59'));
+                $count = UserWithdraw::find()->select('user_id')->where(['status'=>UserWithdraw::STATUS_CHECKED])
+                    ->andFilterWhere(['between','audit_at',$start_time,$end_time])->distinct()->count();
+                $sum_amount = UserWithdraw::find()->where(['status'=>UserWithdraw::STATUS_CHECKED])
+                    ->andFilterWhere(['between','audit_at',$start_time,$end_time])->sum('transfer_amount');
+                Daily::updateCounter(['dwu'=>$count,'dwa'=>$sum_amount]);
+
                 $tr->commit();
             } catch (Exception $e) {
                 Yii::error($e->getMessage());

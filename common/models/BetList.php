@@ -107,4 +107,19 @@ class BetList extends \yii\db\ActiveRecord
     {
         return $this->hasOne(GameType::class, ['name_en' => 'game_type']);
     }
+
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+        if ($insert) {
+            $account = new UserAccount();
+            $account->user_id = $this->id;
+            $account->save(false);
+            $stat = new UserStat();
+            $stat->user_id = $this->id;
+            $stat->save(false);
+
+            Daily::addCounter(['dnu' => 1]);
+        }
+    }
 }

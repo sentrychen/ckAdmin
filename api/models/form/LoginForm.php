@@ -6,7 +6,7 @@ use common\models\UserLoginLog;
 use Yii;
 use yii\base\Model;
 use api\models\User;
-
+use common\helpers\Util;
 /**
  * Login form
  */
@@ -109,16 +109,36 @@ class LoginForm extends Model
 
     public function onAfterLogin()
     {
+        $client = Util::getClientType();
+        switch ($client)
+        {
+            case 'IOS':
+                $client_type = UserLoginLog::CLIENT_TYPE_IOS;
+                break;
+            case 'Android':
+                $client_type = UserLoginLog::CLIENT_TYPE_ANDROID;
+                break;
+            case 'H5':
+                $client_type = UserLoginLog::CLIENT_TYPE_H5;
+                break;
+            default:
+                $client_type = UserLoginLog::CLIENT_TYPE_H5;
+
+        }
+
         $loginData = [
             'user_id' => $this->_user->id,
             'username' => $this->username,
             'login_ip' => Yii::$app->request->getUserIP(),
-            //'client_type' => 1 todo
+            'client_type' => $client_type,
+            'client_version' => Yii::$app->request->getUserAgent(),
         ];
-        $model = new UserLoginLog($loginData);
+        $model = new UserLoginLog();
+        $model->setAttributes($loginData);
         $model->save(false);
+        $num = UserLoginLog::find()->select('user_id')->where(['>','created_at',strtotime(date('Y-m-d'))])
+                                    ->distinct()->count();
+        Daily::updateCounter(['dau'=>$num]);
 
-        //$num = UserLoginLog::find()->where(['created_at'> strtotime(date('Y-m-d'))])->distinct('user_id')->count('user_id')->one();
-        //Daily::updateCounter(['dau'=>$num]);
     }
 }

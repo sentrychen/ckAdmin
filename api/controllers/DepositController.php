@@ -10,6 +10,7 @@ use api\components\RestHttpException;
 use api\models\UserDeposit;
 use yii\data\ActiveDataProvider;
 use Yii;
+use common\models\Daily;
 
 class DepositController extends ActiveController
 {

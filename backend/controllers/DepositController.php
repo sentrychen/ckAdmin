@@ -11,6 +11,7 @@ use backend\actions\ViewAction;
 use backend\models\search\UserDepositSearch;
 use backend\models\UserDeposit;
 use Yii;
+use backend\models\Daily;
 use yii\web\BadRequestHttpException;
 
 /**

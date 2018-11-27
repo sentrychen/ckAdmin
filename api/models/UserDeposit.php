@@ -16,4 +16,6 @@ class UserDeposit extends \common\models\UserDeposit
             [['audit_by_username'], 'string', 'max' => 64],
         ];
     }
+
+
 }
