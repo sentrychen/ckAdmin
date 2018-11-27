@@ -78,15 +78,6 @@ class WithdrawController extends \yii\web\Controller
             }
 
             if ($model->save()) {
-                $start_time = strtotime(date('Y-m-d 00:00:00'));
-                $end_time = strtotime(date('Y-m-d 23:59:59'));
-
-                $count = UserWithdraw::find()->select('user_id')->where(['status'=>UserWithdraw::STATUS_CHECKED])
-                    ->andFilterWhere(['between','audit_at',$start_time,$end_time])->distinct()->count();
-                $sum_amount = UserWithdraw::find()->where(['status'=>UserWithdraw::STATUS_CHECKED])
-                    ->andFilterWhere(['between','audit_at',$start_time,$end_time])->sum('transfer_amount');
-                Daily::updateCounter(['dwu'=>$count,'dwa'=>$sum_amount]);
-
                 yii::$app->getSession()->setFlash('success', yii::t('app', 'Success'));
                 return $this->redirect(['index']);
             }
