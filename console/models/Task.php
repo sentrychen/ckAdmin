@@ -2,6 +2,7 @@
 
 namespace console\models;
 
+use common\helpers\CronParser;
 use Yii;
 
 /**
@@ -68,4 +69,17 @@ class Task extends \yii\db\ActiveRecord
             'exec_time' => '任务执行消耗时间',
         ];
     }
+
+    /**
+     * 计算下次运行时间
+     * @author jlb
+     */
+    public function getNextRunDate()
+    {
+        if (!CronParser::check($this->crontab_str)) {
+            throw new \Exception("格式校验失败: {$this->crontab_str}", 1);
+        }
+        return CronParser::formatToDate($this->crontab_str, 1)[0];
+    }
+
 }

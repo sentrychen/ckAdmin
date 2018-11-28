@@ -33,6 +33,9 @@ class PlatformController extends ActiveController
         if (!$service)
             $service = new PlatformService($data);
 
+        if (!$service->getClient())
+            throw new RestHttpException();
+
         $info = $service->getLoginInfo($url);
 
         $errorReasons = $service->getErrors();
@@ -55,10 +58,11 @@ class PlatformController extends ActiveController
 
         $services = PlatformService::find()->joinWith('platform')
             ->where(['user_id' => yii::$app->getUser()->getId(), 'status' => Platform::STATUS_ENABLED])
-            ->andFilterWhere(['game_type' => $gameType])->all();
+            ->andFilterWhere(['code' => $gameType])->all();
         $amount = 0;
         foreach ($services as $service) {
-            $amount += $service->getAmount();
+            if ($service->getClient())
+                $amount += $service->getAmount();
         }
         return $amount;
     }

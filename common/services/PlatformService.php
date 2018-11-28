@@ -36,11 +36,12 @@ class PlatformService extends PlatformUser
         //注册用户
         $this->register();
 
+        //登陆
+        $loginData = $this->getClient()->login($this, $redirectUrl);
+
         //开始上分
         $this->addAmount();
 
-        //登陆
-        $loginData = $this->getClient()->login($this, $redirectUrl);
 
         if ($this->getClient()->getError())
             throw new InvalidCallException($this->getClient()->getError());
@@ -88,13 +89,13 @@ class PlatformService extends PlatformUser
     {
         if (!$this->client instanceof ClientAbstract) {
             if (!$platform = $this->platform)
-                throw new InvalidArgumentException('无效的平台ID');
+                return false;
             $clients = yii::$app->params['clients'];
             if (!isset($clients[$platform->code]))
-                throw new InvalidConfigException('客户端对象未配置');
+                return false;
             $this->client = yii::createObject($clients[$platform->code]);
             if (!$this->client instanceof ClientAbstract)
-                throw new InvalidCallException('创建客户端对象失败');
+                return false;
         }
         return $this->client;
     }
@@ -120,7 +121,7 @@ class PlatformService extends PlatformUser
             if (!$this->save(false))
                 throw new dbException('更新用户平台账户失败！');
             $addAmount = $this->getClient()->addAmount($amount, $this);
-            if (false !== $addAmount) {
+            if (false === $addAmount) {
                 throw new InvalidCallException($this->getClient()->getError());
             }
             if ($addAmount != $amount) {

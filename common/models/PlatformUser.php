@@ -26,7 +26,6 @@ use yii\helpers\Json;
  */
 class PlatformUser extends \yii\db\ActiveRecord
 {
-    private $_password = "mgGZbPu6GQamAhuXJlMa5kxRR3lElgAT_1542177649";
 
     /**
      * {@inheritdoc}
@@ -97,7 +96,7 @@ class PlatformUser extends \yii\db\ActiveRecord
      */
     public function encodeAuthData($data)
     {
-        $this->auth_data = Yii::$app->security->encryptByPassword(Json::encode($data), $this->_password);
+        $this->auth_data = Json::encode($data);
         return $this->auth_data;
     }
 
@@ -107,8 +106,7 @@ class PlatformUser extends \yii\db\ActiveRecord
     public function decodeAuthData()
     {
         if (!$this->auth_data) return null;
-        $data = Yii::$app->security->decryptByPassword($this->auth_data, $this->_password);
-        return Json::decode($data);
+        return Json::decode($this->auth_data);
     }
 
 }
