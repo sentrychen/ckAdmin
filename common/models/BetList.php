@@ -121,14 +121,44 @@ class BetList extends \yii\db\ActiveRecord
             $win_amount = BetList::find()->where(['>', 'profit', 0])->andFilterWhere(['between', 'bet_at', $start_time, $end_time])->sum('profit');
             $lost_amount = BetList::find()->where(['<', 'profit', 0])->andFilterWhere(['between', 'bet_at', $start_time, $end_time])->sum('profit');
 
-            $data = [
+            $daliy = [
                 'dbu' => $dis_num,
                 'dbo' => $all_num,
                 'dba' => $sum_amount,
                 'dpa' => $win_amount,
                 'dla' => abs($lost_amount)
             ];
-            Daily::updateCounter($data);
+            Daily::updateCounter($daliy);
+
+            $plat = BetList::find()->select(['platform_id','id'=>'count(id)','bet_amount'=>'sum(bet_amount)'])
+                    ->where(['between', 'bet_at', $start_time, $end_time])->groupBy('platform_id')->all();
+
+            $data = [];
+            foreach ($plat as $key =>$val){
+                $data[$val->platform_id]['platform_id'] = $val->platform_id;
+                $data[$val->platform_id]['dbo'] = $val->id;
+                $data[$val->platform_id]['dba'] = $val->bet_amount;
+            }
+            $dis_num = BetList::find()->select(['platform_id','user_id'=>'count(distinct(user_id))'])
+                       ->where(['between', 'bet_at', $start_time, $end_time])->groupBy('platform_id')->all();
+            foreach ($dis_num as $key => $val){
+                $data[$val->platform_id]['dbu'] = $val->user_id;
+            }
+
+            $win_amount = BetList::find()->select(['platform_id','profit'=>'sum(profit)'])->where(['>', 'profit', 0])
+                          ->andFilterWhere(['between', 'bet_at', $start_time, $end_time])->groupBy('platform_id')->all();
+            foreach ($win_amount as $key => $val){
+                $data[$val->platform_id]['dpa'] =  $val->profit;
+            }
+            $lost_amount = BetList::find()->select(['platform_id','profit'=>'sum(profit)'])->where(['<', 'profit', 0])
+                           ->andFilterWhere(['between', 'bet_at', $start_time, $end_time])->groupBy('platform_id')->all();
+            foreach ($lost_amount as $key =>  $val){
+                $data[$val->platform_id]['dla'] = abs($val->profit);
+            }
+
+            foreach($data as $arr){
+                PlatformDaily::updateCounter($arr);
+            }
         }
     }
 }

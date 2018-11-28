@@ -72,4 +72,50 @@ class PlatformDaily extends \yii\db\ActiveRecord
         return $this->hasOne(Platform::class, ['id' => 'platform_id']);
     }
 
+    /**
+     *
+     *  PlatDaily::addCounter(['dnu'=>1]);
+     * @param $data
+     *
+     * @return bool
+     */
+    public static function addCounter($data)
+    {
+        $model = static::findOne(['ymd'=>date('Ymd'),'platform_id'=>$data['platform_id']]);
+        if (!$model)
+        {
+            $model = new Daily();
+            $model->ymd = date('Ymd');
+        }
+        foreach ($data as $attr => $num) {
+            if ($model->hasAttribute($attr)) {
+                $model->$attr += (int)$num;
+            }
+        }
+        return $model->save(false);
+    }
+
+    /**
+     *
+     *  PlatDaily::updateCounter(['dau'=>10]);
+     * @param $data
+     *
+     * @return bool
+     */
+    public static function updateCounter($data)
+    {
+        $model = static::findOne(['ymd'=>date('Ymd'),'platform_id'=>$data['platform_id']]);
+        if (!$model)
+        {
+            $model = new PlatformDaily();
+            $model->ymd = date('Ymd');
+        }
+        foreach ($data as $attr => $num) {
+            if ($model->hasAttribute($attr)) {
+                $model->$attr = (int)$num;
+            }
+        }
+        return $model->save(false);
+    }
+
 }

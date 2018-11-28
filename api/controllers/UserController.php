@@ -9,7 +9,6 @@ namespace api\controllers;
 use api\components\RestHttpException;
 use Yii;
 
-
 class UserController extends ActiveController
 {
     public $modelClass = "api\models\User";
