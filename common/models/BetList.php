@@ -130,15 +130,15 @@ class BetList extends \yii\db\ActiveRecord
             ];
             Daily::updateCounter($daliy);
 
+            $data = [];
             $plat = BetList::find()->select(['platform_id','id'=>'count(id)','bet_amount'=>'sum(bet_amount)'])
                     ->where(['between', 'bet_at', $start_time, $end_time])->groupBy('platform_id')->all();
-
-            $data = [];
             foreach ($plat as $key =>$val){
                 $data[$val->platform_id]['platform_id'] = $val->platform_id;
                 $data[$val->platform_id]['dbo'] = $val->id;
                 $data[$val->platform_id]['dba'] = $val->bet_amount;
             }
+
             $dis_num = BetList::find()->select(['platform_id','user_id'=>'count(distinct(user_id))'])
                        ->where(['between', 'bet_at', $start_time, $end_time])->groupBy('platform_id')->all();
             foreach ($dis_num as $key => $val){
@@ -150,6 +150,7 @@ class BetList extends \yii\db\ActiveRecord
             foreach ($win_amount as $key => $val){
                 $data[$val->platform_id]['dpa'] =  $val->profit;
             }
+
             $lost_amount = BetList::find()->select(['platform_id','profit'=>'sum(profit)'])->where(['<', 'profit', 0])
                            ->andFilterWhere(['between', 'bet_at', $start_time, $end_time])->groupBy('platform_id')->all();
             foreach ($lost_amount as $key =>  $val){
