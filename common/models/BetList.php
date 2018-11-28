@@ -115,18 +115,18 @@ class BetList extends \yii\db\ActiveRecord
         {
             $start_time = strtotime(date('Y-m-d 00:00:00'));
             $end_time = strtotime(date('Y-m-d 23:59:59'));
-            $dis_num = BetList::find()->select('user_id')->where(['between', 'bet_at', $start_time, $end_time])->distinct()->count();
-            $all_num = BetList::find()->select('user_id')->where(['between', 'bet_at', $start_time, $end_time])->count();
-            $sum_amount = BetList::find()->where(['between', 'bet_at', $start_time, $end_time])->sum('bet_amount');
-            $win_amount = BetList::find()->where(['>', 'profit', 0])->andFilterWhere(['between', 'bet_at', $start_time, $end_time])->sum('profit');
-            $lost_amount = BetList::find()->where(['<', 'profit', 0])->andFilterWhere(['between', 'bet_at', $start_time, $end_time])->sum('profit');
+            $dis_count = BetList::find()->select('user_id')->where(['between', 'bet_at', $start_time, $end_time])->distinct()->count();
+            $all_count = BetList::find()->select('user_id')->where(['between', 'bet_at', $start_time, $end_time])->count();
+            $sum_money = BetList::find()->where(['between', 'bet_at', $start_time, $end_time])->sum('bet_amount');
+            $win_money = BetList::find()->where(['>', 'profit', 0])->andFilterWhere(['between', 'bet_at', $start_time, $end_time])->sum('profit');
+            $lost_money = BetList::find()->where(['<', 'profit', 0])->andFilterWhere(['between', 'bet_at', $start_time, $end_time])->sum('profit');
 
             $daliy = [
-                'dbu' => $dis_num,
-                'dbo' => $all_num,
-                'dba' => $sum_amount,
-                'dpa' => $win_amount,
-                'dla' => abs($lost_amount)
+                'dbu' => $dis_count,
+                'dbo' => $all_count,
+                'dba' => $sum_money,
+                'dpa' => $win_money,
+                'dla' => abs($lost_money)
             ];
             Daily::updateCounter($daliy);
 
