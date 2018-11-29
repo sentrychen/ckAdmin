@@ -126,7 +126,7 @@ class SyncController extends \yii\console\Controller
                 $endTime = $startTime + $stepTime;
             $res = $client->betList($startTime, $endTime);
             if (!$res || !isset($res['code'])) {
-                yii::error('error', '同步机械版投注记录失败[' . date('Y-m-d H:i:s', $startTime) . ' - ' . date('Y-m-d H:i:s', $endTime) . ']！， 原因：' . $res['err_msg']);
+                yii::error('error', '同步机械版投注记录失败[' . date('Y-m-d H:i:s', $startTime) . ' - ' . date('Y-m-d H:i:s', $endTime) . ']！， 原因：' . ($res['err_msg'] ?? '请求失败'));
                 return ExitCode::UNAVAILABLE;
             }
 
