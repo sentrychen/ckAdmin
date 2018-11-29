@@ -12,6 +12,7 @@ use yii\helpers\Json;
  * @property int $platform_id 游戏平台ID
  * @property string $user_id 用户ID
  * @property string $username 用户名称
+ * @property string $game_account_id 游戏登陆ID
  * @property string $game_account 游戏登陆账号
  * @property string $game_password 游戏登陆密码
  * @property string $auth_data 认证数据
@@ -45,7 +46,7 @@ class PlatformUser extends \yii\db\ActiveRecord
             [['platform_id', 'user_id', 'user_status', 'last_login_at', 'updated_at', 'created_at'], 'integer'],
             [['available_amount', 'frozen_amount'], 'number'],
             [['username', 'first_login_ip', 'last_login_ip'], 'string', 'max' => 64],
-            [['game_account', 'game_password'], 'string', 'max' => 255],
+            [['game_account_id', 'game_account', 'game_password'], 'string', 'max' => 255],
         ];
     }
 
@@ -59,6 +60,7 @@ class PlatformUser extends \yii\db\ActiveRecord
             'platform_id' => '游戏平台',
             'user_id' => '用户ID',
             'username' => '用户名称',
+            'game_account_id' => '游戏登陆账号ID',
             'game_account' => '游戏登陆账号',
             'game_password' => '游戏登陆密码',
             'auth_data' => '认证数据',

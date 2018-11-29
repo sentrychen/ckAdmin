@@ -35,7 +35,7 @@ class JxbClient extends ClientAbstract
         $res = static::get("{$this->apiHost}/user/register", $data);
         if ($res) {
             $res = Json::decode($res);
-            if ($res['code'] == 0) return true;
+            if ($res['code'] == 0) return $res['data']['userid'] ?? true;
             $this->setError($res['message']);
         } else
             $this->setError('注册接口调用失败');
@@ -83,13 +83,8 @@ class JxbClient extends ClientAbstract
         $this->setError(false);
         $amount = (float)$amount;
         $url = "{$this->apiHost}/admin/backend/points";
-        $authData = $user->decodeAuthData();
-        if (!isset($authData['userid'])) {
-            $this->setError('获取用户授权信息失败');
-            return false;
-        }
 
-        $data['userid'] = $authData['userid'];
+        $data['userid'] = $user->game_account_id;
         $data['score'] = $amount;
         $data['type'] = 0;
         $res = static::get($url, $data);
@@ -114,12 +109,7 @@ class JxbClient extends ClientAbstract
         $this->setError(false);
         $amount = (float)$amount;
         $url = "{$this->apiHost}/admin/backend/points";
-        $authData = $user->decodeAuthData();
-        if (!isset($authData['userid'])) {
-            $this->setError('获取用户授权信息失败');
-            return false;
-        }
-        $data['userid'] = $authData['userid'];
+        $data['userid'] = $user->game_account_id;
         $data['score'] = $amount;
         $data['type'] = 1;
         $res = static::get($url, $data);
@@ -143,8 +133,8 @@ class JxbClient extends ClientAbstract
 
         $this->setError(false);
         $url = "{$this->apiHost}/admin/backend/user";
-        $authData = $user->decodeAuthData();
-        $data['userid'] = $authData['userid'];
+        //$authData = $user->decodeAuthData();
+        $data['userid'] = $user->game_account_id;
         $res = static::get($url, $data);
         if ($res) {
             $res = Json::decode($res);
@@ -158,21 +148,18 @@ class JxbClient extends ClientAbstract
     /**
      * 代理下属所有用户投注数据报表
      *
-     * @param string $begindate 开始日期
-     * @param string $enddate 开始日期
+     * @param int $begindate 开始日期
+     * @param int $enddate 开始日期
      * @return array
      */
     public function betList($begindate, $enddate)
     {
         $this->setError(false);
-        $begin = strtotime($begindate);
-        $end = strtotime($enddate);
-        $days = ceil(($end - $begin) / 86400);
-        if ($days > 7 || $days < 0) {
-            return $this->_resMsg('日期范围不能超过7天！');
-        }
-        $url = "{$this->apiHost}/betlist?sign={$this->sign}&begindate=" . urlencode(date('Y-m-d H:i:s', $begin)) . "&enddate=" . urlencode(date('Y-m-d H:i:s', $end));
-        return $this->request($url);
+        $data['beginTime'] = $begindate * 1000;
+        $data['endTime'] = $enddate * 1000;
+        $url = "{$this->apiHost}/admin/backend/user/gamerecord/list";
+        return static::get($url, $data);
+        
     }
 
     /**
@@ -226,7 +213,8 @@ class JxbClient extends ClientAbstract
             return false;
         }
 
-        $user->encodeAuthData($data);
+        //$user->encodeAuthData($data);
+        $user->auth_data = $res['data']['token'];
         return $res['data'];
     }
 

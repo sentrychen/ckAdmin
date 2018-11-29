@@ -145,7 +145,7 @@ class HjClient extends ClientAbstract
      *
      * @param string $begindate 开始日期
      * @param string $enddate 开始日期
-     * @return array
+     * @return mixed
      */
     public function betList($begindate, $enddate)
     {
@@ -154,10 +154,17 @@ class HjClient extends ClientAbstract
         $end = strtotime($enddate);
         $days = ceil(($end - $begin) / 86400);
         if ($days > 7 || $days < 0) {
-            return $this->_resMsg('日期范围不能超过7天！');
+            return false;
         }
         $url = "{$this->apiHost}/betlist?sign={$this->sign}&begindate=" . urlencode(date('Y-m-d H:i:s', $begin)) . "&enddate=" . urlencode(date('Y-m-d H:i:s', $end));
-        return $this->request($url);
+        $res = static::request($url);
+        if ($res) {
+            $res = Json::decode($res);
+            if ($res['status'] == 1) return $res;
+            return false;
+        }
+
+        return false;
     }
 
     /**

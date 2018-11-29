@@ -45,11 +45,11 @@ class BetList extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['record_id', 'user_id', 'platform_id', 'period_boot', 'period_round', 'bet_amount', 'profit', 'amount_before', 'amount_after', 'state', 'bet_at', 'draw_at', 'created_at'], 'integer'],
+            [['record_id', 'user_id', 'platform_id', 'bet_amount', 'profit', 'amount_before', 'amount_after', 'state', 'bet_at', 'draw_at', 'created_at'], 'integer'],
             [['user_id', 'platform_id'], 'required'],
             [['xima'], 'number'],
             [['username', 'platform_username', 'game_type'], 'string', 'max' => 64],
-            [['table_no'], 'string', 'max' => 16],
+            [['table_no', 'period_boot', 'period_round'], 'string', 'max' => 32],
             [['game_result'], 'string', 'max' => 128],
             [['bet_record'], 'string', 'max' => 255],
         ];

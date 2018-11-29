@@ -69,7 +69,9 @@ class PlatformService extends PlatformUser
                 }
                 //生成用户名
                 $username = $user->username . ($loop ? rand(100, 999) : '');
-                if ($this->getClient()->register($username, $password, $user)) {
+                if ($accountid = $this->getClient()->register($username, $password, $user)) {
+                    if ($accountid !== true)
+                        $this->game_account_id = $accountid;
                     $this->game_account = $username;
                     $this->game_password = $password;
                     $this->first_login_ip = yii::$app->request->getUserIP();
