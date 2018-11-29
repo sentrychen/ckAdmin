@@ -84,7 +84,7 @@ class Daily extends \yii\db\ActiveRecord
      */
     public static function addCounter($data)
     {
-        $model = static::findOne(date('Ymd'));
+        $model = static::findOne(['ymd'=>date('Ymd')]);
         if (!$model)
         {
             $model = new Daily();
@@ -107,7 +107,7 @@ class Daily extends \yii\db\ActiveRecord
      */
     public static function updateCounter($data)
     {
-        $model = static::findOne(date('Ymd'));
+        $model = static::findOne(['ymd'=>date('Ymd')]);
         if (!$model)
         {
             $model = new Daily();

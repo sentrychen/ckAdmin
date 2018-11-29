@@ -79,4 +79,50 @@ class AgentDaily extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Agent::class, ['id' => 'agent_id']);
     }
+
+    /**
+     *
+     *  AgentDaily::addCounter(['dnu'=>1]);
+     * @param $data
+     *
+     * @return bool
+     */
+    public static function addCounter($data)
+    {
+        $model = static::findOne(['ymd'=>date('Ymd'),'agent_id'=>$data['agent_id']]);
+        if (!$model)
+        {
+            $model = new AgentDaily();
+            $model->ymd = date('Ymd');
+        }
+        foreach ($data as $attr => $num) {
+            if ($model->hasAttribute($attr)) {
+                $model->$attr += (int)$num;
+            }
+        }
+        return $model->save(false);
+    }
+
+    /**
+     *
+     *  AgentDaily::updateCounter(['dau'=>10]);
+     * @param $data
+     *
+     * @return bool
+     */
+    public static function updateCounter($data)
+    {
+        $model = static::findOne(['ymd'=>date('Ymd'),'agent_id'=>$data['agent_id']]);
+        if (!$model)
+        {
+            $model = new AgentDaily();
+            $model->ymd = date('Ymd');
+        }
+        foreach ($data as $attr => $num) {
+            if ($model->hasAttribute($attr)) {
+                $model->$attr = (int)$num;
+            }
+        }
+        return $model->save(false);
+    }
 }

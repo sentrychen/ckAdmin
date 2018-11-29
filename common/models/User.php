@@ -266,8 +266,10 @@ class User extends ActiveRecord
             $stat = new UserStat();
             $stat->user_id = $this->id;
             $stat->save(false);
-
+            //日新增用户
             Daily::addCounter(['dnu' => 1]);
+            //某代理下日新增用户
+            AgentDaily::addCounter(['agent_id'=>$this->invite_agent_id,'dnu'=>1]);
         }
     }
 

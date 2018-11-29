@@ -387,5 +387,6 @@ class Agent extends ActiveRecord
     {
         return $this->hasOne(AgentAccount::class, ['agent_id' => 'id']);
     }
-
+    
+    
 }
