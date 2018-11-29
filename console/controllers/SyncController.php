@@ -14,6 +14,7 @@ use common\clients\JxbClient;
 use common\models\PlatformUser;
 use console\models\BetList;
 use console\models\Platform;
+use yii\console\ExitCode;
 use Yii;
 
 set_time_limit(0);
@@ -39,7 +40,7 @@ class SyncController extends \yii\console\Controller
         $endTime = $now = time();
 
         if (!$platform) {
-            return false;
+            return ExitCode::DATAERR;
         }
 
         $stepTime = 7 * 24 * 3600;
@@ -55,12 +56,12 @@ class SyncController extends \yii\console\Controller
                 $data = array_merge($data, $res['bet_list']);
             } else {
                 yii::error('error', '同步皇家国际投注记录失败[' . date('Y-m-d H:i:s', $startTime) . ' - ' . date('Y-m-d H:i:s', $endTime) . ']！， 原因：' . $res['err_msg']);
-                return false;
+                return ExitCode::UNAVAILABLE;
             }
             $startTime = $endTime + 1;
             $endTime = $now;
         }
-        $saveCnt = 0;
+
         if (!empty($data)) {
 
             foreach ($data as $row) {
@@ -91,13 +92,11 @@ class SyncController extends \yii\console\Controller
                     $model->state = $row['state'];
                     $model->bet_at = strtotime($row['bet_time']);
                     $model->draw_at = strtotime($row['draw_time']);
-                    if ($model->save(false)) {
-                        $saveCnt++;
-                    }
+                    $model->save(false);
                 }
             }
         }
-        return $saveCnt;
+        return ExitCode::OK;
     }
 
     //同步机械版投注记录
@@ -115,7 +114,7 @@ class SyncController extends \yii\console\Controller
         $endTime = $now = time();
 
         if (!$platform) {
-            return false;
+            return ExitCode::DATAERR;
         }
 
         $stepTime = 7 * 24 * 3600;
@@ -135,11 +134,11 @@ class SyncController extends \yii\console\Controller
                 continue;
             } else {
                 yii::error('error', '同步机械版投注记录失败[' . date('Y-m-d H:i:s', $startTime) . ' - ' . date('Y-m-d H:i:s', $endTime) . ']！， 原因：' . $res['err_msg']);
-                return false;
+                return ExitCode::UNAVAILABLE;
             }
 
         }
-        $saveCnt = 0;
+
         $resultTypes = [
             'baccarat' => [
                 'banker', 'player', 'tie',
@@ -190,12 +189,10 @@ class SyncController extends \yii\console\Controller
                     $model->state = $row['state'];
                     $model->bet_at = round($row['gameTime'] / 1000);
                     $model->draw_at = round($row['gameTime'] / 1000);
-                    if ($model->save(false)) {
-                        $saveCnt++;
-                    }
+                    $model->save(false);
                 }
             }
         }
-        return $saveCnt;
+        return ExitCode::OK;
     }
 }
