@@ -7,7 +7,7 @@ use Yii;
 use yii\base\Model;
 use api\models\User;
 use common\models\Daily;
-
+use common\models\AgentDaily;
 /**
  * Register form
  */
@@ -90,6 +90,7 @@ class RegisterForm extends Model
         if (!$agent_id) $agent_id = 0;
 
         $user->invite_agent_id = $agent_id;
+
         return  $user->save()? $user : null;
     }
 }

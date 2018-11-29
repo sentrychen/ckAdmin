@@ -111,15 +111,55 @@ class BetList extends \yii\db\ActiveRecord
     public function afterSave($insert, $changedAttributes)
     {
         parent::afterSave($insert, $changedAttributes);
-        if ($insert) {
-            $account = new UserAccount();
-            $account->user_id = $this->id;
-            $account->save(false);
-            $stat = new UserStat();
-            $stat->user_id = $this->id;
-            $stat->save(false);
+        if ($insert)
+        {
+            $start_time = strtotime(date('Y-m-d 00:00:00'));
+            $end_time = strtotime(date('Y-m-d 23:59:59'));
+            $dis_count = BetList::find()->select('user_id')->where(['between', 'bet_at', $start_time, $end_time])->distinct()->count();
+            $all_count = BetList::find()->select('user_id')->where(['between', 'bet_at', $start_time, $end_time])->count();
+            $sum_money = BetList::find()->where(['between', 'bet_at', $start_time, $end_time])->sum('bet_amount');
+            $win_money = BetList::find()->where(['>', 'profit', 0])->andFilterWhere(['between', 'bet_at', $start_time, $end_time])->sum('profit');
+            $lost_money = BetList::find()->where(['<', 'profit', 0])->andFilterWhere(['between', 'bet_at', $start_time, $end_time])->sum('profit');
 
-            Daily::addCounter(['dnu' => 1]);
+            $daliy = [
+                'dbu' => $dis_count,
+                'dbo' => $all_count,
+                'dba' => $sum_money,
+                'dpa' => $win_money,
+                'dla' => abs($lost_money)
+            ];
+            Daily::updateCounter($daliy);
+
+            $data = [];
+            $plat = BetList::find()->select(['platform_id','id'=>'count(id)','bet_amount'=>'sum(bet_amount)'])
+                    ->where(['between', 'bet_at', $start_time, $end_time])->groupBy('platform_id')->all();
+            foreach ($plat as $key =>$val){
+                $data[$val->platform_id]['platform_id'] = $val->platform_id;
+                $data[$val->platform_id]['dbo'] = $val->id;
+                $data[$val->platform_id]['dba'] = $val->bet_amount;
+            }
+
+            $dis_num = BetList::find()->select(['platform_id','user_id'=>'count(distinct(user_id))'])
+                       ->where(['between', 'bet_at', $start_time, $end_time])->groupBy('platform_id')->all();
+            foreach ($dis_num as $key => $val){
+                $data[$val->platform_id]['dbu'] = $val->user_id;
+            }
+
+            $win_amount = BetList::find()->select(['platform_id','profit'=>'sum(profit)'])->where(['>', 'profit', 0])
+                          ->andFilterWhere(['between', 'bet_at', $start_time, $end_time])->groupBy('platform_id')->all();
+            foreach ($win_amount as $key => $val){
+                $data[$val->platform_id]['dpa'] =  $val->profit;
+            }
+
+            $lost_amount = BetList::find()->select(['platform_id','profit'=>'sum(profit)'])->where(['<', 'profit', 0])
+                           ->andFilterWhere(['between', 'bet_at', $start_time, $end_time])->groupBy('platform_id')->all();
+            foreach ($lost_amount as $key =>  $val){
+                $data[$val->platform_id]['dla'] = abs($val->profit);
+            }
+
+            foreach($data as $arr){
+                PlatformDaily::updateCounter($arr);
+            }
         }
     }
 }
