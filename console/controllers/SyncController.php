@@ -14,8 +14,8 @@ use common\clients\JxbClient;
 use common\models\PlatformUser;
 use console\models\BetList;
 use console\models\Platform;
-use yii\console\ExitCode;
 use Yii;
+use yii\console\ExitCode;
 
 set_time_limit(0);
 
@@ -125,18 +125,17 @@ class SyncController extends \yii\console\Controller
             if ($endTime - $startTime > $stepTime)
                 $endTime = $startTime + $stepTime;
             $res = $client->betList($startTime, $endTime);
-
-            $startTime = $endTime + 1;
-            $endTime = $now;
-            if ($res['code'] === 0) {
-                $data = array_merge($data, $res['data']);
-            } elseif ($res['code'] === -1) {
-                continue;
-            } else {
+            if (!$res || !isset($res['code'])) {
                 yii::error('error', '同步机械版投注记录失败[' . date('Y-m-d H:i:s', $startTime) . ' - ' . date('Y-m-d H:i:s', $endTime) . ']！， 原因：' . $res['err_msg']);
                 return ExitCode::UNAVAILABLE;
             }
 
+            $startTime = $endTime + 1;
+            $endTime = $now;
+
+            if ($res['code'] === 0) {
+                $data = array_merge($data, $res['data']);
+            }
         }
 
         $resultTypes = [
