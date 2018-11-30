@@ -102,7 +102,7 @@ class SiteController extends \yii\web\Controller
         //今日新增代理数
         $agentToday = 0;
         $today = strtotime(date('Y-m-d'));
-        $ids = [];
+        $ids = [yii::$app->getUser()->getId()];
         foreach ($agents as $row) {
             $ids[] = $row['id'];
             if ($row['created_at'] >= $today) $agentToday++;
