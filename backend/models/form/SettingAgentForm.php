@@ -34,6 +34,8 @@ class SettingAgentForm extends \common\models\Options
     public $agent_user_reg_url;     //用户注册网址
 
     public $agent_reg_url;          //代理注册网址
+    public $agent_apk_url;          //安卓下载链接
+    public $agent_ios_url;          //iOS下载链接
 
     /**
      * @inheritdoc
@@ -51,7 +53,9 @@ class SettingAgentForm extends \common\models\Options
             'agent_reg_url' => '代理注册网址',
             'agent_xima_status' => '查看洗码',
             'agent_xima_type' => '洗码类型',
-            'agent_xima_rate' => '洗码率'
+            'agent_xima_rate' => '洗码率',
+            'agent_apk_url' => '安卓下载链接',
+            'agent_ios_url' => 'iOS下载链接'
         ];
     }
 
@@ -65,10 +69,12 @@ class SettingAgentForm extends \common\models\Options
                 [
                     'agent_backend_url',
                     'agent_user_reg_url',
-                    'agent_reg_url'
+                    'agent_reg_url',
+                    'agent_apk_url'
                 ],
                 'url'
             ],
+            [['agent_ios_url'], 'match', 'pattern' => '/^itms-services:\/\/\?action=download-manifest&url=https:\/\/.+\.plist$/', 'message' => '请输入itms-services开头的URL'],
             [['agent_status', 'agent_default_code', 'agent_max_level', 'agent_xima_type', 'agent_xima_status'], 'integer'],
             [['agent_max_rebate', 'agent_default_rebate', 'agent_xima_rate'], 'double', 'min' => 0, 'max' => 100],
             [['agent_max_rebate', 'agent_default_rebate', 'agent_xima_rate'], 'filter', 'filter' =>function($value){return $value/100;}],

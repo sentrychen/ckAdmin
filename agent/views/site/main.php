@@ -23,11 +23,10 @@ EchartAsset::register($this);
             <div class="ibox-title">
                 <h5>代理总数</h5>
             </div>
-            <div class="ibox-content openContab" href="<?= Url::to(['article/index']) ?>"
-                 title="<?= yii::t('app', 'Articles') ?>" style="cursor: pointer">
-                <h1 class="no-margins">20</h1>
-                <div class="stat-percent font-bold text-success">1% <i
-                            class="fa fa-bolt"></i></div>
+            <div class="ibox-content openContab" href="<?= Url::to(['agent/index']) ?>"
+                 title="下级代理" style="cursor: pointer">
+                <h1 class="no-margins"><?= $statics['agentTotal'] ?></h1>
+                <div class="stat-percent font-bold text-success"></div>
                 <small><?= yii::t('app', 'Total') ?></small>
             </div>
         </div>
@@ -37,11 +36,9 @@ EchartAsset::register($this);
             <div class="ibox-title">
                 <h5>今日新增代理</h5>
             </div>
-            <div class="ibox-content openContab" href="<?= Url::to(['comment/index']) ?>"
-                 title="<?= yii::t('app', 'Comments') ?>" style="cursor: pointer">
-                <h1 class="no-margins">10</h1>
-                <div class="stat-percent font-bold text-info">0% <i
-                            class="fa fa-level-up"></i></div>
+            <div class="ibox-content">
+                <h1 class="no-margins"><?= $statics['agentToday'] ?></h1>
+                <div class="stat-percent font-bold text-info"></div>
                 <small><?= yii::t('app', 'Total') ?></small>
             </div>
         </div>
@@ -53,9 +50,8 @@ EchartAsset::register($this);
             </div>
             <div class="ibox-content openContab" href="<?= Url::to(['user/index']) ?>"
                  title="<?= yii::t('app', 'Users') ?>" style="cursor: pointer">
-                <h1 class="no-margins">85</h1>
-                <div class="stat-percent font-bold text-navy">5% <i class="fa fa-level-up"></i>
-                </div>
+                <h1 class="no-margins"><?= $statics['userTotal'] ?></h1>
+                <div class="stat-percent font-bold text-navy"></div>
                 <small><?= yii::t('app', 'Total') ?></small>
             </div>
         </div>
@@ -65,11 +61,9 @@ EchartAsset::register($this);
             <div class="ibox-title">
                 <h5>今日新增会员</h5>
             </div>
-            <div class="ibox-content openContab" href="<?= Url::to(['friendly-link/index']) ?>"
-                 title="<?= yii::t('app', 'Friendly Links') ?>" style="cursor: pointer">
-                <h1 class="no-margins">5</h1>
-                <div class="stat-percent font-bold text-info">10.3% <i
-                            class="fa fa-level-up"></i></div>
+            <div class="ibox-content">
+                <h1 class="no-margins"><?= $statics['agentToday'] ?></h1>
+                <div class="stat-percent font-bold text-info"></div>
                 <small><?= yii::t('app', 'Total') ?></small>
             </div>
         </div>
@@ -81,11 +75,10 @@ EchartAsset::register($this);
                 <div class="ibox-title">
                     <h5>当前代理信息</h5>
                 </div>
-                <div class="ibox-content">
+                <div class="ibox-content" style="height:418px;">
                     <?= DetailView::widget([
                         'model' => yii::$app->getUser()->getIdentity(),
                         'attributes' => [
-                            'id',
                             'username',
                             [
                                 'label' => '上级代理',
@@ -99,10 +92,21 @@ EchartAsset::register($this);
                                 }
                             ],
                             'created_at:date',
-
                             'account.available_amount:currency',
-                            'account.frozen_amount:currency',
-
+                            ['label' => '会员推广链接',
+                                'value' => function ($model) {
+                                    return yii::$app->option->agent_user_reg_url . '?code=' . $model->promo_code;
+                                }
+                            ],
+                            ['label' => '代理推广链接',
+                                'value' => function ($model) {
+                                    return yii::$app->option->agent_reg_url . '?code=' . $model->promo_code;
+                                }
+                            ],
+                            ['label' => '代理推广二维码',
+                                'format' => 'raw',
+                                'value' => '<img src=' . Url::to(['site/code']) . ' />',
+                            ]
                         ],
                     ]) ?>
 
@@ -121,7 +125,7 @@ EchartAsset::register($this);
                     </div>
                 </div>
                 <div class="ibox-content">
-                    <div class="flot-chart" style="height:265px;">
+                    <div class="flot-chart" style="height:382px;">
                         <div class="flot-chart-content" id="flot-wl-chart"></div>
                     </div>
                 </div>

@@ -8,8 +8,11 @@
 
 namespace agent\controllers;
 
+use agent\models\Agent;
 use agent\models\Message;
 use agent\models\Notice;
+use common\helpers\Util;
+use dosamigos\qrcode\QrCode;
 use yii;
 use Exception;
 
@@ -19,6 +22,7 @@ use yii\base\UserException;
 use yii\db\Query;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
+use yii\helpers\Url;
 use yii\web\HttpException;
 use yii\captcha\CaptchaAction;
 
@@ -33,7 +37,7 @@ class SiteController extends \yii\web\Controller
         return [
             'access' => [
                 'class' => AccessControl::class,
-                'except' => ['login', 'captcha', 'language'],
+                'except' => ['login', 'captcha', 'language', 'download'],
                 'rules' => [
                     [
                         'allow' => true,
@@ -92,7 +96,29 @@ class SiteController extends \yii\web\Controller
     public function actionMain()
     {
 
-        return $this->render('main');
+        $agents = Agent::getAgentTree(null, yii::$app->getUser()->getId());
+        //下级代理总数
+        $statics['agentTotal'] = count($agents);
+        //今日新增代理数
+        $agentToday = 0;
+        $today = strtotime(date('Y-m-d'));
+        $ids = [];
+        foreach ($agents as $row) {
+            $ids[] = $row['id'];
+            if ($row['created_at'] >= $today) $agentToday++;
+        }
+
+        $statics['agentToday'] = $agentToday;
+        //获得总用户数
+
+        $query = User::find()->where(['invite_agent_id' => $ids]);
+        $statics['userTotal'] = $query->count();
+
+        //今日注册用户
+        $statics['userToday'] = $query->andWhere(['>=', 'created_at', $today])->count();
+
+
+        return $this->render('main', ['statics' => $statics]);
     }
 
     /**
@@ -114,6 +140,24 @@ class SiteController extends \yii\web\Controller
                 'model' => $model,
             ]);
         }
+    }
+
+    public function actionDownload()
+    {
+        $code = yii::$app->getRequest()->get('code', yii::$app->option->agent_default_code);
+
+        $client = Util::getClientType();
+        if ($client == 'IOS') {
+            return $this->redirect(yii::$app->option->agent_ios_url);
+        } else {
+            return $this->redirect(yii::$app->option->agent_apk_url);
+        }
+
+    }
+
+    public function actionCode()
+    {
+        return QrCode::png(Url::to(['download', 'code' => yii::$app->getUser()->getIdentity()->promo_code], true));
     }
 
     /**

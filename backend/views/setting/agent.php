@@ -46,6 +46,10 @@ $this->params['breadcrumbs'][] = '代理设置';
                 <div class="hr-line-dashed"></div>
                 <?= $form->field($model, 'agent_reg_url') ?>
                 <div class="hr-line-dashed"></div>
+                <?= $form->field($model, 'agent_apk_url') ?>
+                <div class="hr-line-dashed"></div>
+                <?= $form->field($model, 'agent_ios_url') ?>
+                <div class="hr-line-dashed"></div>
                 <?= $form->defaultButtons() ?>
                 <?php ActiveForm::end(); ?>
             </div>

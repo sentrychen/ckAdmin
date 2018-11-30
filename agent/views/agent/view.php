@@ -46,12 +46,12 @@ use yii\widgets\DetailView;
         'updated_at:datetime',
         ['label' => '会员推广链接',
             'value' => function ($model) {
-                return yii::$app->feehi->agent_user_reg_url . '?code=' . $model->promo_code;
+                return yii::$app->option->agent_user_reg_url . '?code=' . $model->promo_code;
             }
         ],
         ['label' => '代理推广链接',
             'value' => function ($model) {
-                return yii::$app->feehi->agent_reg_url . '?code=' . $model->promo_code;
+                return yii::$app->option->agent_reg_url . '?code=' . $model->promo_code;
             }
         ]
     ],
