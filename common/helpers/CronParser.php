@@ -179,7 +179,7 @@ class CronParser
         foreach ($crons['month'] as $month) {
             // 获取此月最大天数
 
-            $maxDay = self::cal_days_in_month(CAL_GREGORIAN, $month, $nowyear);
+            $maxDay = self::cal_days_in_month(0, $month, $nowyear);
             foreach (range(1, $maxDay) as $day) {
                 foreach ($crons['hours'] as $hours) {
                     foreach ($crons['minutes'] as $minutes) {
