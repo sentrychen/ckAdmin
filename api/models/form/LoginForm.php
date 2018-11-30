@@ -1,8 +1,11 @@
 <?php
 namespace api\models\form;
 
+use common\models\AgentDaily;
 use common\models\Daily;
+use common\models\PlatformDaily;
 use common\models\UserLoginLog;
+use common\models\PlatformUser;
 use Yii;
 use yii\base\Model;
 use api\models\User;
@@ -133,12 +136,28 @@ class LoginForm extends Model
             'client_type' => $client_type,
             'client_version' => Yii::$app->request->getUserAgent(),
         ];
+
         $model = new UserLoginLog();
         $model->setAttributes($loginData);
         $model->save(false);
-        $num = UserLoginLog::find()->select('user_id')->where(['>','created_at',strtotime(date('Y-m-d'))])
-                                    ->distinct()->count();
-        Daily::updateCounter(['dau'=>$num]);
 
+        $start_time = strtotime(date('Y-m-d 00:00:00'));
+        $end_time = strtotime(date('Y-m-d 23:59:59'));
+        $user = User::findOne(['id' => $this->_user->id]);
+        $agent_id = $user->invite_agent_id;
+        $num = UserLoginLog::find()->select('user_id')
+               ->where(['user_id'=>$this->_user->id])
+               ->andFilterWhere(['between', 'created_at', $start_time, $end_time])
+               ->count();
+        if($num==1){
+            Daily::addCounter(['dau'=>$num]);
+            AgentDaily::addCounter(['agent_id'=>$agent_id,'dau'=>$num]);
+            $platform_user = PlatformUser::findOne(['user_id'=>$this->_user->id]);
+            if($platform_user){
+                $platform_id = $platform_user->platform_id?$platform_user->platform_id:0;
+                PlatformDaily::addCounter(['platform_id'=>$platform_id,'dau'=>$num]);
+            }
+
+        }
     }
 }
