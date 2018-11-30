@@ -92,7 +92,7 @@ class SyncController extends \yii\console\Controller
                     $model->state = $row['state'];
                     $model->bet_at = strtotime($row['bet_time']);
                     $model->draw_at = strtotime($row['draw_time']);
-                    echo $model->save(false);
+                    $model->save(false);
                 }
             }
         }
@@ -161,7 +161,6 @@ class SyncController extends \yii\console\Controller
                     $model = new BetList();
 
                     $platformUser = PlatformUser::findOne(['game_account' => $row['username'], 'platform_id' => $platform->id]);
-                    echo $platform->id;
                     if (!$platformUser) continue;
                     $model->record_id = $row['id'];
                     $model->user_id = $platformUser->user_id;
@@ -188,7 +187,7 @@ class SyncController extends \yii\console\Controller
                     $model->state = 1;
                     $model->bet_at = round($row['gameTime'] / 1000);
                     $model->draw_at = round($row['gameTime'] / 1000);
-                    echo $model->save(false);
+                    $model->save(false);
                 }
             }
         }
