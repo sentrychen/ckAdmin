@@ -142,6 +142,12 @@ class CronParser
 
     }
 
+    private static function cal_days_in_month($calendar, $month, $year)
+    {
+        return date('t', mktime(0, 0, 0, $month, 1, $year));
+    }
+
+
     /**
      * 判断tag是否可再次切割
      * @param string $tag
@@ -172,7 +178,8 @@ class CronParser
 
         foreach ($crons['month'] as $month) {
             // 获取此月最大天数
-            $maxDay = cal_days_in_month(CAL_GREGORIAN, $month, $nowyear);
+
+            $maxDay = self::cal_days_in_month(CAL_GREGORIAN, $month, $nowyear);
             foreach (range(1, $maxDay) as $day) {
                 foreach ($crons['hours'] as $hours) {
                     foreach ($crons['minutes'] as $minutes) {
