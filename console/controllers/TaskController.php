@@ -66,7 +66,7 @@ class TaskController extends Controller
                     proc_close($result);
                     unset($pool[$i]);
                     # 记录任务状态
-                    $tasks[$i]->exectime = round($this->getCurrentTime() - $startExectime, 2);
+                    $tasks[$i]->exec_time = round($this->getCurrentTime() - $startExectime, 2);
                     $tasks[$i]->last_run_at = strtotime(date('Y-m-d H:i'));
                     $tasks[$i]->next_run_at = $tasks[$i]->getNextRunDate();
                     $tasks[$i]->status = 0;
