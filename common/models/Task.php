@@ -2,7 +2,9 @@
 
 namespace common\models;
 
+use common\helpers\CronParser;
 use Yii;
+use yii\behaviors\TimestampBehavior;
 
 /**
  * This is the model class for table "{{%task}}".
@@ -22,12 +24,29 @@ use Yii;
  */
 class Task extends \yii\db\ActiveRecord
 {
+    const STATUS_OK = 0;
+    const STATUS_ERROR = 1;
+    const SWITCH_ENABLED = 1;
+    const SWITCH_DISABLED = 0;
+
+
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
         return '{{%task}}';
+    }
+
+
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return [
+            TimestampBehavior::class,
+        ];
     }
 
     /**
@@ -48,18 +67,49 @@ class Task extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'name' => '定时任务名称',
-            'route' => '任务路由',
+            'id' => '任务编号',
+            'name' => '任务名称',
+            'route' => '路由',
             'crontab_str' => 'crontab格式',
             'switch' => '任务开关',
-            'status' => '任务运行状态',
+            'status' => '运行状态',
             'run_times' => '运行次数',
             'error_times' => '失败次数',
             'last_run_at' => '上次运行时间',
             'next_run_at' => '下次运行时间',
-            'exec_mem' => '执行消耗内存(单位/byte)',
-            'exec_time' => '执行消耗时间',
+            'exec_mem' => '消耗内存',
+            'exec_time' => '消耗时间',
         ];
     }
+
+    public static function getStatuses($key = null)
+    {
+        $status = [
+            self::STATUS_OK => '正常',
+            self::STATUS_ERROR => '错误'
+        ];
+        return $status[$key] ?? $status;
+    }
+
+    public static function getSwitchs($key = null)
+    {
+        $status = [
+            self::SWITCH_DISABLED => '关闭',
+            self::SWITCH_ENABLED => '开启'
+        ];
+        return $status[$key] ?? $status;
+    }
+
+    /**
+     * 计算下次运行时间
+     * @author jlb
+     */
+    public function getNextRunDate()
+    {
+        if (!CronParser::check($this->crontab_str)) {
+            throw new \Exception("格式校验失败: {$this->crontab_str}", 1);
+        }
+        return strtotime(CronParser::formatToDate($this->crontab_str, 1)[0]);
+    }
+
 }

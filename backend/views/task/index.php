@@ -1,5 +1,6 @@
 <?php
 
+use backend\models\Task;
 use common\widgets\Bar;
 use common\grid\CheckboxColumn;
 use common\grid\ActionColumn;
@@ -18,7 +19,9 @@ $this->params['breadcrumbs'][] = '任务列表';
             <?= $this->render('/widgets/_ibox-title') ?>
             <div class="ibox-content">
                 <div class="toolbar clearfix">
-                    <?= Bar::widget() ?>
+                    <?= Bar::widget([
+                        'template' => '{refresh} {create} ',
+                    ]) ?>
                     <?=$this->render('_search', ['model' => $searchModel]); ?>
                 </div>
                 <?= GridView::widget([
@@ -26,22 +29,34 @@ $this->params['breadcrumbs'][] = '任务列表';
                    // 'filterModel' => $searchModel,
                     'filterModel' => null,
                     'columns' => [
-                        ['class' => CheckboxColumn::className()],
 
                         'id',
                         'name',
                         'route',
                         'crontab_str',
-                        'switch',
-                        // 'status',
-                        // 'run_times:datetime',
-                        // 'error_times:datetime',
-                        // 'last_run_at',
-                        // 'next_run_at',
-                        // 'exec_mem',
-                        // 'exec_time:datetime',
+                        [
+                            'attribute' => 'switch',
+                            'format' => 'raw',
+                            'value' => function ($model) {
+                                $class = ['danger', 'primary'];
+                                return '<span class="badge label-' . ($class[$model->switch] ?? 'info') . '">' . Task::getSwitchs($model->switch) . '</span>';
+                            }
+                        ],
+                        [
+                            'attribute' => 'status',
+                            'format' => 'raw',
+                            'value' => function ($model) {
+                                $class = ['primary', 'danger'];
+                                return '<span class="badge label-' . ($class[$model->status] ?? 'info') . '">' . Task::getStatuses($model->status) . '</span>';
+                            }
+                        ],
+                        'last_run_at:date',
+                        'next_run_at:date',
+                        'exec_time',
 
-                        ['class' => ActionColumn::className(),],
+                        ['class' => ActionColumn::className(),
+                            'template' => '{update} {delete}',
+                        ],
                     ],
                 ]); ?>
             </div>

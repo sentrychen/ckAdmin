@@ -72,7 +72,7 @@ class SyncController extends \yii\console\Controller
 
                     $platformUser = PlatformUser::findOne(['game_account' => $row['username'], 'platform_id' => $platform->id]);
                     if (!$platformUser) continue;
-
+                    $model->record_id = $row['record_id'];
                     $model->user_id = $platformUser->user_id;
                     $model->username = $platformUser->user->username;
                     $model->platform_username = $row['username'];
@@ -92,7 +92,7 @@ class SyncController extends \yii\console\Controller
                     $model->state = $row['state'];
                     $model->bet_at = strtotime($row['bet_time']);
                     $model->draw_at = strtotime($row['draw_time']);
-                    $model->save(false);
+                    echo $model->save(false);
                 }
             }
         }
@@ -156,14 +156,14 @@ class SyncController extends \yii\console\Controller
         if (!empty($data)) {
 
             foreach ($data as $row) {
-                if ($row['state'] != 1) continue;
-
-                if (!BetList::findOne(['record_id' => $row['record_id']])) {
+                //if ($row['state'] != 1) continue;
+                if (!BetList::findOne(['record_id' => $row['id']])) {
                     $model = new BetList();
 
                     $platformUser = PlatformUser::findOne(['game_account' => $row['username'], 'platform_id' => $platform->id]);
+                    echo $platform->id;
                     if (!$platformUser) continue;
-
+                    $model->record_id = $row['id'];
                     $model->user_id = $platformUser->user_id;
                     $model->username = $platformUser->user->username;
                     $model->platform_username = $row['username'];
@@ -185,10 +185,10 @@ class SyncController extends \yii\console\Controller
                     $model->amount_before = $row['beforeAmount'];
                     $model->amount_after = $row['afterAmount'];
                     $model->xima = '';
-                    $model->state = $row['state'];
+                    $model->state = 1;
                     $model->bet_at = round($row['gameTime'] / 1000);
                     $model->draw_at = round($row['gameTime'] / 1000);
-                    $model->save(false);
+                    echo $model->save(false);
                 }
             }
         }

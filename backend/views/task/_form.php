@@ -1,5 +1,6 @@
 <?php
 
+use backend\models\Task;
 use common\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
@@ -26,28 +27,7 @@ use common\widgets\ActiveForm;
                         <?= $form->field($model, 'crontab_str')->textInput(['maxlength' => true]) ?>
                         <div class="hr-line-dashed"></div>
 
-                        <?= $form->field($model, 'switch')->textInput() ?>
-                        <div class="hr-line-dashed"></div>
-
-                        <?= $form->field($model, 'status')->textInput() ?>
-                        <div class="hr-line-dashed"></div>
-
-                        <?= $form->field($model, 'run_times')->textInput() ?>
-                        <div class="hr-line-dashed"></div>
-
-                        <?= $form->field($model, 'error_times')->textInput() ?>
-                        <div class="hr-line-dashed"></div>
-
-                        <?= $form->field($model, 'last_run_at')->textInput() ?>
-                        <div class="hr-line-dashed"></div>
-
-                        <?= $form->field($model, 'next_run_at')->textInput() ?>
-                        <div class="hr-line-dashed"></div>
-
-                        <?= $form->field($model, 'exec_mem')->textInput() ?>
-                        <div class="hr-line-dashed"></div>
-
-                        <?= $form->field($model, 'exec_time')->textInput() ?>
+                <?= $form->field($model, 'switch')->radioList(Task::getSwitchs()) ?>
                         <div class="hr-line-dashed"></div>
 
                         <?= $form->defaultButtons() ?>

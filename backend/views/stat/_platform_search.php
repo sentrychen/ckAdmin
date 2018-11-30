@@ -16,6 +16,6 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'platform_id')->dropDownList(Platform::getPlatformNames()) ?>
     <?= $form->field($model, 'ymd')->dateRange(['ranges' => ['本周', '上周', '本月', '上月', '今年', '去年']]) ?>
-    <?= $form->searchButtons() ?>
+    <?= $form->searchButtons(['platform']) ?>
     <?php SearchForm::end(); ?>
 </div>

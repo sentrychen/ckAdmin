@@ -11,6 +11,6 @@ use common\widgets\SearchForm;
     <?php $form = SearchForm::begin(['action' => ['daily']]); ?>
 
     <?= $form->field($model, 'ymd')->dateRange(['ranges' => ['本周', '上周', '本月', '上月', '今年', '去年']]) ?>
-    <?= $form->searchButtons() ?>
+    <?= $form->searchButtons(['daily']) ?>
     <?php SearchForm::end(); ?>
 </div>

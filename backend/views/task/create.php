@@ -7,8 +7,8 @@ use yii\helpers\Url;
 /* @var $model backend\models\Task */
 
 $this->params['breadcrumbs'] = [
-    ['label' => yii::t('app', 'Task'), 'url' => Url::to(['index'])],
-    ['label' => yii::t('app', 'Create') . yii::t('app', 'Task')],
+    ['label' => '任务列表', 'url' => Url::to(['index'])],
+    ['label' => '新建任务'],
 ];
 ?>
 <?= $this->render('_form', [

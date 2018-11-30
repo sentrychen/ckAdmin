@@ -15,6 +15,6 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'agent_id')->label('代理账户')->dropDownList(Agent::getAgentTreeList()) ?>
     <?= $form->field($model, 'ymd')->dateRange(['ranges' => ['本周', '上周', '本月', '上月', '今年', '去年']]) ?>
-    <?= $form->searchButtons() ?>
+    <?= $form->searchButtons(['agent']) ?>
     <?php SearchForm::end(); ?>
 </div>

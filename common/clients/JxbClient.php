@@ -158,7 +158,7 @@ class JxbClient extends ClientAbstract
         $data['beginTime'] = $begindate * 1000;
         $data['endTime'] = $enddate * 1000;
         $url = "{$this->apiHost}/admin/backend/user/gamerecord/list";
-        return static::get($url, $data);
+        return Json::decode(static::get($url, $data));
         
     }
 

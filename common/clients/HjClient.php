@@ -157,6 +157,7 @@ class HjClient extends ClientAbstract
             return false;
         }
         $url = "{$this->apiHost}/betlist?sign={$this->sign}&begindate=" . urlencode(date('Y-m-d H:i:s', $begin)) . "&enddate=" . urlencode(date('Y-m-d H:i:s', $end));
+        //$url = "http://43.249.206.212/apihj/api.php?api=Betlist&begindate=2018-10-3&enddate=2018-10-7";
         $res = static::request($url);
         if ($res) {
             $res = Json::decode($res);

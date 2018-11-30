@@ -29,7 +29,7 @@ $this->params['breadcrumbs'][] = '平台日报';
                         ['attribute' => 'ymd', 'value' => function ($model) {
                             return date('Y-m-d', strtotime($model->ymd));
                         }],
-                        ['attribute' => 'platform_id', 'value' => 'platform.username'],
+                        ['attribute' => 'platform_id', 'value' => 'platform.name'],
                         'dnu', 'dau', 'dua', 'dda', 'dbu', 'dbo', 'dba', 'dpa', 'dla'
                     ],
                 ]); ?>

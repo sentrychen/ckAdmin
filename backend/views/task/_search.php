@@ -15,30 +15,9 @@ use yii\helpers\ArrayHelper;
 
     <?php $form = SearchForm::begin([]); ?>
 
-    <?= $form->field($model, 'id') ?>
-
     <?= $form->field($model, 'name') ?>
-
-    <?= $form->field($model, 'route') ?>
-
-    <?php //= $form->field($model, 'crontab_str') ?>
-
-    <?= $form->field($model, 'switch') ?>
-
-    <?php // echo $form->field($model, 'status') ?>
-
-    <?php // echo $form->field($model, 'run_times') ?>
-
-    <?php // echo $form->field($model, 'error_times') ?>
-
-    <?php // echo $form->field($model, 'last_run_at') ?>
-
-    <?php // echo $form->field($model, 'next_run_at') ?>
-
-    <?php // echo $form->field($model, 'exec_mem') ?>
-
-    <?php // echo $form->field($model, 'exec_time') ?>
-
+    <?= $form->field($model, 'switch')->dropDownList(Task::getSwitchs()) ?>
+    <?= $form->field($model, 'status')->dropDownList(Task::getStatuses()) ?>
     <?=$form->searchButtons()?>
     <?php SearchForm::end(); ?>
 

@@ -20,7 +20,7 @@ class TaskController extends Controller
     public function actionIndex()
     {
 
-        $Task = Task::findAll(['switch' => TASK::TASK_SWITCH_OPEN]);
+        $Task = Task::findAll(['switch' => Task::SWITCH_ENABLED]);
         $tasks = [];
 
         foreach ($Task as $task) {
@@ -33,7 +33,7 @@ class TaskController extends Controller
             }
 
             // 判断运行时间到了没
-            if ($task->next_run_at <= date('Y-m-d H:i:s')) {
+            if ($task->next_run_at <= time()) {
                 $tasks[] = $task;
             }
         }
@@ -67,14 +67,15 @@ class TaskController extends Controller
                     unset($pool[$i]);
                     # 记录任务状态
                     $tasks[$i]->exectime = round($this->getCurrentTime() - $startExectime, 2);
-                    $tasks[$i]->last_rundate = date('Y-m-d H:i');
-                    $tasks[$i]->next_rundate = $tasks[$i]->getNextRunDate();
+                    $tasks[$i]->last_run_at = strtotime(date('Y-m-d H:i'));
+                    $tasks[$i]->next_run_at = $tasks[$i]->getNextRunDate();
                     $tasks[$i]->status = 0;
                     // 任务出错
                     if ($etat['exitcode'] !== ExitCode::OK) {
                         $tasks[$i]->status = 1;
+                        $tasks[$i]->error_times = $tasks[$i]->error_times + 1;
                     }
-
+                    $tasks[$i]->run_times = $tasks[$i]->run_times + 1;
                     $tasks[$i]->save(false);
                 }
             }
