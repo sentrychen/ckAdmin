@@ -9,6 +9,7 @@ namespace api\controllers;
 use api\components\RestHttpException;
 use api\models\Trade;
 use yii\data\ActiveDataProvider;
+use common\helpers\Util;
 use Yii;
 
 
@@ -26,15 +27,10 @@ class TradeController extends ActiveController
     {
         $user = Yii::$app->getUser()->getIdentity();
         $trade = new Trade();
-
         $request = Yii::$app->getRequest()->getQueryParams();
-        $startDate = isset($request['startDate'])?$request['startDate']:'';
-        $endDate = isset($request['endDate'])?$request['endDate']:'';
         $model = $trade::find()->where(['user_id' => $user->getId()]);
-        if(!empty($startDate)) {
-            $startTime = strtotime($startDate.' 00:00:00');
-            $endTime = $endDate?strtotime($endDate.' 23:59:59'):strtotime($startDate.' 23:59:59');
-            $model->andFilterWhere(['between', 'created_at',$startTime,$endTime]);
+        if(isset($request['startDate']) && $request['startDate']!='') {
+            $model->andFilterWhere(Util::getBetweenDate('created_at',$request));
         }
         $model->orderBy('id');
         if(!empty($request))

@@ -8,6 +8,8 @@
 namespace api\controllers;
 use api\components\RestHttpException;
 use api\models\UserDeposit;
+use backend\behaviors\TimeSearchBehavior;
+use common\helpers\Util;
 use yii\data\ActiveDataProvider;
 use Yii;
 use common\models\Daily;
@@ -27,12 +29,8 @@ class DepositController extends ActiveController
         $deposit = new UserDeposit();
         $request = Yii::$app->getRequest()->getQueryParams();
         $model = $deposit::find()->where(['user_id' => $user->getId()]);
-        $startDate = isset($request['startDate'])?$request['startDate']:'';
-        $endDate = isset($request['endDate'])?$request['endDate']:'';
-        if(!empty($startDate)) {
-            $startTime = strtotime($startDate.' 00:00:00');
-            $endTime = $endDate?strtotime($endDate.' 23:59:59'):strtotime($startDate.' 23:59:59');
-            $model->andFilterWhere(['between', 'created_at',$startTime,$endTime]);
+        if(isset($request['startDate']) && $request['startDate']!='') {
+            $model->andFilterWhere(Util::getBetweenDate('created_at',$request));
         }
         $model->orderBy('id');
         if(!empty($request))

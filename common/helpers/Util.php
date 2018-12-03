@@ -326,4 +326,22 @@ class Util
         return $version;
     }
 
+    /*
+     * between时间处理
+     * @param $timeAttributes string 时间属性
+     * @param $request obj/array 请求对象/数组
+     * @return array
+     */
+    public static function getBetweenDate($timeAttributes,$request){
+        $startDate = isset($request['startDate'])?$request['startDate']:'';
+        $endDate = isset($request['endDate'])?$request['endDate']:'';
+        $info = [];
+        if(!empty($startDate)) {
+            $startTime = strtotime($startDate.' 00:00:00');
+            $endTime = $endDate?strtotime($endDate.' 23:59:59'):strtotime($startDate.' 23:59:59');
+            $info = ['between', $timeAttributes,$startTime,$endTime];
+        }
+        return $info;
+    }
+
 }
