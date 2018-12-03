@@ -12,7 +12,6 @@ use api\models\BetList;
 use yii\data\ActiveDataProvider;
 use Yii;
 
-
 class BetController extends ActiveController
 {
     public $modelClass = "api\models\User";
@@ -25,10 +24,23 @@ class BetController extends ActiveController
      */
     public function actionList()
     {
+
         $user = Yii::$app->getUser()->getIdentity();
         $bet_list = new BetList();
-        $model = $bet_list::find()->where(['user_id' => $user->getId()])->orderBy('id');
         $request = Yii::$app->getRequest()->getQueryParams();
+        $startDate = isset($request['startDate'])?$request['startDate']:'';
+        $endDate = isset($request['endDate'])?$request['endDate']:'';
+        $condition = ['user_id' => $user->getId()];
+
+        $model = $bet_list::find()->where($condition);
+        if(!empty($startDate)) {
+            $startTime = strtotime($startDate.' 00:00:00');
+            $endTime = $endDate?strtotime($endDate.' 23:59:59'):strtotime($startDate.' 23:59:59');
+            $model->andFilterWhere(['between', 'bet_at',$startTime,$endTime]);
+        }
+        $model->orderBy('id desc');
+
+
         if(!empty($request))
         {
             return $provider = new ActiveDataProvider([

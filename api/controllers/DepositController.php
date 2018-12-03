@@ -25,8 +25,16 @@ class DepositController extends ActiveController
     {
         $user = Yii::$app->getUser()->getIdentity();
         $deposit = new UserDeposit();
-        $model = $deposit::find()->where(['user_id' => $user->getId()])->orderBy('id');
         $request = Yii::$app->getRequest()->getQueryParams();
+        $model = $deposit::find()->where(['user_id' => $user->getId()]);
+        $startDate = isset($request['startDate'])?$request['startDate']:'';
+        $endDate = isset($request['endDate'])?$request['endDate']:'';
+        if(!empty($startDate)) {
+            $startTime = strtotime($startDate.' 00:00:00');
+            $endTime = $endDate?strtotime($endDate.' 23:59:59'):strtotime($startDate.' 23:59:59');
+            $model->andFilterWhere(['between', 'created_at',$startTime,$endTime]);
+        }
+        $model->orderBy('id');
         if(!empty($request))
         {
             return $provider = new ActiveDataProvider([
