@@ -15,7 +15,7 @@ use yii\helpers\Json;
 class JxbClient extends ClientAbstract
 {
 
-    protected $apiHost = "http://103.231.167.85:8888";
+    protected $apiHost = "http://43.249.206.216:8888";
 
 
     /**
