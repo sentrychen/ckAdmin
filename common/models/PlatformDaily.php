@@ -84,12 +84,14 @@ class PlatformDaily extends \yii\db\ActiveRecord
         $model = static::findOne(['ymd'=>date('Ymd'),'platform_id'=>$data['platform_id']]);
         if (!$model)
         {
-            $model = new Daily();
+            $model = new PlatformDaily();
             $model->ymd = date('Ymd');
+            $model->platform_id = $data['platform_id'];
         }
         foreach ($data as $attr => $num) {
             if ($model->hasAttribute($attr)) {
-                $model->$attr += (int)$num;
+                if($attr != 'platform_id')
+                    $model->$attr += (int)$num;
             }
         }
         return $model->save(false);
@@ -109,10 +111,12 @@ class PlatformDaily extends \yii\db\ActiveRecord
         {
             $model = new PlatformDaily();
             $model->ymd = date('Ymd');
+            $model->platform_id = $data['platform_id'];
         }
         foreach ($data as $attr => $num) {
             if ($model->hasAttribute($attr)) {
-                $model->$attr = (int)$num;
+                if($attr != 'platform_id')
+                    $model->$attr += (int)$num;
             }
         }
         return $model->save(false);

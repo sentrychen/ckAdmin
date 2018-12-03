@@ -192,16 +192,19 @@ class UserDeposit extends \yii\db\ActiveRecord
 
                 $start_time = strtotime(date('Y-m-d 00:00:00'));
                 $end_time = strtotime(date('Y-m-d 23:59:59'));
-                $num  = UserDeposit::find()->where(['status'=>UserDeposit::STATUS_CHECKED,'user_id'=>$this->user_id])
+                $user = User::findOne(['id' => $this->user_id]);
+                $agent_id = $user->invite_agent_id;
+                $amount = $this->confirm_amount;
+                $count  = UserDeposit::find()->where(['status'=>UserDeposit::STATUS_CHECKED,'user_id'=>$this->user_id])
                     ->andFilterWhere(['between','audit_at',$start_time,$end_time])->count();
-                if($num == 1){
-                    Daily::addCounter(['ndu'=>1,'nda'=>$this->confirm_amount]);
+                if($count == 1){
+                    Daily::addCounter(['ndu'=>1,'nda'=>$amount,'ddu'=>1,'dda'=>$amount]);
+                    AgentDaily::addCounter(['agent_id'=>$agent_id,'ndu'=>1,'nda'=>$amount,'ddu'=>1,'dda'=>$amount]);
+                }else{
+                    Daily::addCounter(['dda'=>$amount]);
+                    AgentDaily::addCounter(['agent_id'=>$agent_id,'dda'=>$amount]);
                 }
-                $count = UserDeposit::find()->select('user_id')->where(['status'=>UserDeposit::STATUS_CHECKED])
-                    ->andFilterWhere(['between','audit_at',$start_time,$end_time])->distinct()->count();
-                $sum_amount = UserDeposit::find()->where(['status'=>UserDeposit::STATUS_CHECKED])
-                    ->andFilterWhere(['between','audit_at',$start_time,$end_time])->sum('confirm_amount');
-                Daily::updateCounter(['ddu'=>$count,'dda'=>$sum_amount]);
+
 
                 $tr->commit();
             } catch (Exception $e) {
