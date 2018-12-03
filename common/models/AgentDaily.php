@@ -119,10 +119,12 @@ class AgentDaily extends \yii\db\ActiveRecord
         {
             $model = new AgentDaily();
             $model->ymd = date('Ymd');
+            $model->agent_id = $data['agent_id'];
         }
         foreach ($data as $attr => $num) {
             if ($model->hasAttribute($attr)) {
-                $model->$attr = (int)$num;
+                if($attr != 'agent_id')
+                    $model->$attr += (int)$num;
             }
         }
         return $model->save(false);

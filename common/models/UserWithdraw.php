@@ -198,11 +198,20 @@ class UserWithdraw extends \yii\db\ActiveRecord
 
                 $start_time = strtotime(date('Y-m-d 00:00:00'));
                 $end_time = strtotime(date('Y-m-d 23:59:59'));
-                $count = UserWithdraw::find()->select('user_id')->where(['status'=>UserWithdraw::STATUS_CHECKED])
-                    ->andFilterWhere(['between','audit_at',$start_time,$end_time])->distinct()->count();
-                $sum_amount = UserWithdraw::find()->where(['status'=>UserWithdraw::STATUS_CHECKED])
-                    ->andFilterWhere(['between','audit_at',$start_time,$end_time])->sum('transfer_amount');
-                Daily::updateCounter(['dwu'=>$count,'dwa'=>$sum_amount]);
+                $user = User::findOne(['id' => $this->user_id]);
+                $agent_id = $user->invite_agent_id;
+                $amount = $this->transfer_amount;
+                $count = UserWithdraw::find()->select('user_id')
+                         ->where(['status'=>UserWithdraw::STATUS_CHECKED,'user_id'=>$this->user_id])
+                         ->andFilterWhere(['between','audit_at',$start_time,$end_time])->count();
+                if($count == 1){
+                    Daily::addCounter(['dwu'=>1,'dwa'=>$amount]);
+                    AgentDaily::addCounter(['agent_id'=>$agent_id,'dwu'=>1,'dwa'=>$amount]);
+                }else{
+                    Daily::addCounter(['dwa'=>$amount]);
+                    AgentDaily::addCounter(['agent_id'=>$agent_id,'dwa'=>$amount]);
+                }
+
 
                 $tr->commit();
             } catch (Exception $e) {

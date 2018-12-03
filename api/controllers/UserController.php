@@ -55,7 +55,7 @@ class UserController extends ActiveController
         $user = Yii::$app->getUser()->getIdentity();
         $request = Yii::$app->request;
         $password = $request->post('password');
-        $user->password_hash = Yii::$app->security->generatePasswordHash($password);;
+        $user->password_hash = Yii::$app->security->generatePasswordHash($password);
 
         if ($user->save()) {
             return $user->toArray();

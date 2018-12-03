@@ -121,4 +121,13 @@ class PlatformUser extends \yii\db\ActiveRecord
         return Json::decode($this->auth_data);
     }
 
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+        if ($insert) {
+            //日新增用户
+            PlatformDaily::addCounter(['platform_id'=>$this->platform_id,'dnu'=>1]);
+        }
+    }
+
 }
