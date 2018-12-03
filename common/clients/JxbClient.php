@@ -189,34 +189,15 @@ class JxbClient extends ClientAbstract
         $post['username'] = $user->game_account;
         $post['password'] = $user->game_password;
         $res = static::post("{$this->apiHost}/user/login", $post);
-        if (!$res) {
+        $res = Json::decode($res);
+        if (!$res || empty($res['code'])) {
             $this->setError('调用登录接口失败');
             return false;
         }
-        $res = Json::decode($res);
         if ($res['code'] != 0) {
             $this->setError($res['message']);
             return false;
         }
-
-        $data['auth'] = $res['data']['token'];
-        $data['userid'] = $res['data']['userid'];
-        if (!$user->game_account_id)
-            $user->game_account_id = $res['data']['userid'];
-        //验证登录
-        $res2 = static::get("{$this->apiHost}/user/login/validateAuthorization", $data);
-        if (!$res2) {
-            $this->setError('调用登录验证接口失败');
-            return false;
-        }
-        $res2 = Json::decode($res2);
-        if ($res2['code'] != 0) {
-            $this->setError($res2['message']);
-            return false;
-        }
-
-        //$user->encodeAuthData($data);
-        $user->auth_data = $res['data']['token'];
         return $res['data'];
     }
 
