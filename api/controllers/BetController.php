@@ -10,6 +10,7 @@ namespace api\controllers;
 use api\components\RestHttpException;
 use api\models\BetList;
 use yii\data\ActiveDataProvider;
+use common\helpers\Util;
 use Yii;
 
 class BetController extends ActiveController
@@ -28,18 +29,11 @@ class BetController extends ActiveController
         $user = Yii::$app->getUser()->getIdentity();
         $bet_list = new BetList();
         $request = Yii::$app->getRequest()->getQueryParams();
-        $startDate = isset($request['startDate'])?$request['startDate']:'';
-        $endDate = isset($request['endDate'])?$request['endDate']:'';
-        $condition = ['user_id' => $user->getId()];
-
-        $model = $bet_list::find()->where($condition);
-        if(!empty($startDate)) {
-            $startTime = strtotime($startDate.' 00:00:00');
-            $endTime = $endDate?strtotime($endDate.' 23:59:59'):strtotime($startDate.' 23:59:59');
-            $model->andFilterWhere(['between', 'bet_at',$startTime,$endTime]);
+        $model = $bet_list::find()->where(['user_id' => $user->getId()]);
+        if(isset($request['startDate']) && $request['startDate']!='') {
+            $model->andFilterWhere(Util::getBetweenDate('bet_at',$request));
         }
         $model->orderBy('id desc');
-
 
         if(!empty($request))
         {
