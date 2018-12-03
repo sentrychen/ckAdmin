@@ -35,7 +35,7 @@ class JxbClient extends ClientAbstract
         $res = static::get("{$this->apiHost}/user/register", $data);
         if ($res) {
             $res = Json::decode($res);
-            if ($res['code'] == 0) return $res['data']['userid'] ?? true;
+            if ($res['code'] == 0) return $res['data']['id'] ?? true;
             $this->setError($res['message']);
         } else
             $this->setError('注册接口调用失败');
@@ -201,6 +201,8 @@ class JxbClient extends ClientAbstract
 
         $data['auth'] = $res['data']['token'];
         $data['userid'] = $res['data']['userid'];
+        if (!$user->game_account_id)
+            $user->game_account_id = $res['data']['userid'];
         //验证登录
         $res2 = static::get("{$this->apiHost}/user/login/validateAuthorization", $data);
         if (!$res2) {
