@@ -190,7 +190,7 @@ class JxbClient extends ClientAbstract
         $post['password'] = $user->game_password;
         $res = static::post("{$this->apiHost}/user/login", $post);
         $res = Json::decode($res);
-        if (!$res || empty($res['code'])) {
+        if (!$res || !isset($res['code'])) {
             $this->setError('调用登录接口失败');
             return false;
         }
