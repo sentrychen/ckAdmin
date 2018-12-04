@@ -26,6 +26,8 @@ use Yii;
  * @property string $xima 洗码值
  * @property int $state 游戏状态
  * @property int $bet_at 投注时间
+ * @property string $player_cards 闲家牌面
+ * @property string $banker_cards 庄家牌面
  * @property int $draw_at 开奖时间
  * @property int $created_at 创建时间
  */
@@ -50,7 +52,7 @@ class BetList extends \yii\db\ActiveRecord
             [['xima'], 'number'],
             [['username', 'platform_username', 'game_type'], 'string', 'max' => 64],
             [['table_no', 'period_boot', 'period_round'], 'string', 'max' => 32],
-            [['game_result'], 'string', 'max' => 128],
+            [['game_result,player_cards,banker_cards'], 'string', 'max' => 128],
             [['bet_record'], 'string', 'max' => 255],
         ];
     }
@@ -79,6 +81,8 @@ class BetList extends \yii\db\ActiveRecord
             'amount_after' => '投注后余额',
             'xima' => '洗码值',
             'state' => '游戏状态',
+            'banker_cards' => '庄家牌面',
+            'player_cards' => '闲家牌面',
             'bet_at' => '投注时间',
             'draw_at' => '开奖时间',
             'created_at' => '创建时间',
