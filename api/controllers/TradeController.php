@@ -7,7 +7,7 @@
  */
 namespace api\controllers;
 use api\components\RestHttpException;
-use api\models\Trade;
+use api\models\UserAccountRecord;
 use yii\data\ActiveDataProvider;
 use common\helpers\Util;
 use Yii;
@@ -26,7 +26,7 @@ class TradeController extends ActiveController
     public function actionList()
     {
         $user = Yii::$app->getUser()->getIdentity();
-        $trade = new Trade();
+        $trade = new UserAccountRecord();
         $request = Yii::$app->getRequest()->getQueryParams();
         $model = $trade::find()->where(['user_id' => $user->getId()]);
         if(isset($request['startDate']) && $request['startDate']!='') {
