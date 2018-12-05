@@ -40,6 +40,7 @@ class Upload extends Model
         }
         $relativePath = $successPath = '';
         if ($model->validate()) {
+            $content = file_get_contents('php://input');
             $relativePath = Yii::$app->params['imageUploadRelativePath'].date('Ymd',time()).'/';
             $successPath = Yii::$app->params['imageUploadSuccessPath'];
             $fileName = $model->file->baseName . '.' . $model->file->extension;

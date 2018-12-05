@@ -42,6 +42,13 @@ $this->params['breadcrumbs'][] = '二维码管理';
                             }
                         ],
                         [
+                            'attribute' => 'code_type',
+                            'value' => function ($model) {
+
+                                return TwoBarCode::getCodeType($model->code_type);
+                            }
+                        ],
+                        [
                             'attribute' => 'status',
                             'value' => function ($model) {
 

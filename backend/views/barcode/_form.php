@@ -15,7 +15,7 @@ use common\widgets\ActiveForm;
                 <?php $form = ActiveForm::begin([
                     'options' => [
                         'class' => 'form-horizontal',
-                        'enctype' => 'multipart/form-data'
+                        //'enctype' => 'multipart/form-data'
                     ]
                 ]); ?>
                 <div class="hr-line-dashed"></div>
@@ -25,11 +25,13 @@ use common\widgets\ActiveForm;
                         <?= $form->field($model, 'url')->textInput(['maxlength' => true]) ?>
                         <div class="hr-line-dashed"></div>
 
-                        <?= $form->field($model, 'icon')->widget('manks\FileInput', [
-    ]); ?>
+                        <?= $form->field($model, 'icon')->widget('manks\FileInput', []); ?>
                         <div class="hr-line-dashed"></div>
 
                         <?= $form->field($model, 'sort')->textInput(['maxlength' => true]) ?>
+                        <div class="hr-line-dashed"></div>
+
+                        <?= $form->field($model, 'code_type')->radioList(TwoBarCode::getCodeType()) ?>
                         <div class="hr-line-dashed"></div>
 
                         <?= $form->field($model, 'status')->radioList(TwoBarCode::getStatuses()) ?>

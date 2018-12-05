@@ -16,7 +16,7 @@ class TwoBarCode extends \common\models\TwoBarCode
 
             [['url_code'], 'string'],
             [['sort'], 'number'],
-            [['status', 'created_at', 'updated_at'], 'integer'],
+            [['status', 'code_type','created_at', 'updated_at'], 'integer'],
             [['name', 'url', 'icon'], 'string', 'max' => 255],
         ];
     }
@@ -54,6 +54,7 @@ class TwoBarCode extends \common\models\TwoBarCode
             'url_code' => $this->url_code,
             'sort' => $this->sort,
             'status' => $this->status,
+            'code_type' => $this->code_type,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ]);
