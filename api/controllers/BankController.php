@@ -8,6 +8,8 @@
 namespace api\controllers;
 use api\components\RestHttpException;
 use api\models\UserBank;
+use api\models\CompanyBank;
+use api\models\TwoBarCode;
 use yii\data\ActiveDataProvider;
 use Yii;
 
@@ -110,5 +112,61 @@ class BankController extends ActiveController
             $err = rtrim($err, '<br>');
             throw new RestHttpException($err, 400);
         }
+    }
+
+    /*
+     * 公司银行卡
+     *
+     **/
+    public function actionCompanyBank()
+    {
+        $user = Yii::$app->getUser()->getIdentity();
+        if($user){
+            $companyBank = CompanyBank::find()->where(['status'=>1])->orderBy('updated_at desc,id desc')->limit(1)->one();
+            if($companyBank){
+                return $companyBank;
+            }
+            $errorReasons = $companyBank->getErrors();
+
+            if (empty($errorReasons)) {
+                throw new RestHttpException();
+            } else {
+                $err = '';
+                foreach ($errorReasons as $errorReason) {
+                    $err .= $errorReason[0] . '<br>';
+                }
+                $err = rtrim($err, '<br>');
+                throw new RestHttpException($err, 400);
+            }
+        }
+        return [];
+    }
+
+    /*
+     * 公司银行卡
+     *
+     **/
+    public function actionBarCode()
+    {
+        $user = Yii::$app->getUser()->getIdentity();
+        if($user){
+            $companyBank = TwoBarCode::find()->where(['status'=>1])->orderBy('updated_at desc,id desc')->limit(1)->one();
+            if($companyBank){
+                return $companyBank;
+            }
+            $errorReasons = $companyBank->getErrors();
+
+            if (empty($errorReasons)) {
+                throw new RestHttpException();
+            } else {
+                $err = '';
+                foreach ($errorReasons as $errorReason) {
+                    $err .= $errorReason[0] . '<br>';
+                }
+                $err = rtrim($err, '<br>');
+                throw new RestHttpException($err, 400);
+            }
+        }
+        return [];
     }
 }

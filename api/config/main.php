@@ -46,6 +46,8 @@ return [
                 '<controller:\w+>/<id:\d+>' => '<controller>/<view>',
                 '<controller:\w+>/<action:\w+>/<id:\d+>' => '<controller>/<action>',
                 '<controller:\w+>/<action:\w+>' => '<controller>/<action>',
+                'bank/bar-code'=>'/bank/bar-code',
+                'bank/company-bank'=>'/bank/company-bank',
                 [
                     'class' => yii\rest\UrlRule::class,
                     'controller' => ['site', 'user'],
