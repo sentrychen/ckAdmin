@@ -18,7 +18,7 @@ $this->params['breadcrumbs'] = [
 <?php
 
 echo $this->render('_form-update-self', [
-        'model' => $model
-    ]);
+    'model' => $model
+]);
 
 ?>
