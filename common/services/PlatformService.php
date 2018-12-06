@@ -137,7 +137,8 @@ class PlatformService extends PlatformUser
             // $this->addError('user_id', $e->getMessage());
             //回滚
             $tr->rollBack();
-            throw new InvalidCallException($e->getMessage());
+            // throw new InvalidCallException($e->getMessage());
+            return false;
         }
         return true;
     }
