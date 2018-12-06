@@ -60,7 +60,7 @@ $this->title = 'AdminUser';
             <div class="hr-line-dashed"></div>
             <?= $form->field($model, 'xima_type')->radioList(Constants::getXiMaTypes()) ?>
             <div class="hr-line-dashed"></div>
-            <?= $form->field($model, 'xima_rate')->textInput(['afterAddon' => '%']) ?>
+            <?= $form->field($model, 'xima_rate')->textInput(['afterAddon' => '%', 'value' => $model->xima_rate * 100]) ?>
             <div class="hr-line-dashed"></div>
             <?= $form->defaultButtons() ?>
             <?php ActiveForm::end(); ?>
