@@ -1,7 +1,9 @@
 <?php
 $config = [
     'name' => 'OneTop Admin',
-    'version' => '2.0.4.1',
+    'version' => '1.0',
+    'language' => 'zh-CN',//默认语言
+    'timeZone' => 'Asia/Shanghai',//默认时区
     'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
@@ -25,7 +27,7 @@ $config = [
             'dateFormat' => 'php:Y-m-d H:i',
             'decimalSeparator' => '.',
             'thousandSeparator' => ',',
-            'currencyCode' => 'CNY',
+            //'currencyCode' => 'CNY',
             'nullDisplay' => '-',
         ],
         'mailer' => [//邮箱发件人配置，会被main-local.php以及后台管理页面中的smtp配置覆盖

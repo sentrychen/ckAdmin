@@ -10,8 +10,6 @@ return [
     'id' => 'app-admin',//应用id，必须唯一
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'backend\controllers',//控制器命名空间
-    'language' => 'zh-CN',//默认语言
-    'timeZone' => 'Asia/Shanghai',//默认时区
     'bootstrap' => ['log'],
     'modules' => [],
     'homeUrl' => '/admin',
