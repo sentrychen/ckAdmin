@@ -43,8 +43,8 @@ class PlatformService extends PlatformUser
         $this->addAmount();
 
 
-        if ($this->getClient()->getError())
-            throw new InvalidCallException($this->getClient()->getError());
+        //if ($this->getClient()->getError())
+        //    throw new InvalidCallException($this->getClient()->getError());
 
         $this->last_login_at = time();
         $this->last_login_ip = yii::$app->request->getUserIP();
