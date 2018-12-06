@@ -168,9 +168,17 @@ $this->title = yii::t('app', 'Backend Manage System');
                             </li>
                         </ul>
                     </li>
-                    <li>
-                        <a class="J_menuItem" href="<?= Url::to(['admin-user/update-self']) ?>" title="修改个人资料"><i
-                                    class="fa fa-user"> <?= Html::encode(yii::$app->getUser()->getIdentity()->username) ?></i></a>
+                    <li class="dropdown hidden-xs">
+
+                        <a class="dropdown-toggle cert" data-toggle="dropdown" href="#" title="登录用户">
+                            <i
+                                    class="fa fa-user"> <?= Html::encode(yii::$app->getUser()->getIdentity()->username) ?></i><span
+                                    class="caret"></span></a>
+                        <ul class="dropdown-menu animated fadeInRight m-t-xs">
+                            <li><a class="J_menuItem" href="<?= Url::to(['site/update-self']) ?>">修改密码</a></li>
+                            <li class="divider"></li>
+                            <li><a data-method="post" href="<?= Url::toRoute('site/logout') ?>">登出系统</a></li>
+                        </ul>
                     </li>
                 </ul>
             </nav>

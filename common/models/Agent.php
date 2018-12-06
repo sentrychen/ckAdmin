@@ -138,7 +138,8 @@ class Agent extends ActiveRecord
             'created_at' => '注册日期',
             'updated_at' => '修改日期',
             'password' => '密码',
-            'repassword' => '确认密码'
+            'repassword' => '确认密码',
+            'old_password' => '旧密码'
 
         ];
     }
@@ -152,6 +153,7 @@ class Agent extends ActiveRecord
             'default' => ['username'],
             'update' => ['password', 'realname', 'repassword', 'status', 'rebate_rate', 'xima_status', 'xima_type', 'xima_rate'],
             'create' => ['username', 'realname', 'password', 'repassword', 'parent_id', 'status', 'rebate_rate', 'xima_status', 'xima_type', 'xima_rate'],
+            'self-update' => ['password', 'old_password', 'repassword'],
         ];
     }
 

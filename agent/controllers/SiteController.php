@@ -142,6 +142,35 @@ class SiteController extends \yii\web\Controller
         }
     }
 
+    /**
+     * 登陆的管理员修改自身
+     *
+     * @return string
+     */
+    public function actionUpdateSelf()
+    {
+        $model = Agent::findOne(['id' => yii::$app->getUser()->getIdentity()->getId()]);
+        $model->setScenario('self-update');
+        if (yii::$app->getRequest()->getIsPost()) {
+            if ($model->load(yii::$app->getRequest()->post()) && $model->selfUpdate()) {
+                Yii::$app->getSession()->setFlash('success', yii::t('app', 'Success'));
+            } else {
+                $errors = $model->getErrors();
+                $err = '';
+                foreach ($errors as $v) {
+                    $err .= $v[0] . '<br>';
+                }
+                Yii::$app->getSession()->setFlash('error', $err);
+            }
+            $model = Agent::findOne(['id' => yii::$app->getUser()->getIdentity()->getId()]);
+        }
+
+        return $this->render('update', [
+            'model' => $model,
+        ]);
+    }
+
+
     public function actionDownload()
     {
         $code = yii::$app->getRequest()->get('code', yii::$app->option->agent_default_code);
