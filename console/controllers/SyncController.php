@@ -183,8 +183,8 @@ class SyncController extends \yii\console\Controller
                     $model->profit = $row['betResult'];
                     $model->amount_before = $row['beforeAmount'];
                     $model->amount_after = $row['afterAmount'];
-                    $model->banker_cards = $row['bankCard'];
-                    $model->player_cards = $row['playCard'];
+                    $model->banker_cards = $row['bankCard'] ?? '';
+                    $model->player_cards = $row['playCard'] ?? '';
                     $model->xima = '';
                     $model->state = 1;
                     $model->bet_at = round($row['gameTime'] / 1000);
