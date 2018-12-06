@@ -11,6 +11,8 @@ return [
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'backend\controllers',//控制器命名空间
     'bootstrap' => ['log'],
+    'language' => 'zh-CN',//默认语言
+    'timeZone' => 'Asia/Shanghai',//默认时区
     'modules' => [],
     'homeUrl' => '/admin',
     'components' => [

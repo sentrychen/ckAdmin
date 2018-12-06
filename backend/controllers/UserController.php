@@ -27,6 +27,7 @@ use backend\models\search\UserSearch;
 use backend\models\search\UserWithdrawSearch;
 use backend\models\User;
 use backend\models\UserAccountRecord;
+use function GuzzleHttp\Psr7\copy_to_string;
 use yii;
 use yii\web\Response;
 use yii\web\UnprocessableEntityHttpException;
@@ -80,7 +81,6 @@ class UserController extends Controller
     {
         $searchModel = new UserSearch();
         $dataProvider = $searchModel->search(['UserSearch' => ['created_at' => date('Y-m-d') . ' ~ ' . date('Y-m-d')]]);
-
         return $this->render('today', ['dataProvider' => $dataProvider, 'searchModel' => $searchModel]);
     }
 

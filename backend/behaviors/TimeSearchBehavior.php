@@ -48,6 +48,9 @@ class TimeSearchBehavior extends \yii\base\Behavior
                 if( $this->format === 'int' ){
                     $startAt = strtotime($time[0]);
                     $endAt = strtotime($time[1]);
+                    //如果结束日期是天，那么结束日期是当天最后一秒
+                    if (date('His', $endAt) == '000000')
+                        $endAt += 24 * 3600 - 1;
                 }else{
                     $startAt = $time[0];
                     $endAt = $time[1];
