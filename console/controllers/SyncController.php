@@ -151,7 +151,7 @@ class SyncController extends \yii\console\Controller
             'baccarat' => ['player', 'banker', 'tie', 'player_pair', 'banker_pair'],
             'dragonTiger' => ['dragon', 'tiger', 'tie'],
         ];
-        $gameTypes = ['dragonTiger' => 'dragon_tiger', 'baccarat' => 'baccarat'];
+        $gameTypes = ['dragonTiger' => 'dragon_tiger', 'baccarat' => 'baccarat', 'duel' => 'duel'];
 
         if (!empty($data)) {
 
@@ -167,12 +167,12 @@ class SyncController extends \yii\console\Controller
                     $model->username = $platformUser->user->username;
                     $model->platform_username = $row['username'];
                     $model->platform_id = $platform->id;
-                    $model->game_type = $gameTypes[$row['gamePlayName']];
+                    $model->game_type = $gameTypes[$row['gamePlayName']] ?? $row['gamePlayName'];
                     $model->table_no = $row['roomId'];
                     $model->period_boot = 0;
                     $model->period_round = $row['numberId'];
                     $model->bet_amount = round($row['betCoin']);
-                    $model->game_result = $resultTypes[$row['gamePlayName']][$row['win']];
+                    $model->game_result = $resultTypes[$row['gamePlayName']][$row['win']] ?? $row['win'];
                     $scores = explode(',', $row['score']);
                     $betRecords = [];
                     foreach ($scores as $id => $score) {
