@@ -74,6 +74,9 @@ class WithdrawController extends ActiveController
         $withdraw->user_bank_id = $bank->id;
         $withdraw->bank_name = $bank->bank_name;
         $withdraw->bank_account = $bank->bank_account;
+        $amount = Yii::$app->request->post('apply_amount');
+        if ($user->account->available_amount < $amount)
+            throw new dbException('用户资金不足！');
         $withdraw->setAttributes(Yii::$app->request->post());
         if ($withdraw->save()) {
             $userAccount = UserAccount::findOne(['user_id' => $user->getId()]);

@@ -93,7 +93,7 @@ use yii\widgets\DetailView;
         'account.available_amount:currency',
         'account.frozen_amount:currency',
         'account.user_point',
-        'account.xima_account:currency',
+        'account.xima_amount:currency',
 
     ],
 ]) ?>
