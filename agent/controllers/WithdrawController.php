@@ -45,6 +45,7 @@ class WithdrawController extends \yii\web\Controller
                 'class' => ViewAction::className(),
                 'modelClass' => AgentWithdraw::className(),
             ],
+            /*
             'create' => [
                 'class' => CreateAction::className(),
                 'modelClass' => AgentWithdraw::className(),
@@ -57,6 +58,7 @@ class WithdrawController extends \yii\web\Controller
                 'class' => DeleteAction::className(),
                 'modelClass' => AgentWithdraw::className(),
             ],
+            */
             'sort' => [
                 'class' => SortAction::className(),
                 'modelClass' => AgentWithdraw::className(),
@@ -117,39 +119,5 @@ class WithdrawController extends \yii\web\Controller
             'agentAccount'=>$available_amount,
         ]);
 
-    }
-
-    public function actionAudit($id)
-    {
-        $model = AgentWithdraw::findOne(['id' => $id, 'status' => AgentWithdraw::STATUS_UNCHECKED]);
-        if (!$model)
-            throw new BadRequestHttpException('存款记录不存在或无须审核');
-        if (!$model->bank || $model->bank->bank_account != $model->bank_account || $model->bank->bank_name != $model->bank_name)
-            throw new BadRequestHttpException('用户银行卡信息错误');
-        if (yii::$app->getRequest()->getIsPost() && $model->load(yii::$app->getRequest()->post())) {
-
-            if ($model->status != AgentWithdraw::STATUS_UNCHECKED) {
-                $model->audit_by_id = yii::$app->getUser()->getId();
-                $model->audit_by_username = yii::$app->getUser()->getIdentity()->username;
-                $model->audit_at = time();
-            }
-
-            if ($model->save()) {
-                yii::$app->getSession()->setFlash('success', yii::t('app', 'Success'));
-                return $this->redirect(['index']);
-            }
-
-            $errors = $model->getErrors();
-            $err = '';
-            foreach ($errors as $v) {
-                $err .= $v[0] . '<br>';
-            }
-            yii::$app->getSession()->setFlash('error', $err);
-
-        }
-        $model->loadDefaultValues();
-        return $this->render('audit', [
-            'model' => $model
-        ]);
     }
 }
