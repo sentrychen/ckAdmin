@@ -32,8 +32,8 @@ use yii\helpers\Url;
                         'template' => '{refresh}{add}',
                         'buttons' => [
                             'add' => function () {
-                                return Html::a('申请提现', Url::to(['add']), [
-                                    'title' => '申请提现',
+                                return Html::a('申请取款', Url::to(['add']), [
+                                    'title' => '申请取款',
                                     'class' => 'btn btn-primary btn-sm',
                                 ]);
                             },

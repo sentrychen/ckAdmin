@@ -131,7 +131,7 @@ class AgentWithdraw extends \yii\db\ActiveRecord
 
                 //增加平台交易记录
                 $sysRecord = new SystemAccountRecord();
-                $sysRecord->name = "用户取款";
+                $sysRecord->name = "代理取款";
                 $sysRecord->trade_no = $this->id;
                 $sysRecord->amount = $this->transfer_amount;
                 $sysRecord->switch = SystemAccountRecord::SWITCH_OUT;

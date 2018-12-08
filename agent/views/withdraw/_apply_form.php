@@ -19,14 +19,24 @@ $agentId = yii::$app->getUser()->getIdentity()->getId();
             <div class="ibox-content">
                 <?php $form = ActiveForm::begin([
                     'options' => [
-                        'class' => 'form-horizontal'
+                        'class' => 'form-horizontal',
+                        //'onsubmit'=>'return checkForm()'
                     ]
                 ]); ?>
                 <div class="hr-line-dashed"></div>
-                <div >账户可用余额：<?= $agentAccount->available_amount;?>(元)</div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label"> 账户可用余额</label>
+                    <div class="col-sm-5">
+                        <h1 style="color: #1ab394"><?= $agentAccount->available_amount ?>(元)</h1>
+                    </div>
+                </div>
                 <div class="hr-line-dashed"></div>
+
                 <?= $form->field($model, 'apply_amount')->textInput(['maxlength' => true]) ?>
                 <div class="hr-line-dashed"></div>
+
+                <input type="hidden" id="available_amount" name="available_amount" value="<?= $agentAccount->available_amount ?>">
 
                 <?= $form->field($model, 'agent_bank_id')->dropDownList(AgentWithdraw::getAgentBank($agentId),['prompt'=>'请选择银行卡']) ?>
                 <div class="hr-line-dashed"></div>
@@ -40,3 +50,25 @@ $agentId = yii::$app->getUser()->getIdentity()->getId();
         </div>
     </div>
 </div>
+
+<?php echo $this->registerJsFile('/agent/static/js/jquery.min.js',['position' => \yii\web\View::POS_HEAD]); ?>
+<script>
+    $('#agentwithdraw-apply_amount').blur(function(){
+        var hasMoney = parseFloat($('#available_amount').val());
+        var appMoney = parseFloat($('#agentwithdraw-apply_amount').val());
+        if(appMoney>hasMoney){
+            layer.alert('取款金额不能大于账户可用余额！');
+            $('.btn-primary').after("<input type='submit' class='btn sub-primary' disabled='disabled' value='保存'>");
+            $('.btn-primary').remove();
+            $('#agentwithdraw-apply_amount').css('border','1px solid #ff3300')
+            $('.sub-primay').attr('disable',true);
+            return false;
+        }else {
+            if($('sub-primary').val()!=''){
+                $('.sub-primary').after("<button class='btn btn-primary' type='submit'>保存</button>");
+                $('#agentwithdraw-apply_amount').removeAttr('style');
+                $('.sub-primary').remove();
+            }
+        }
+    });
+</script>

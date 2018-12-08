@@ -77,9 +77,19 @@ class WithdrawController extends \yii\web\Controller
             $model->agent_id = $agent->getId();
             $model->bank_name = $agentBank->bank_name;
             $model->bank_account = $agentBank->bank_account;
-            $model->apply_ip = yii::$app->getRequest()->getUserHost();
+            $model->apply_ip = yii::$app->getRequest()->userIP;
             $model->status = AgentWithdraw::STATUS_UNCHECKED;
-            if ($model->load(yii::$app->getRequest()->post()) && $model->save(false)) {
+
+            $agentAccount->available_amount -= $request['apply_amount'];
+            $agentAccount->frozen_amount += $request['apply_amount'];
+
+            if($agentAccount->available_amount<$request['apply_amount']){
+                yii::$app->getSession()->setFlash('error', '取款金额大于账户可用余额');
+                return $this->redirect(['add']);
+            }
+
+            if ($model->load(yii::$app->getRequest()->post()) && $model->save(false)
+                && $agentAccount->save(false)) {
                 yii::$app->getSession()->setFlash('success', yii::t('app', 'Success'));
                 return $this->redirect(['index']);
             } else {

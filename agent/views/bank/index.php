@@ -22,7 +22,7 @@ $this->params['breadcrumbs'][] = '银行卡管理列表';
                     <?= Bar::widget([
                         'template' => '{refresh} {create} ',
                     ]) ?>
-                    <?= $this->render('_search', ['model' => $searchModel]); ?>
+                    <?php //echo $this->render('_search', ['model' => $searchModel]); ?>
                 </div>
                 <?= GridView::widget([
                     'id' => 'agentBankGrid',
@@ -30,7 +30,7 @@ $this->params['breadcrumbs'][] = '银行卡管理列表';
                     'filterModel' => null,
                     'columns' => [
                         //['class' => CheckboxColumn::className()],
-                        'id',
+                        //'id',
                         //'agent_id',
                         'username',
                         'bank_username',
@@ -52,7 +52,7 @@ $this->params['breadcrumbs'][] = '银行卡管理列表';
                         ],
                         [
                             'class' => ActionColumn::class,
-                            'template' => '{view-layer} {update}',
+                            'template' => '{view-layer}',// {update}
                         ],
                     ],
 
