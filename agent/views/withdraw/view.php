@@ -2,7 +2,6 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
-
 /* @var $this yii\web\View */
 /* @var $model backend\models\Withdraw */
 
@@ -26,13 +25,24 @@ $this->params['breadcrumbs'][] = $this->title;
             //'audit_by_id',
             //'audit_by_username',
             'audit_remark',
-            'audit_at',
+            //'audit_at',
             //'agent_bank_id',
             'bank_name',
             'bank_account',
             //'apply_ip',
-            'updated_at',
-            'created_at',
+            [
+                'attribute' => 'created_at',
+                'value' => function ($model) {
+                    return date('Y-m-d H:i:s',$model->created_at);
+                }
+            ],
+            //'updated_at',
+            [
+                'attribute' => 'audit_at',
+                'value' => function ($model) {
+                    return date('Y-m-d H:i:s',$model->audit_at);
+                }
+            ],
         ],
     ]) ?>
 

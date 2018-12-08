@@ -40,7 +40,12 @@ $this->params['breadcrumbs'][] = $this->title;
             'audit_by_id',
             'audit_by_username',
             'audit_remark',
-            'audit_at',
+            [
+                'attribute' => 'audit_at',
+                'value' => function ($model) {
+                    return date('Y-m-d H:i:s',$model->audit_at);
+                }
+            ],
             'agent_bank_id',
             'bank_name',
             'bank_account',
