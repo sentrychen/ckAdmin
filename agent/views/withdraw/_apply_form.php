@@ -28,7 +28,7 @@ $agentId = yii::$app->getUser()->getIdentity()->getId();
                 <div class="form-group">
                     <label class="col-sm-2 control-label"> 账户可用余额</label>
                     <div class="col-sm-5">
-                        <h1 style="color: #1ab394"><?= $agentAccount->available_amount ?>(元)</h1>
+                        <h1 style="color: #1ab394"><?= $available_amount ?>(元)</h1>
                     </div>
                 </div>
                 <div class="hr-line-dashed"></div>
@@ -36,7 +36,7 @@ $agentId = yii::$app->getUser()->getIdentity()->getId();
                 <?= $form->field($model, 'apply_amount')->textInput(['maxlength' => true]) ?>
                 <div class="hr-line-dashed"></div>
 
-                <input type="hidden" id="available_amount" name="available_amount" value="<?= $agentAccount->available_amount ?>">
+                <input type="hidden" id="available_amount" name="available_amount" value="<?= $available_amount ?>">
 
                 <?= $form->field($model, 'agent_bank_id')->dropDownList(AgentWithdraw::getAgentBank($agentId),['prompt'=>'请选择银行卡']) ?>
                 <div class="hr-line-dashed"></div>

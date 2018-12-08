@@ -19,5 +19,5 @@ $this->params['breadcrumbs'] = [
 ?>
 <?= $this->render('_apply_form', [
     'model' => $model,
-    'agentAccount'=>$agentAccount,
+    'available_amount'=>$agentAccount,
 ]) ?>

@@ -68,6 +68,10 @@ class WithdrawController extends \yii\web\Controller
         $agent = yii::$app->getUser()->getIdentity();
         $model = new AgentWithdraw();
         $agentAccount = AgentAccount::findOne($agent->getId());
+        $available_amount = 0;
+        if($agentAccount){
+            $available_amount = isset($agentAccount->available_amount)?$agentAccount->available_amount:0;
+        }
 
         if (yii::$app->getRequest()->getIsPost()) {
 
@@ -82,6 +86,10 @@ class WithdrawController extends \yii\web\Controller
 
             $agentAccount->available_amount -= $request['apply_amount'];
             $agentAccount->frozen_amount += $request['apply_amount'];
+            if($request['apply_amount'] < 50){
+                yii::$app->getSession()->setFlash('error', '取款金额必须大于50元');
+                return $this->redirect(['add']);
+            }
 
             if($agentAccount->available_amount<$request['apply_amount']){
                 yii::$app->getSession()->setFlash('error', '取款金额大于账户可用余额');
@@ -104,7 +112,7 @@ class WithdrawController extends \yii\web\Controller
         $model->loadDefaultValues();
         return $this->render('add', [
             'model' => $model,
-            'agentAccount'=>$agentAccount,
+            'agentAccount'=>$available_amount,
         ]);
 
     }
