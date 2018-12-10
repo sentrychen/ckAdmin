@@ -128,7 +128,8 @@ class SiteController extends Controller
 
         $year = date('Y');
         foreach($month_arr as $m){
-            $count = cal_days_in_month(CAL_GREGORIAN,$m,$year);
+            $year = date('Y',time());
+            $count = date("t",strtotime("{$year}-{$m}"));
             $dayCount = $count - 1;
             $startDate = $year.$m.'01';
             $month = (int)$m;
