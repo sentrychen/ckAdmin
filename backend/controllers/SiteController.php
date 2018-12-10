@@ -12,7 +12,7 @@ use backend\models\PlatformAccount;
 use backend\models\User;
 use common\libs\Constants;
 use backend\models\Daily;
-use backend\models\platformDaily;
+use backend\models\PlatformDaily;
 use backend\models\Platform;
 use backend\models\Message;
 use common\models\Notice;
