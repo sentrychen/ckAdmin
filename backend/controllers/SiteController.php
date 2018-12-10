@@ -12,7 +12,7 @@ use backend\models\PlatformAccount;
 use backend\models\User;
 use common\libs\Constants;
 use backend\models\Daily;
-use backend\models\PlatformDaily;
+use common\models\platformDaily;
 use backend\models\Platform;
 use backend\models\Message;
 use common\models\Notice;
@@ -128,7 +128,8 @@ class SiteController extends Controller
 
         $year = date('Y');
         foreach($month_arr as $m){
-            $count = cal_days_in_month(CAL_GREGORIAN,$m,$year);
+            $year = date('Y',time());
+            $count = date("t",strtotime("{$year}-{$m}"));
             $dayCount = $count - 1;
             $startDate = $year.$m.'01';
             $month = (int)$m;
@@ -155,7 +156,8 @@ class SiteController extends Controller
             $data['bet'][0][] = $data['winLost'][0][] = $name;
         }
         foreach($month_arr as $n => $m){
-            $count = cal_days_in_month(CAL_GREGORIAN,$m,$year);
+            $year = date('Y',time());
+            $count = date("t",strtotime("{$year}-{$m}"));
             $dayCount = $count - 1;
             $startDate = $year.$m.'01';
             $month = (int)$m;
