@@ -9,9 +9,11 @@
 namespace backend\controllers;
 
 use backend\models\PlatformAccount;
+use backend\models\User;
 use common\libs\Constants;
-use common\models\Daily;
-use common\models\Platform;
+use backend\models\Daily;
+use backend\models\platformDaily;
+use backend\models\Platform;
 use backend\models\Message;
 use common\models\Notice;
 use common\models\UserDeposit;
@@ -102,11 +104,81 @@ class SiteController extends Controller
 
         // $comments = BackendComment::getRecentComments(6);
         $statics = Daily::getSumData('-30 day');
-
-
+        $userSum = $this->getDailySum();
+        $platform = $this->getPlatFDailySum();
         return $this->render('main', [
-            'statics' => $statics
+            'statics' => $statics,
+            'userSum' => json_encode($userSum['user']),
+            'userDw' => json_encode($userSum['dw']),
+            'bet' => json_encode($platform['bet']),
+            'winLost' => json_encode($platform['winLost']),
+
         ]);
+    }
+
+    /*
+     * 后台首页统计图数据
+     * @return array
+     */
+    public function getDailySum()
+    {
+        $month_arr = ['01','02','03','04','05','06','07','08','09','10','11','12'];
+        $data['user'] = ['0' => ['用户', '新增用户', '活跃用户', '首存用户']];
+        $data['dw'] = ['0' => ['存取款', '存款', '取款']];
+
+        $year = date('Y');
+        foreach($month_arr as $m){
+            $count = cal_days_in_month(CAL_GREGORIAN,$m,$year);
+            $dayCount = $count - 1;
+            $startDate = $year.$m.'01';
+            $month = (int)$m;
+            $endDate = date('Ymd',strtotime("{$startDate}+{$dayCount} day"));
+            $data = Daily::getDaliyData($startDate,$endDate,$month,$data);
+        }
+        return $data;
+    }
+
+    /*
+     * 后台首页统计图数据
+     * @return array
+     */
+    public function getPlatFDailySum()
+    {
+        $month_arr = ['01','02','03','04','05','06','07','08','09','10','11','12'];
+
+        $year = date('Y');
+        $platForm = Platform::getPlatfromName();
+        $data['bet'] = ['0' => ['平台游戏']];
+        $data['winLost'] = ['0' => ['平台游戏','输赢']];
+        foreach($platForm as $k => $pf) {
+            $name = $pf->name;
+            $data['bet'][0][] = $data['winLost'][0][] = $name;
+        }
+        foreach($month_arr as $n => $m){
+            $count = cal_days_in_month(CAL_GREGORIAN,$m,$year);
+            $dayCount = $count - 1;
+            $startDate = $year.$m.'01';
+            $month = (int)$m;
+            $endDate = date('Ymd',strtotime("{$startDate}+{$dayCount} day"));
+            $data['bet'][$month][] = $data['winLost'][$month][] = $month.'月';
+            $all_winL = 0;
+            $one_winL = 0;
+            foreach($platForm as $k => $pf) {
+                $platform_id = $pf->id;
+                $model = platformDaily::getBetData($platform_id,$startDate,$endDate,$month);
+                $dbo = $model['dbo']?$model['dbo']:0;
+                $dpa = $model['dpa']?$model['dpa']:0;
+                $dla = $model['dla']?$model['dla']:0;
+                $one_winL = $dpa-$dla;
+                $all_winL += $one_winL;
+                $data['bet'][$month][] = $dbo;
+                $data['winLost'][$month][] = $one_winL;
+            }
+            $data['winLost'][$month][] = $all_winL;
+        }
+
+
+        return $data;
     }
 
     /**

@@ -29,16 +29,39 @@ class Daily extends \yii\db\ActiveRecord
         return '{{%daily}}';
     }
 
+    /*
+     *后台首页  投注输赢
+     * @params $startDate string 开始时间
+     * @params $endDate string 截止时间
+     */
     public static function getSumData($startDate, $endDate = 'now')
     {
         $startDate = (int)date('Ymd', strtotime($startDate));
         $endDate = (int)date('Ymd', strtotime($endDate));
         $data = static::find()
             ->select('sum(dnu) as dnu, sum(dau) as dau, sum(ndu) as ndu, sum(nda) as nda,sum(dbu) as dbu, 
-            sum(dba) as dba, sum(ddu) as ddu, sum(dda) as dda, sum(dwu) as dwu, sum(dwa) as dwa, sum(dpa) as dpa, sum(dla) as dla')
+            sum(dba) as dba, sum(ddu) as ddu, sum(dda) as dda, sum(dwu) as dwu, sum(dwa) as dwa,sum(dbo) as dbo, sum(dpa) as dpa, sum(dla) as dla')
             ->where(['between', 'ymd', $startDate, $endDate])->asArray()->one();
         return $data;
     }
+    /*
+     *  后台首先“用户”和“存取款”统计图数据
+     * @param string $startDate  开始时间
+     * @param string $endDate  截止时间
+     * @param string $month 月份（两位数月份如：'01'）
+     * @param array $data
+     * @return array
+     */
+    public static function getDaliyData($startDate='',$endDate='',$month,$data=array())
+    {
+        $sum = static::find()
+            ->select('sum(dnu) as dnu, sum(dau) as dau, sum(ndu) as ndu,sum(dda) as dda, sum(dwa) as dwa')
+            ->where(['between', 'ymd', $startDate, $endDate])->asArray()->one();
+        $data['user'][] = ["{$month}月",$sum['dnu']?$sum['dnu']:0,$sum['dau']?$sum['dau']:0,$sum['ndu']?$sum['ndu']:0];
+        $data['dw'][] = ["{$month}月",$sum['dda']?$sum['dda']:0,$sum['dwa']?$sum['dwa']:0];
+        return $data;
+    }
+
 
     /**
      * {@inheritdoc}
