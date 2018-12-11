@@ -104,6 +104,30 @@ class BetList extends \yii\db\ActiveRecord
         ];
     }
 
+
+    public static function recordLabels($record = null)
+    {
+        $labels = [
+            'player' => '<span class="label label-info">闲</span>',
+            'banker' => '<span class="label label-danger">庄</span>',
+            'tie' => '<span class="label label-success">和</span>',
+            'player_pair' => '<span class="label label-primary">闲对</span>',
+            'banker_pair' => '<span class="label label-warning">庄对</span>',
+            'dragon' => '<span class="label label-danger">龙</span>',
+            'tiger' => '<span class="label label-info">虎</span>',
+            'dragon_even' => '<span class="label label-warning">龙双</span>',
+            'dragon_odd' => '<span class="label label-warning">龙单</span>',
+            'tiger_even' => '<span class="label label-primary">虎双</span>',
+            'tiger_odd' => '<span class="label label-primary">虎单</span>',
+            'small' => '<span class="label label-info">小</span>',
+            'big' => '<span class="label label-danger">大</span>',
+            'even' => '<span class="label label-info">单</span>',
+            'odd' => '<span class="label label-danger">双</span>',
+        ];
+
+        return $record ? ($labels[$record] ?? '<span class="label label-default">' . $record . '</span>') : $labels;
+    }
+
     /**
      * @return User|\yii\db\ActiveQuery
      */

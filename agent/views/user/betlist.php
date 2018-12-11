@@ -13,6 +13,7 @@
  * @var $total array
  */
 
+use agent\models\BetList;
 use common\grid\DateColumn;
 use common\grid\GridView;
 
@@ -77,9 +78,29 @@ $this->params['breadcrumbs'][] = '会员投注记录';
                         ],
                         [
                             'attribute' => 'bet_record',
+                            'format' => 'raw',
+                            'value' => function ($model) {
+                                $records = explode(',', $model->bet_record);
+                                $tags = '';
+                                foreach ($records as $record) {
+                                    if ($record)
+                                        $tags .= BetList::recordLabels($record) . ' ';
+                                }
+                                return $tags;
+                            },
                         ],
                         [
                             'attribute' => 'game_result',
+                            'format' => 'raw',
+                            'value' => function ($model) {
+                                $records = explode(',', $model->game_result);
+                                $tags = '';
+                                foreach ($records as $record) {
+                                    if ($record)
+                                        $tags .= BetList::recordLabels($record) . ' ';
+                                }
+                                return $tags;
+                            },
                         ],
                         [
                             'attribute' => 'profit',
