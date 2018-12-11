@@ -27,7 +27,7 @@ use yii\filters\VerbFilter;
 use yii\helpers\Url;
 use yii\web\HttpException;
 use yii\captcha\CaptchaAction;
-use agent\models\AgentDaily;
+use yii\helpers\BaseJson;
 
 /**
  * Site controller
@@ -123,7 +123,7 @@ class SiteController extends \yii\web\Controller
         $winLost = $this->getPlatFDailySum();
         return $this->render('main', [
             'statics' => $statics,
-            'winLost' => json_encode($winLost)
+            'winLost' => BaseJson::encode($winLost)
         ]);
     }
 

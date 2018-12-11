@@ -28,6 +28,7 @@ use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\HttpException;
 use yii\captcha\CaptchaAction;
+use yii\helpers\BaseJson;
 
 /**
  * Site controller
@@ -108,10 +109,10 @@ class SiteController extends Controller
         $platform = $this->getPlatFDailySum();
         return $this->render('main', [
             'statics' => $statics,
-            'userSum' => json_encode($userSum['user']),
-            'userDw' => json_encode($userSum['dw']),
-            'bet' => json_encode($platform['bet']),
-            'winLost' => json_encode($platform['winLost']),
+            'userSum' => BaseJson::encode($userSum['user']),
+            'userDw' => BaseJson::encode($userSum['dw']),
+            'bet' => BaseJson::encode($platform['bet']),
+            'winLost' => BaseJson::encode($platform['winLost']),
 
         ]);
     }
