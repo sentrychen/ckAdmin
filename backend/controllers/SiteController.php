@@ -29,6 +29,7 @@ use yii\filters\VerbFilter;
 use yii\web\HttpException;
 use yii\captcha\CaptchaAction;
 use yii\helpers\BaseJson;
+use common\helpers\Util;
 
 /**
  * Site controller
@@ -123,7 +124,7 @@ class SiteController extends Controller
      */
     public function getDailySum()
     {
-        $month_arr = ['01','02','03','04','05','06','07','08','09','10','11','12'];
+        $month_arr = Util::getMonth();
         $data['user'] = ['0' => ['用户', '新增用户', '活跃用户', '首存用户']];
         $data['dw'] = ['0' => ['存取款', '存款', '取款']];
 
@@ -146,9 +147,8 @@ class SiteController extends Controller
      */
     public function getPlatFDailySum()
     {
-        $month_arr = ['01','02','03','04','05','06','07','08','09','10','11','12'];
-
-        $year = date('Y');
+        $month_arr = Util::getMonth();
+        $year = date('Y',time());
         $platForm = Platform::getPlatfromName();
         $data['bet'] = ['0' => ['平台游戏']];
         $data['winLost'] = ['0' => ['平台游戏','输赢']];
@@ -157,7 +157,6 @@ class SiteController extends Controller
             $data['bet'][0][] = $data['winLost'][0][] = $name;
         }
         foreach($month_arr as $n => $m){
-            $year = date('Y',time());
             $count = date("t",strtotime("{$year}-{$m}"));
             $dayCount = $count - 1;
             $startDate = $year.$m.'01';
@@ -165,7 +164,6 @@ class SiteController extends Controller
             $endDate = date('Ymd',strtotime("{$startDate}+{$dayCount} day"));
             $data['bet'][$month][] = $data['winLost'][$month][] = $month.'月';
             $all_winL = 0;
-            $one_winL = 0;
             $data['winLost'][$month][1] = 0;
             foreach($platForm as $k => $pf) {
                 $platform_id = $pf->id;
