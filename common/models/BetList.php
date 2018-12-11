@@ -109,6 +109,7 @@ class BetList extends \yii\db\ActiveRecord
     {
         $labels = [
             'player' => '<span class="label label-info">闲</span>',
+            'palyer' => '<span class="label label-info">闲</span>',
             'banker' => '<span class="label label-danger">庄</span>',
             'tie' => '<span class="label label-success">和</span>',
             'player_pair' => '<span class="label label-primary">闲对</span>',
