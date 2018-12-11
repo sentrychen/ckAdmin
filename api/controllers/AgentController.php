@@ -24,14 +24,6 @@ class AgentController extends ActiveController
         return $behaviors;
     }
 
-
-    public function verbs()
-    {
-        return [
-            'register' => ['POST'],
-        ];
-    }
-
     public function actionRegister()
     {
         $model = new AgentRegisterForm();
