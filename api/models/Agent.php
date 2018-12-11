@@ -18,7 +18,7 @@ class Agent extends \common\models\Agent
         if ($insert) {
 
             if ($this->parent_id) {
-                $parent = $this->getParent();
+                $parent = $this->parent;
                 $this->rebate_rate = $parent->rebate_rate;
                 $this->xima_status = $parent->xima_status;
                 $this->xima_type = $parent->xima_type;

@@ -92,7 +92,9 @@ class Agent extends ActiveRecord
 
             [['rebate_rate'], 'compare', 'compareValue' => yii::$app->option->agent_max_rebate * 100, 'operator' => '<='],
             [['xima_rate'], 'compare', 'compareValue' => yii::$app->option->agent_xima_rate * 100, 'operator' => '<='],
-            [['rebate_rate','xima_rate'], 'filter','filter'=>function($value){return $value/100;}],
+            [['rebate_rate', 'xima_rate'], 'filter', 'filter' => function ($value) {
+                return $value ? $value / 100 : 0;
+            }],
             [['rebate_rate'], 'checkRebateRate'],
             [['xima_rate'], 'checkXimaRate'],
 
