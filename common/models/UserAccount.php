@@ -13,7 +13,6 @@ use yii\behaviors\TimestampBehavior;
  * @property string $frozen_amount 冻结金额
  * @property int $user_point 会员积分
  * @property string $xima_amount 洗码值
- * @property string $xima_rate 洗码比
  * @property int $updated_at 更新日期
  * @property int $created_at 创建日期
  */
@@ -35,7 +34,7 @@ class UserAccount extends \yii\db\ActiveRecord
         return [
             [['user_id'], 'required'],
             [['user_id', 'user_point', 'updated_at', 'created_at'], 'integer'],
-            [['available_amount', 'frozen_amount', 'xima_amount', 'xima_rate'], 'number'],
+            [['available_amount', 'frozen_amount', 'xima_amount'], 'number'],
             [['user_id'], 'unique'],
         ];
     }
@@ -57,7 +56,6 @@ class UserAccount extends \yii\db\ActiveRecord
             'frozen_amount' => '冻结金额',
             'user_point' => '会员积分',
             'xima_amount' => '洗码值',
-            'xima_rate' => '洗码比',
             'updated_at' => '更新日期',
             'created_at' => '创建日期',
         ];

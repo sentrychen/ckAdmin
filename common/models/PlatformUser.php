@@ -10,6 +10,7 @@ use yii\helpers\Json;
  * This is the model class for table "{{%platform_user}}".
  *
  * @property string $id 游戏平台用户ID
+ * @property int $platform_code 游戏平台代码
  * @property int $platform_id 游戏平台ID
  * @property string $user_id 用户ID
  * @property string $username 用户名称
@@ -58,6 +59,7 @@ class PlatformUser extends \yii\db\ActiveRecord
     {
         return [
             'id' => '游戏平台用户ID',
+            'platform_code' => '游戏平台代码',
             'platform_id' => '游戏平台',
             'user_id' => '用户ID',
             'username' => '用户名称',
@@ -90,7 +92,7 @@ class PlatformUser extends \yii\db\ActiveRecord
      */
     public function getPlatform()
     {
-        return $this->hasOne(Platform::class, ['id' => 'platform_id']);
+        return $this->hasOne(Platform::class, ['code' => 'platform_code']);
     }
 
     /**

@@ -203,8 +203,8 @@ class Util
         curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);          //单位 秒，也可以使用
         curl_setopt($ch, CURLOPT_HEADER, $header);
         curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.85 Safari/537.36');
-        curl_setopt($ch, CURLOPT_COOKIEFILE, dirname(__FILE__) . "/tmp.cookie");
-        curl_setopt($ch, CURLOPT_COOKIEJAR, dirname(__FILE__) . "/tmp.cookie");
+        //curl_setopt($ch, CURLOPT_COOKIEFILE, dirname(__FILE__) . "/tmp.cookie");
+        //curl_setopt($ch, CURLOPT_COOKIEJAR, dirname(__FILE__) . "/tmp.cookie");
         if (0 === strpos($url, 'https')) {
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
             curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
@@ -216,9 +216,12 @@ class Util
         }
 
         $result = curl_exec($ch);
-
+        $errno = curl_errno($ch);
+        $errmsg = curl_error($ch);
+        $info = curl_getinfo($ch);
         curl_close($ch);
-        return $result;
+
+        return ['code' => $errno, 'msg' => $errmsg, 'result' => $result, 'info' => $info];
     }
 
     /**

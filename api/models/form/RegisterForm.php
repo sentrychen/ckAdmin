@@ -87,7 +87,10 @@ class RegisterForm extends Model
         }
         $agent_id = Agent::find()->select('id')->where(['promo_code' => $this->promo_code])->scalar();
 
-        if (!$agent_id) $agent_id = 0;
+        if (!$agent_id) {
+            $this->addError('promo_code', '邀请码不正确');
+            return null;
+        }
 
         $user->invite_agent_id = $agent_id;
 

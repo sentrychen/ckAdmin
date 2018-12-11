@@ -13,6 +13,8 @@ use common\models\Options;
 class SettingFinanceForm extends Options
 {
 
+    public $finance_withdraw_rate;        //用户超限取款扣费率
+
     public $finance_deposit_max;        //用户存款最大限额
 
     public $finance_deposit_min;        //用户存款最小限额
@@ -36,6 +38,7 @@ class SettingFinanceForm extends Options
     public function attributeLabels()
     {
         return [
+            'finance_withdraw_rate' => '用户超限取款扣费率',
             'finance_deposit_max' => '用户存款最大限额',
             'finance_deposit_min' => '用户存款最小限额',
             'finance_withdraw_max' => '用户取款最大限额',
@@ -56,6 +59,9 @@ class SettingFinanceForm extends Options
             [['finance_deposit_max', 'finance_deposit_min', 'finance_withdraw_max', 'finance_withdraw_min', 'finance_add_amount_open_aduit', 'finance_reduce_amount_open_aduit','finance_add_amount_max','finance_reduce_amount_max'], 'integer'],
             ['finance_deposit_max', 'compare', 'compareAttribute' => 'finance_deposit_min', 'operator' => '>='],
             ['finance_withdraw_max', 'compare', 'compareAttribute' => 'finance_withdraw_min', 'operator' => '>='],
+            [['finance_withdraw_rate'], 'filter', 'filter' => function ($value) {
+                return $value / 100;
+            }],
         ];
     }
 

@@ -11,7 +11,6 @@ namespace common\models;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
-use yii\web\IdentityInterface;
 
 
 /**
@@ -72,13 +71,13 @@ class User extends ActiveRecord
     public function rules()
     {
         return [
-            [['username', 'password'], 'required', 'on' => ['create']],
+            [['username', 'password', 'invite_agent_id'], 'required', 'on' => ['create']],
             [['username'], 'required', 'on' => ['update', 'self-update']],
             [['username'], 'unique', 'on' => 'create'],
             [['repassword'], 'compare', 'compareAttribute' => 'password'],
             [['status', 'xima_type', 'xima_status', 'min_limit', 'max_limit', 'dogfall_min_limit', 'dogfall_max_limit', 'pair_min_limit', 'pair_min_limit', 'invite_agent_id', 'invite_user_id', 'created_at', 'updated_at'], 'integer'],
             [['xima_rate'], 'number'],
-            [['username', 'password_hash', 'password_pay','api_token', 'password_reset_token', 'email', 'avatar'], 'string', 'max' => 255],
+            [['username', 'password_hash', 'password_pay', 'api_token', 'password_reset_token', 'email', 'avatar'], 'string', 'max' => 255],
             [['auth_key'], 'string', 'max' => 32],
             [['max_limit'], 'compare', 'compareAttribute' => 'min_limit', 'operator' => '>='],
             [['dogfall_max_limit'], 'compare', 'compareAttribute' => 'dogfall_min_limit', 'operator' => '>='],
@@ -90,7 +89,9 @@ class User extends ActiveRecord
             [['pair_min_limit'], 'compare', 'compareValue' => yii::$app->option->game_pair_min_limit, 'operator' => '>='],
             [['pair_max_limit'], 'compare', 'compareValue' => yii::$app->option->game_pair_max_limit, 'operator' => '<='],
             [['xima_rate'], 'compare', 'compareValue' => yii::$app->option->agent_xima_rate * 100, 'operator' => '<='],
-            [['xima_rate'], 'filter','filter'=>function($value){return $value/100;}],
+            [['xima_rate'], 'filter', 'filter' => function ($value) {
+                return $value / 100;
+            }],
             [['xima_rate'], 'checkXimaRate'],
         ];
     }
@@ -99,15 +100,15 @@ class User extends ActiveRecord
     {
         if ($this->invite_agent_id) {
             $agent = $this->getInviteAgent()->one();
-            if($agent->xima_status==0 && $this->xima_status !=0){
+            if ($agent->xima_status == 0 && $this->xima_status != 0) {
                 $this->addError('xima_status', '当代理洗码不可见时，用户也必须设置为洗码不可见');
             }
-            if($agent->xima_type ==1 && $this->xima_type !=1){
+            if ($agent->xima_type == 1 && $this->xima_type != 1) {
                 $this->addError('xima_type', '当代理类别为单边时，用户也必须是单边');
             }
 
-            if ($this->xima_rate > $agent->xima_rate)
-                $this->addError($attribute, '洗码率不能超出代理洗码率[' . yii::$app->formatter->asPercent($agent->xima_rate, 2) . ']');
+            if (round($this->xima_rate, 4) > round($agent->xima_rate, 4))
+                $this->addError($attribute, '洗码率不能超出代理洗码率[' . $agent->xima_rate * 100 . '%]');
         }
     }
 
@@ -117,8 +118,8 @@ class User extends ActiveRecord
     public function scenarios()
     {
         return [
-            'default' => ['username','nickname','email'],
-            'update' => ['nickname','password', 'repassword', 'status', 'min_limit', 'max_limit', 'dogfall_min_limit', 'dogfall_max_limit', 'pair_min_limit', 'pair_max_limit', 'xima_status', 'xima_type', 'xima_rate'],
+            'default' => ['username', 'nickname', 'email'],
+            'update' => ['nickname', 'password', 'repassword', 'status', 'min_limit', 'max_limit', 'dogfall_min_limit', 'dogfall_max_limit', 'pair_min_limit', 'pair_max_limit', 'xima_status', 'xima_type', 'xima_rate'],
             'create' => ['username', 'password', 'repassword', 'invite_agent_id', 'status', 'min_limit', 'max_limit', 'dogfall_min_limit', 'dogfall_max_limit', 'pair_min_limit', 'pair_max_limit', 'xima_status', 'xima_type', 'xima_rate'],
         ];
     }
@@ -149,7 +150,7 @@ class User extends ActiveRecord
             'dogfall_max_limit' => '最大和限红',
             'pair_min_limit' => '最小对限红',
             'pair_max_limit' => '最大和限红',
-            'invite_agent_id' => '邀请代理ID',
+            'invite_agent_id' => '所属代理',
             'invite_user_id' => '邀请用户ID',
             'created_at' => '注册日期',
             'updated_at' => '最后修改时间',
@@ -177,13 +178,13 @@ class User extends ActiveRecord
 
     public static function getStatuses($key = null)
     {
-        $status =  [
+        $status = [
             self::STATUS_NORMAL => '正常',
             self::STATUS_FROZEN => '冻结',
             self::STATUS_LOCKED => '锁定',
             self::STATUS_DISABLED => '注销'
         ];
-        return $status[$key]??$status;
+        return $status[$key] ?? $status;
     }
 
     /**
@@ -198,7 +199,7 @@ class User extends ActiveRecord
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return UserStat|\yii\db\ActiveQuery
      */
     public function getUserStat()
     {
@@ -207,7 +208,7 @@ class User extends ActiveRecord
 
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return Agent|\yii\db\ActiveQuery
      */
     public function getInviteAgent()
     {
@@ -215,7 +216,7 @@ class User extends ActiveRecord
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return User|\yii\db\ActiveQuery
      */
     public function getInviteUser()
     {
@@ -223,7 +224,7 @@ class User extends ActiveRecord
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return UserAccount|\yii\db\ActiveQuery
      */
     public function getAccount()
     {
@@ -233,7 +234,7 @@ class User extends ActiveRecord
 
     public function getPlatforms()
     {
-        return $this->hasMany(PlatformUser::class,['user_id'=>'id']);
+        return $this->hasMany(PlatformUser::class, ['user_id' => 'id']);
     }
 
     /**
@@ -269,7 +270,7 @@ class User extends ActiveRecord
             //日新增用户
             Daily::addCounter(['dnu' => 1]);
             //某代理下日新增用户
-            AgentDaily::addCounter(['agent_id'=>$this->invite_agent_id,'dnu'=>1]);
+            AgentDaily::addCounter(['agent_id' => $this->invite_agent_id, 'dnu' => 1]);
         }
     }
 

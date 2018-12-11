@@ -25,9 +25,11 @@ return [
             'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => [
                 [
-                    'class' => yii\log\FileTarget::className(),//当触发levels配置的错误级别时，保存到日志文件
+                    'class' => yii\log\FileTarget::class,//当触发levels配置的错误级别时，保存到日志文件
                     'levels' => ['error', 'warning'],
-                ],
+                    'logVars' => ['*'],
+                    'categories' => ['application'],
+                ]
             ],
         ],
         'cache' => [
@@ -43,9 +45,9 @@ return [
                 'login' => 'site/login',
                 'logout' => 'site/logout',
                 'register' => 'site/register',
-                '<controller:\w+>/<id:\d+>' => '<controller>/<view>',
-                '<controller:\w+>/<action:\w+>/<id:\d+>' => '<controller>/<action>',
-                '<controller:\w+>/<action:\w+>' => '<controller>/<action>',
+                '<controller:[-\w]+>/<id:\d+>' => '<controller>/<view>',
+                '<controller:[-\w]+>/<action:\w+>/<id:\d+>' => '<controller>/<action>',
+                '<controller:[-\w]+>/<action:[-\w]+>' => '<controller>/<action>',
                 'bank/bar-code'=>'/bank/bar-code',
                 'bank/company-bank'=>'/bank/company-bank',
                 [

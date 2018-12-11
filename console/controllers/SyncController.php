@@ -39,7 +39,10 @@ class SyncController extends \yii\console\Controller
 
         $endTime = $now = time();
 
+        $logErr = '[同步皇家国际投注记录](' . date('Y-m-d H:i:s', $startTime) . ' - ' . date('Y-m-d H:i:s', $endTime) . ')]：';
+
         if (!$platform) {
+            yii::error($logErr . '平台参数错误！', 'task');
             return ExitCode::DATAERR;
         }
 
@@ -52,10 +55,11 @@ class SyncController extends \yii\console\Controller
                 $endTime = $startTime + $stepTime;
             $res = $client->betList(date('Y-m-d H:i:s', $startTime), date('Y-m-d H:i:s', $endTime));
 
-            if ($res['status'] == 1) {
-                $data = array_merge($data, $res['bet_list']);
+            if ($res['error'] == '') {
+                $data = array_merge($data, $res['data']);
             } else {
-                yii::error('error', '同步皇家国际投注记录失败[' . date('Y-m-d H:i:s', $startTime) . ' - ' . date('Y-m-d H:i:s', $endTime) . ']！， 原因：' . $res['err_msg']);
+
+                yii::error($logErr . '接口调用失败！原因：' . $res['error'], 'task');
                 return ExitCode::UNAVAILABLE;
             }
             $startTime = $endTime + 1;
@@ -92,7 +96,12 @@ class SyncController extends \yii\console\Controller
                     $model->state = $row['state'];
                     $model->bet_at = strtotime($row['bet_time']);
                     $model->draw_at = strtotime($row['draw_time']);
-                    $model->save(false);
+                    $model->calculateXima(); //计算洗码值
+                    if (!$model->save(false)) {
+                        yii::error($logErr . '数据存储失败！原因：' . implode(',', $model->getErrors()), 'task');
+                        return ExitCode::DATAERR;
+                    }
+
                 }
             }
         }
@@ -108,12 +117,16 @@ class SyncController extends \yii\console\Controller
         $startTime = BetList::find()->where(['platform_id' => $platform->id])->max('bet_at');
 
         if (!$startTime) {
+
             $startTime = strtotime("-1 day");
         }
 
         $endTime = $now = time();
 
+        $logErr = '[同步机械版投注记录](' . date('Y-m-d H:i:s', $startTime) . ' - ' . date('Y-m-d H:i:s', $endTime) . ')]：';
+
         if (!$platform) {
+            yii::error($logErr . '平台参数错误！', 'task');
             return ExitCode::DATAERR;
         }
 
@@ -125,17 +138,14 @@ class SyncController extends \yii\console\Controller
             if ($endTime - $startTime > $stepTime)
                 $endTime = $startTime + $stepTime;
             $res = $client->betList($startTime, $endTime);
-            if (!$res || !isset($res['code'])) {
-                yii::error('error', '同步机械版投注记录失败[' . date('Y-m-d H:i:s', $startTime) . ' - ' . date('Y-m-d H:i:s', $endTime) . ']！， 原因：' . ($res['err_msg'] ?? '请求失败'));
+            if ($res['error'] == '') {
+                $data = array_merge($data, $res['data']);
+            } else {
+                yii::error($logErr . '接口调用失败！原因：' . $res['error'], 'task');
                 return ExitCode::UNAVAILABLE;
             }
-
             $startTime = $endTime + 1;
             $endTime = $now;
-
-            if ($res['code'] === 0) {
-                $data = array_merge($data, $res['data']);
-            }
         }
 
         $resultTypes = [
@@ -189,7 +199,11 @@ class SyncController extends \yii\console\Controller
                     $model->state = 1;
                     $model->bet_at = round($row['gameTime'] / 1000);
                     $model->draw_at = round($row['gameTime'] / 1000);
-                    $model->save(false);
+                    $model->calculateXima(); //计算洗码值
+                    if (!$model->save(false)) {
+                        yii::error($logErr . '数据存储失败！原因：' . implode(',', $model->getErrors()), 'task');
+                        return ExitCode::DATAERR;
+                    }
                 }
             }
         }

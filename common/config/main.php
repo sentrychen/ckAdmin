@@ -23,6 +23,52 @@ $config = [
         'cache' => [//缓存组件 具体配置请参考 http://doc.feehi.com/configs.html
             'class' => yii\caching\DummyCache::class,//不使用缓存
         ],
+        'log' => [//此项具体详细配置，请访问http://wiki.feehi.com/index.php?title=Yii2_log
+            'traceLevel' => YII_DEBUG ? 3 : 0,
+            'targets' => [
+                [
+                    'class' => yii\log\FileTarget::class,//当触发levels配置的错误级别时，保存到日志文件
+                    'levels' => ['error', 'warning'],
+                    'logVars' => [],
+                    'categories' => ['application'],
+                ],
+                [
+                    'class' => yii\log\FileTarget::class,
+                    'categories' => ['client-req'],
+                    'levels' => ['error'],
+                    'logVars' => [],
+                    'logFile' => '@common/logs/error/client-req-' . date('Ym') . '.log',
+                ],
+                [
+                    'class' => yii\log\FileTarget::class,
+                    'categories' => ['client-res'],
+                    'levels' => ['error'],
+                    'logVars' => [],
+                    'logFile' => '@common/logs/error/client-res-' . date('Ym') . '.log',
+                ],
+                [
+                    'class' => yii\log\FileTarget::class,
+                    'categories' => ['account-user'],
+                    'levels' => ['info'],
+                    'logVars' => [],
+                    'logFile' => '@common/logs/info/account-user-' . date('Ym') . '.log',
+                ],
+                [
+                    'class' => yii\log\FileTarget::class,
+                    'categories' => ['account-agent'],
+                    'levels' => ['info'],
+                    'logVars' => [],
+                    'logFile' => '@common/logs/info/account-agent-' . date('Ym') . '.log',
+                ],
+                [
+                    'class' => yii\log\FileTarget::class,
+                    'categories' => ['account-system'],
+                    'levels' => ['info'],
+                    'logVars' => [],
+                    'logFile' => '@common/logs/info/account-system-' . date('Ym') . '.log',
+                ],
+            ],
+        ],
         'formatter' => [//格式显示配置
             'dateFormat' => 'php:Y-m-d H:i',
             'decimalSeparator' => '.',

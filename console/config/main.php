@@ -16,16 +16,27 @@ return [
     'controllerNamespace' => 'console\controllers',
     'components' => [
         'log' => [
+            'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => [
                 [
-                    'class' => yii\log\FileTarget::className(),
+                    'class' => yii\log\FileTarget::class,//当触发levels配置的错误级别时，保存到日志文件
                     'levels' => ['error', 'warning'],
+                    'logVars' => ['*'],
+                    'categories' => ['application'],
+                ],
+                [
+                    'class' => yii\log\FileTarget::class,//当触发levels配置的错误级别时，保存到日志文件
+                    'levels' => ['error'],
+                    'logVars' => ['*'],
+                    'categories' => ['task'],
+                    'logFile' => '@runtime/logs/task/' . date('Ym') . '/task-' . date('d') . '.log',
                 ],
             ],
         ],
         'session' => [
             'class' => yii\web\Session::className()
         ]
+
     ],
     'controllerMap'=>[
         'serve' => [

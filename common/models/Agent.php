@@ -3,6 +3,7 @@
 namespace common\models;
 
 use common\helpers\FamilyTree;
+use common\libs\Constants;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
@@ -191,14 +192,14 @@ class Agent extends ActiveRecord
     {
         if ($this->parent_id) {
             $parent = $this->getParent()->one();
-            if($parent->xima_status==0 && $this->xima_status !=0){
+            if ($parent->xima_status == Constants::YesNo_No && $this->xima_status != Constants::YesNo_No) {
                 $this->addError('xima_status', '当上级代理洗码不可见时，下级代理也必须设置为洗码不可见');
             }
-            if($parent->xima_type ==1 && $this->xima_type !=1){
+            if ($parent->xima_type == Constants::XIMA_ONE_SIDED && $this->xima_type != Constants::XIMA_ONE_SIDED) {
                 $this->addError('xima_type', '当上级代理类别为单边时，下级代理也必须是单边');
             }
 
-            if ($this->xima_rate > $parent->xima_rate)
+            if (round($this->xima_rate, 4) > round($parent->xima_rate, 4))
                 $this->addError($attribute, '洗码率不能超出上级代理洗码率[' . yii::$app->formatter->asPercent($parent->xima_rate, 2) . ']');
         }
     }
@@ -318,10 +319,22 @@ class Agent extends ActiveRecord
         parent::loadDefaultValues();
     }
 
+    /**
+     * @return Agent|\yii\db\ActiveQuery
+     */
     public function getParent()
     {
         return $this->hasOne(Agent::class, ['id' => 'parent_id']);
     }
+
+    /**
+     * @return Agent|\yii\db\ActiveQuery
+     */
+    public function getTop()
+    {
+        return $this->hasOne(Agent::class, ['id' => 'top_id']);
+    }
+
 
     /**
      * @param int $status

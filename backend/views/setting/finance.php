@@ -31,6 +31,8 @@ $this->params['breadcrumbs'][] = '财务设置';
                 <div class="hr-line-dashed"></div>
                 <?= $form->field($model, 'finance_withdraw_min') ?>
                 <div class="hr-line-dashed"></div>
+                <?= $form->field($model, 'finance_withdraw_rate')->textInput(['afterAddon' => '%', 'value' => $model->finance_withdraw_rate * 100])->hint('当用户申请取款金额超出流水一倍时，超出部分需要扣除行政费用') ?>
+                <div class="hr-line-dashed"></div>
                 <?= $form->field($model, 'finance_add_amount_open_aduit')->radioList(Constants::getYesNoItems()) ?>
                 <div class="hr-line-dashed"></div>
                 <?= $form->field($model, 'finance_reduce_amount_open_aduit')->radioList(Constants::getYesNoItems()) ?>

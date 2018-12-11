@@ -78,7 +78,7 @@ class Task extends \yii\db\ActiveRecord
             'last_run_at' => '上次运行时间',
             'next_run_at' => '下次运行时间',
             'exec_mem' => '消耗内存',
-            'exec_time' => '消耗时间(s)',
+            'exec_time' => '消耗时间(ms)',
         ];
     }
 
