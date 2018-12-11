@@ -133,7 +133,7 @@ class SiteController extends \yii\web\Controller
      */
     public function getPlatFDailySum()
     {
-        $month_arr = ['01','02','03','04','05','06','07','08','09','10','11','12'];
+        $month_arr = Util::getMonth();
         $agent_id = yii::$app->getUser()->getIdentity()->getId();
         $year = date('Y');
         $platForm = Platform::getPlatfromName();
@@ -152,7 +152,6 @@ class SiteController extends \yii\web\Controller
             $endDate = date('Ymd',strtotime("{$startDate}+{$dayCount} day"));
             $data[$month][] = $month.'月';
             $all_winL = 0;
-            $one_winL = 0;
             $data[$month][1] = 0;
             foreach($platForm as $k => $pf) {
                 $platForm_id = $pf->id;
