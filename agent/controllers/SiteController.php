@@ -9,8 +9,10 @@
 namespace agent\controllers;
 
 use agent\models\Agent;
+use agent\models\BetList;
 use agent\models\Message;
 use agent\models\Notice;
+use backend\models\Platform;
 use common\helpers\Util;
 use dosamigos\qrcode\QrCode;
 use yii;
@@ -25,6 +27,7 @@ use yii\filters\VerbFilter;
 use yii\helpers\Url;
 use yii\web\HttpException;
 use yii\captcha\CaptchaAction;
+use agent\models\AgentDaily;
 
 /**
  * Site controller
@@ -116,9 +119,55 @@ class SiteController extends \yii\web\Controller
 
         //今日注册用户
         $statics['userToday'] = $query->andWhere(['>=', 'created_at', $today])->count();
+        //投注输赢
+        $winLost = $this->getPlatFDailySum();
+        return $this->render('main', [
+            'statics' => $statics,
+            'winLost' => json_encode($winLost)
+        ]);
+    }
+
+    /*
+     * 后台首页统计图数据
+     * @return array
+     */
+    public function getPlatFDailySum()
+    {
+        $month_arr = ['01','02','03','04','05','06','07','08','09','10','11','12'];
+        $agent_id = yii::$app->getUser()->getIdentity()->getId();
+        $year = date('Y');
+        $platForm = Platform::getPlatfromName();
+        $data = ['0' => ['平台游戏','输赢']];
+        foreach($platForm as $k => $pf) {
+            $name = $pf->name;
+            $data[0][] = $name;
+        }
+
+        foreach($month_arr as $n => $m){
+            $year = date('Y',time());
+            $count = date("t",strtotime("{$year}-{$m}"));
+            $dayCount = $count - 1;
+            $startDate = $year.$m.'01';
+            $month = (int)$m;
+            $endDate = date('Ymd',strtotime("{$startDate}+{$dayCount} day"));
+            $data[$month][] = $month.'月';
+            $all_winL = 0;
+            $one_winL = 0;
+            $data[$month][1] = 0;
+            foreach($platForm as $k => $pf) {
+                $platForm_id = $pf->id;
+                $model = BetList::getBetListData($agent_id,$platForm_id,$startDate,$endDate,$month);
+                $profit = isset($model->profit)?$model->profit:0;
+                $one_winL = $profit;
+                $all_winL += $profit;
+                $data[$month][] = $one_winL;
+
+            }
+            $data[$month][1] = $all_winL;
+        }
 
 
-        return $this->render('main', ['statics' => $statics]);
+        return $data;
     }
 
     /**

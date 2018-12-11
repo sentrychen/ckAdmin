@@ -332,4 +332,5 @@ class BetList extends \yii\db\ActiveRecord
             }
         }
     }
+
 }

@@ -124,6 +124,7 @@ class PlatformDaily extends \yii\db\ActiveRecord
 
     /*
      *  后台首页“平台投注”和“平台输赢”统计图数据
+     * @param int $platform_id 平台id
      * @param string $startDate  开始时间
      * @param string $endDate  截止时间
      * @return array

@@ -117,7 +117,7 @@ class SiteController extends Controller
     }
 
     /*
-     * 后台首页统计图数据
+     * 后台首页用户统计图数据
      * @return array
      */
     public function getDailySum()
@@ -140,7 +140,7 @@ class SiteController extends Controller
     }
 
     /*
-     * 后台首页统计图数据
+     * 后台首页投注统计图数据
      * @return array
      */
     public function getPlatFDailySum()
@@ -165,9 +165,10 @@ class SiteController extends Controller
             $data['bet'][$month][] = $data['winLost'][$month][] = $month.'月';
             $all_winL = 0;
             $one_winL = 0;
+            $data['winLost'][$month][1] = 0;
             foreach($platForm as $k => $pf) {
                 $platform_id = $pf->id;
-                $model = platformDaily::getBetData($platform_id,$startDate,$endDate,$month);
+                $model = PlatformDaily::getBetData($platform_id,$startDate,$endDate,$month);
                 $dbo = $model['dbo']?$model['dbo']:0;
                 $dpa = $model['dpa']?$model['dpa']:0;
                 $dla = $model['dla']?$model['dla']:0;
@@ -176,7 +177,7 @@ class SiteController extends Controller
                 $data['bet'][$month][] = $dbo;
                 $data['winLost'][$month][] = $one_winL;
             }
-            $data['winLost'][$month][] = $all_winL;
+            $data['winLost'][$month][1] = $all_winL;
         }
 
 
