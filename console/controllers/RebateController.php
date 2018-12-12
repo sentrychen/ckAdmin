@@ -29,6 +29,9 @@ class RebateController extends \yii\console\Controller
         $start_at = strtotime(date('Y-m-01', strtotime('-1 month')));
         $end_at = strtotime(date('Y-m-01'));
         $ym = date('Ym', $start_at);
+        //如果记录已经存在，先删除
+        Rebate::deleteAll(['ym' => $ym]);
+
         $sql = "select u.invite_agent_id,sum(b.profit) as profit,sum(b.bet_amount) as bet_amount from ck_bet_list b left join ck_user u  
                  on b.user_id=u.id where b.state = 1 and b.bet_at >= {$start_at} and b.bet_at < {$end_at}  group by u.invite_agent_id having sum(b.profit) < 0";
         $rows = Yii::$app->getDb()->createCommand($sql)->queryAll();
