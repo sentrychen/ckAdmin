@@ -11,11 +11,13 @@ use yii\widgets\ActiveForm;
 /* @var $form yii\widgets\ActiveForm */
 ?>
 <div class="toolbar-searchs">
-    <?php $form = SearchForm::begin([]); ?>
+    <?php $form = SearchForm::begin([
+        'action' => ['rebate']
+    ]); ?>
 
     <?= $form->field($model, 'ym')->dropDownList(Rebate::getYms()) ?>
     <?= $form->field($model, 'agent_id')->dropDownList(Agent::getAgentTreeList()) ?>
     <?= $form->field($model, 'agent_level')->dropDownList(Rebate::getLevels()) ?>
-    <?= $form->searchButtons() ?>
+    <?= $form->searchButtons(['rebate']) ?>
     <?php SearchForm::end(); ?>
 </div>
