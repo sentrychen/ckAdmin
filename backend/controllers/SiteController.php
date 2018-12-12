@@ -140,7 +140,6 @@ class SiteController extends Controller
         $data['user'] = ['0' => ['用户', '新增用户', '活跃用户', '首存用户']];
         $data['dw'] = ['0' => ['存取款', '存款', '取款']];
 
-        $year = date('Y');
         foreach($month_arr as $m){
             $year = date('Y',time());
             $count = date("t",strtotime("{$year}-{$m}"));
@@ -148,7 +147,14 @@ class SiteController extends Controller
             $startDate = $year.$m.'01';
             $month = (int)$m;
             $endDate = date('Ymd',strtotime("{$startDate}+{$dayCount} day"));
-            $data = Daily::getDaliyData($startDate,$endDate,$month,$data);
+            $result = Daily::getSumData($startDate,$endDate);
+            $dnu = $result['dnu']?$result['dnu']:0;
+            $dau = $result['dau']?$result['dau']:0;
+            $ndu = $result['ndu']?$result['ndu']:0;
+            $dda = $result['dda']?$result['dda']:0;
+            $dwa = $result['dwa']?$result['dwa']:0;
+            $data['user'][] = ["{$month}月",$dnu,$dau,$ndu];
+            $data['dw'][] = ["{$month}月",$dda,$dwa];
         }
         return $data;
     }
