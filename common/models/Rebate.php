@@ -95,4 +95,51 @@ class Rebate extends \yii\db\ActiveRecord
         return $levels;
     }
 
+    /**
+     * 计算返佣值,递归计算上级返佣
+     * @param $profit
+     * @param $amount
+     * @param int $sub_rate
+     */
+    public function calRebate($profit, $amount, $sub_rate = -1)
+    {
+        $this->agent_level = $this->agent->agent_level;
+        $this->agent_name = $this->agent->username;
+        $this->rebate_rate = $this->agent->rebate_rate;
+
+        $rebate_rate = $this->rebate_rate;
+        if ($sub_rate == -1) {
+            $this->self_profit_loss = $profit;
+            $this->self_bet_amount = $amount;
+            $this->self_rebate_amount = $this->rebate_rate * $profit;
+        } else {
+            $this->sub_profit_loss += $profit;
+            $this->sub_bet_amount += $amount;
+            if ($this->rebate_rate > $sub_rate) {
+                $this->sub_rebate_amount += ($this->rebate_rate - $sub_rate) * $profit;
+            } else {
+                $this->sub_rebate_amount += 0;
+                $rebate_rate = $sub_rate;
+            }
+        }
+
+        $this->total_rebate_amount = $this->self_rebate_amount + $this->sub_rebate_amount;
+
+        if ($this->save(false)) {
+            if ($this->agent->parent && $this->agent->parent->id != $this->agent_id) {
+                $parent = self::findOne(['ym' => $this->ym, 'agent_id' => $this->agent->parent->id]);
+                if (!$parent)
+                    $parent = new Rebate(['ym' => $this->ym, 'agent_id' => $this->agent->parent->id]);
+                $parent->calRebate($profit, $amount, $rebate_rate);
+            }
+        }
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAgent()
+    {
+        return $this->hasOne(Agent::class, ['id' => 'agent_id']);
+    }
 }
