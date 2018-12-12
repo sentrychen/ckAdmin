@@ -175,6 +175,7 @@ class BetList extends \yii\db\ActiveRecord
         if ($option->agent_xima_status == Constants::YesNo_No || $model->xima_status == Constants::YesNo_No) {
             $this->xima_status = Constants::YesNo_No;
             $this->xima = 0;
+            $this->save(false);
             return false;
         }
 
@@ -193,12 +194,13 @@ class BetList extends \yii\db\ActiveRecord
         //如果投注结果为输，洗码为单边洗码则返回洗码值0
         if ($this->xima_type == Constants::XIMA_ONE_SIDED && $this->profit <= 0) {
             $this->xima = 0;
+            $this->save(false);
             return false;
         }
 
         //洗码值等于洗码率 x 投注金额
         $this->xima = $this->xima_rate * $this->bet_amount;
-
+        $this->save(false);
         //逐级分配代理洗码值
         while ($sub = array_pop($members)) {
             $ximaRecord = new AgentXimaRecord([

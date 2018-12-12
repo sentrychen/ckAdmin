@@ -96,11 +96,12 @@ class SyncController extends \yii\console\Controller
                     $model->state = $row['state'];
                     $model->bet_at = strtotime($row['bet_time']);
                     $model->draw_at = strtotime($row['draw_time']);
-                    $model->calculateXima(); //计算洗码值
+
                     if (!$model->save(false)) {
                         yii::error($logErr . '数据存储失败！原因：' . implode(',', $model->getErrors()), 'task');
                         return ExitCode::DATAERR;
                     }
+                    $model->calculateXima(); //计算洗码值
 
                 }
             }
@@ -199,11 +200,11 @@ class SyncController extends \yii\console\Controller
                     $model->state = 1;
                     $model->bet_at = round($row['gameTime'] / 1000);
                     $model->draw_at = round($row['gameTime'] / 1000);
-                    $model->calculateXima(); //计算洗码值
                     if (!$model->save(false)) {
                         yii::error($logErr . '数据存储失败！原因：' . implode(',', $model->getErrors()), 'task');
                         return ExitCode::DATAERR;
                     }
+                    $model->calculateXima(); //计算洗码值
                 }
             }
         }
