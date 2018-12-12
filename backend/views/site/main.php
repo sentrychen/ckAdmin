@@ -26,7 +26,7 @@ EchartAsset::register($this);
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <h1 class="no-margins"><?= $statics['dau'] ?></h1>
+                        <h1 class="no-margins"><?= $actUser ?></h1>
                         <div class="font-bold text-navy">
                             <small>活跃会员</small>
                         </div>
@@ -47,13 +47,13 @@ EchartAsset::register($this);
 
                 <div class="row">
                     <div class="col-md-5">
-                        <h1 class="no-margins"><?= $statics['ndu'] ?></h1>
+                        <h1 class="no-margins"><?= $userDeposit['user'] ?></h1>
                         <div class="font-bold text-info">
                             <small>首存用户</small>
                         </div>
                     </div>
                     <div class="col-md-7">
-                        <h1 class="no-margins"><?= Yii::$app->formatter->asCurrency($statics['nda']) ?></h1>
+                        <h1 class="no-margins"><?= Yii::$app->formatter->asCurrency($userDeposit['amount']) ?></h1>
                         <div class="font-bold text-info">
                             <small>首存额度</small>
                         </div>
@@ -73,13 +73,13 @@ EchartAsset::register($this);
 
                 <div class="row">
                     <div class="col-md-5">
-                        <h1 class="no-margins"><?= $statics['ddu'] ?></h1>
+                        <h1 class="no-margins"><?= $userDeposit['user'] ?></h1>
                         <div class="font-bold text-warning">
                             <small>存款用户</small>
                         </div>
                     </div>
                     <div class="col-md-7">
-                        <h1 class="no-margins"><?= Yii::$app->formatter->asCurrency($statics['dda'])?></h1>
+                        <h1 class="no-margins"><?= Yii::$app->formatter->asCurrency($userDeposit['all_amount'])?></h1>
                         <div class="font-bold text-warning">
                             <small>存款额度</small>
                         </div>
@@ -125,13 +125,13 @@ EchartAsset::register($this);
 
                 <div class="row">
                     <div class="col-md-5">
-                        <h1 class="no-margins"><?= $statics['dbu'] ?></h1>
+                        <h1 class="no-margins"><?= $useBet['user'] ?></h1>
                         <div class="font-bold text-info">
                             <small>投注用户</small>
                         </div>
                     </div>
                     <div class="col-md-7">
-                        <h1 class="no-margins"><?= Yii::$app->formatter->asCurrency($statics['dba'])?></h1>
+                        <h1 class="no-margins"><?= Yii::$app->formatter->asCurrency($useBet['amount'])?></h1>
                         <div class="font-bold text-info">
                             <small>投注额度</small>
                         </div>
@@ -151,13 +151,13 @@ EchartAsset::register($this);
 
                 <div class="row">
                     <div class="col-md-5">
-                        <h1 class="no-margins"><?= $statics['dwu'] ?></h1>
+                        <h1 class="no-margins"><?= $useWithdraw['user'] ?></h1>
                         <div class="font-bold text-warning">
                             <small>取款用户</small>
                         </div>
                     </div>
                     <div class="col-md-7">
-                        <h1 class="no-margins"><?= Yii::$app->formatter->asCurrency($statics['dwa'])?></h1>
+                        <h1 class="no-margins"><?= Yii::$app->formatter->asCurrency($useWithdraw['amount'])?></h1>
                         <div class="font-bold text-warning">
                             <small>取款额度</small>
                         </div>

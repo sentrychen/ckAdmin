@@ -8,6 +8,7 @@
 
 namespace backend\controllers;
 
+use backend\models\BetList;
 use backend\models\PlatformAccount;
 use backend\models\User;
 use common\libs\Constants;
@@ -16,8 +17,9 @@ use backend\models\PlatformDaily;
 use backend\models\Platform;
 use backend\models\Message;
 use common\models\Notice;
-use common\models\UserDeposit;
-use common\models\UserWithdraw;
+use backend\models\UserDeposit;
+use backend\models\UserWithdraw;
+use backend\models\UserLoginLog;
 use yii;
 use Exception;
 
@@ -106,10 +108,18 @@ class SiteController extends Controller
 
         // $comments = BackendComment::getRecentComments(6);
         $statics = Daily::getSumData('-30 day');
+        $activeUser = UserLoginLog::getActiveUser('-30 day');
+        $userDeposit = UserDeposit::getUserDeposit('-30 day');
+        $useBet = BetList::getUserBet('-30 day');
+        $useWithdraw = UserWithdraw::getUserWithdraw('-30 day');
         $userSum = $this->getDailySum();
         $platform = $this->getPlatFDailySum();
         return $this->render('main', [
             'statics' => $statics,
+            'actUser' => $activeUser,
+            'userDeposit' => $userDeposit,
+            'useWithdraw' => $useWithdraw,
+            'useBet'=> $useBet,
             'userSum' => BaseJson::encode($userSum['user']),
             'userDw' => BaseJson::encode($userSum['dw']),
             'bet' => BaseJson::encode($platform['bet']),
