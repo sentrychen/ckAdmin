@@ -107,6 +107,7 @@ class SiteController extends Controller
     {
 
         // $comments = BackendComment::getRecentComments(6);
+        $userCount = User::getUserCount('-30 day');
         $statics = Daily::getSumData('-30 day');
         $activeUser = UserLoginLog::getActiveUser('-30 day');
         $userDeposit = UserDeposit::getUserDeposit('-30 day');
@@ -116,6 +117,7 @@ class SiteController extends Controller
         $platform = $this->getPlatFDailySum();
         return $this->render('main', [
             'statics' => $statics,
+            'userCount' => $userCount,
             'actUser' => $activeUser,
             'userDeposit' => $userDeposit,
             'useWithdraw' => $useWithdraw,

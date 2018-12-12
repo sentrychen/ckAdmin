@@ -20,7 +20,7 @@ EchartAsset::register($this);
             <div class="ibox-content">
                 <div class="row">
                     <div class="col-md-6">
-                        <h1 class="no-margins"><?= $statics['dnu'] ?></h1>
+                        <h1 class="no-margins"><?= $userCount ?></h1>
                         <div class="font-bold text-navy">
                             <small>新增会员</small>
                         </div>

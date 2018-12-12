@@ -33,5 +33,22 @@ class User extends \common\models\User
 
         parent::loadDefaultValues();
     }
+
+    /*
+     * 统计最近时间段用户 新增用户
+     * @param $startDate string 开始时间
+     * @param $endDate string 结束时间
+     * @return array
+     */
+    public static function getUserCount($startDate, $endDate = 'now')
+    {
+        $startDate = strtotime(date('Y-m-d 00:00:00', strtotime($startDate)));
+        $endDate = strtotime($endDate);
+        $number = static::find()->select('id')
+            ->where(['status'=>static::STATUS_NORMAL])
+            ->andWhere(['between', 'created_at', $startDate, $endDate])
+            ->distinct()->count();
+        return $number;
+    }
 }
 
