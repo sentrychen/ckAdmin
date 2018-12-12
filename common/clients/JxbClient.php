@@ -131,6 +131,7 @@ class JxbClient extends ClientAbstract
         if ($res) {
             $res = Json::decode($res);
             if (isset($res['code']) && $res['code'] == 0) return $this->success($res['data'] ?? []);
+            if (isset($res['code']) && $res['code'] == -1) return $this->success([]);
             return $this->error($res['message'] ?? '代理下属所有用户投注数据报表失败', $res);
         } else
             return $this->error('代理下属所有用户投注数据报表失败');
