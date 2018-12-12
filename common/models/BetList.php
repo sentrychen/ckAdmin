@@ -231,7 +231,7 @@ class BetList extends \yii\db\ActiveRecord
 
         //计算用户洗码值
 
-        $userXimaRecord = new AgentXimaRecord([
+        $userXimaRecord = new UserXimaRecord([
             'user_id' => $this->user_id,
             'bet_id' => $this->id,
             'record_id' => $this->record_id,
