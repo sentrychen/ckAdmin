@@ -6,5 +6,5 @@ use Yii;
 
 class AgentAccount extends \common\models\AgentAccount
 {
-
+    
 }

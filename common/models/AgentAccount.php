@@ -49,7 +49,7 @@ class AgentAccount extends \yii\db\ActiveRecord
             'agent_name' => '代理账号',
             'available_amount' => '可用余额',
             'frozen_amount' => '冻结金额',
-            'xima_amount' => '冻结金额',
+            'xima_amount' => '洗码值',
             'updated_at' => '更新日期',
             'created_at' => '创建日期',
         ];
