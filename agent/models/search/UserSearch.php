@@ -87,9 +87,9 @@ class UserSearch extends User
                 'desc' => [UserStat::tableName() . '.login_number' => SORT_DESC],
             ],
 
-            'account.frozen_amount' => [
-                'asc' => [UserAccount::tableName() . '.frozen_amount' => SORT_ASC],
-                'desc' => [UserAccount::tableName() . '.frozen_amount' => SORT_DESC],
+            'account.xima_amount' => [
+                'asc' => [UserAccount::tableName() . '.xima_amount' => SORT_ASC],
+                'desc' => [UserAccount::tableName() . '.xima_amount' => SORT_DESC],
             ],
             'userStat.bet_amount' => [
                 'asc' => [UserStat::tableName() . '.bet_amount' => SORT_ASC],

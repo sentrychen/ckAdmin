@@ -85,7 +85,11 @@ $this->params['breadcrumbs'][] = '代理列表';
                             'format' => ['percent', 2],
                         ],
                         [
-                            'attribute' => 'available_amount',
+                            'attribute' => 'account.xima_amount',
+                            'format' => 'currency',
+                        ],
+                        [
+                            'attribute' => 'account.available_amount',
                             'format' => 'currency',
 
                         ],

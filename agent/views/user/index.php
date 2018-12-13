@@ -77,14 +77,17 @@ $this->params['breadcrumbs'][] = '会员列表';
                             'format' => 'currency',
                         ],
                         [
-                            'attribute' => 'account.frozen_amount',
-                            'format' => 'currency',
-                        ],
-                        [
                             'attribute' => 'userStat.bet_amount',
                             'format' => 'currency',
                         ],
-
+                        [
+                            'attribute' => 'xima_rate',
+                            'format' => ['percent', 2],
+                        ],
+                        [
+                            'attribute' => 'account.xima_amount',
+                            'format' => 'currency',
+                        ],
 
                         [
                             'class' => ActionColumn::class,
