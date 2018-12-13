@@ -29,7 +29,14 @@ return [
                     'levels' => ['error', 'warning'],
                     'logVars' => ['*'],
                     'categories' => ['application'],
-                ]
+                ],
+                [
+                    'class' => yii\log\FileTarget::class,
+                    'categories' => ['api'],
+                    'levels' => ['error'],
+                    //  'logVars' => [],
+                    'logFile' => '@runtime/logs/api/error-res-' . date('Ym') . '.log',
+                ],
             ],
         ],
         'cache' => [

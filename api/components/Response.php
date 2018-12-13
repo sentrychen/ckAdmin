@@ -8,6 +8,8 @@
 namespace api\components;
 
 
+use Yii;
+
 class Response extends \yii\web\Response
 {
 
@@ -34,6 +36,7 @@ class Response extends \yii\web\Response
                 if (YII_DEBUG) {
                     $response->data['debug'] = $data;
                 }
+                yii::error($data, 'api');
 
             }
             $response->statusCode = 200;

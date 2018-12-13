@@ -52,12 +52,12 @@ class PlatformController extends ActiveController
         foreach ($models as $model) {
             $service = new PlatformService(['model' => $model]);
             if ($service->getClient()) {
-                //try {
+                try {
                     $num += $service->getAmount($amount);
-                //} catch (\Exception $e) {
-                //   yii::error($e->getMessage());
-                //  throw new RestHttpException($e->getMessage());
-                //}
+                } catch (\Exception $e) {
+                    yii::error($e->getMessage());
+                    throw new RestHttpException($e->getMessage());
+                }
             }
         }
         return $num;
