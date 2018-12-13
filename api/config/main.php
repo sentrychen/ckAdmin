@@ -22,12 +22,12 @@ return [
             'enableSession' => false,
         ],
         'log' => [//此项具体详细配置，请访问http://wiki.feehi.com/index.php?title=Yii2_log
-            'traceLevel' => YII_DEBUG ? 3 : 0,
+            'traceLevel' => YII_DEBUG ? 3 : 3,
             'targets' => [
                 [
                     'class' => yii\log\FileTarget::class,//当触发levels配置的错误级别时，保存到日志文件
                     'levels' => ['error', 'warning'],
-//                    'logVars' => ['*'],
+                    'logVars' => ['*'],
                     'categories' => ['application'],
                 ]
             ],
