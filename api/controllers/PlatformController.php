@@ -50,13 +50,13 @@ class PlatformController extends ActiveController
             ->andFilterWhere(['platform_code' => $gameType])->all();
         $num = 0;
         foreach ($models as $model) {
-            $service = new PlatformService(['userId' => yii::$app->getUser()->getId(), 'gameType' => $model->platform_code]);
+            $service = new PlatformService(['model' => $model]);
             if ($service->getClient()) {
                 try {
                     $num += $service->getAmount($amount);
                 } catch (\Exception $e) {
-                    yii::error($e->getMessage());
-                    throw new RestHttpException($e->getMessage());
+                    //yii::error($e->getMessage());
+                    //throw new RestHttpException($e->getMessage());
                 }
             }
         }
@@ -77,7 +77,7 @@ class PlatformController extends ActiveController
             ->andFilterWhere(['platform_code' => $gameType])->all();
         $amounts = [];
         foreach ($models as $model) {
-            $service = new PlatformService(['userId' => yii::$app->getUser()->getId(), 'gameType' => $model->platform_code]);
+            $service = new PlatformService(['model' => $model]);
             if ($service->getClient()) {
                 $amounts[$service->gameType] = $service->queryAmount();
             }
