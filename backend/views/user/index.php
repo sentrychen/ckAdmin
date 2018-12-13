@@ -56,15 +56,11 @@ $this->params['breadcrumbs'][] = '会员列表';
                     'filterModel' => null,
                     'columns' => [
                         ['class' => CheckboxColumn::className()],
-                        [
-                            'attribute' => 'id',
-                        ],
+
                         [
                             'attribute' => 'username',
                         ],
-                        [
-                            'attribute' => 'nickname',
-                        ],
+
                         [
                             'attribute' => 'agent_name',
                             'value' => 'inviteAgent.username',
@@ -99,6 +95,10 @@ $this->params['breadcrumbs'][] = '会员列表';
                             'format'=>'currency',
                         ],
                         [
+                            'attribute' => 'account.xima_amount',
+                            'format'=>'currency',
+                        ],
+                        [
                             'attribute' => 'userStat.deposit_amount',
                             'format'=>'currency',
                         ],
@@ -113,7 +113,7 @@ $this->params['breadcrumbs'][] = '会员列表';
 
                         [
                             'class' => ActionColumn::class,
-                            'width' => '18%',
+                            'width' => '120',
                             'buttons' => [
                                 'report' => function ($url, $model, $key) {
                                     return Html::a('<i class="fa fa-table"></i> 报表', Url::to(['report','username'=>$model->username]), [

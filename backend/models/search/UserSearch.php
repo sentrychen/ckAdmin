@@ -12,7 +12,7 @@ use backend\behaviors\TimeSearchBehavior;
 use backend\components\search\SearchEvent;
 use backend\models\User;
 use common\models\Agent;
-use common\models\UserAccount;
+use backend\models\UserAccount;
 use common\models\UserStat;
 use yii;
 use yii\base\Model;
@@ -88,6 +88,10 @@ class UserSearch extends User
             'account.frozen_amount' => [
                 'asc' => [UserAccount::tableName() . '.frozen_amount' => SORT_ASC],
                 'desc' => [UserAccount::tableName() . '.frozen_amount' => SORT_DESC],
+            ],
+            'account.xima_amount' => [
+                'asc' => [UserAccount::tableName() . '.xima_amount' => SORT_ASC],
+                'desc' => [UserAccount::tableName() . '.xima_amount' => SORT_DESC],
             ],
             'userStat.deposit_amount' => [
                 'asc' => [UserStat::tableName() . '.deposit_amount' => SORT_ASC],
