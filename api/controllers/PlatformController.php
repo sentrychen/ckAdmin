@@ -37,6 +37,7 @@ class PlatformController extends ActiveController
     /**
      * 回收分数
      * @return int
+     * @throws RestHttpException
      */
     public function actionAmount()
     {
@@ -61,6 +62,34 @@ class PlatformController extends ActiveController
         return $amount;
     }
 
+    /**
+     * 查询分数
+     * @return array
+     * @throws RestHttpException
+     */
+    public function actionQueryAmount()
+    {
+
+        $gameType = yii::$app->request->get('game_type', null);
+        $models = PlatformUser::find()
+            ->where(['user_id' => yii::$app->getUser()->getId()])
+            ->andFilterWhere(['platform_code' => $gameType])->all();
+        $amounts = [];
+        foreach ($models as $model) {
+            $service = new PlatformService(['model' => $model]);
+            if ($service->getClient()) {
+                $amounts[$service->gameType] = $service->queryAmount();
+            }
+        }
+        return $amounts;
+    }
+
+
+    /**
+     * 上分
+     * @return bool|int
+     * @throws RestHttpException
+     */
     public function actionAddAmount()
     {
         $gameType = yii::$app->request->post('game_type', null);
