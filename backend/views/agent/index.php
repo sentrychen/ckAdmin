@@ -42,9 +42,6 @@ $this->params['breadcrumbs'][] = '代理列表';
                     'columns' => [
 
                         [
-                            'attribute' => 'id',
-                        ],
-                        [
                             'attribute' => 'username',
                         ],
                         [
@@ -82,6 +79,10 @@ $this->params['breadcrumbs'][] = '代理列表';
                             'format' =>['percent',2],
                         ],
                         [
+                            'attribute' => 'account.xima_amount',
+                            'format'=>'currency',
+                        ],
+                        [
                             'attribute' => 'xima_rate',
                             'format' =>['percent',2],
                         ],
@@ -92,7 +93,7 @@ $this->params['breadcrumbs'][] = '代理列表';
                         ],
                         [
                             'class' => ActionColumn::class,
-                            'width' => '135',
+                            'width' => '80',
                             'template' => '{view-layer} {update}',
                         ],
                     ]
