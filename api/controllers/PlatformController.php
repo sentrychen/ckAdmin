@@ -55,8 +55,7 @@ class PlatformController extends ActiveController
                 try {
                     $num += $service->getAmount($amount);
                 } catch (\Exception $e) {
-                    //yii::error($e->getMessage());
-                    //throw new RestHttpException($e->getMessage());
+                    yii::error($e->getMessage());
                 }
             }
         }
@@ -79,7 +78,11 @@ class PlatformController extends ActiveController
         foreach ($models as $model) {
             $service = new PlatformService(['model' => $model]);
             if ($service->getClient()) {
-                $amounts[$service->gameType] = $service->queryAmount();
+                try {
+                    $amounts[$service->gameType] = $service->queryAmount();
+                } catch (\Exception $e) {
+                    yii::error($e->getMessage());
+                }
             }
         }
         return $amounts;
