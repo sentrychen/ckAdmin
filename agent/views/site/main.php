@@ -17,58 +17,108 @@ use yii\widgets\DetailView;
  */
 EchartAsset::register($this);
 ?>
-<div class="row">
-    <div class="col-sm-3">
-        <div class="ibox float-e-margins">
-            <div class="ibox-title">
-                <h5>代理总数</h5>
+    <div class="row">
+        <div class="col-sm-3">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>代理总数</h5>
+                </div>
+                <div class="ibox-content openContab" href="<?= Url::to(['agent/index']) ?>"
+                     title="下级代理" style="cursor: pointer">
+                    <h1 class="no-margins"><?= $statics['agentTotal'] ?></h1>
+                    <div class="stat-percent font-bold text-success"></div>
+                    <small><?= yii::t('app', 'Total') ?></small>
+                </div>
             </div>
-            <div class="ibox-content openContab" href="<?= Url::to(['agent/index']) ?>"
-                 title="下级代理" style="cursor: pointer">
-                <h1 class="no-margins"><?= $statics['agentTotal'] ?></h1>
-                <div class="stat-percent font-bold text-success"></div>
-                <small><?= yii::t('app', 'Total') ?></small>
+        </div>
+        <div class="col-sm-3">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>今日新增代理</h5>
+                </div>
+                <div class="ibox-content">
+                    <h1 class="no-margins"><?= $statics['agentToday'] ?></h1>
+                    <div class="stat-percent font-bold text-info"></div>
+                    <small><?= yii::t('app', 'Total') ?></small>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>会员总数</h5>
+                </div>
+                <div class="ibox-content openContab" href="<?= Url::to(['user/index']) ?>"
+                     title="<?= yii::t('app', 'Users') ?>" style="cursor: pointer">
+                    <h1 class="no-margins"><?= $statics['userTotal'] ?></h1>
+                    <div class="stat-percent font-bold text-navy"></div>
+                    <small><?= yii::t('app', 'Total') ?></small>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>今日新增会员</h5>
+                </div>
+                <div class="ibox-content">
+                    <h1 class="no-margins"><?= $statics['agentToday'] ?></h1>
+                    <div class="stat-percent font-bold text-info"></div>
+                    <small><?= yii::t('app', 'Total') ?></small>
+                </div>
             </div>
         </div>
     </div>
-    <div class="col-sm-3">
-        <div class="ibox float-e-margins">
-            <div class="ibox-title">
-                <h5>今日新增代理</h5>
+    <div class="row">
+        <div class="col-sm-3">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>累计洗码额度</h5>
+                </div>
+                <div class="ibox-content">
+                    <h1 class="no-margins"><?= Yii::$app->formatter->asCurrency($statics['ximaTotal']) ?></h1>
+                    <div class="stat-percent font-bold text-success"></div>
+                    <small><?= yii::t('app', 'Total') ?></small>
+                </div>
             </div>
-            <div class="ibox-content">
-                <h1 class="no-margins"><?= $statics['agentToday'] ?></h1>
-                <div class="stat-percent font-bold text-info"></div>
-                <small><?= yii::t('app', 'Total') ?></small>
+        </div>
+        <div class="col-sm-3">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>今日洗码额度</h5>
+                </div>
+                <div class="ibox-content">
+                    <h1 class="no-margins"><?= Yii::$app->formatter->asCurrency($statics['ximaToday']) ?></h1>
+                    <div class="stat-percent font-bold text-info"></div>
+                    <small><?= yii::t('app', 'Total') ?></small>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>累计返佣额度</h5>
+                </div>
+                <div class="ibox-content">
+                    <h1 class="no-margins"><?= Yii::$app->formatter->asCurrency($statics['rebateTotal']) ?></h1>
+                    <div class="stat-percent font-bold text-navy"></div>
+                    <small><?= yii::t('app', 'Total') ?></small>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>上月返佣额度</h5>
+                </div>
+                <div class="ibox-content">
+                    <h1 class="no-margins"><?= Yii::$app->formatter->asCurrency($statics['rebateLastMonth']) ?></h1>
+                    <div class="stat-percent font-bold text-info"></div>
+                    <small><?= yii::t('app', 'Total') ?></small>
+                </div>
             </div>
         </div>
     </div>
-    <div class="col-sm-3">
-        <div class="ibox float-e-margins">
-            <div class="ibox-title">
-                <h5>会员总数</h5>
-            </div>
-            <div class="ibox-content openContab" href="<?= Url::to(['user/index']) ?>"
-                 title="<?= yii::t('app', 'Users') ?>" style="cursor: pointer">
-                <h1 class="no-margins"><?= $statics['userTotal'] ?></h1>
-                <div class="stat-percent font-bold text-navy"></div>
-                <small><?= yii::t('app', 'Total') ?></small>
-            </div>
-        </div>
-    </div>
-    <div class="col-sm-3">
-        <div class="ibox float-e-margins">
-            <div class="ibox-title">
-                <h5>今日新增会员</h5>
-            </div>
-            <div class="ibox-content">
-                <h1 class="no-margins"><?= $statics['agentToday'] ?></h1>
-                <div class="stat-percent font-bold text-info"></div>
-                <small><?= yii::t('app', 'Total') ?></small>
-            </div>
-        </div>
-    </div>
-</div>
     <div class="row">
         <div class="col-sm-6">
             <div class="ibox float-e-margins">
@@ -76,39 +126,32 @@ EchartAsset::register($this);
                     <h5>当前代理信息</h5>
                 </div>
                 <div class="ibox-content" style="height:418px;">
-                    <?= DetailView::widget([
-                        'model' => yii::$app->getUser()->getIdentity(),
-                        'attributes' => [
-                            'username',
-                            [
-                                'label' => '上级代理',
-                                'attribute' => 'parent.username'
-                            ],
-                            [
-                                'attribute' => 'status',
+                    <?= DetailView::widget(['model' => yii::$app->getUser()->getIdentity(),
+                        'attributes' => ['username',
+                            ['label' => '上级代理',
+                                'attribute' => 'parent.username'],
+                            ['attribute' => 'status',
                                 'value' => function ($model) {
                                     $status = Agent::getStatuses();
                                     return isset($status[$model->status]) ? $status[$model->status] : "异常";
-                                }
-                            ],
+                                }],
                             'created_at:date',
-                            'account.available_amount:currency',
+                            ['label' => '可提现额度',
+                                'format' => 'raw',
+                                'value' => function ($model) {
+                                    return '<span class="label label-warning">' . yii::$app->formatter->asCurrency($model->account->available_amount) . '</span>';
+                                }],
                             ['label' => '会员推广链接',
                                 'value' => function ($model) {
                                     return yii::$app->option->agent_user_reg_url . '?code=' . $model->promo_code;
-                                }
-                            ],
+                                }],
                             ['label' => '代理推广链接',
                                 'value' => function ($model) {
                                     return yii::$app->option->agent_reg_url . '?code=' . $model->promo_code;
-                                }
-                            ],
+                                }],
                             ['label' => '代理推广二维码',
                                 'format' => 'raw',
-                                'value' => '<img src=' . Url::to(['site/code']) . ' />',
-                            ]
-                        ],
-                    ]) ?>
+                                'value' => '<img src=' . Url::to(['site/code']) . ' />',]],]) ?>
 
                 </div>
             </div>

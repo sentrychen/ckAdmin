@@ -9,9 +9,11 @@
 namespace agent\controllers;
 
 use agent\models\Agent;
+use agent\models\AgentXimaRecord;
 use agent\models\BetList;
 use agent\models\Message;
 use agent\models\Notice;
+use agent\models\Rebate;
 use backend\models\Platform;
 use common\helpers\Util;
 use dosamigos\qrcode\QrCode;
@@ -98,14 +100,15 @@ class SiteController extends \yii\web\Controller
      */
     public function actionMain()
     {
+        $agent_id = yii::$app->getUser()->getId();
 
-        $agents = Agent::getAgentTree(null, yii::$app->getUser()->getId());
+        $agents = Agent::getAgentTree(null, $agent_id);
         //下级代理总数
         $statics['agentTotal'] = count($agents);
         //今日新增代理数
         $agentToday = 0;
         $today = strtotime(date('Y-m-d'));
-        $ids = [yii::$app->getUser()->getId()];
+        $ids = [$agent_id];
         foreach ($agents as $row) {
             $ids[] = $row['id'];
             if ($row['created_at'] >= $today) $agentToday++;
@@ -121,6 +124,22 @@ class SiteController extends \yii\web\Controller
         $statics['userToday'] = $query->andWhere(['>=', 'created_at', $today])->count();
         //投注输赢
         $winLost = $this->getPlatFDailySum();
+
+        //累计洗码收入
+        $queryXima = AgentXimaRecord::find()->where(['agent_id' => $agent_id]);
+
+        $statics['ximaTotal'] = $queryXima->sum('xima_amount');
+
+        //今日洗码收入
+        $statics['ximaToday'] = $queryXima->andWhere(['>=', 'created_at', $today])->sum('xima_amount');
+
+        //累计返佣收入
+        $queryRebate = Rebate::find()->where(['agent_id' => $agent_id]);
+        $statics['rebateTotal'] = $queryRebate->sum('total_rebate_amount');
+
+        //上月返佣收入
+        $statics['rebateLastMonth'] = $queryRebate->andWhere(['ym' => date('Ym', strtotime('-1 month'))])->sum('total_rebate_amount');
+
         return $this->render('main', [
             'statics' => $statics,
             'winLost' => BaseJson::encode($winLost)
