@@ -212,6 +212,11 @@ class UserWithdraw extends \yii\db\ActiveRecord
                     AgentDaily::addCounter(['agent_id'=>$agent_id,'dwa'=>$amount]);
                 }
 
+                $userStat = UserStat::findOne($this->user_id);
+                $userStat->withdrawal_number += 1;
+                $userStat->withdrawal_amount += $amount;
+                if (!$userStat->save(false))
+                    throw new dbException('取款会员统计记录失败！');
 
                 $tr->commit();
             } catch (Exception $e) {

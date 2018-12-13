@@ -99,6 +99,14 @@ $this->params['breadcrumbs'][] = '会员列表';
                             'format'=>'currency',
                         ],
                         [
+                            'attribute' => 'userStat.deposit_amount',
+                            'format'=>'currency',
+                        ],
+                        [
+                            'attribute' => 'userStat.withdrawal_amount',
+                            'format'=>'currency',
+                        ],
+                        [
                             'attribute' => 'userStat.bet_amount',
                             'format'=>'currency',
                         ],
