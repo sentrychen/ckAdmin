@@ -48,19 +48,19 @@ class PlatformController extends ActiveController
         $models = PlatformUser::find()
             ->where(['user_id' => yii::$app->getUser()->getId()])
             ->andFilterWhere(['platform_code' => $gameType])->all();
-        $amount = 0;
+        $num = 0;
         foreach ($models as $model) {
             $service = new PlatformService(['model' => $model]);
             if ($service->getClient()) {
                 try {
-                    $amount += $service->getAmount($amount);
+                    $num += $service->getAmount($amount);
                 } catch (\Exception $e) {
                     yii::error($e->getMessage());
                     throw new RestHttpException($e->getMessage());
                 }
             }
         }
-        return $amount;
+        return $num;
     }
 
     /**

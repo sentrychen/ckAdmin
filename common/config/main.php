@@ -29,7 +29,7 @@ $config = [
                 [
                     'class' => yii\log\FileTarget::class,//当触发levels配置的错误级别时，保存到日志文件
                     'levels' => ['error', 'warning'],
-                    'logVars' => [],
+                    //    'logVars' => [],
                     'categories' => ['application'],
                 ],
                 [
