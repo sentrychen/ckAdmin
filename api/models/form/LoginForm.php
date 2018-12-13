@@ -6,6 +6,7 @@ use common\models\Daily;
 use common\models\PlatformDaily;
 use common\models\UserLoginLog;
 use common\models\PlatformUser;
+use api\models\UserStat;
 use Yii;
 use yii\base\Model;
 use api\models\User;
@@ -140,6 +141,8 @@ class LoginForm extends Model
         $model = new UserLoginLog();
         $model->setAttributes($loginData);
         $model->save(false);
+
+        UserStat::setRecord($this->_user->id);
 
         $start_time = strtotime(date('Y-m-d 00:00:00'));
         $end_time = strtotime(date('Y-m-d 23:59:59'));

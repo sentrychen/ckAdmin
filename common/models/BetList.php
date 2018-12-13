@@ -3,6 +3,8 @@
 namespace common\models;
 
 use common\libs\Constants;
+use Exception;
+use yii\db\Exception as dbException;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 
@@ -332,30 +334,48 @@ class BetList extends \yii\db\ActiveRecord
                 PlatformDaily::updateCounter($arr);
             }
             */
+            //开始事务
+            $tr = Yii::$app->db->beginTransaction();
+            try {
+                $count = BetList::find()->select(['platform_id',])->where(['user_id' => $user->id])
+                    ->andFilterWhere(['between', 'bet_at', $start_time, $end_time])->count();
 
-            $count = BetList::find()->select(['platform_id',])->where(['user_id' => $user->id])
-                ->andFilterWhere(['between', 'bet_at', $start_time, $end_time])->count();
+                $com_data = [
+                    'dba' => $amount,     //日投注额度
+                    'dpa' => $win_profit, //日赢额度
+                    'dla' => $lost_profit //日输额度
+                ];
+                if($agent_id!=0){
+                    if ($count == 1) {
+                        $com_data['dbu'] = 1; //日投注用户数
+                        $com_data['dbo'] = 1; //日投注单数
+                        $agent_data['agent_id'] = $agent_id; //代理id
+                        $platform_data['platform_id'] = $platform_id; //平台id
+                        Daily::addCounter($com_data);
+                        PlatformDaily::addCounter(array_merge($com_data, $platform_data));
+                        AgentDaily::addCounter(array_merge($com_data, $agent_data));
+                    } else {
+                        $com_data['dbo'] = 1;
+                        $agent_data['agent_id'] = $agent_id;
+                        $platform_data['platform_id'] = $platform_id;
+                        Daily::addCounter($com_data);
+                        PlatformDaily::addCounter(array_merge($com_data, $platform_data));
+                        AgentDaily::addCounter(array_merge($com_data, $agent_data));
+                    }
+                }
 
-            $com_data = [
-                'dba' => $amount,     //日投注额度
-                'dpa' => $win_profit, //日赢额度
-                'dla' => $lost_profit //日输额度
-            ];
-            if ($count == 1) {
-                $com_data['dbu'] = 1; //日投注用户数
-                $com_data['dbo'] = 1; //日投注单数
-                $agent_data['agent_id'] = $agent_id; //代理id
-                $platform_data['platform_id'] = $platform_id; //平台id
-                Daily::addCounter($com_data);
-                PlatformDaily::addCounter(array_merge($com_data, $platform_data));
-                AgentDaily::addCounter(array_merge($com_data, $agent_data));
-            } else {
-                $com_data['dbo'] = 1;
-                $agent_data['agent_id'] = $agent_id;
-                $platform_data['platform_id'] = $platform_id;
-                Daily::addCounter($com_data);
-                PlatformDaily::addCounter(array_merge($com_data, $platform_data));
-                AgentDaily::addCounter(array_merge($com_data, $agent_data));
+                $userStat = UserStat::findOne($this->user_id);
+                $userStat->bet_number += 1;
+                $userStat->bet_amount += $amount;
+                if (!$userStat->save(false))
+                    throw new dbException('取款会员统计记录失败！');
+                    $tr->commit();
+            } catch (Exception $e) {
+                Yii::error($e->getMessage());
+                //回滚
+                $tr->rollBack();
+                $this->setAttributes($changedAttributes);
+                $this->save(false);
             }
         }
     }

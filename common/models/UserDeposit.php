@@ -205,6 +205,11 @@ class UserDeposit extends \yii\db\ActiveRecord
                     AgentDaily::addCounter(['agent_id'=>$agent_id,'dda'=>$amount]);
                 }
 
+                $userStat = UserStat::findOne($this->user_id);
+                $userStat->deposit_number += 1;
+                $userStat->deposit_amount += $amount;
+                if (!$userStat->save(false))
+                    throw new dbException('存款更新会员统计记录失败！');
 
                 $tr->commit();
             } catch (Exception $e) {
