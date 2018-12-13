@@ -55,6 +55,7 @@ class PlatformController extends ActiveController
                 try {
                     $amount += $service->getAmount($amount);
                 } catch (\Exception $e) {
+                    yii::error($e->getMessage());
                     throw new RestHttpException($e->getMessage());
                 }
             }
