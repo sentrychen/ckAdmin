@@ -8,6 +8,7 @@
 
 namespace backend\components;
 
+use yii\db\Query;
 use yii\web\ForbiddenHttpException;
 use yii\base\Module;
 use Yii;
@@ -87,16 +88,14 @@ class AccessControl extends \yii\base\ActionFilter
         }
 
         $user = $this->getUser();
-        if($user->getIsGuest())
-        {
+        if($user->getIsGuest()) {
             $loginUrl = null;
             if(is_array($user->loginUrl) && isset($user->loginUrl[0])){
                 $loginUrl = $user->loginUrl[0];
             }else if(is_string($user->loginUrl)){
                 $loginUrl = $user->loginUrl;
             }
-            if(!is_null($loginUrl) && trim($loginUrl,'/') === $uniqueId)
-            {
+            if(!is_null($loginUrl) && trim($loginUrl,'/') === $uniqueId) {
                 return false;
             }
         }
@@ -147,10 +146,19 @@ class AccessControl extends \yii\base\ActionFilter
         }
         $userId = $user instanceof User ? $user->getId() : $user;
 
-
         if ($user->can($r, $params)) {
             return true;
         }
+
+
+        //如果没有被配置进权限列表，默认可以访问
+        $row = (new Query())->from('{{%auth_item}}')
+            ->where(['type' => 2, 'name' => $r])
+            ->one(yii::$app->db);
+
+        if ($row === false) return true;
+
+
         while (($pos = strrpos($r, '/')) > 0) {
             $r = substr($r, 0, $pos);
             if ($user->can($r . '/*', $params)) {
