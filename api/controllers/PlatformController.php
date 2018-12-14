@@ -79,7 +79,7 @@ class PlatformController extends ActiveController
             $service = new PlatformService(['model' => $model]);
             if ($service->getClient()) {
                 try {
-                    $amounts[$service->gameType] = $service->queryAmount();
+                    $amounts[strtolower($service->gameType)] = $service->queryAmount();
                 } catch (\Exception $e) {
                     yii::error($e->getMessage());
                 }
