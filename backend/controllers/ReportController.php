@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use backend\models\BetList;
 use backend\models\PlatformAccountRecord;
 use backend\models\search\AgentAccountRecordSearch;
 use backend\models\search\AgentXimaRecordSearch;

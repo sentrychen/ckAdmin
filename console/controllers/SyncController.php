@@ -163,10 +163,12 @@ class SyncController extends \yii\console\Controller
                     'tie,banker_pair', 'tie,player_pair', 'tie,banker_pair,player_pair',
                 ],
                 'dragonTiger' => ['dragon', 'tiger', 'tie'],
+                'duel' => ['spade', 'heart', 'club', 'diamond', 'joker'],
             ];
             $betTypes = [
                 'baccarat' => ['player', 'banker', 'tie', 'player_pair', 'banker_pair'],
                 'dragonTiger' => ['dragon', 'tiger', 'tie'],
+                'duel' => ['spade', 'heart', 'club', 'diamond', 'joker'],
             ];
             $gameTypes = ['dragonTiger' => 'dragon_tiger', 'baccarat' => 'baccarat', 'duel' => 'duel'];
 

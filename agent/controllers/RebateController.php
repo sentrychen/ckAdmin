@@ -40,4 +40,13 @@ class RebateController extends \yii\web\Controller
             ],
         ];
     }
+
+    /**
+     * 洗码统计
+     */
+    public function actionStat()
+    {
+
+
+    }
 }
