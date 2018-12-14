@@ -199,6 +199,7 @@ class PlatformService extends BaseObject
         if ($amount > $account->available_amount)
             throw new InvalidArgumentException('上分额度不能大于用户现有额度！');
 
+        if ($amount == 0) return 0;
         $tr = Yii::$app->db->beginTransaction();
         try {
 
@@ -216,6 +217,7 @@ class PlatformService extends BaseObject
             return $amount;
         } catch (\Exception $e) {
             //回滚
+            yii::error($e->getMessage());
             $tr->rollBack();
             throw new InvalidCallException($e->getMessage());
         }
