@@ -69,7 +69,7 @@ abstract class  ClientAbstract extends BaseObject
             $backtrace = debug_backtrace();
             array_shift($backtrace);
             $backtrace = $backtrace[0];
-            static::resLog('[' . $backtrace['class'] . '->' . $backtrace['function'] . '(' . implode(',', $backtrace['args']) . ')] response failed! message:' . $message . ' res:' . json_encode($res));
+            static::resLog('[' . $backtrace['class'] . '->' . $backtrace['function'] . '] response failed! message:' . $message . ' res:' . json_encode($res));
         }
 
         return ['error' => $message, 'data' => ''];
