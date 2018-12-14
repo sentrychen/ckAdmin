@@ -100,7 +100,11 @@ class PlatformService extends BaseObject
 
         $model = $this->getModel();
         //注册用户
-        if (!$model) $this->register();
+        if (!$model) {
+            $this->register();
+            $model = $this->getModel();
+        }
+
 
         //登陆
         $res = $this->getClient()->login($model, $redirectUrl);
@@ -165,6 +169,7 @@ class PlatformService extends BaseObject
                 if (!$model->save(false)) {
                     throw new InvalidCallException('保存平台账户失败！');
                 }
+                $this->model = $model;
                 return true;
             }
 
