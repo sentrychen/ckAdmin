@@ -217,7 +217,6 @@ class PlatformService extends BaseObject
             return $amount;
         } catch (\Exception $e) {
             //回滚
-            yii::error($e->getMessage());
             $tr->rollBack();
             throw new InvalidCallException($e->getMessage());
         }
