@@ -49,7 +49,9 @@ class SyncController extends \yii\console\Controller
 
             $stepTime = 7 * 24 * 3600;
 
-            $client = new HjClient();
+
+            $config = yii::$app->params['clients']['HJ'];
+            $client = yii::createObject($config);
             $data = [];
             while ($now > $startTime) {
                 if ($endTime - $startTime > $stepTime)
@@ -139,7 +141,9 @@ class SyncController extends \yii\console\Controller
 
             $stepTime = 7 * 24 * 3600;
 
-            $client = new JxbClient();
+
+            $config = yii::$app->params['clients']['JXB'];
+            $client = yii::createObject($config);
             $data = [];
             while ($now > $startTime) {
                 if ($endTime - $startTime > $stepTime)
