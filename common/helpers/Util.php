@@ -8,10 +8,10 @@
 
 namespace common\helpers;
 
-use yii\imagine\Image;
 use Yii;
 use yii\db\ActiveRecord;
 use yii\helpers\FileHelper;
+use yii\imagine\Image;
 use yii\web\UploadedFile;
 
 class Util
@@ -29,43 +29,43 @@ class Util
      * @return bool
      * @throws \yii\base\Exception
      */
-    public static function handleModelSingleFileUpload(ActiveRecord &$model, $field, $insert, $uploadPath, $options=[])
+    public static function handleModelSingleFileUpload(ActiveRecord &$model, $field, $insert, $uploadPath, $options = [])
     {
         $upload = UploadedFile::getInstance($model, $field);
         /* @var $cdn \feehi\cdn\TargetInterface */
         $cdn = yii::$app->get('cdn');
         if ($upload !== null) {
             $uploadPath = yii::getAlias($uploadPath);
-            if( strpos(strrev($uploadPath), '/') !== 0 ) $uploadPath .= '/';
-            if (! FileHelper::createDirectory($uploadPath)) {
+            if (strpos(strrev($uploadPath), '/') !== 0) $uploadPath .= '/';
+            if (!FileHelper::createDirectory($uploadPath)) {
                 $model->addError($field, "Create directory failed " . $uploadPath);
                 return false;
             }
             $fullName = isset($options['filename']) ? $uploadPath . $options['filename'] : $uploadPath . date('YmdHis') . '_' . uniqid() . '.' . $upload->getExtension();
-            if (! $upload->saveAs($fullName)) {
+            if (!$upload->saveAs($fullName)) {
                 $model->addError($field, yii::t('app', 'Upload {attribute} error: ' . $upload->error, ['attribute' => yii::t('app', ucfirst($field))]) . ': ' . $fullName);
                 return false;
             }
             $model->$field = str_replace(yii::getAlias('@webroot'), '', $fullName);
             $cdn->upload($fullName, $model->$field);
-            if(isset($options['thumbSizes'])) self::thumbnails($fullName, $options['thumbSizes']);
-            if( !$insert ){
+            if (isset($options['thumbSizes'])) self::thumbnails($fullName, $options['thumbSizes']);
+            if (!$insert) {
                 $file = yii::getAlias('@webroot') . $model->getOldAttribute($field);
-                if( file_exists($file) && is_file($file) ) unlink($file);
-                if( $cdn->exists( $model->getOldAttribute($field) ) ) $cdn->delete($model->getOldAttribute($field));
-                if(isset($options['thumbSizes'])) self::deleteThumbnails($file, $options['thumbSizes']);
+                if (file_exists($file) && is_file($file)) unlink($file);
+                if ($cdn->exists($model->getOldAttribute($field))) $cdn->delete($model->getOldAttribute($field));
+                if (isset($options['thumbSizes'])) self::deleteThumbnails($file, $options['thumbSizes']);
             }
         } else {
-            if( $model->$field === '0' ){//删除
+            if ($model->$field === '0') {//删除
                 $file = yii::getAlias('@webroot') . $model->getOldAttribute($field);
-                if( file_exists($file) && is_file($file) ) unlink($file);
-                if( $cdn->exists( $model->getOldAttribute($field) ) ) $cdn->delete($model->getOldAttribute($field));
-                if(isset($options['thumbSizes'])) self::deleteThumbnails($file, $options['thumbSizes']);
+                if (file_exists($file) && is_file($file)) unlink($file);
+                if ($cdn->exists($model->getOldAttribute($field))) $cdn->delete($model->getOldAttribute($field));
+                if (isset($options['thumbSizes'])) self::deleteThumbnails($file, $options['thumbSizes']);
                 $model->$field = '';
-            }else {
-                if($insert) {
+            } else {
+                if ($insert) {
                     $model->$field = '';
-                }else{
+                } else {
                     $model->$field = $model->getOldAttribute($field);
                 }
             }
@@ -83,51 +83,51 @@ class Util
      * @return bool
      * @throws \yii\base\Exception
      */
-    public static function handleModelSingleFileUploadAbnormal(ActiveRecord &$model, $field, $uploadPath, $oldFullname, $options=[])
+    public static function handleModelSingleFileUploadAbnormal(ActiveRecord &$model, $field, $uploadPath, $oldFullname, $options = [])
     {
-        if( !isset($options['successDeleteOld']) ) $options['successDeleteOld'] = true;//成功后删除旧文件
-        if( !isset($options['deleteOldFile']) ) $options['deleteOldFile'] = false;//删除旧文件
+        if (!isset($options['successDeleteOld'])) $options['successDeleteOld'] = true;//成功后删除旧文件
+        if (!isset($options['deleteOldFile'])) $options['deleteOldFile'] = false;//删除旧文件
         $upload = UploadedFile::getInstance($model, $field);
         /* @var $cdn \feehi\cdn\TargetInterface */
         $cdn = yii::$app->get('cdn');
         if ($upload !== null) {
             $uploadPath = yii::getAlias($uploadPath);
 
-            if( strpos(strrev($uploadPath), '/') !== 0 ) $uploadPath .= '/';
-            if (! FileHelper::createDirectory($uploadPath)) {
+            if (strpos(strrev($uploadPath), '/') !== 0) $uploadPath .= '/';
+            if (!FileHelper::createDirectory($uploadPath)) {
                 $model->addError($field, "Create directory failed " . $uploadPath);
                 return false;
             }
             $fullName = isset($options['filename']) ? $uploadPath . $options['filename'] : $uploadPath . date('YmdHis') . '_' . uniqid() . '.' . $upload->getExtension();
-            if (! $upload->saveAs($fullName)) {
+            if (!$upload->saveAs($fullName)) {
                 $model->addError($field, yii::t('app', 'Upload {attribute} error: ' . $upload->error, ['attribute' => yii::t('app', ucfirst($field))]) . ': ' . $fullName);
                 return false;
             }
             $model->$field = str_replace(yii::getAlias('@webroot'), '', $fullName);
             $cdn->upload($fullName, $model->$field);
-            if(isset($options['thumbSizes'])) self::thumbnails($fullName, $options['thumbSizes']);
-            if( $options['successDeleteOld'] && $oldFullname ){
+            if (isset($options['thumbSizes'])) self::thumbnails($fullName, $options['thumbSizes']);
+            if ($options['successDeleteOld'] && $oldFullname) {
                 $file = yii::getAlias('@webroot') . $oldFullname;
-                if( file_exists($file) && is_file($file) ) unlink($file);
-                if( $cdn->exists( $oldFullname ) ) $cdn->delete($oldFullname);
-                if(isset($options['thumbSizes'])) self::deleteThumbnails($file, $options['thumbSizes']);
+                if (file_exists($file) && is_file($file)) unlink($file);
+                if ($cdn->exists($oldFullname)) $cdn->delete($oldFullname);
+                if (isset($options['thumbSizes'])) self::deleteThumbnails($file, $options['thumbSizes']);
             }
         } else {
-            if( $model->$field === '0' ){//删除
+            if ($model->$field === '0') {//删除
                 $file = yii::getAlias('@webroot') . $oldFullname;
-                if( file_exists($file) && is_file($file) ) unlink($file);
-                if( $cdn->exists( $oldFullname ) ) $cdn->delete($oldFullname);
-                if(isset($options['thumbSizes'])) self::deleteThumbnails($file, $options['thumbSizes']);
+                if (file_exists($file) && is_file($file)) unlink($file);
+                if ($cdn->exists($oldFullname)) $cdn->delete($oldFullname);
+                if (isset($options['thumbSizes'])) self::deleteThumbnails($file, $options['thumbSizes']);
                 $model->$field = '';
-            }else {
+            } else {
                 $model->$field = $oldFullname;
             }
         }
-        if( $options['deleteOldFile'] ){
+        if ($options['deleteOldFile']) {
             $file = yii::getAlias('@webroot') . $oldFullname;
-            if( file_exists($file) && is_file($file) ) unlink($file);
-            if( $cdn->exists( $oldFullname ) ) $cdn->delete($oldFullname);
-            if(isset($options['thumbSizes'])) self::deleteThumbnails($file, $options['thumbSizes']);
+            if (file_exists($file) && is_file($file)) unlink($file);
+            if ($cdn->exists($oldFullname)) $cdn->delete($oldFullname);
+            if (isset($options['thumbSizes'])) self::deleteThumbnails($file, $options['thumbSizes']);
         }
     }
 
@@ -139,7 +139,7 @@ class Util
      */
     public static function thumbnails($fullName, array $thumbSizes)
     {
-        foreach ($thumbSizes as $info){
+        foreach ($thumbSizes as $info) {
             $thumbFullName = self::getThumbName($fullName, $info['w'], $info['h']);
             Image::thumbnail($fullName, $info['w'], $info['h'])->save($thumbFullName);
             /** @var $cdn \feehi\cdn\TargetInterface */
@@ -154,15 +154,15 @@ class Util
      * @param $fullName string 原图图片路径
      * @param $thumbSizes array 二维数组 如 [["w"=>110,"height"=>"20"],["w"=>200,"h"=>"30"]]则生成两张缩量图，分别为宽110高20和宽200高30
      */
-    public static function deleteThumbnails($fullName, array $thumbSizes, $deleteOrigin=false)
+    public static function deleteThumbnails($fullName, array $thumbSizes, $deleteOrigin = false)
     {
-        foreach ($thumbSizes as $info){
+        foreach ($thumbSizes as $info) {
             $thumbFullName = self::getThumbName($fullName, $info['w'], $info['h']);
-            if( file_exists($thumbFullName) && is_file($thumbFullName) ) unlink($thumbFullName);
+            if (file_exists($thumbFullName) && is_file($thumbFullName)) unlink($thumbFullName);
             $cdn = yii::$app->get('cdn');
             $cdn->delete(str_replace(yii::getAlias("@webroot"), '', $thumbFullName));
         }
-        if( $deleteOrigin ){
+        if ($deleteOrigin) {
             file_exists($fullName) && unlink($fullName);
         }
     }
@@ -179,10 +179,10 @@ class Util
     {
         $dotPosition = strrpos($fullName, '.');
         $thumbExt = "@" . $width . 'x' . $heith;
-        if( $dotPosition === false ){
+        if ($dotPosition === false) {
             $thumbFullName = $fullName . $thumbExt;
-        }else{
-            $thumbFullName = substr_replace($fullName,$thumbExt, $dotPosition, 0);
+        } else {
+            $thumbFullName = substr_replace($fullName, $thumbExt, $dotPosition, 0);
         }
         return $thumbFullName;
     }
@@ -231,11 +231,11 @@ class Util
     public static function getClientType()
     {
         $agent = $_SERVER['HTTP_USER_AGENT'];
-        if(strpos($agent, 'iPhone')||strpos($agent, 'iPad')){
+        if (strpos($agent, 'iPhone') || strpos($agent, 'iPad')) {
             return 'IOS';
-        }else if(strpos($agent, 'Android')){
+        } else if (strpos($agent, 'Android')) {
             return 'Android';
-        }else{
+        } else {
             return 'H5';
         }
     }
@@ -244,85 +244,74 @@ class Util
      * 获取客户端版本号
      *
      */
-    public static function getClientVersion() {
+    public static function getClientVersion()
+    {
         $ua = $_SERVER['HTTP_USER_AGENT'];
         $version = '';
 
         //微信打开
         if (stripos($ua, 'MicroMessenger')) {
             preg_match('/MicroMessenger\/([\d\.]+)/i', $ua, $match);
-            return 'Wechat '. $match[1];
+            return 'Wechat ' . $match[1];
         }
 
         //获取火狐浏览器的版本号
         if (stripos($ua, 'Firefox/')) {
             preg_match('/Firefox\/([^;)]+)/i', $ua, $match);
-            $version = 'Firefox'.$match[1];
-        }
-        //360游览器
-        else if(stripos($ua,'360SE')) {
-            $version = '360游览器'.'';
-        }
-        //搜狗游览器
-        else if(stripos($ua, 'SE') && stripos($ua, 'MetaSr')) {
+            $version = 'Firefox' . $match[1];
+        } //360游览器
+        else if (stripos($ua, '360SE')) {
+            $version = '360游览器' . '';
+        } //搜狗游览器
+        else if (stripos($ua, 'SE') && stripos($ua, 'MetaSr')) {
             preg_match('/SE\s([\w\.]+)/i', $ua, $match);
-            $version = '搜狗'.$match[1];
-        }
-        //获取google chrome的版本号
+            $version = '搜狗' . $match[1];
+        } //获取google chrome的版本号
         else if (stripos($ua, 'Chrome')) {
             preg_match('/Chrome\/([\d\.]+)/', $ua, $match);
-            $version = 'Chrome'.$match[1];
-        }
-        //遨游游览器
+            $version = 'Chrome' . $match[1];
+        } //遨游游览器
         elseif (stripos($ua, 'Maxthon')) {
             preg_match('/Maxthon([\s\d\.]+)/', $ua, $match);
-            $version = '傲游'.$match[1];
-        }
-        //欧朋游览器
+            $version = '傲游' . $match[1];
+        } //欧朋游览器
         elseif (stripos($ua, 'opera')) {
             preg_match('/opera\/([\d\.\/]+)/', $ua, $match);
-            $version = 'Opera'.$match[1];
-        }
-        //win10 Edge浏览器 添加了chrome内核标记 在判断Chrome之前匹配
-        else if(stripos($ua, 'Edge')) {
+            $version = 'Opera' . $match[1];
+        } //win10 Edge浏览器 添加了chrome内核标记 在判断Chrome之前匹配
+        else if (stripos($ua, 'Edge')) {
             preg_match('/Edge\/([\d\.]+)/', $ua, $match);
-            $version = 'Edge'.$match[1];
-        }
-        //UC游览器
-        else if(stripos($ua,'UCBrowser')) {
+            $version = 'Edge' . $match[1];
+        } //UC游览器
+        else if (stripos($ua, 'UCBrowser')) {
             preg_match('/UCBrowser\/([\d\.]+)/', $ua, $match);
-            $version = 'UCBrowser '.$match[1];
-        }
-        //QQ游览器（note:移动端没有检测版本号）
-        else if(stripos($ua,'TencentTraveler') || stripos($ua,'QQBrowser')) {
+            $version = 'UCBrowser ' . $match[1];
+        } //QQ游览器（note:移动端没有检测版本号）
+        else if (stripos($ua, 'TencentTraveler') || stripos($ua, 'QQBrowser')) {
             preg_match('/TencentTraveler\s([\d\.]+)/', $ua, $match);
-            $version = 'QQ游览器'.$match[1];
-        }
-        //百度游览器
-        else if(stripos($ua,'baidubrowser')) {
+            $version = 'QQ游览器' . $match[1];
+        } //百度游览器
+        else if (stripos($ua, 'baidubrowser')) {
             preg_match('/baidubrowser\/([\d\.]+)/', $ua, $match);
-            $version = '百度游览器'.$match[1];
-        }
-        //移动设备的IE游览器
-        else if(stripos($ua, 'IEMobile')) {
+            $version = '百度游览器' . $match[1];
+        } //移动设备的IE游览器
+        else if (stripos($ua, 'IEMobile')) {
             preg_match('/IEMobile\/([\d\.]+)+/i', $ua, $match);
-            $version = 'IE'.$match[1];
-        }
-        //获取IE的版本号
+            $version = 'IE' . $match[1];
+        } //获取IE的版本号
         else if (stripos($ua, 'MSIE')) {
             preg_match('/MSIE\s+([^;)]+)+/i', $ua, $match);
-            $version = 'IE'.$match[1];
+            $version = 'IE' . $match[1];
         } else if (strpos($ua, 'Android') !== false) {//strpos()定位出第一次出现字符串的位置，这里定位为0
             preg_match("/(?<=Android )[\d\.]{1,}/", $ua, $match);
-            $version =  'Android '.$match[0];
+            $version = 'Android ' . $match[0];
         } elseif (strpos($ua, 'iPhone') !== false) {
             preg_match("/(?<=CPU iPhone OS )[\d\_]{1,}/", $ua, $match);
-            echo 'iPhone OS '.str_replace('_', '.', $match[0]);
+            echo 'iPhone OS ' . str_replace('_', '.', $match[0]);
         } elseif (strpos($ua, 'iPad') !== false) {
             preg_match("/(?<=CPU OS )[\d\_]{1,}/", $ua, $match);
-            echo 'iPad OS '.str_replace('_', '.', $match[0]);
-        }
-        else {
+            echo 'iPad OS ' . str_replace('_', '.', $match[0]);
+        } else {
             $version = $ua;
         }
 
@@ -335,14 +324,15 @@ class Util
      * @param $request obj/array 请求对象/数组
      * @return array
      */
-    public static function getBetweenDate($timeAttributes,$request){
-        $startDate = isset($request['startDate'])?$request['startDate']:'';
-        $endDate = isset($request['endDate'])?$request['endDate']:'';
+    public static function getBetweenDate($timeAttributes, $request)
+    {
+        $startDate = isset($request['startDate']) ? $request['startDate'] : '';
+        $endDate = isset($request['endDate']) ? $request['endDate'] : '';
         $info = [];
-        if(!empty($startDate)) {
-            $startTime = strtotime($startDate.' 00:00:00');
-            $endTime = $endDate?strtotime($endDate.' 23:59:59'):strtotime($startDate.' 23:59:59');
-            $info = ['between', $timeAttributes,$startTime,$endTime];
+        if (!empty($startDate)) {
+            $startTime = strtotime($startDate . ' 00:00:00');
+            $endTime = $endDate ? strtotime($endDate . ' 23:59:59') : strtotime($startDate . ' 23:59:59');
+            $info = ['between', $timeAttributes, $startTime, $endTime];
         }
         return $info;
     }
@@ -353,8 +343,21 @@ class Util
      */
     public static function getMonth()
     {
-        $moths = ['01','02','03','04','05','06','07','08','09','10','11','12'];
+        $moths = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
         return $moths;
+    }
+
+
+    public static function formatMoney($money, $chart = true, $nColor = true)
+    {
+        $chart = $chart ? Yii::$app->params['moneyChart'] ?? '¥' : '';
+        if ($money < 0)
+            $chart = '-' . $chart;
+        else
+            $nColor = false;
+        $money = $chart . number_format(abs($money), 2);
+        if ($nColor) $money = '<span class="text-danger">' . $money . '</span>';
+        return $money;
     }
 
 }
