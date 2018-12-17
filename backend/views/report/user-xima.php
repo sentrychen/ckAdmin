@@ -49,13 +49,21 @@ use common\libs\Constants;
                             'attribute' => 'game_type',
                             'value' => 'gameType.name'
                         ],
+
                         [
                             'attribute' => 'bet_amount',
-                            'format' => 'currency',
+                            'format' => 'raw',
+                            'value' => function ($searchModel) {
+                                return Util::formatMoney($searchModel->bet_amount, false);
+                            }
                         ],
+
                         [
                             'attribute' => 'profit',
-                            'format' => 'currency',
+                            'format' => 'raw',
+                            'value' => function ($searchModel) {
+                                return Util::formatMoney($searchModel->profit, false);
+                            }
                         ],
                         [
                             'attribute' => 'xima_type',
@@ -69,9 +77,13 @@ use common\libs\Constants;
                             'attribute' => 'xima_rate',
                             'format' => ['percent', 2],
                         ],
+
                         [
                             'attribute' => 'xima_amount',
-                            'format' => 'currency',
+                            'format' => 'raw',
+                            'value' => function ($searchModel) {
+                                return Util::formatMoney($searchModel->xima_amount, false);
+                            }
                         ],
                         [
                             'class' => DateColumn::class,

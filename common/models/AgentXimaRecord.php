@@ -60,6 +60,7 @@ class AgentXimaRecord extends \yii\db\ActiveRecord
      */
     public function attributeLabels()
     {
+        $chart = Yii::$app->params['moneyChart'] ?? '¥';
         return [
             'id' => '交易ID',
             'agent_id' => '代理',
@@ -68,13 +69,13 @@ class AgentXimaRecord extends \yii\db\ActiveRecord
             'game_type' => '游戏类型',
             'record_id' => '投注单号',
             'bet_id' => '投注记录',
-            'bet_amount' => '投注金额',
-            'profit' => '赢输',
+            'bet_amount' => '投注金额(' . $chart . ')',
+            'profit' => '赢输(' . $chart . ')',
             'xima_type' => '洗码类型',
             'xima_rate' => '洗码率',
             'sub_xima_rate' => '下级洗码率',
-            'xima_amount' => '洗码值',
-            'sub_xima_amount' => '下级洗码值',
+            'xima_amount' => '洗码值(' . $chart . ')',
+            'sub_xima_amount' => '下级洗码值(' . $chart . ')',
             'updated_at' => '更新日期',
             'created_at' => '创建日期',
         ];

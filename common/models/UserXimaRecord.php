@@ -57,6 +57,7 @@ class UserXimaRecord extends \yii\db\ActiveRecord
      */
     public function attributeLabels()
     {
+        $chart = Yii::$app->params['moneyChart'] ?? '¥';
         return [
             'id' => '洗码流水ID',
             'user_id' => '代理',
@@ -64,11 +65,11 @@ class UserXimaRecord extends \yii\db\ActiveRecord
             'game_type' => '游戏类型',
             'record_id' => '投注单号',
             'bet_id' => '投注记录',
-            'bet_amount' => '投注金额',
-            'profit' => '赢输',
+            'bet_amount' => '投注金额(' . $chart . ')',
+            'profit' => '赢输(' . $chart . ')',
             'xima_type' => '洗码类型',
             'xima_rate' => '洗码率',
-            'xima_amount' => '洗码值',
+            'xima_amount' => '洗码值(' . $chart . ')',
             'updated_at' => '更新日期',
             'created_at' => '创建日期',
         ];
