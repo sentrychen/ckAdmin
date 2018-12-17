@@ -24,10 +24,13 @@ class BetList extends \common\models\BetList
             ->where(['between', 'bet_at', $startDate, $endDate])
             ->distinct()->count();
         $data['user'] = $number?$number:0;
-        $amount = static::find()
-            ->where(['between', 'bet_at', $startDate, $endDate])
-            ->sum('bet_amount');
-        $data['amount'] = $amount?$amount:0;
+        $result = static::find()
+                ->select(['SUM(profit) as profit','count(id) as num','SUM(bet_amount) as amount'])
+                ->where(['between', 'bet_at', $startDate, $endDate])
+                ->asArray()->one();
+        $data['amount'] = $result['amount']?$result['amount']:0;
+        $data['num'] = $result['num']?$result['num']:0;
+        $data['profit'] = $result['profit']?$result['profit']:0;
         return $data;
     }
 }
