@@ -18,6 +18,7 @@ use common\grid\DateColumn;
 use common\grid\GridView;
 use common\widgets\Bar;
 use yii\helpers\Html;
+use common\helpers\Util;
 
 $this->title = '会员';
 $this->params['breadcrumbs'][] = '会员列表';
@@ -74,11 +75,17 @@ $this->params['breadcrumbs'][] = '会员列表';
 
                         [
                             'attribute' => 'account.available_amount',
-                            'format' => 'currency',
+                            'format' => 'raw',
+                            'value' => function($searchModel){
+                                return Util::formatMoney($searchModel->account->available_amount,false);
+                            }
                         ],
                         [
                             'attribute' => 'userStat.bet_amount',
-                            'format' => 'currency',
+                            'format' => 'raw',
+                            'value' => function($searchModel){
+                                return Util::formatMoney($searchModel->userStat->bet_amount,false);
+                            }
                         ],
                         [
                             'attribute' => 'xima_rate',
@@ -86,7 +93,10 @@ $this->params['breadcrumbs'][] = '会员列表';
                         ],
                         [
                             'attribute' => 'account.xima_amount',
-                            'format' => 'currency',
+                            'format' => 'raw',
+                            'value' => function($searchModel){
+                                return Util::formatMoney($searchModel->account->xima_amount,false);
+                            },
                         ],
 
                         [

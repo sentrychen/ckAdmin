@@ -16,7 +16,7 @@
 use agent\models\BetList;
 use common\grid\DateColumn;
 use common\grid\GridView;
-
+use common\helpers\Util;
 
 $this->title = '投注记录';
 $this->params['breadcrumbs'][] = '会员投注记录';
@@ -74,7 +74,11 @@ $this->params['breadcrumbs'][] = '会员投注记录';
                         ],
                         [
                             'attribute' => 'bet_amount',
-                            'format' => 'currency',
+                            'width'=>70,
+                            'format' => 'raw',
+                            'value' => function ($searchModel) {
+                                return Util::formatMoney($searchModel->bet_amount, false);
+                            }
                         ],
                         [
                             'attribute' => 'bet_record',
@@ -104,19 +108,33 @@ $this->params['breadcrumbs'][] = '会员投注记录';
                         ],
                         [
                             'attribute' => 'profit',
-                            'format' => 'currency',
+                            'format' => 'raw',
+                            'value' => function ($searchModel) {
+                                return Util::formatMoney($searchModel->profit, false);
+                            }
                         ],
                         [
                             'attribute' => 'amount_before',
-                            'format' => 'currency',
+                            'width'=>90,
+                            'format' => 'raw',
+                            'value' => function ($searchModel) {
+                                return Util::formatMoney($searchModel->amount_before, false);
+                            }
                         ],
                         [
                             'attribute' => 'amount_after',
-                            'format' => 'currency',
+                            'width'=>90,
+                            'format' => 'raw',
+                            'value' => function ($searchModel) {
+                                return Util::formatMoney($searchModel->amount_after, false);
+                            }
                         ],
                         [
                             'attribute' => 'xima',
-                            'format' => 'currency',
+                            'format' => 'raw',
+                            'value' => function ($searchModel) {
+                                return Util::formatMoney($searchModel->xima, false);
+                            }
                         ],
                         [
                             'class' => DateColumn::class,

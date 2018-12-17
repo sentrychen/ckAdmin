@@ -17,6 +17,7 @@ use backend\models\UserAccountRecord;
 use common\grid\DateColumn;
 use common\grid\GridView;
 use yii\widgets\Pjax;
+use common\helpers\Util;
 
 $this->title = '交易记录';
 $this->params['breadcrumbs'][] = '会员交易记录';
@@ -67,12 +68,18 @@ $this->params['breadcrumbs'][] = '会员交易记录';
 
                         [
                             'attribute' => 'amount',
-                            'format' => 'currency',
+                            'format' => 'raw',
+                            'value' => function ($searchModel) {
+                                return Util::formatMoney($searchModel->amount, false);
+                            }
                         ],
 
                         [
                             'attribute' => 'after_amount',
-                            'format' => 'currency',
+                            'format' => 'raw',
+                            'value' => function ($searchModel) {
+                                return Util::formatMoney($searchModel->after_amount, false);
+                            }
                         ],
                         [
                             'attribute' => 'remark',

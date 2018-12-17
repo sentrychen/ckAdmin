@@ -89,15 +89,15 @@ $this->params['breadcrumbs'][] = '会员列表';
                         [
                             'attribute' => 'account.available_amount',
                             'format' => 'raw',
-                            'value' => function ($model) {
-                                return Util::formatMoney($model->account->available_amount, false);
+                            'value' => function ($searchModel) {
+                                return Util::formatMoney($searchModel->account->available_amount, false);
                             }
                         ],
                         [
                             'attribute' => 'account.frozen_amount',
                             'format' => 'raw',
-                            'value' => function ($model) {
-                                return Util::formatMoney($model->account->frozen_amount, false);
+                            'value' => function ($searchModel) {
+                                return Util::formatMoney($searchModel->account->frozen_amount, false);
                             }
                         ],
 
