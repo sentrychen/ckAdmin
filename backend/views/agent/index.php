@@ -82,8 +82,8 @@ $this->params['breadcrumbs'][] = '代理列表';
                         [
                             'attribute' => 'account.xima_amount',
                             'format' => 'raw',
-                            'value' => function ($model) {
-                                return Util::formatMoney($model->account->xima_amount, false);
+                            'value' => function ($searchModel) {
+                                return Util::formatMoney($searchModel->account->xima_amount, false);
                             }
                         ],
                         [
@@ -93,8 +93,8 @@ $this->params['breadcrumbs'][] = '代理列表';
                         [
                             'attribute' => 'available_amount',
                             'format' => 'raw',
-                            'value' => function ($model) {
-                                return Util::formatMoney($model->available_amount, false);
+                            'value' => function ($searchModel) {
+                                return Util::formatMoney($searchModel->available_amount, false);
                             }
 
                         ],
