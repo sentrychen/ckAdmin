@@ -16,6 +16,7 @@
 use backend\models\BetList;
 use common\grid\DateColumn;
 use common\grid\GridView;
+use common\helpers\Util;
 
 ?>
 
@@ -58,7 +59,10 @@ use common\grid\GridView;
                         ],
                         [
                             'attribute' => 'bet_amount',
-                            'format' => 'currency',
+                            'format' => 'raw',
+                            'value' => function ($model) {
+                                return Util::formatMoney($model->bet_amount, false);
+                            }
                         ],
                         [
                             'attribute' => 'bet_record',
@@ -88,19 +92,31 @@ use common\grid\GridView;
                         ],
                         [
                             'attribute' => 'profit',
-                            'format' => 'currency',
+                            'format' => 'raw',
+                            'value' => function ($model) {
+                                return Util::formatMoney($model->profit, false);
+                            }
                         ],
                         [
                             'attribute' => 'amount_before',
-                            'format' => 'currency',
+                            'format' => 'raw',
+                            'value' => function ($model) {
+                                return Util::formatMoney($model->amount_before, false);
+                            }
                         ],
                         [
                             'attribute' => 'amount_after',
-                            'format' => 'currency',
+                            'format' => 'raw',
+                            'value' => function ($model) {
+                                return Util::formatMoney($model->amount_after, false);
+                            }
                         ],
                         [
                             'attribute' => 'xima',
-                            'format' => 'currency',
+                            'format' => 'raw',
+                            'value' => function ($model) {
+                                return Util::formatMoney($model->xima, false);
+                            }
                         ],
                         [
                             'class' => DateColumn::class,

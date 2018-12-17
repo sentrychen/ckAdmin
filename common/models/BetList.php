@@ -76,6 +76,7 @@ class BetList extends \yii\db\ActiveRecord
      */
     public function attributeLabels()
     {
+        $chart = Yii::$app->params['moneyChart'] ?? '¥';
         return [
             'id' => '投注流水ID',
             'record_id' => '投注单号',
@@ -87,16 +88,16 @@ class BetList extends \yii\db\ActiveRecord
             'table_no' => '桌号',
             'period_boot' => '靴次',
             'period_round' => '局次',
-            'bet_amount' => '投注金额',
+            'bet_amount' => '投注金额(' . $chart . ')',
             'game_result' => '开奖结果',
             'bet_record' => '投注点',
-            'profit' => '赢输',
-            'amount_before' => '投注前余额',
-            'amount_after' => '投注后余额',
+            'profit' => '赢输(' . $chart . ')',
+            'amount_before' => '投注前余额(' . $chart . ')',
+            'amount_after' => '投注后余额(' . $chart . ')',
             'xima_status' => '洗码状态',
             'xima_type' => '洗码类型',
             'xima_rate' => '洗码率',
-            'xima' => '洗码值',
+            'xima' => '洗码值(' . $chart . ')',
             'state' => '游戏状态',
             'banker_cards' => '庄家牌面',
             'player_cards' => '闲家牌面',

@@ -8,5 +8,6 @@ return [
     ],
     'admin' => [
         'url' => 'http://admin.onetop.pw/admin',
-    ]
+    ],
+    'moneyChart' => '¥',
 ];
