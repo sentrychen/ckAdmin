@@ -19,6 +19,7 @@ use agent\models\Agent;
 use common\widgets\Bar;
 use common\grid\ActionColumn;
 use yii\helpers\Html;
+use common\helpers\Util;
 
 $this->title = '代理列表';
 $this->params['breadcrumbs'][] = '代理列表';
@@ -86,11 +87,17 @@ $this->params['breadcrumbs'][] = '代理列表';
                         ],
                         [
                             'attribute' => 'account.xima_amount',
-                            'format' => 'currency',
+                            'format' => 'raw',
+                            'value' => function ($model) {
+                                return Util::formatMoney($model->account->xima_amount, false);
+                            }
                         ],
                         [
                             'attribute' => 'account.available_amount',
-                            'format' => 'currency',
+                            'format' => 'raw',
+                            'value' => function ($model) {
+                                return Util::formatMoney($model->account->available_amount, false);
+                            }
 
                         ],
                         [

@@ -58,13 +58,14 @@ class AgentAccountRecord extends \yii\db\ActiveRecord
      */
     public function attributeLabels()
     {
+        $chart = yii::$app->params['moneyChart'] ?? '¥';
         return [
             'id' => '交易ID',
             'agent_id' => '代理ID',
             'name' => '交易项目',
-            'amount' => '交易额度',
+            'amount' => '交易额度(' . $chart . ')',
             'switch' => '收支',
-            'after_amount' => '交易后余额',
+            'after_amount' => '交易后余额(' . $chart . ')',
             'remark' => '备注',
             'updated_at' => '更新日期',
             'created_at' => '交易日期',

@@ -21,6 +21,7 @@ use common\widgets\Bar;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\bootstrap\Modal;
+use common\helpers\Util;
 $this->title = 'Users';
 $this->params['breadcrumbs'][] = '会员列表';
 
@@ -85,30 +86,48 @@ $this->params['breadcrumbs'][] = '会员列表';
                             'attribute' => 'userStat.login_number',
                             'format'=>'integer',
                         ],
-
                         [
                             'attribute' => 'account.available_amount',
-                            'format'=>'currency',
+                            'format' => 'raw',
+                            'value' => function ($model) {
+                                return Util::formatMoney($model->account->available_amount, false);
+                            }
                         ],
                         [
                             'attribute' => 'account.frozen_amount',
-                            'format'=>'currency',
+                            'format' => 'raw',
+                            'value' => function ($model) {
+                                return Util::formatMoney($model->account->frozen_amount, false);
+                            }
                         ],
+
                         [
                             'attribute' => 'account.xima_amount',
-                            'format'=>'currency',
+                            'format' => 'raw',
+                            'value' => function ($model) {
+                                return Util::formatMoney($model->account->xima_amount, false);
+                            }
                         ],
                         [
                             'attribute' => 'userStat.deposit_amount',
-                            'format'=>'currency',
+                            'format' => 'raw',
+                            'value' => function ($model) {
+                                return Util::formatMoney($model->userStat->deposit_amount, false);
+                            }
                         ],
                         [
                             'attribute' => 'userStat.withdrawal_amount',
-                            'format'=>'currency',
+                            'format' => 'raw',
+                            'value' => function ($model) {
+                                return Util::formatMoney($model->userStat->withdrawal_amount, false);
+                            }
                         ],
                         [
                             'attribute' => 'userStat.bet_amount',
-                            'format'=>'currency',
+                            'format' => 'raw',
+                            'value' => function ($model) {
+                                return Util::formatMoney($model->userStat->bet_amount, false);
+                            }
                         ],
 
                         [

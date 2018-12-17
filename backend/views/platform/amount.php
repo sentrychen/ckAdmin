@@ -6,6 +6,7 @@ use common\grid\ActionColumn;
 use common\grid\GridView;
 use yii\helpers\Html;
 use yii\helpers\Url;
+use common\helpers\Util;
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\search\PlatformSearch */
@@ -40,8 +41,20 @@ $this->params['breadcrumbs'][] = '游戏平台管理';
                     'columns' => [
                         'name',
                         'code',
-                        'account.available_amount:currency',
-                        'account.frozen_amount:currency',
+                        [
+                            'attribute' => 'account.frozen_amount',
+                            'format' => 'raw',
+                            'value' => function ($model) {
+                                return Util::formatMoney($model->account->available_amount, false);
+                            }
+                        ],
+                        [
+                            'attribute' => 'account.frozen_amount',
+                            'format' => 'raw',
+                            'value' => function ($model) {
+                                return Util::formatMoney($model->account->frozen_amount, false);
+                            }
+                        ],
 
                         ['class' => ActionColumn::className(),
                             'template' => '{change-amount} ',

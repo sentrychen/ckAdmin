@@ -59,12 +59,13 @@ class AgentWithdraw extends \yii\db\ActiveRecord
      */
     public function attributeLabels()
     {
+        $chart = Yii::$app->params['moneyChart'] ?? '¥';
         return [
             'id' => '取款单号',
             'agent_id' => '代理ID',
-            'apply_amount' => '申请取款金额',
+            'apply_amount' => '申请取款金额(' . $chart . ')',
             'status' => '取款状态',//'取款状态 1 申请中 2 已完成  0 已取消',
-            'transfer_amount' => '实际转账金额',
+            'transfer_amount' => '实际转账金额(' . $chart . ')',
             'remark' => '备注信息',
             'audit_by_id' => '处理人员ID',
             'audit_by_username' => '处理人员',

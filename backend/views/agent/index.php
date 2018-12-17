@@ -20,6 +20,7 @@ use yii\helpers\Url;
 use yii\helpers\Html;
 use common\widgets\Bar;
 use common\grid\ActionColumn;
+use common\helpers\Util;
 
 $this->title = '代理列表';
 $this->params['breadcrumbs'][] = '代理列表';
@@ -80,7 +81,10 @@ $this->params['breadcrumbs'][] = '代理列表';
                         ],
                         [
                             'attribute' => 'account.xima_amount',
-                            'format'=>'currency',
+                            'format' => 'raw',
+                            'value' => function ($model) {
+                                return Util::formatMoney($model->account->xima_amount, false);
+                            }
                         ],
                         [
                             'attribute' => 'xima_rate',
@@ -88,7 +92,10 @@ $this->params['breadcrumbs'][] = '代理列表';
                         ],
                         [
                             'attribute' => 'available_amount',
-                            'format'=>'currency',
+                            'format' => 'raw',
+                            'value' => function ($model) {
+                                return Util::formatMoney($model->available_amount, false);
+                            }
 
                         ],
                         [

@@ -16,7 +16,7 @@
 use backend\models\PlatformAccountRecord;
 use common\grid\DateColumn;
 use common\grid\GridView;
-
+use common\helpers\Util;
 ?>
 
 <div class="row">
@@ -52,12 +52,18 @@ use common\grid\GridView;
 
                         [
                             'attribute' => 'amount',
-                            'format' => 'currency',
+                            'format' => 'raw',
+                            'value' => function($searchModel){
+                                return Util::formatMoney($searchModel->amount,false);
+                            }
                         ],
 
                         [
                             'attribute' => 'after_amount',
-                            'format' => 'currency',
+                            'format' => 'raw',
+                            'value' => function($searchModel){
+                                return Util::formatMoney($searchModel->after_amount,false);
+                            }
                         ],
                         [
                             'attribute' => 'remark',

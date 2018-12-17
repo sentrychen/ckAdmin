@@ -62,6 +62,7 @@ class Rebate extends \yii\db\ActiveRecord
      */
     public function attributeLabels()
     {
+        $chart = Yii::$app->params['moneyChart'] ?? '¥';
         return [
             'id' => '序号',
             'ym' => '期数',
@@ -69,13 +70,13 @@ class Rebate extends \yii\db\ActiveRecord
             'agent_name' => '代理账号',
             'agent_level' => '代理层级',
             'rebate_rate' => '返佣率',
-            'self_bet_amount' => '自身会员有效投注',
-            'self_profit_loss' => '自身会员损益',
-            'sub_bet_amount' => '下级有效投注总额',
-            'sub_profit_loss' => '下级代理会员损益',
-            'sub_rebate_amount' => '下级返佣',
-            'self_rebate_amount' => '自身返佣',
-            'total_rebate_amount' => '合计返佣',
+            'self_bet_amount' => '自身会员有效投注(' . $chart . ')',
+            'self_profit_loss' => '自身会员损益(' . $chart . ')',
+            'sub_bet_amount' => '下级有效投注总额(' . $chart . ')',
+            'sub_profit_loss' => '下级代理会员损益(' . $chart . ')',
+            'sub_rebate_amount' => '下级返佣(' . $chart . ')',
+            'self_rebate_amount' => '自身返佣(' . $chart . ')',
+            'total_rebate_amount' => '合计返佣(' . $chart . ')',
             'created_at' => '计佣时间',
         ];
     }

@@ -1,7 +1,7 @@
 <?php
 
 namespace common\models;
-
+use yii;
 /**
  * This is the model class for table "{{%daily}}".
  *
@@ -63,20 +63,21 @@ class Daily extends \yii\db\ActiveRecord
      */
     public function attributeLabels()
     {
+        $chart = Yii::$app->params['moneyChart'] ?? '¥';
         return [
             'ymd' => '日期',
             'dnu' => '新增用户',
             'dau' => '活跃用户',
             'ndu' => '首存用户数',
-            'nda' => '首存额度',
+            'nda' => '首存额度(' . $chart . ')',
             'dbu' => '投注用户数',
-            'dba' => '投注额度',
+            'dba' => '投注额度(' . $chart . ')',
             'ddu' => '存款用户数',
-            'dda' => '存款额度',
+            'dda' => '存款额度(' . $chart . ')',
             'dwu' => '取款用户数',
-            'dwa' => '取款额度',
-            'dpa' => '赢额度',
-            'dla' => '输额度',
+            'dwa' => '取款额度(' . $chart . ')',
+            'dpa' => '赢额度(' . $chart . ')',
+            'dla' => '输额度(' . $chart . ')',
         ];
     }
 

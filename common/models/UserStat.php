@@ -59,21 +59,22 @@ class UserStat extends \yii\db\ActiveRecord
      */
     public function attributeLabels()
     {
+        $chart = Yii::$app->params['moneyChart'] ?? '¥';
         return [
             'user_id' => '会员编号',
-            'available_amount' => '可用余额',
-            'frozen_amount' => '冻结金额',
+            'available_amount' => '可用余额(' . $chart . ')',
+            'frozen_amount' => '冻结金额(' . $chart . ')',
             'last_login_at' => '最后登录时间',
             'login_number' => '登录次数',
             'last_login_ip' => '最后登录IP',
             'oneline_status' => '在线状态',
             'oneline_duration' => '在线时长',
             'deposit_number' => '存款次数',
-            'deposit_amount' => '存款总额',
+            'deposit_amount' => '存款总额(' . $chart . ')',
             'withdrawal_number' => '取款次数',
-            'withdrawal_amount' => '取款总额',
+            'withdrawal_amount' => '取款总额(' . $chart . ')',
             'bet_number' => '投注次数',
-            'bet_amount' => '投注总额',
+            'bet_amount' => '投注总额(' . $chart . ')',
         ];
     }
 }

@@ -50,12 +50,13 @@ class UserAccount extends \yii\db\ActiveRecord
      */
     public function attributeLabels()
     {
+        $chart = Yii::$app->params['moneyChart'] ?? '¥';
         return [
             'user_id' => '会员编号',
-            'available_amount' => '可用余额',
-            'frozen_amount' => '冻结金额',
+            'available_amount' => '可用余额(' . $chart . ')',
+            'frozen_amount' => '冻结金额(' . $chart . ')',
             'user_point' => '会员积分',
-            'xima_amount' => '洗码值',
+            'xima_amount' => '洗码值(' . $chart . ')',
             'updated_at' => '更新日期',
             'created_at' => '创建日期',
         ];

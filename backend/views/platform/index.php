@@ -4,6 +4,7 @@ use backend\models\Platform;
 use common\widgets\Bar;
 use common\grid\ActionColumn;
 use common\grid\GridView;
+use common\helpers\Util;
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\search\PlatformSearch */
@@ -28,8 +29,20 @@ $this->params['breadcrumbs'][] = '游戏平台管理';
                         'name',
                         'code',
                         'api_host',
-                        'account.available_amount:currency',
-                        'account.frozen_amount:currency',
+                        [
+                            'attribute' => 'account.available_amount',
+                            'format' => 'raw',
+                            'value' => function ($model) {
+                                return Util::formatMoney($model->account->available_amount, false);
+                            }
+                        ],
+                        [
+                            'attribute' => 'account.frozen_amount',
+                            'format' => 'raw',
+                            'value' => function ($model) {
+                                return Util::formatMoney($model->account->frozen_amount, false);
+                            }
+                        ],
 
                         [
                             'attribute' => 'status',

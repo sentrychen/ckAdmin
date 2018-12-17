@@ -5,6 +5,7 @@ use common\grid\CheckboxColumn;
 use common\grid\ActionColumn;
 use common\grid\GridView;
 use common\grid\DateColumn;
+use common\helpers\Util;
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\search\DailySearch
@@ -29,7 +30,54 @@ $this->params['breadcrumbs'][] = '系统日报';
                         ['attribute' => 'ymd', 'value' => function ($model) {
                             return date('Y-m-d', strtotime($model->ymd));
                         }],
-                        'dnu', 'dau', 'ndu', 'nda', 'dbu', 'dba', 'ddu', 'dda', 'dwu', 'dwa', 'dpa', 'dla'
+                        'dnu',
+                        'dau',
+                        'ndu',
+                        [
+                            'attribute' => 'nda',
+                            'format' => 'raw',
+                            'value' => function($searchModel){
+                                return Util::formatMoney($searchModel->nda,false);
+                            }
+                        ],
+                        'dbu',
+                        [
+                            'attribute' => 'dba',
+                            'format' => 'raw',
+                            'value' => function($searchModel){
+                                return Util::formatMoney($searchModel->dba,false);
+                            }
+                        ],
+                        'ddu',
+                        [
+                            'attribute' => 'dda',
+                            'format' => 'raw',
+                            'value' => function($searchModel){
+                                return Util::formatMoney($searchModel->dda,false);
+                            }
+                        ],
+                        'dwu',
+                        [
+                            'attribute' => 'dwa',
+                            'format' => 'raw',
+                            'value' => function($searchModel){
+                                return Util::formatMoney($searchModel->dwa,false);
+                            }
+                        ],
+                        [
+                            'attribute' => 'dpa',
+                            'format' => 'raw',
+                            'value' => function($searchModel){
+                                return Util::formatMoney($searchModel->dpa,false);
+                            }
+                        ],
+                        [
+                            'attribute' => 'dla',
+                            'format' => 'raw',
+                            'value' => function($searchModel){
+                                return Util::formatMoney($searchModel->dla,false);
+                            }
+                        ],
                     ],
                 ]); ?>
             </div>

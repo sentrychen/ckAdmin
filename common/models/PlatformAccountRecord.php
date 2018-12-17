@@ -3,6 +3,7 @@
 namespace common\models;
 
 use yii\behaviors\TimestampBehavior;
+use yii;
 
 /**
  * This is the model class for table "{{%platform_account_record}}".
@@ -80,14 +81,15 @@ class PlatformAccountRecord extends \yii\db\ActiveRecord
      */
     public function attributeLabels()
     {
+        $chart = Yii::$app->params['moneyChart'] ?? '¥';
         return [
             'id' => '游戏平台账户变更记录ID',
             'platform_id' => '游戏平台',
             'name' => '交易名称',
             'trade_no' => '交易单号',
-            'amount' => '交易额度',
+            'amount' => '交易额度(' . $chart . ')',
             'switch' => '收支',
-            'after_amount' => '交易后余额',
+            'after_amount' => '交易后余额(' . $chart . ')',
             'remark' => '备注',
             'updated_at' => '更新日期',
             'created_at' => '创建日期',

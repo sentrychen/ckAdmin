@@ -5,7 +5,7 @@ use common\grid\CheckboxColumn;
 use common\grid\ActionColumn;
 use common\grid\GridView;
 use common\grid\DateColumn;
-
+use common\helpers\Util;
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\search\RebateSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -36,31 +36,59 @@ $this->params['breadcrumbs'][] = '代理佣金';
                         ],
                         [
                             'attribute' => 'self_bet_amount',
-                            'format' => 'currency',
+                            'width' => 80,
+                            'format' => 'raw',
+                            'value' => function($searchModel){
+                                return Util::formatMoney($searchModel->self_bet_amount,false);
+                            }
                         ],
+
                         [
                             'attribute' => 'self_profit_loss',
-                            'format' => 'currency',
+                            'width' => 70,
+                            'format' => 'raw',
+                            'value' => function($searchModel){
+                                return Util::formatMoney($searchModel->self_profit_loss,false);
+                            }
                         ],
+
+
                         [
                             'attribute' => 'sub_bet_amount',
-                            'format' => 'currency',
+                            'width' => 90,
+                            'format' => 'raw',
+                            'value' => function($searchModel){
+                                return Util::formatMoney($searchModel->sub_bet_amount,false);
+                            }
                         ],
                         [
                             'attribute' => 'sub_profit_loss',
-                            'format' => 'currency',
+                            'width' => 90,
+                            'format' => 'raw',
+                            'value' => function($searchModel){
+                                return Util::formatMoney($searchModel->sub_profit_loss,false);
+                            }
                         ],
                         [
                             'attribute' => 'sub_rebate_amount',
-                            'format' => 'currency',
+                            'format' => 'raw',
+                            'value' => function($searchModel){
+                                return Util::formatMoney($searchModel->sub_rebate_amount,false);
+                            }
                         ],
                         [
                             'attribute' => 'self_rebate_amount',
-                            'format' => 'currency',
+                            'format' => 'raw',
+                            'value' => function($searchModel){
+                                return Util::formatMoney($searchModel->self_rebate_amount,false);
+                            }
                         ],
                         [
                             'attribute' => 'total_rebate_amount',
-                            'format' => 'currency',
+                            'format' => 'raw',
+                            'value' => function($searchModel){
+                                return Util::formatMoney($searchModel->total_rebate_amount,false);
+                            }
                         ],
                         [
                             'class' => DateColumn::class,

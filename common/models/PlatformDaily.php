@@ -48,19 +48,20 @@ class PlatformDaily extends \yii\db\ActiveRecord
      */
     public function attributeLabels()
     {
+        $chart = Yii::$app->params['moneyChart'] ?? '¥';
         return [
             'ymd' => '日期',
             'platform_id' => '平台',
             'dnu' => '新增用户',
             'dau' => '活跃用户',
-            'dua' => '上分额度',
-            'dda' => '下分额度',
+            'dua' => '上分额度(' . $chart . ')',
+            'dda' => '下分额度(' . $chart . ')',
             'dbu' => '投注人数',
             'dbo' => '投注单数',
-            'dba' => '投注额度',
-            'dpa' => '赢额度',
-            'dla' => '输额度',
-            'dxm' => '洗码值',
+            'dba' => '投注额度(' . $chart . ')',
+            'dpa' => '赢额度(' . $chart . ')',
+            'dla' => '输额度(' . $chart . ')',
+            'dxm' => '洗码值(' . $chart . ')',
         ];
     }
 

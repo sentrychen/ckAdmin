@@ -51,6 +51,7 @@ class UserAccountRecord extends \yii\db\ActiveRecord
      */
     public function attributeLabels()
     {
+        $chart = Yii::$app->params['moneyChart'] ?? '¥';
         return [
             'id' => '会员账户变更日志表',
             'user_id' => '会员ID',
@@ -58,8 +59,8 @@ class UserAccountRecord extends \yii\db\ActiveRecord
             'trade_no' => '交易单号',
             'trade_type_id' => '交易类型',
             'remark' => '备注信息',
-            'amount' => '交易金额',
-            'after_amount' => '交易后余额',
+            'amount' => '交易金额(' . $chart . ')',
+            'after_amount' => '交易后余额(' . $chart . ')',
             'updated_at' => '更新日期',
             'created_at' => '交易时间',
         ];

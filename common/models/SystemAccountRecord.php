@@ -63,13 +63,14 @@ class SystemAccountRecord extends \yii\db\ActiveRecord
      */
     public function attributeLabels()
     {
+        $chart = Yii::$app->params['moneyChart'] ?? '¥';
         return [
             'id' => '系统账户变更ID',
             'name' => '账户变更名称',
-            'amount' => '变更额度',
+            'amount' => '变更额度(' . $chart . ')',
             'trade_no' => '交易编号',
             'switch' => '收支',
-            'after_amount' => '交易后余额',
+            'after_amount' => '交易后余额(' . $chart . ')',
             'remark' => '备注信息',
             'confirm_by_id' => '确认者ID',
             'confirm_by_name' => '确认者名称',

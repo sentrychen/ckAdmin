@@ -7,6 +7,7 @@ use common\grid\{
 };
 use yii\helpers\Html;
 use yii\helpers\Url;
+use common\helpers\Util;
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\search\UserDepositSearch */
@@ -39,11 +40,18 @@ $this->params['breadcrumbs'][] = '会员存款审核';
                         ],
                         [
                             'attribute' => 'apply_amount',
-                            'format' => 'currency',
+                            'width' => '80',
+                            'format' => 'raw',
+                            'value' => function($searchModel){
+                                return Util::formatMoney($searchModel->apply_amount,false);
+                            }
                         ],
                         [
                             'attribute' => 'confirm_amount',
-                            'format' => 'currency',
+                            'format' => 'raw',
+                            'value' => function($searchModel){
+                                return Util::formatMoney($searchModel->confirm_amount,false);
+                            }
                         ],
 
                         [

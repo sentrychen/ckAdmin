@@ -7,6 +7,7 @@ use common\grid\ActionColumn;
 use common\grid\GridView;
 use yii\helpers\Html;
 use yii\helpers\Url;
+use common\helpers\Util;
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\search\ChangeAmountRecordSearch */
@@ -40,8 +41,20 @@ $this->params['breadcrumbs'][] = '上下分审核';
                             }
 
                         ],
-                        'amount',
-                        'after_amount',
+                        [
+                            'attribute' => 'amount',
+                            'format' => 'raw',
+                            'value' => function($searchModel){
+                                return Util::formatMoney($searchModel->amount,false);
+                            }
+                        ],
+                        [
+                            'attribute' => 'after_amount',
+                            'format' => 'raw',
+                            'value' => function($searchModel){
+                                return Util::formatMoney($searchModel->after_amount,false);
+                            }
+                        ],
                         [
                             'attribute' => 'status',
                             'value' => function ($model) {

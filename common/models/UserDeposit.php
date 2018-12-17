@@ -85,13 +85,14 @@ class UserDeposit extends \yii\db\ActiveRecord
      */
     public function attributeLabels()
     {
+        $chart = Yii::$app->params['moneyChart'] ?? '¥';
         return [
             'id' => '存款记录ID',
             'user_id' => '会员ID',
             'remark' => '备注',
-            'apply_amount' => '申请存款金额',
+            'apply_amount' => '申请存款金额(' . $chart . ')',
             'status' => '审核状态',
-            'confirm_amount' => '确认金额',
+            'confirm_amount' => '确认金额(' . $chart . ')',
             'audit_by_id' => '处理人员ID',
             'audit_by_username' => '处理人员',
             'audit_remark' => '处理备注',

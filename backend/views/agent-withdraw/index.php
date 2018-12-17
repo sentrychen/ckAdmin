@@ -20,6 +20,7 @@ use common\grid\{
 };
 use yii\helpers\Html;
 use yii\helpers\Url;
+use common\helpers\Util;
 ?>
 
 <div class="row">
@@ -46,11 +47,17 @@ use yii\helpers\Url;
                         ],
                         [
                             'attribute' => 'apply_amount',
-                            'format' => 'currency',
+                            'format' => 'raw',
+                            'value' => function($searchModel){
+                                return Util::formatMoney($searchModel->apply_amount,false);
+                            },
                         ],
                         [
                             'attribute' => 'transfer_amount',
-                            'format' => 'currency',
+                            'format' => 'raw',
+                            'value' => function($searchModel){
+                                return Util::formatMoney($searchModel->transfer_amount,false);
+                            },
                         ],
                         [
                             'attribute' => 'agent.account.frozen_amount',

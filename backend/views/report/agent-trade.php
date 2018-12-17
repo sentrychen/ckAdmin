@@ -6,7 +6,7 @@ use common\grid\ActionColumn;
 use common\grid\GridView;
 use common\grid\DateColumn;
 use common\models\AgentAccountRecord;
-
+use common\helpers\Util;
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\search\AgentAccountRecordSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -35,8 +35,13 @@ $this->params['breadcrumbs'][] = '代理交易记录';
                         'name',
                         [
                             'attribute' => 'amount',
-                            'format' => 'currency',
+                            'format' => 'raw',
+                            'value' => function($searchModel){
+                                return Util::formatMoney($searchModel->amount,false);
+                            }
                         ],
+
+
                         [
                             'attribute' => 'switch',
                             'value' => function ($model) {
@@ -46,7 +51,10 @@ $this->params['breadcrumbs'][] = '代理交易记录';
                         ],
                         [
                             'attribute' => 'after_amount',
-                            'format' => 'currency',
+                            'format' => 'raw',
+                            'value' => function($searchModel){
+                                return Util::formatMoney($searchModel->after_amount,false);
+                            }
                         ],
                         'remark',
                         [

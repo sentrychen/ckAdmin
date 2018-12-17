@@ -108,6 +108,7 @@ class Agent extends ActiveRecord
      */
     public function attributeLabels()
     {
+        $chart = Yii::$app->params['moneyChart'] ?? '¥';
         return [
             'id' => '代理id',
             'username' => '代理账号',
@@ -129,9 +130,9 @@ class Agent extends ActiveRecord
             'rebate_rate' => '占成',
             'default_player_level' => '预设玩家层级',
             'rebate_id' => '返佣方案',
-            'available_amount' => '账户余额',
-            'frozen_amount' => '冻结余额',
-            'rebate_amount' => '返佣总额',
+            'available_amount' => '账户余额(' . $chart . ')',
+            'frozen_amount' => '冻结余额(' . $chart . ')',
+            'rebate_amount' => '返佣总额(' . $chart . ')',
             'currency' => '主货币',
             'reg_from' => '创建渠道',
             'reg_time' => '注册时间',

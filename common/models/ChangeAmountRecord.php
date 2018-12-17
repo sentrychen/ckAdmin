@@ -101,12 +101,13 @@ class ChangeAmountRecord extends \yii\db\ActiveRecord
      */
     public function attributeLabels()
     {
+        $chart = Yii::$app->params['moneyChart'] ?? '¥';
         return [
             'id' => 'ID',
             'user_id' => '用户ID',
             'switch' => '上下分',
-            'amount' => '额度',
-            'after_amount' => '余额',
+            'amount' => '额度(' . $chart . ')',
+            'after_amount' => '余额(' . $chart . ')',
             'status' => '审核状态',
             'remark' => '备注',
             'submit_by_id' => '提交者ID',
