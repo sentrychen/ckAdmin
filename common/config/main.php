@@ -10,16 +10,6 @@ $config = [
         '@npm'   => '@vendor/npm-asset',
     ],
     'components' => [
-        'db' => [//数据库配置，这里的配置可能会被conf/db.local main-local.php配置覆盖
-            'class' => yii\db\Connection::class,
-            'dsn' => 'mysql:host=localhost;dbname=feehi',
-            'username' => 'root',
-            'password' => '',
-            'charset' => 'utf8mb4',
-        ],
-        'cdn' => [//支持使用 七牛 腾讯云 阿里云 网易云 具体配置请参见 http://doc.feehi.com/cdn.html
-            'class' => feehi\cdn\DummyTarget::class,//不使用cdn
-        ],
         'cache' => [//缓存组件 具体配置请参考 http://doc.feehi.com/configs.html
             'class' => yii\caching\DummyCache::class,//不使用缓存
         ],

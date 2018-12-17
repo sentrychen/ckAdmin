@@ -84,12 +84,13 @@ class Setting extends Component
             ]);
         }
 
+        /*
         $cdn = yii::$app->get('cdn');
         if ($cdn instanceof DummyTarget) {
             Yii::configure(yii::$app->cdn, [
                 'host' => yii::$app->params['site']['url']
             ]);
-        }
+        }*/
     }
 
     public static function backendInit()

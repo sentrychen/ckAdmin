@@ -36,13 +36,17 @@ $this->params['breadcrumbs'][] = '代理列表';
                     ]) ?>
                     <?= $this->render('_search', ['model' => $searchModel]); ?>
                 </div>
+
                 <?= GridView::widget([
                     'dataProvider' => $dataProvider,
                     'filterModel' => null,
+                    'showFooter' => true,
+                    'footerRowOptions' => ['style' => 'font-weight:bold;'],
                     'columns' => [
 
                         [
                             'attribute' => 'id',
+                            'footer' => '合计'
                         ],
                         [
                             'attribute' => 'username',
@@ -90,14 +94,16 @@ $this->params['breadcrumbs'][] = '代理列表';
                             'format' => 'raw',
                             'value' => function ($model) {
                                 return Util::formatMoney($model->account->xima_amount, false);
-                            }
+                            },
+                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['account_xima_amount'], false) . '</span>'
                         ],
                         [
                             'attribute' => 'account.available_amount',
                             'format' => 'raw',
                             'value' => function ($model) {
                                 return Util::formatMoney($model->account->available_amount, false);
-                            }
+                            },
+                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['account_available_amount'], false) . '</span>'
 
                         ],
                         [

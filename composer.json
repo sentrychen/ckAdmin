@@ -24,7 +24,8 @@
         "yiisoft/yii2-jui": "^2.0",
       "kaopur/yii2-doc-online": "^2.0",
       "2amigos/yii2-qrcode-helper": "*",
-        "bailangzhan/yii2-webuploader": "dev-master"
+      "bailangzhan/yii2-webuploader": "dev-master",
+      "yiisoft/yii2-redis": "^2.0"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

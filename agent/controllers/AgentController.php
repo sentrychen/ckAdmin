@@ -25,14 +25,7 @@ class AgentController extends Controller
         return [
             'index' => [
                 'class' => IndexAction::class,
-                'data' => function () {
-                    $searchModel = new AgentSearch();
-                    $dataProvider = $searchModel->search(yii::$app->getRequest()->getQueryParams());
-                    return [
-                        'dataProvider' => $dataProvider,
-                        'searchModel' => $searchModel,
-                    ];
-                }
+                'data' => $this->_getGridViewData(AgentSearch::class, ['account.xima_amount', 'account.available_amount'])
             ],
 
             'view-layer' => [

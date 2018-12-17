@@ -10,7 +10,7 @@
  * @var $this yii\web\View
  * @var $dataProvider yii\data\ActiveDataProvider
  * @var $searchModel backend\models\search\BetListSearch
- * @var $total array
+ * @var $totals array
  */
 
 use backend\models\BetList;
@@ -31,10 +31,13 @@ use common\helpers\Util;
                 <?= GridView::widget([
                     'dataProvider' => $dataProvider,
                     'filterModel' => null,
+                    'showFooter' => true,
+                    'footerRowOptions' => ['style' => 'font-weight:bold;'],
                     'columns' => [
 
                         [
                             'attribute' => 'record_id',
+                            'footer' => '合计'
                         ],
                         [
                             'attribute' => 'username',
@@ -62,7 +65,8 @@ use common\helpers\Util;
                             'format' => 'raw',
                             'value' => function ($model) {
                                 return Util::formatMoney($model->bet_amount, false);
-                            }
+                            },
+                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['bet_amount'], false) . '</span>'
                         ],
                         [
                             'attribute' => 'bet_record',
@@ -95,28 +99,32 @@ use common\helpers\Util;
                             'format' => 'raw',
                             'value' => function ($model) {
                                 return Util::formatMoney($model->profit, false);
-                            }
+                            },
+                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['profit'], false) . '</span>'
                         ],
                         [
                             'attribute' => 'amount_before',
                             'format' => 'raw',
                             'value' => function ($model) {
                                 return Util::formatMoney($model->amount_before, false);
-                            }
+                            },
+                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['amount_before'], false) . '</span>'
                         ],
                         [
                             'attribute' => 'amount_after',
                             'format' => 'raw',
                             'value' => function ($model) {
                                 return Util::formatMoney($model->amount_after, false);
-                            }
+                            },
+                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['amount_after'], false) . '</span>'
                         ],
                         [
                             'attribute' => 'xima',
                             'format' => 'raw',
                             'value' => function ($model) {
                                 return Util::formatMoney($model->xima, false);
-                            }
+                            },
+                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['xima'], false) . '</span>'
                         ],
                         [
                             'class' => DateColumn::class,

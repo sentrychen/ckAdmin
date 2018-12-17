@@ -92,6 +92,7 @@ class BetListSearch extends BetList
             $query->andFilterWhere([$this->winloss,'profit', 0]);
 
         $this->trigger(SearchEvent::BEFORE_SEARCH, new SearchEvent(['query' => $query]));
+
         return $dataProvider;
     }
 }
