@@ -99,13 +99,13 @@ EchartAsset::register($this);
 
                 <div class="row">
                     <div class="col-md-5">
-                        <h1 class="no-margins"><?= $statics['dbo']?></h1>
+                        <h1 class="no-margins"><?= $useBet['num']?></h1>
                         <div class="font-bold text-navy">
                             <small>投注量</small>
                         </div>
                     </div>
                     <div class="col-md-7">
-                        <h1 class="no-margins"><?= Yii::$app->formatter->asCurrency($statics['dpa'] - $statics['dla'])?></h1>
+                        <h1 class="no-margins"><?= Yii::$app->formatter->asCurrency($useBet['profit'])?></h1>
                         <div class="font-bold text-navy">
                             <small>赢输</small>
                         </div>
