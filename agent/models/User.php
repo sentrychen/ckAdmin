@@ -8,6 +8,7 @@
 
 namespace agent\models;
 
+use common\libs\Constants;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
@@ -30,10 +31,9 @@ class User extends \common\models\User
             }
         }
 
-        $identity = yii::$app->getUser()->getIdentity();
-        $this->xima_status = $identity->xima_status;
-        $this->xima_type = $identity->xima_type;
-        $this->xima_rate = $identity->xima_rate;
+        $this->xima_status = Constants::YesNo_No;
+        $this->xima_type = Constants::XIMA_ONE_SIDED;
+        $this->xima_rate = 0;
         parent::loadDefaultValues();
     }
 
