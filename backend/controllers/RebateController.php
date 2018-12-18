@@ -11,23 +11,26 @@ use backend\actions\SortAction;
 /**
  * RebateController implements the CRUD actions for Rebate model.
  */
-class RebateController extends \yii\web\Controller
+class RebateController extends Controller
 {
     public function actions()
     {
         return [
             'index' => [
                 'class' => IndexAction::className(),
+                /*
                 'data' => function(){
-                    
                         $searchModel = new RebateSearch();
                         $dataProvider = $searchModel->search(yii::$app->getRequest()->getQueryParams());
                         return [
                             'dataProvider' => $dataProvider,
                             'searchModel' => $searchModel,
                         ];
-                    
                 }
+                */
+                'data' => $this->_getGridViewData(RebateSearch::class,[
+                    'self_bet_amount','self_profit_loss','sub_bet_amount','sub_profit_loss','sub_rebate_amount','self_rebate_amount','total_rebate_amount'
+                ])
             ],
             'view-layer' => [
                 'class' => ViewAction::className(),

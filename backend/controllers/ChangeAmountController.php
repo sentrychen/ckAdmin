@@ -15,13 +15,14 @@ use yii\web\BadRequestHttpException;
 /**
  * ChangeAmountController implements the CRUD actions for ChangeAmountRecord model.
  */
-class ChangeAmountController extends \yii\web\Controller
+class ChangeAmountController extends Controller
 {
     public function actions()
     {
         return [
             'index' => [
                 'class' => IndexAction::className(),
+                /*
                 'data' => function () {
 
                     $searchModel = new ChangeAmountRecordSearch();
@@ -36,6 +37,8 @@ class ChangeAmountController extends \yii\web\Controller
                     ];
 
                 }
+                */
+                'data' => $this->_getGridViewData(ChangeAmountRecordSearch::class,['amount','after_amount'])
             ],
             'create' => [
                 'class' => CreateAction::className(),

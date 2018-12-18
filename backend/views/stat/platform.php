@@ -26,6 +26,8 @@ $this->params['breadcrumbs'][] = '平台日报';
                 <?= GridView::widget([
                     'dataProvider' => $dataProvider,
                     'filterModel' => null,
+                    'showFooter' => true,
+                    'footerRowOptions' => ['style' => 'font-weight:bold;'],
                     'columns' => [
                         ['attribute' => 'ymd', 'value' => function ($model) {
                             return date('Y-m-d', strtotime($model->ymd));
@@ -36,46 +38,52 @@ $this->params['breadcrumbs'][] = '平台日报';
                         [
                             'attribute' => 'dua',
                             'format' => 'raw',
-                            'value' => function($searchModel){
-                                return Util::formatMoney($searchModel->dua,false);
-                            }
+                            'value' => function($model){
+                                return Util::formatMoney($model->dua,false);
+                            },
+                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['dua'], false) . '</span>'
                         ],
                         [
                             'attribute' => 'dda',
                             'format' => 'raw',
-                            'value' => function($searchModel){
-                                return Util::formatMoney($searchModel->dda,false);
-                            }
+                            'value' => function($model){
+                                return Util::formatMoney($model->dda,false);
+                            },
+                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['dda'], false) . '</span>'
                         ],
                         'dbu',
 
                         [
                             'attribute' => 'dbo',
                             'format' => 'raw',
-                            'value' => function($searchModel){
-                                return Util::formatMoney($searchModel->dbo,false);
-                            }
+                            'value' => function($model){
+                                return Util::formatMoney($model->dbo,false);
+                            },
+                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['dbo'], false) . '</span>'
                         ],
                         [
                             'attribute' => 'dba',
                             'format' => 'raw',
-                            'value' => function($searchModel){
-                                return Util::formatMoney($searchModel->dba,false);
-                            }
+                            'value' => function($model){
+                                return Util::formatMoney($model->dba,false);
+                            },
+                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['dba'], false) . '</span>'
                         ],
                         [
                             'attribute' => 'dpa',
                             'format' => 'raw',
-                            'value' => function($searchModel){
-                                return Util::formatMoney($searchModel->dpa,false);
-                            }
+                            'value' => function($model){
+                                return Util::formatMoney($model->dpa,false);
+                            },
+                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['dpa'], false) . '</span>'
                         ],
                         [
                             'attribute' => 'dla',
                             'format' => 'raw',
-                            'value' => function($searchModel){
-                                return Util::formatMoney($searchModel->dla,false);
-                            }
+                            'value' => function($model){
+                                return Util::formatMoney($model->dla,false);
+                            },
+                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['dla'], false) . '</span>'
                         ],
                     ],
                 ]); ?>

@@ -30,6 +30,8 @@ $this->params['breadcrumbs'][] = '上下分审核';
                 <?= GridView::widget([
                     'dataProvider' => $dataProvider,
                     'filterModel' => null,
+                    'showFooter' => true,
+                    'footerRowOptions' => ['style' => 'font-weight:bold;'],
                     'columns' => [
 
                         'id',
@@ -44,16 +46,18 @@ $this->params['breadcrumbs'][] = '上下分审核';
                         [
                             'attribute' => 'amount',
                             'format' => 'raw',
-                            'value' => function($searchModel){
-                                return Util::formatMoney($searchModel->amount,false);
-                            }
+                            'value' => function($model){
+                                return Util::formatMoney($model->amount,false);
+                            },
+                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['amount'], false) . '</span>'
                         ],
                         [
                             'attribute' => 'after_amount',
                             'format' => 'raw',
-                            'value' => function($searchModel){
-                                return Util::formatMoney($searchModel->after_amount,false);
-                            }
+                            'value' => function($model){
+                                return Util::formatMoney($model->after_amount,false);
+                            },
+                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['after_amount'], false) . '</span>'
                         ],
                         [
                             'attribute' => 'status',

@@ -8,30 +8,28 @@ use backend\models\search\PlatformDailySearch;
 use backend\models\search\UserDepositSearch;
 use Yii;
 
-class StatController extends \yii\web\Controller
+class StatController extends Controller
 {
     public function actionAgent()
     {
-        $searchModel = new AgentDailySearch();
-        $dataProvider = $searchModel->search(yii::$app->getRequest()->getQueryParams());
+        return $this->render('agent', $this->_getGridViewData(AgentDailySearch::class,[
+            'nda','dba','dda','dwa','dpa','dla'
+        ]));
 
-        return $this->render('agent', ['dataProvider' => $dataProvider, 'searchModel' => $searchModel]);
     }
 
     public function actionPlatform()
     {
-        $searchModel = new PlatformDailySearch();
-        $dataProvider = $searchModel->search(yii::$app->getRequest()->getQueryParams());
-
-        return $this->render('platform', ['dataProvider' => $dataProvider, 'searchModel' => $searchModel]);
+        return $this->render('platform',$this->_getGridViewData(PlatformDailySearch::class,[
+            'dua','dda','dbo','dba','dpa','dla'
+        ]));
     }
 
     public function actionDaily()
     {
-        $searchModel = new DailySearch();
-        $dataProvider = $searchModel->search(yii::$app->getRequest()->getQueryParams());
-
-        return $this->render('daily', ['dataProvider' => $dataProvider, 'searchModel' => $searchModel]);
+        return $this->render('daily', $this->_getGridViewData(DailySearch::class,[
+            'nda','dba','dda','dwa','dpa','dla'
+        ]));
     }
 
 }

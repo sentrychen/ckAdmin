@@ -143,6 +143,11 @@ class UserWithdraw extends \yii\db\ActiveRecord
         return $this->hasOne(UserBank::class, ['id' => 'user_bank_id', 'user_id' => 'user_id']);
     }
 
+    public function getUserAccount()
+    {
+        return $this->hasOne(UserAccount::class, ['user_id' => 'user_id', 'user_id' => 'user_id']);
+    }
+
     public function afterSave($insert, $changedAttributes)
     {
         parent::afterSave($insert, $changedAttributes);

@@ -17,15 +17,15 @@ use backend\models\Daily;
 /**
  * WithdrawController implements the CRUD actions for UserWithdraw model.
  */
-class WithdrawController extends \yii\web\Controller
+class WithdrawController extends Controller
 {
     public function actions()
     {
         return [
             'index' => [
                 'class' => IndexAction::className(),
+                /*
                 'data' => function(){
-
                     $searchModel = new UserWithdrawSearch();
                     $params = yii::$app->getRequest()->getQueryParams();
                     if (empty($params)) {
@@ -36,8 +36,11 @@ class WithdrawController extends \yii\web\Controller
                             'dataProvider' => $dataProvider,
                             'searchModel' => $searchModel,
                         ];
-                    
                 }
+                */
+                'data'=>$this->_getGridViewData(UserWithdrawSearch::class,[
+                    'apply_amount','transfer_amount','frozen_amount'
+                ])
             ],
             'view-layer' => [
                 'class' => ViewAction::className(),

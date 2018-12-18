@@ -30,6 +30,8 @@ $this->params['breadcrumbs'][] = '会员存款审核';
                 <?= GridView::widget([
                     'dataProvider' => $dataProvider,
                     'filterModel' => null,
+                    'showFooter' => true,
+                    'footerRowOptions' => ['style' => 'font-weight:bold;'],
                     'columns' => [
 
                         [
@@ -44,14 +46,16 @@ $this->params['breadcrumbs'][] = '会员存款审核';
                             'format' => 'raw',
                             'value' => function($searchModel){
                                 return Util::formatMoney($searchModel->apply_amount,false);
-                            }
+                            },
+                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['apply_amount'], false) . '</span>'
                         ],
                         [
                             'attribute' => 'confirm_amount',
                             'format' => 'raw',
                             'value' => function($searchModel){
                                 return Util::formatMoney($searchModel->confirm_amount,false);
-                            }
+                            },
+                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['confirm_amount'], false) . '</span>'
                         ],
 
                         [

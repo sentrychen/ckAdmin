@@ -37,6 +37,8 @@ use common\helpers\Util;
                 <?= GridView::widget([
                     'dataProvider' => $dataProvider,
                     'filterModel' => null,
+                    'showFooter' => true,
+                    'footerRowOptions' => ['style' => 'font-weight:bold;'],
                     'columns' => [
 
                         [
@@ -48,20 +50,26 @@ use common\helpers\Util;
                         [
                             'attribute' => 'apply_amount',
                             'format' => 'raw',
-                            'value' => function($searchModel){
-                                return Util::formatMoney($searchModel->apply_amount,false);
+                            'value' => function($model){
+                                return Util::formatMoney($model->apply_amount,false);
                             },
+                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['apply_amount'], false) . '</span>'
                         ],
                         [
                             'attribute' => 'transfer_amount',
                             'format' => 'raw',
-                            'value' => function($searchModel){
-                                return Util::formatMoney($searchModel->transfer_amount,false);
+                            'value' => function($model){
+                                return Util::formatMoney($model->transfer_amount,false);
                             },
+                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['transfer_amount'], false) . '</span>'
                         ],
                         [
-                            'attribute' => 'agent.account.frozen_amount',
-                            'format' => 'currency',
+                            'attribute' => 'agent.frozen_amount',
+                            'format' => 'raw',
+                            'value' => function($model){
+                                return Util::formatMoney($model->agent->frozen_amount,false);
+                            },
+                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['frozen_amount'], false) . '</span>'
                         ],
                         [
                             'attribute' => 'status',

@@ -41,6 +41,7 @@ class UserController extends Controller
         return [
             'index' => [
                 'class' => IndexAction::className(),
+                /*
                 'data' => function () {
                     $searchModel = new UserSearch();
                     $model = new Message();
@@ -51,6 +52,11 @@ class UserController extends Controller
                         'model' => $model
                     ];
                 }
+                */
+                'data' => $this->_getGridViewData(UserSearch::class,[
+                    'account.available_amount','account.frozen_amount','account.xima_amount','userStat.deposit_amount',
+                    'userStat.withdrawal_amount','userStat.bet_amount'
+                ]),
             ],
             'view-layer' => [
                 'class' => ViewAction::className(),

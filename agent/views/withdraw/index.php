@@ -75,7 +75,7 @@ use common\helpers\Util;
                             'attribute' => 'agent.frozen_amount',
                             'format' => 'raw',
                             'value' => function($model){
-                                return Util::formatMoney(isset($model->account->transfer_amount)?$model->account->transfer_amount:0,false);
+                                return Util::formatMoney(isset($model->account->frozen_amount)?$model->account->frozen_amount:0,false);
                             },
                             'footer' => '<span class="label label-default">' . Util::formatMoney($totals['agent_frozen_amount'], false) . '</span>'
                         ],

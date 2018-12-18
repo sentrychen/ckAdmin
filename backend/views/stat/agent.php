@@ -26,6 +26,8 @@ $this->params['breadcrumbs'][] = '代理日报';
                 <?= GridView::widget([
                     'dataProvider' => $dataProvider,
                     'filterModel' => null,
+                    'showFooter' => true,
+                    'footerRowOptions' => ['style' => 'font-weight:bold;'],
                     'columns' => [
                         'ymd',
                         ['attribute' => 'agent_id', 'value' => 'agent.username', 'label' => '代理名称'],
@@ -35,50 +37,56 @@ $this->params['breadcrumbs'][] = '代理日报';
                         [
                             'attribute' => 'nda',
                             'format' => 'raw',
-                            'value' => function($searchModel){
-                                return Util::formatMoney($searchModel->nda,false);
-                            }
+                            'value' => function($model){
+                                return Util::formatMoney($model->nda,false);
+                            },
+                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['nda'], false) . '</span>'
                         ],
                         'dbu',
                         'dbo',
                         [
                             'attribute' => 'dba',
                             'format' => 'raw',
-                            'value' => function($searchModel){
-                                return Util::formatMoney($searchModel->dba,false);
-                            }
+                            'value' => function($model){
+                                return Util::formatMoney($model->dba,false);
+                            },
+                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['dba'], false) . '</span>'
                         ],
                         'ddu',
 
                         [
                             'attribute' => 'dda',
                             'format' => 'raw',
-                            'value' => function($searchModel){
-                                return Util::formatMoney($searchModel->dda,false);
-                            }
+                            'value' => function($model){
+                                return Util::formatMoney($model->dda,false);
+                            },
+                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['dda'], false) . '</span>'
                         ],
                         'dwu',
 
                         [
                             'attribute' => 'dwa',
                             'format' => 'raw',
-                            'value' => function($searchModel){
-                                return Util::formatMoney($searchModel->dwa,false);
-                            }
+                            'value' => function($model){
+                                return Util::formatMoney($model->dwa,false);
+                            },
+                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['dwa'], false) . '</span>'
                         ],
                         [
                             'attribute' => 'dpa',
                             'format' => 'raw',
-                            'value' => function($searchModel){
-                                return Util::formatMoney($searchModel->dpa,false);
-                            }
+                            'value' => function($model){
+                                return Util::formatMoney($model->dpa,false);
+                            },
+                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['dpa'], false) . '</span>'
                         ],
                         [
                             'attribute' => 'dla',
                             'format' => 'raw',
-                            'value' => function($searchModel){
-                                return Util::formatMoney($searchModel->dla,false);
-                            }
+                            'value' => function($model){
+                                return Util::formatMoney($model->dla,false);
+                            },
+                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['dla'], false) . '</span>'
                         ],
                         'dna',
 

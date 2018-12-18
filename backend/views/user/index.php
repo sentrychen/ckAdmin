@@ -55,6 +55,8 @@ $this->params['breadcrumbs'][] = '会员列表';
                     'id' => 'userGrid',
                     'dataProvider' => $dataProvider,
                     'filterModel' => null,
+                    'showFooter' => true,
+                    'footerRowOptions' => ['style' => 'font-weight:bold;'],
                     'columns' => [
                         ['class' => CheckboxColumn::className()],
 
@@ -89,16 +91,18 @@ $this->params['breadcrumbs'][] = '会员列表';
                         [
                             'attribute' => 'account.available_amount',
                             'format' => 'raw',
-                            'value' => function ($searchModel) {
-                                return Util::formatMoney($searchModel->account->available_amount, false);
-                            }
+                            'value' => function ($model) {
+                                return Util::formatMoney($model->account->available_amount, false);
+                            },
+                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['account_available_amount'], false) . '</span>'
                         ],
                         [
                             'attribute' => 'account.frozen_amount',
                             'format' => 'raw',
-                            'value' => function ($searchModel) {
-                                return Util::formatMoney($searchModel->account->frozen_amount, false);
-                            }
+                            'value' => function ($model) {
+                                return Util::formatMoney($model->account->frozen_amount, false);
+                            },
+                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['account_frozen_amount'], false) . '</span>'
                         ],
 
                         [
@@ -106,28 +110,33 @@ $this->params['breadcrumbs'][] = '会员列表';
                             'format' => 'raw',
                             'value' => function ($model) {
                                 return Util::formatMoney($model->account->xima_amount, false);
-                            }
+                            },
+                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['account_xima_amount'], false) . '</span>'
                         ],
+
                         [
                             'attribute' => 'userStat.deposit_amount',
                             'format' => 'raw',
                             'value' => function ($model) {
                                 return Util::formatMoney($model->userStat->deposit_amount, false);
-                            }
+                            },
+                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['userStat_deposit_amount'], false) . '</span>'
                         ],
                         [
                             'attribute' => 'userStat.withdrawal_amount',
                             'format' => 'raw',
                             'value' => function ($model) {
                                 return Util::formatMoney($model->userStat->withdrawal_amount, false);
-                            }
+                            },
+                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['userStat_withdrawal_amount'], false) . '</span>'
                         ],
                         [
                             'attribute' => 'userStat.bet_amount',
                             'format' => 'raw',
                             'value' => function ($model) {
                                 return Util::formatMoney($model->userStat->bet_amount, false);
-                            }
+                            },
+                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['userStat_bet_amount'], false) . '</span>'
                         ],
 
                         [

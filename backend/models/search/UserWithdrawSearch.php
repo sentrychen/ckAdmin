@@ -54,7 +54,7 @@ class UserWithdrawSearch extends UserWithdraw
      */
     public function search($params,$userid=null)
     {
-        $query = UserWithdraw::find()->joinWith('user');
+        $query = UserWithdraw::find()->joinWith('user')->joinWith('userAccount');
 
         // add conditions that should always apply here
 

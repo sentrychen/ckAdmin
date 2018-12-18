@@ -40,6 +40,8 @@ $this->params['breadcrumbs'][] = '代理列表';
                 <?= GridView::widget([
                     'dataProvider' => $dataProvider,
                     'filterModel' => null,
+                    'showFooter' => true,
+                    'footerRowOptions' => ['style' => 'font-weight:bold;'],
                     'columns' => [
 
                         [
@@ -82,21 +84,22 @@ $this->params['breadcrumbs'][] = '代理列表';
                         [
                             'attribute' => 'account.xima_amount',
                             'format' => 'raw',
-                            'value' => function ($searchModel) {
-                                return Util::formatMoney($searchModel->account->xima_amount, false);
-                            }
+                            'value' => function ($model) {
+                                return Util::formatMoney($model->account->xima_amount, false);
+                            },
+                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['account_xima_amount'], false) . '</span>'
                         ],
                         [
                             'attribute' => 'xima_rate',
                             'format' =>['percent',2],
                         ],
                         [
-                            'attribute' => 'available_amount',
+                            'attribute' => 'account.available_amount',
                             'format' => 'raw',
-                            'value' => function ($searchModel) {
-                                return Util::formatMoney($searchModel->available_amount, false);
-                            }
-
+                            'value' => function ($model) {
+                                return Util::formatMoney($model->available_amount, false);
+                            },
+                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['account_available_amount'], false) . '</span>'
                         ],
                         [
                             'class' => ActionColumn::class,

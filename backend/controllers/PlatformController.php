@@ -14,23 +14,24 @@ use backend\actions\SortAction;
 /**
  * PlatformController implements the CRUD actions for Platform model.
  */
-class PlatformController extends \yii\web\Controller
+class PlatformController extends Controller
 {
     public function actions()
     {
         return [
             'index' => [
                 'class' => IndexAction::className(),
+                /*
                 'data' => function(){
-
                     $searchModel = new PlatformSearch();
                     $dataProvider = $searchModel->search(yii::$app->getRequest()->getQueryParams());
                     return [
                         'dataProvider' => $dataProvider,
                         'searchModel' => $searchModel,
                     ];
-
                 }
+                */
+                'data' => $this->_getGridViewData(PlatformSearch::class,['account.available_amount','account.frozen_amount'])
             ],
             'create' => [
                 'class' => CreateAction::className(),
@@ -53,10 +54,8 @@ class PlatformController extends \yii\web\Controller
 
     public function actionAmount()
     {
-        $searchModel = new PlatformSearch();
-        $dataProvider = $searchModel->search(yii::$app->getRequest()->getQueryParams(), Platform::STATUS_ENABLED);
-
-        return $this->render('amount', ['dataProvider' => $dataProvider, 'searchModel' => $searchModel]);
+        return $this->render('amount',$this->_getGridViewData(PlatformSearch::class,
+            ['account.available_amount','account.frozen_amount']));
 
     }
 

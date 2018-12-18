@@ -16,7 +16,7 @@
 use common\grid\DateColumn;
 use common\grid\GridView;
 use common\libs\Constants;
-
+use common\helpers\Util;
 ?>
 
 <div class="row">
@@ -30,6 +30,8 @@ use common\libs\Constants;
                 <?= GridView::widget([
                     'dataProvider' => $dataProvider,
                     'filterModel' => null,
+                    'showFooter' => true,
+                    'footerRowOptions' => ['style' => 'font-weight:bold;'],
                     'columns' => [
 
                         [
@@ -53,17 +55,19 @@ use common\libs\Constants;
                         [
                             'attribute' => 'bet_amount',
                             'format' => 'raw',
-                            'value' => function ($searchModel) {
-                                return Util::formatMoney($searchModel->bet_amount, false);
-                            }
+                            'value' => function ($model) {
+                                return Util::formatMoney($model->bet_amount, false);
+                            },
+                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['bet_amount'], false) . '</span>'
                         ],
 
                         [
                             'attribute' => 'profit',
                             'format' => 'raw',
-                            'value' => function ($searchModel) {
-                                return Util::formatMoney($searchModel->profit, false);
-                            }
+                            'value' => function ($model) {
+                                return Util::formatMoney($model->profit, false);
+                            },
+                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['profit'], false) . '</span>'
                         ],
                         [
                             'attribute' => 'xima_type',
@@ -81,9 +85,10 @@ use common\libs\Constants;
                         [
                             'attribute' => 'xima_amount',
                             'format' => 'raw',
-                            'value' => function ($searchModel) {
-                                return Util::formatMoney($searchModel->xima_amount, false);
-                            }
+                            'value' => function ($model) {
+                                return Util::formatMoney($model->xima_amount, false);
+                            },
+                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['xima_amount'], false) . '</span>'
                         ],
                         [
                             'class' => DateColumn::class,

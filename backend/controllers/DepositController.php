@@ -17,15 +17,15 @@ use yii\web\BadRequestHttpException;
 /**
  * DepositController implements the CRUD actions for UserDeposit model.
  */
-class DepositController extends \yii\web\Controller
+class DepositController extends Controller
 {
     public function actions()
     {
         return [
             'index' => [
                 'class' => IndexAction::className(),
+                /*
                 'data' => function () {
-
                     $searchModel = new UserDepositSearch();
                     $params = yii::$app->getRequest()->getQueryParams();
                     if (empty($params)) {
@@ -36,8 +36,11 @@ class DepositController extends \yii\web\Controller
                         'dataProvider' => $dataProvider,
                         'searchModel' => $searchModel,
                     ];
-
                 }
+                */
+                'data' => $this->_getGridViewData(UserDepositSearch::class,[
+                    'apply_amount','confirm_amount'
+                ])
             ],
             'view-layer' => [
                 'class' => ViewAction::className(),

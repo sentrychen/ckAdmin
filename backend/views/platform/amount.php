@@ -38,22 +38,26 @@ $this->params['breadcrumbs'][] = '游戏平台管理';
                 <?= GridView::widget([
                     'dataProvider' => $dataProvider,
                     'filterModel' => null,
+                    'showFooter' => true,
+                    'footerRowOptions' => ['style' => 'font-weight:bold;'],
                     'columns' => [
                         'name',
                         'code',
                         [
-                            'attribute' => 'account.frozen_amount',
+                            'attribute' => 'account.available_amount',
                             'format' => 'raw',
                             'value' => function ($model) {
                                 return Util::formatMoney($model->account->available_amount, false);
-                            }
+                            },
+                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['account_available_amount'], false) . '</span>'
                         ],
                         [
                             'attribute' => 'account.frozen_amount',
                             'format' => 'raw',
                             'value' => function ($model) {
                                 return Util::formatMoney($model->account->frozen_amount, false);
-                            }
+                            },
+                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['account_frozen_amount'], false) . '</span>'
                         ],
 
                         ['class' => ActionColumn::className(),

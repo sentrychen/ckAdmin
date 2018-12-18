@@ -25,6 +25,8 @@ $this->params['breadcrumbs'][] = '代理佣金';
                 <?= GridView::widget([
                     'dataProvider' => $dataProvider,
                     'filterModel' => null,
+                    'showFooter' => true,
+                    'footerRowOptions' => ['style' => 'font-weight:bold;'],
                     'columns' => [
                         'ym',
                         'agent_id',
@@ -38,18 +40,20 @@ $this->params['breadcrumbs'][] = '代理佣金';
                             'attribute' => 'self_bet_amount',
                             'width' => 80,
                             'format' => 'raw',
-                            'value' => function($searchModel){
-                                return Util::formatMoney($searchModel->self_bet_amount,false);
-                            }
+                            'value' => function($model){
+                                return Util::formatMoney($model->self_bet_amount,false);
+                            },
+                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['self_bet_amount'], false) . '</span>'
                         ],
 
                         [
                             'attribute' => 'self_profit_loss',
                             'width' => 70,
                             'format' => 'raw',
-                            'value' => function($searchModel){
-                                return Util::formatMoney($searchModel->self_profit_loss,false);
-                            }
+                            'value' => function($model){
+                                return Util::formatMoney($model->self_profit_loss,false);
+                            },
+                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['self_profit_loss'], false) . '</span>'
                         ],
 
 
@@ -57,38 +61,43 @@ $this->params['breadcrumbs'][] = '代理佣金';
                             'attribute' => 'sub_bet_amount',
                             'width' => 90,
                             'format' => 'raw',
-                            'value' => function($searchModel){
-                                return Util::formatMoney($searchModel->sub_bet_amount,false);
-                            }
+                            'value' => function($model){
+                                return Util::formatMoney($model->sub_bet_amount,false);
+                            },
+                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['sub_bet_amount'], false) . '</span>'
                         ],
                         [
                             'attribute' => 'sub_profit_loss',
                             'width' => 90,
                             'format' => 'raw',
-                            'value' => function($searchModel){
-                                return Util::formatMoney($searchModel->sub_profit_loss,false);
-                            }
+                            'value' => function($model){
+                                return Util::formatMoney($model->sub_profit_loss,false);
+                            },
+                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['sub_profit_loss'], false) . '</span>'
                         ],
                         [
                             'attribute' => 'sub_rebate_amount',
                             'format' => 'raw',
-                            'value' => function($searchModel){
-                                return Util::formatMoney($searchModel->sub_rebate_amount,false);
-                            }
+                            'value' => function($model){
+                                return Util::formatMoney($model->sub_rebate_amount,false);
+                            },
+                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['sub_rebate_amount'], false) . '</span>'
                         ],
                         [
                             'attribute' => 'self_rebate_amount',
                             'format' => 'raw',
-                            'value' => function($searchModel){
-                                return Util::formatMoney($searchModel->self_rebate_amount,false);
-                            }
+                            'value' => function($model){
+                                return Util::formatMoney($model->self_rebate_amount,false);
+                            },
+                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['self_rebate_amount'], false) . '</span>'
                         ],
                         [
                             'attribute' => 'total_rebate_amount',
                             'format' => 'raw',
-                            'value' => function($searchModel){
-                                return Util::formatMoney($searchModel->total_rebate_amount,false);
-                            }
+                            'value' => function($model){
+                                return Util::formatMoney($model->total_rebate_amount,false);
+                            },
+                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['total_rebate_amount'], false) . '</span>'
                         ],
                         [
                             'class' => DateColumn::class,
