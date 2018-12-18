@@ -28,6 +28,10 @@ class UserController extends Controller
     public function actions()
     {
         return [
+            'index' => [
+                'class' => IndexAction::class,
+                'data' => $this->_getGridViewData(UserSearch::class, ['account.available_amount', 'userStat.bet_amount','account.xima_amount'])
+            ],
             'view-layer' => [
                 'class' => ViewAction::class,
                 'modelClass' => User::class,
@@ -51,13 +55,6 @@ class UserController extends Controller
     }
 
 
-    public function actionIndex($id = null)
-    {
-        $searchModel = new UserSearch();
-        $dataProvider = $searchModel->search(yii::$app->getRequest()->getQueryParams(), $id);
-        return $this->render('index', ['dataProvider' => $dataProvider, 'searchModel' => $searchModel]);
-    }
-
 
     /**
      * @param $id
@@ -65,6 +62,7 @@ class UserController extends Controller
      */
     public function actionTradeList($id = null)
     {
+        /*
         $searchModel = new UserAccountRecordSearch();
         $dataProvider = $searchModel->search(yii::$app->getRequest()->getQueryParams(), $id);
 
@@ -73,8 +71,10 @@ class UserController extends Controller
         $query->select('SUM(case WHEN switch= ' . UserAccountRecord::SWITCH_IN . ' then amount else 0 end ) as inAmount,SUM(case WHEN switch = ' . UserAccountRecord::SWITCH_OUT . ' then amount else 0 end ) as outAmount');
 
         $total = $query->createCommand()->queryOne();
-
-        return $this->render('tradelist', ['dataProvider' => $dataProvider, 'searchModel' => $searchModel, 'total' => $total]);
+        */
+        return $this->render('tradelist',
+            $this->_getGridViewData(UserAccountRecordSearch::class, ['amount', 'after_amount'])
+        );
     }
 
     /**
@@ -83,12 +83,16 @@ class UserController extends Controller
      */
     public function actionBetList($id = null)
     {
+        /*
         $searchModel = new BetListSearch();
         $dataProvider = $searchModel->search(yii::$app->getRequest()->getQueryParams(), $id);
         $query = clone $dataProvider->query;
         $query->select('sum(bet_amount) as betAmount,sum(profit) as profit');
         $total = $query->createCommand()->queryOne();
-        return $this->render('betlist', ['dataProvider' => $dataProvider, 'searchModel' => $searchModel, 'total' => $total]);
+        */
+        return $this->render('betlist',
+            $this->_getGridViewData(BetListSearch::class, ['bet_amount', 'profit','amount_before','amount_after','xima'])
+        );
     }
 
     /**

@@ -14,13 +14,14 @@ use agent\actions\SortAction;
 /**
  * AgentTradeController implements the CRUD actions for AgentAccountRecord model.
  */
-class AgentTradeController extends \yii\web\Controller
+class AgentTradeController extends Controller
 {
     public function actions()
     {
         return [
             'index' => [
                 'class' => IndexAction::className(),
+                /*
                 'data' => function () {
 
                     $searchModel = new AgentAccountRecordSearch();
@@ -31,6 +32,9 @@ class AgentTradeController extends \yii\web\Controller
                     ];
 
                 }
+                */
+                'data' => $this->_getGridViewData(AgentAccountRecordSearch::class, ['amount', 'after_amount'])
+
             ],
             'create' => [
                 'class' => CreateAction::className(),

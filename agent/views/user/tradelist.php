@@ -30,12 +30,6 @@ $this->params['breadcrumbs'][] = '会员交易记录';
             <?= $this->render('/widgets/_ibox-title') ?>
             <div class="ibox-content">
                 <div class="toolbar clearfix">
-                    <div class="pull-left" style="line-height:44px">
-                        合计收入 <span
-                                class="label label-warning"><?= Yii::$app->formatter->asCurrency($total['inAmount']) ?></span>
-                        合计支出 <span
-                                class="label label-warning"><?= Yii::$app->formatter->asCurrency($total['outAmount']) ?></span>
-                    </div>
                     <?= $this->render('_search_tradelist', ['model' => $searchModel]); ?>
                 </div>
 
@@ -43,6 +37,8 @@ $this->params['breadcrumbs'][] = '会员交易记录';
                 <?= GridView::widget([
                     'dataProvider' => $dataProvider,
                     'filterModel' => null,
+                    'showFooter' => true,
+                    'footerRowOptions' => ['style' => 'font-weight:bold;'],
                     'columns' => [
                         'user.username',
                         [
@@ -69,17 +65,19 @@ $this->params['breadcrumbs'][] = '会员交易记录';
                         [
                             'attribute' => 'amount',
                             'format' => 'raw',
-                            'value' => function ($searchModel) {
-                                return Util::formatMoney($searchModel->amount, false);
-                            }
+                            'value' => function ($model) {
+                                return Util::formatMoney($model->amount, false);
+                            },
+                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['amount'], false) . '</span>'
                         ],
 
                         [
                             'attribute' => 'after_amount',
                             'format' => 'raw',
-                            'value' => function ($searchModel) {
-                                return Util::formatMoney($searchModel->after_amount, false);
-                            }
+                            'value' => function ($model) {
+                                return Util::formatMoney($model->after_amount, false);
+                            },
+                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['after_amount'], false) . '</span>'
                         ],
                         [
                             'attribute' => 'remark',

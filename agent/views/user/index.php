@@ -38,6 +38,8 @@ $this->params['breadcrumbs'][] = '会员列表';
                 <?= GridView::widget([
                     'dataProvider' => $dataProvider,
                     'filterModel' => null,
+                    'showFooter' => true,
+                    'footerRowOptions' => ['style' => 'font-weight:bold;'],
                     'layout' => "{items}\n{pager}",
                     'columns' => [
 
@@ -76,16 +78,18 @@ $this->params['breadcrumbs'][] = '会员列表';
                         [
                             'attribute' => 'account.available_amount',
                             'format' => 'raw',
-                            'value' => function($searchModel){
-                                return Util::formatMoney($searchModel->account->available_amount,false);
-                            }
+                            'value' => function($model){
+                                return Util::formatMoney(isset($model->account->available_amount)?$model->account->available_amount:0,false);
+                            },
+                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['account_available_amount'], false) . '</span>'
                         ],
                         [
                             'attribute' => 'userStat.bet_amount',
                             'format' => 'raw',
-                            'value' => function($searchModel){
-                                return Util::formatMoney($searchModel->userStat->bet_amount,false);
-                            }
+                            'value' => function($model){
+                                return Util::formatMoney(isset($model->userStat->bet_amount)?$model->userStat->bet_amount:0,false);
+                            },
+                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['userStat_bet_amount'], false) . '</span>'
                         ],
                         [
                             'attribute' => 'xima_rate',
@@ -94,9 +98,10 @@ $this->params['breadcrumbs'][] = '会员列表';
                         [
                             'attribute' => 'account.xima_amount',
                             'format' => 'raw',
-                            'value' => function($searchModel){
-                                return Util::formatMoney($searchModel->account->xima_amount,false);
+                            'value' => function($model){
+                                return Util::formatMoney(isset($model->account->xima_amount)?$model->account->xima_amount:0,false);
                             },
+                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['account_available_amount'], false) . '</span>'
                         ],
 
                         [

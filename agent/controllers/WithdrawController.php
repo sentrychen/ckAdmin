@@ -19,13 +19,14 @@ use yii\web\BadRequestHttpException;
 /**
  * WithdrawController implements the CRUD actions for UserWithdraw model.
  */
-class WithdrawController extends \yii\web\Controller
+class WithdrawController extends Controller
 {
     public function actions()
     {
         return [
             'index' => [
                 'class' => IndexAction::className(),
+                /*
                 'data' => function(){
 
                     $searchModel = new AgentWithdrawSearch();
@@ -39,7 +40,9 @@ class WithdrawController extends \yii\web\Controller
                             'searchModel' => $searchModel,
                         ];
                     
-                }
+                }*/
+                'data' => $this->_getGridViewData(AgentWithdrawSearch::class, ['apply_amount', 'transfer_amount','agent.frozen_amount'])
+
             ],
             'view-layer' => [
                 'class' => ViewAction::className(),

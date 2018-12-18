@@ -31,6 +31,8 @@ use common\helpers\Util;
                 <?= GridView::widget([
                     'dataProvider' => $dataProvider,
                     'filterModel' => null,
+                    'showFooter' => true,
+                    'footerRowOptions' => ['style' => 'font-weight:bold;'],
                     'columns' => [
 
                         [
@@ -60,14 +62,16 @@ use common\helpers\Util;
                             'format' => 'raw',
                             'value' => function($model){
                                 return Util::formatMoney($model->bet_amount,false);
-                            }
+                            },
+                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['bet_amount'], false) . '</span>'
                         ],
                         [
                             'attribute' => 'profit',
                             'format' => 'raw',
                             'value' => function($model){
                                 return Util::formatMoney($model->profit,false);
-                            }
+                            },
+                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['profit'], false) . '</span>'
                         ],
                         [
                             'attribute' => 'xima_type',
@@ -86,7 +90,8 @@ use common\helpers\Util;
                             'format' => 'raw',
                             'value' => function($model){
                                 return Util::formatMoney($model->xima_amount,false);
-                            }
+                            },
+                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['xima_amount'], false) . '</span>'
                         ],
                         [
                             'attribute' => 'sub_xima_rate',
@@ -97,7 +102,8 @@ use common\helpers\Util;
                             'format' => 'raw',
                             'value' => function($model){
                                 return Util::formatMoney($model->sub_xima_amount,false);
-                            }
+                            },
+                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['sub_xima_amount'], false) . '</span>'
                         ],
                         [
                             'class' => DateColumn::class,

@@ -29,18 +29,15 @@ $this->params['breadcrumbs'][] = '会员投注记录';
             <?= $this->render('/widgets/_ibox-title') ?>
             <div class="ibox-content">
                 <div class="toolbar clearfix">
-                    <div class="pull-left" style="line-height:44px">
-                        投注总额 <span
-                                class="label label-warning"><?= Yii::$app->formatter->asCurrency($total['betAmount']) ?></span>
-                        合计赢输 <span
-                                class="label label-warning"><?= Yii::$app->formatter->asCurrency($total['profit']) ?></span>
-                    </div>
+
                     <?= $this->render('_search_betlist', ['model' => $searchModel]); ?>
                 </div>
 
                 <?= GridView::widget([
                     'dataProvider' => $dataProvider,
                     'filterModel' => null,
+                    'showFooter' => true,
+                    'footerRowOptions' => ['style' => 'font-weight:bold;'],
                     'columns' => [
 
                         [
@@ -76,9 +73,10 @@ $this->params['breadcrumbs'][] = '会员投注记录';
                             'attribute' => 'bet_amount',
                             'width'=>70,
                             'format' => 'raw',
-                            'value' => function ($searchModel) {
-                                return Util::formatMoney($searchModel->bet_amount, false);
-                            }
+                            'value' => function ($model) {
+                                return Util::formatMoney($model->bet_amount, false);
+                            },
+                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['bet_amount'], false) . '</span>'
                         ],
                         [
                             'attribute' => 'bet_record',
@@ -109,32 +107,36 @@ $this->params['breadcrumbs'][] = '会员投注记录';
                         [
                             'attribute' => 'profit',
                             'format' => 'raw',
-                            'value' => function ($searchModel) {
-                                return Util::formatMoney($searchModel->profit, false);
-                            }
+                            'value' => function ($model) {
+                                return Util::formatMoney($model->profit, false);
+                            },
+                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['profit'], false) . '</span>'
                         ],
                         [
                             'attribute' => 'amount_before',
                             'width'=>90,
                             'format' => 'raw',
-                            'value' => function ($searchModel) {
-                                return Util::formatMoney($searchModel->amount_before, false);
-                            }
+                            'value' => function ($model) {
+                                return Util::formatMoney($model->amount_before, false);
+                            },
+                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['amount_before'], false) . '</span>'
                         ],
                         [
                             'attribute' => 'amount_after',
                             'width'=>90,
                             'format' => 'raw',
-                            'value' => function ($searchModel) {
-                                return Util::formatMoney($searchModel->amount_after, false);
-                            }
+                            'value' => function ($model) {
+                                return Util::formatMoney($model->amount_after, false);
+                            },
+                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['amount_after'], false) . '</span>'
                         ],
                         [
                             'attribute' => 'xima',
                             'format' => 'raw',
-                            'value' => function ($searchModel) {
-                                return Util::formatMoney($searchModel->xima, false);
-                            }
+                            'value' => function ($model) {
+                                return Util::formatMoney($model->xima, false);
+                            },
+                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['xima'], false) . '</span>'
                         ],
                         [
                             'class' => DateColumn::class,
