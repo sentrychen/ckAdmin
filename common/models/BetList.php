@@ -283,7 +283,7 @@ class BetList extends \yii\db\ActiveRecord
     {
         parent::afterSave($insert, $changedAttributes);
         $user = User::findOne(['id' => $this->user_id]);
-        if ($user) {
+        if ($insert && $user) {
             $start_time = strtotime(date('Y-m-d 00:00:00'));
             $end_time = strtotime(date('Y-m-d 23:59:59'));
             $platform_id = $this->platform_id;

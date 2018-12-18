@@ -16,6 +16,7 @@
 use common\grid\DateColumn;
 use common\grid\GridView;
 use common\libs\Constants;
+use common\helpers\Util;
 
 ?>
 
@@ -56,11 +57,17 @@ use common\libs\Constants;
                         ],
                         [
                             'attribute' => 'bet_amount',
-                            'format' => 'currency',
+                            'format' => 'raw',
+                            'value' => function($model){
+                                return Util::formatMoney($model->bet_amount,false);
+                            }
                         ],
                         [
                             'attribute' => 'profit',
-                            'format' => 'currency',
+                            'format' => 'raw',
+                            'value' => function($model){
+                                return Util::formatMoney($model->profit,false);
+                            }
                         ],
                         [
                             'attribute' => 'xima_type',
@@ -76,7 +83,10 @@ use common\libs\Constants;
                         ],
                         [
                             'attribute' => 'xima_amount',
-                            'format' => 'currency',
+                            'format' => 'raw',
+                            'value' => function($model){
+                                return Util::formatMoney($model->xima_amount,false);
+                            }
                         ],
                         [
                             'attribute' => 'sub_xima_rate',
@@ -84,7 +94,10 @@ use common\libs\Constants;
                         ],
                         [
                             'attribute' => 'sub_xima_amount',
-                            'format' => 'currency',
+                            'format' => 'raw',
+                            'value' => function($model){
+                                return Util::formatMoney($model->sub_xima_amount,false);
+                            }
                         ],
                         [
                             'class' => DateColumn::class,
