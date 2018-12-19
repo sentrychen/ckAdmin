@@ -46,6 +46,7 @@ $this->params['breadcrumbs'][] = '代理列表';
 
                         [
                             'attribute' => 'username',
+                            'footer' => '合计'
                         ],
                         [
                             'attribute' => 'parent.username',

@@ -56,6 +56,7 @@ use common\helpers\Util;
                         ],
                         [
                             'attribute' => 'period_boot',
+                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['bet_amount'], false) . '</span>'
                         ],
                         [
                             'attribute' => 'period_round',

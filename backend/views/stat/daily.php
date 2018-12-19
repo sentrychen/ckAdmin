@@ -29,12 +29,25 @@ $this->params['breadcrumbs'][] = '系统日报';
                     'showFooter' => true,
                     'footerRowOptions' => ['style' => 'font-weight:bold;'],
                     'columns' => [
-                        ['attribute' => 'ymd', 'value' => function ($model) {
-                            return date('Y-m-d', strtotime($model->ymd));
-                        }],
-                        'dnu',
-                        'dau',
-                        'ndu',
+                        [
+                            'attribute' => 'ymd',
+                            'value' => function ($model) {
+                                return date('Y-m-d', strtotime($model->ymd));
+                            },
+                            'footer' => '合计'
+                        ],
+                        [
+                            'attribute' => 'dnu',
+                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['dnu'], false) . '</span>'
+                        ],
+                        [
+                            'attribute' => 'dau',
+                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['dau'], false) . '</span>'
+                        ],
+                        [
+                            'attribute' => 'ndu',
+                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['ndu'], false) . '</span>'
+                        ],
                         [
                             'attribute' => 'nda',
                             'format' => 'raw',
@@ -43,7 +56,11 @@ $this->params['breadcrumbs'][] = '系统日报';
                             },
                             'footer' => '<span class="label label-default">' . Util::formatMoney($totals['nda'], false) . '</span>'
                         ],
-                        'dbu',
+
+                        [
+                            'attribute' => 'dbu',
+                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['dbu'], false) . '</span>'
+                        ],
                         [
                             'attribute' => 'dba',
                             'format' => 'raw',
@@ -52,7 +69,11 @@ $this->params['breadcrumbs'][] = '系统日报';
                             },
                             'footer' => '<span class="label label-default">' . Util::formatMoney($totals['dba'], false) . '</span>'
                         ],
-                        'ddu',
+
+                        [
+                            'attribute' => 'ddu',
+                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['ddu'], false) . '</span>'
+                        ],
                         [
                             'attribute' => 'dda',
                             'format' => 'raw',
@@ -61,7 +82,10 @@ $this->params['breadcrumbs'][] = '系统日报';
                             },
                             'footer' => '<span class="label label-default">' . Util::formatMoney($totals['dda'], false) . '</span>'
                         ],
-                        'dwu',
+                        [
+                            'attribute' => 'dwu',
+                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['dwu'], false) . '</span>'
+                        ],
                         [
                             'attribute' => 'dwa',
                             'format' => 'raw',

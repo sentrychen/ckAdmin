@@ -41,7 +41,7 @@ $this->params['breadcrumbs'][] = '游戏平台管理';
                     'showFooter' => true,
                     'footerRowOptions' => ['style' => 'font-weight:bold;'],
                     'columns' => [
-                        'name',
+                        ['attribute' =>'name','footer' => '合计'],
                         'code',
                         [
                             'attribute' => 'account.available_amount',

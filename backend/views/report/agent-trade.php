@@ -28,11 +28,12 @@ $this->params['breadcrumbs'][] = '代理交易记录';
                     'showFooter' => true,
                     'footerRowOptions' => ['style' => 'font-weight:bold;'],
                     'columns' => [
-                        'id',
+                        ['attribute' => 'id','footer' => '合计'],
                         [
                             'attribute' => 'agent_id',
                             'value' => 'agent.username',
                             'label' => '代理账号',
+
                         ],
                         'name',
                         [

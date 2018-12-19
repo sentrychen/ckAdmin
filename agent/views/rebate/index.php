@@ -29,7 +29,7 @@ $this->params['breadcrumbs'][] = '代理佣金';
                     'showFooter' => true,
                     'footerRowOptions' => ['style' => 'font-weight:bold;'],
                     'columns' => [
-                        'ym',
+                        ['attribute' => 'ym','footer' => '合计'],
                         'agent_name',
                         [
                             'attribute' => 'rebate_rate',

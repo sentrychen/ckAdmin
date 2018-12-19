@@ -29,11 +29,21 @@ $this->params['breadcrumbs'][] = '代理日报';
                     'showFooter' => true,
                     'footerRowOptions' => ['style' => 'font-weight:bold;'],
                     'columns' => [
-                        'ymd',
+                        ['attribute' => 'ymd','footer' => '合计'],
                         ['attribute' => 'agent_id', 'value' => 'agent.username', 'label' => '代理名称'],
-                        'dnu',
-                        'dau',
-                        'ndu',
+                        [
+                            'attribute' => 'dnu',
+                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['dnu'], false) . '</span>'
+                        ],
+                        [
+                            'attribute' => 'dau',
+                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['dau'], false) . '</span>'
+                        ],
+                        [
+                            'attribute' => 'ndu',
+                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['ndu'], false) . '</span>'
+                        ],
+
                         [
                             'attribute' => 'nda',
                             'format' => 'raw',
@@ -42,8 +52,15 @@ $this->params['breadcrumbs'][] = '代理日报';
                             },
                             'footer' => '<span class="label label-default">' . Util::formatMoney($totals['nda'], false) . '</span>'
                         ],
-                        'dbu',
-                        'dbo',
+
+                        [
+                            'attribute' => 'dbu',
+                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['dbu'], false) . '</span>'
+                        ],
+                        [
+                            'attribute' => 'dbo',
+                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['dbo'], false) . '</span>'
+                        ],
                         [
                             'attribute' => 'dba',
                             'format' => 'raw',
@@ -52,8 +69,11 @@ $this->params['breadcrumbs'][] = '代理日报';
                             },
                             'footer' => '<span class="label label-default">' . Util::formatMoney($totals['dba'], false) . '</span>'
                         ],
-                        'ddu',
 
+                        [
+                            'attribute' => 'ddu',
+                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['ddu'], false) . '</span>'
+                        ],
                         [
                             'attribute' => 'dda',
                             'format' => 'raw',
@@ -62,8 +82,11 @@ $this->params['breadcrumbs'][] = '代理日报';
                             },
                             'footer' => '<span class="label label-default">' . Util::formatMoney($totals['dda'], false) . '</span>'
                         ],
-                        'dwu',
 
+                        [
+                            'attribute' => 'dwu',
+                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['dwu'], false) . '</span>'
+                        ],
                         [
                             'attribute' => 'dwa',
                             'format' => 'raw',
@@ -88,8 +111,10 @@ $this->params['breadcrumbs'][] = '代理日报';
                             },
                             'footer' => '<span class="label label-default">' . Util::formatMoney($totals['dla'], false) . '</span>'
                         ],
-                        'dna',
-
+                        [
+                            'attribute' => 'dna',
+                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['dna'], false) . '</span>'
+                        ],
                     ],
                 ]); ?>
             </div>

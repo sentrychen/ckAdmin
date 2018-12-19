@@ -29,12 +29,22 @@ $this->params['breadcrumbs'][] = '平台日报';
                     'showFooter' => true,
                     'footerRowOptions' => ['style' => 'font-weight:bold;'],
                     'columns' => [
-                        ['attribute' => 'ymd', 'value' => function ($model) {
-                            return date('Y-m-d', strtotime($model->ymd));
-                        }],
+                        [
+                            'attribute' => 'ymd',
+                            'value' => function ($model) {
+                                return date('Y-m-d', strtotime($model->ymd));
+                            },
+                            'footer' => '合计'
+                        ],
                         ['attribute' => 'platform_id', 'value' => 'platform.name'],
-                        'dnu',
-                        'dau',
+                        [
+                            'attribute' => 'dnu',
+                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['dnu'], false) . '</span>'
+                        ],
+                        [
+                            'attribute' => 'dau',
+                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['dau'], false) . '</span>'
+                        ],
                         [
                             'attribute' => 'dua',
                             'format' => 'raw',
@@ -51,8 +61,11 @@ $this->params['breadcrumbs'][] = '平台日报';
                             },
                             'footer' => '<span class="label label-default">' . Util::formatMoney($totals['dda'], false) . '</span>'
                         ],
-                        'dbu',
 
+                        [
+                            'attribute' => 'dbu',
+                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['dbu'], false) . '</span>'
+                        ],
                         [
                             'attribute' => 'dbo',
                             'format' => 'raw',

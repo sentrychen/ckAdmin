@@ -45,6 +45,7 @@ $this->params['breadcrumbs'][] = '会员列表';
 
                         [
                             'attribute' => 'id',
+                            'footer' => '合计'
                         ],
                         [
                             'attribute' => 'username',
@@ -73,6 +74,7 @@ $this->params['breadcrumbs'][] = '会员列表';
                         [
                             'attribute' => 'userStat.login_number',
                             'format' => 'integer',
+                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['userStat_login_number'], false) . '</span>'
                         ],
 
                         [

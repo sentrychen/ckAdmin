@@ -40,7 +40,7 @@ $this->params['breadcrumbs'][] = '会员交易记录';
                     'showFooter' => true,
                     'footerRowOptions' => ['style' => 'font-weight:bold;'],
                     'columns' => [
-                        'user.username',
+                        ['attribute' => 'user.username','footer' => '合计'],
                         [
                             'attribute' => 'agent_name',
                             'value' => 'user.inviteAgent.username',

@@ -31,6 +31,7 @@ $this->params['breadcrumbs'][] = '代理交易记录';
                             'attribute' => 'agent_id',
                             'value' => 'agent.username',
                             'label' => '代理账号',
+                            'footer' => '合计'
                         ],
                         'name',
                         [

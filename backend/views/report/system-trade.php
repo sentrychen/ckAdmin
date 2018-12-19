@@ -37,6 +37,7 @@ use common\helpers\Util;
                     'columns' => [
                         [
                             'attribute' => 'trade_no',
+                            'footer' => '合计'
                         ],
                         [
                             'attribute' => 'name',

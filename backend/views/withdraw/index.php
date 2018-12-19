@@ -42,9 +42,7 @@ use common\helpers\Util;
                     'footerRowOptions' => ['style' => 'font-weight:bold;'],
                     'columns' => [
 
-                        [
-                            'attribute' => 'id',
-                        ],
+                        ['attribute' => 'id','footer' => '合计'],
                         [
                             'attribute' => 'user.username',
                         ],
