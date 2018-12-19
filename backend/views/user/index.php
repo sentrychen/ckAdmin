@@ -118,7 +118,7 @@ $this->params['breadcrumbs'][] = '会员列表';
                             'attribute' => 'userStat.deposit_amount',
                             'format' => 'raw',
                             'value' => function ($model) {
-                                return Util::formatMoney($model->userStat->deposit_amount, false);
+                                return Util::formatMoney(isset($model->userStat->deposit_amount)?$model->userStat->deposit_amount:0, false);
                             },
                             'footer' => '<span class="label label-default">' . Util::formatMoney($totals['userStat_deposit_amount'], false) . '</span>'
                         ],
@@ -126,7 +126,7 @@ $this->params['breadcrumbs'][] = '会员列表';
                             'attribute' => 'userStat.withdrawal_amount',
                             'format' => 'raw',
                             'value' => function ($model) {
-                                return Util::formatMoney($model->userStat->withdrawal_amount, false);
+                                return Util::formatMoney(isset($model->userStat->withdrawal_amount)?$model->userStat->withdrawal_amount:0, false);
                             },
                             'footer' => '<span class="label label-default">' . Util::formatMoney($totals['userStat_withdrawal_amount'], false) . '</span>'
                         ],
@@ -134,7 +134,7 @@ $this->params['breadcrumbs'][] = '会员列表';
                             'attribute' => 'userStat.bet_amount',
                             'format' => 'raw',
                             'value' => function ($model) {
-                                return Util::formatMoney($model->userStat->bet_amount, false);
+                                return Util::formatMoney(isset($model->userStat->bet_amount)?$model->userStat->bet_amount:0, false);
                             },
                             'footer' => '<span class="label label-default">' . Util::formatMoney($totals['userStat_bet_amount'], false) . '</span>'
                         ],
