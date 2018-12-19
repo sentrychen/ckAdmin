@@ -15,7 +15,7 @@ class Controller extends \yii\web\Controller
 {
 
     /**
-     * @param $searchModelClass
+     * @para m $searchModelClass
      * @param array $sumColumns
      * @param null $id
      * @return array
