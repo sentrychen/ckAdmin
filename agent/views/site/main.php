@@ -11,6 +11,7 @@ use agent\models\Agent;
 use common\widgets\JsBlock;
 use yii\helpers\Url;
 use yii\widgets\DetailView;
+use common\helpers\Util;
 
 /**
  * @var $statics array
@@ -73,10 +74,10 @@ EchartAsset::register($this);
         <div class="col-sm-3">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <h5>累计洗码额度</h5>
+                    <h5>累计洗码额度(￥)</h5>
                 </div>
                 <div class="ibox-content">
-                    <h1 class="no-margins"><?= Yii::$app->formatter->asCurrency($statics['ximaTotal']) ?></h1>
+                    <h1 class="no-margins"><?= Util::formatMoney($statics['ximaTotal'],false) ?></h1>
                     <div class="stat-percent font-bold text-success"></div>
                     <small><?= yii::t('app', 'Total') ?></small>
                 </div>
@@ -85,10 +86,10 @@ EchartAsset::register($this);
         <div class="col-sm-3">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <h5>今日洗码额度</h5>
+                    <h5>今日洗码额度(￥)</h5>
                 </div>
                 <div class="ibox-content">
-                    <h1 class="no-margins"><?= Yii::$app->formatter->asCurrency($statics['ximaToday']) ?></h1>
+                    <h1 class="no-margins"><?= Util::formatMoney($statics['ximaToday'],false) ?></h1>
                     <div class="stat-percent font-bold text-info"></div>
                     <small><?= yii::t('app', 'Total') ?></small>
                 </div>
@@ -97,10 +98,10 @@ EchartAsset::register($this);
         <div class="col-sm-3">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <h5>累计返佣额度</h5>
+                    <h5>累计返佣额度(￥)</h5>
                 </div>
                 <div class="ibox-content">
-                    <h1 class="no-margins"><?= Yii::$app->formatter->asCurrency($statics['rebateTotal']) ?></h1>
+                    <h1 class="no-margins"><?= Util::formatMoney($statics['rebateTotal'],false) ?></h1>
                     <div class="stat-percent font-bold text-navy"></div>
                     <small><?= yii::t('app', 'Total') ?></small>
                 </div>
@@ -109,10 +110,10 @@ EchartAsset::register($this);
         <div class="col-sm-3">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <h5>上月返佣额度</h5>
+                    <h5>上月返佣额度(￥)</h5>
                 </div>
                 <div class="ibox-content">
-                    <h1 class="no-margins"><?= Yii::$app->formatter->asCurrency($statics['rebateLastMonth']) ?></h1>
+                    <h1 class="no-margins"><?= Util::formatMoney($statics['rebateLastMonth'],false) ?></h1>
                     <div class="stat-percent font-bold text-info"></div>
                     <small><?= yii::t('app', 'Total') ?></small>
                 </div>
@@ -159,7 +160,7 @@ EchartAsset::register($this);
         <div class="col-sm-6">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <h5>投注赢输</h5>
+                    <h5>投注赢输(￥)</h5>
                     <div class="pull-right">
                         <div class="btn-group">
                             <button type="button" class="btn btn-xs btn-white active">天</button>

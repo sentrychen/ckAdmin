@@ -111,8 +111,10 @@ $this->params['breadcrumbs'][] = '代理日报';
                             },
                             'footer' => '<span class="label label-default">' . Util::formatMoney($totals['dla'], false) . '</span>'
                         ],
-                        'dna',
-
+                        [
+                            'attribute' => 'dna',
+                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['dna'], false) . '</span>'
+                        ],
                     ],
                 ]); ?>
             </div>

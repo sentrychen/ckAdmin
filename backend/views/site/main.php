@@ -6,6 +6,7 @@
 
 use backend\assets\EchartAsset;
 use common\widgets\JsBlock;
+use common\helpers\Util;
 
 EchartAsset::register($this);
 
@@ -53,9 +54,9 @@ EchartAsset::register($this);
                         </div>
                     </div>
                     <div class="col-md-7">
-                        <h1 class="no-margins"><?= Yii::$app->formatter->asCurrency($userDeposit['amount']) ?></h1>
+                        <h1 class="no-margins"><?=  Util::formatMoney($userDeposit['amount'], false) ?></h1>
                         <div class="font-bold text-info">
-                            <small>首存额度</small>
+                            <small>首存额度(￥)</small>
                         </div>
                     </div>
                 </div>
@@ -79,9 +80,9 @@ EchartAsset::register($this);
                         </div>
                     </div>
                     <div class="col-md-7">
-                        <h1 class="no-margins"><?= Yii::$app->formatter->asCurrency($userDeposit['all_amount'])?></h1>
+                        <h1 class="no-margins"><?= Util::formatMoney($userDeposit['all_amount'], false) ?></h1>
                         <div class="font-bold text-warning">
-                            <small>存款额度</small>
+                            <small>存款额度(￥)</small>
                         </div>
                     </div>
                 </div>
@@ -105,9 +106,9 @@ EchartAsset::register($this);
                         </div>
                     </div>
                     <div class="col-md-7">
-                        <h1 class="no-margins"><?= Yii::$app->formatter->asCurrency($useBet['profit'])?></h1>
+                        <h1 class="no-margins"><?= Util::formatMoney($useBet['profit'], false)?></h1>
                         <div class="font-bold text-navy">
-                            <small>赢输</small>
+                            <small>赢输(￥)</small>
                         </div>
                     </div>
                 </div>
@@ -131,9 +132,9 @@ EchartAsset::register($this);
                         </div>
                     </div>
                     <div class="col-md-7">
-                        <h1 class="no-margins"><?= Yii::$app->formatter->asCurrency($useBet['amount'])?></h1>
+                        <h1 class="no-margins"><?= Util::formatMoney($useBet['amount'],false)?></h1>
                         <div class="font-bold text-info">
-                            <small>投注额度</small>
+                            <small>投注额度(￥)</small>
                         </div>
                     </div>
                 </div>
@@ -157,9 +158,9 @@ EchartAsset::register($this);
                         </div>
                     </div>
                     <div class="col-md-7">
-                        <h1 class="no-margins"><?= Yii::$app->formatter->asCurrency($useWithdraw['amount'])?></h1>
+                        <h1 class="no-margins"><?= Util::formatMoney($useWithdraw['amount'],false)?></h1>
                         <div class="font-bold text-warning">
-                            <small>取款额度</small>
+                            <small>取款额度(￥)</small>
                         </div>
                     </div>
                 </div>

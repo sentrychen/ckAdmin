@@ -13,7 +13,7 @@ class StatController extends Controller
     public function actionAgent()
     {
         return $this->render('agent', $this->_getGridViewData(AgentDailySearch::class,[
-            'dnu', 'dau', 'ndu','nda','dbu', 'dbo','dba','ddu','dda','dwu','dwa','dpa','dla'
+            'dnu', 'dau', 'ndu','nda','dbu', 'dbo','dba','ddu','dda','dwu','dwa','dpa','dla','dna'
         ]));
 
     }

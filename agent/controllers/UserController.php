@@ -91,7 +91,7 @@ class UserController extends Controller
         $total = $query->createCommand()->queryOne();
         */
         return $this->render('betlist',
-            $this->_getGridViewData(BetListSearch::class, ['bet_amount', 'profit','amount_before','amount_after','xima'])
+            $this->_getGridViewData(BetListSearch::class, ['period_boot','bet_amount', 'profit','amount_before','amount_after','xima'])
         );
     }
 

@@ -66,6 +66,7 @@ $this->params['breadcrumbs'][] = '会员投注记录';
                         ],
                         [
                             'attribute' => 'period_boot',
+                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['period_boot'], false) . '</span>'
                         ],
                         [
                             'attribute' => 'period_round',

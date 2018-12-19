@@ -55,7 +55,7 @@ class ReportController extends Controller
     {
 
         return $this->render('bet', $this->_getGridViewData(BetListSearch::class,[
-            'bet_amount','profit','amount_before','amount_after','xima'
+            'period_boot','bet_amount','profit','amount_before','amount_after','xima'
         ]));
     }
 
