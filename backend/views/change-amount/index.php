@@ -34,7 +34,7 @@ $this->params['breadcrumbs'][] = '上下分审核';
                     'footerRowOptions' => ['style' => 'font-weight:bold;'],
                     'columns' => [
 
-                        'id',
+                        ['attribute' => 'id','footer' => '合计'],
                         'user.username',
                         [
                             'attribute' => 'switch',

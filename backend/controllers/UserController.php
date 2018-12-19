@@ -54,7 +54,7 @@ class UserController extends Controller
                 }
                 */
                 'data' => $this->_getGridViewData(UserSearch::class,[
-                    'account.available_amount','account.frozen_amount','account.xima_amount','userStat.deposit_amount',
+                    'userStat.login_number','account.available_amount','account.frozen_amount','account.xima_amount','userStat.deposit_amount',
                     'userStat.withdrawal_amount','userStat.bet_amount'
                 ]),
             ],

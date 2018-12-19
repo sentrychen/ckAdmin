@@ -43,6 +43,7 @@ use common\helpers\Util;
 
                         [
                             'attribute' => 'id',
+                            'footer' => '合计',
                         ],
                         [
                             'attribute' => 'agent.username',

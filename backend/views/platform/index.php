@@ -27,7 +27,10 @@ $this->params['breadcrumbs'][] = '游戏平台管理';
                     'showFooter' => true,
                     'footerRowOptions' => ['style' => 'font-weight:bold;'],
                     'columns' => [
-                        'id',
+                        [
+                            'attribute' => 'id',
+                            'footer' => '合计',
+                        ],
                         'name',
                         'code',
                         'api_host',
