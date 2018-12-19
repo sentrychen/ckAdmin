@@ -52,6 +52,7 @@ $this->params['breadcrumbs'][] = yii::t('app', 'Admin Users');
                         ],
                         [
                             'attribute' => 'username',
+                            'footer' => '合计'
                         ],
                         [
                             'attribute' => 'role',

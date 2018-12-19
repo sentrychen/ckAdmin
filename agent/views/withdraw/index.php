@@ -50,7 +50,7 @@ use common\helpers\Util;
                     'columns' => [
 
                         [
-                            'attribute' => 'id',
+                            'attribute' => 'id','footer' => '合计'
                         ],
                         [
                             'attribute' => 'agent.username',

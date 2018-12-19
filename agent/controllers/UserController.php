@@ -30,7 +30,7 @@ class UserController extends Controller
         return [
             'index' => [
                 'class' => IndexAction::class,
-                'data' => $this->_getGridViewData(UserSearch::class, ['account.available_amount', 'userStat.bet_amount','account.xima_amount'])
+                'data' => $this->_getGridViewData(UserSearch::class, ['account.available_amount', 'userStat.bet_amount','userStat.login_number','account.xima_amount'])
             ],
             'view-layer' => [
                 'class' => ViewAction::class,

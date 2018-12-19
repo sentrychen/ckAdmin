@@ -42,6 +42,7 @@ $this->params['breadcrumbs'][] = '会员投注记录';
 
                         [
                             'attribute' => 'record_id',
+                            'footer' => '合计'
                         ],
                         [
                             'attribute' => 'username',

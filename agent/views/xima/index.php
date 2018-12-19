@@ -36,7 +36,7 @@ use common\helpers\Util;
                     'columns' => [
 
                         [
-                            'attribute' => 'record_id',
+                            'attribute' => 'record_id','footer' => '合计'
                         ],
                         [
                             'attribute' => 'agent_id',
