@@ -52,4 +52,6 @@ class RebatePlan extends \yii\db\ActiveRecord
             'updated_at' => '更新日期',
         ];
     }
+
+
 }
