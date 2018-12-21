@@ -9,10 +9,12 @@
 namespace api\controllers;
 use api\components\RestHttpException;
 use api\models\UserWithdraw;
+use api\models\User;
 use api\models\UserBank;
 use yii\data\ActiveDataProvider;
 use api\models\UserAccount;
 use common\helpers\Util;
+use yii\db\Exception as dbException;
 use Yii;
 
 class WithdrawController extends ActiveController
@@ -66,8 +68,20 @@ class WithdrawController extends ActiveController
     public function actionApply()
     {
         $user = Yii::$app->getUser()->getIdentity();
+        if($user->id_card_status == User::STATUS_IDCARD_OFF){
+            return ['status'=>'1','info'=>'您还未实名认证，请先实名认证再申请取款！'];
+        }
         $request = Yii::$app->request;
-        $bank = UserBank::findOne($request->post('user_bank_id'));
+        $condition = [
+            'id' => $request->post('user_bank_id'),
+            'user_id' => $user->getId(),
+            'status' => UserBank::BANK_STATUS_ON
+        ];
+        $bank = UserBank::find()->where($condition)->one();
+        if(!$bank){
+            return ['status'=>'2','info'=>'银行卡不存在！'];
+        }
+
         $withdraw = new UserWithdraw();
         $withdraw->user_id = $user->getId();
         $withdraw->status = UserWithdraw::STATUS_UNCHECKED;

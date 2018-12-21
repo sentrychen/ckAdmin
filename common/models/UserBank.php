@@ -23,6 +23,8 @@ use Yii;
  */
 class UserBank extends \yii\db\ActiveRecord
 {
+    const BANK_STATUS_ON = 1;
+    const BANK_STATUS_OFF = 0;
     /**
      * {@inheritdoc}
      */

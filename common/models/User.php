@@ -19,6 +19,12 @@ use yii\db\ActiveRecord;
  * @property int $id 自增用户id
  * @property string $username 用户名
  * @property string $nickname 昵称
+ * @property string $realname 真实姓名
+ * @property string $id_card 身份证号
+ * @property int $id_card_status 0：未实名，1：已实名
+ * @property string $mobile 手机号
+ * @property string $wechat 微信
+ * @property string $qq QQ号
  * @property string $api_token 接口令牌
  * @property string $auth_key cookie验证auth_key
  * @property string $password_hash 加密后密码
@@ -47,6 +53,8 @@ class User extends ActiveRecord
     const STATUS_FROZEN = 2;
     const STATUS_LOCKED = 3;
     const STATUS_DISABLED = 4;
+    const STATUS_IDCARD_ON = 1;
+    const STATUS_IDCARD_OFF = 0;
 
     public $password;
 
@@ -133,6 +141,12 @@ class User extends ActiveRecord
             'id' => '会员ID',
             'username' => '会员账号',
             'nickname' => '会员昵称',
+            'realname' => '真实姓名',
+            'id_card' => '身份证号',
+            'id_card_status' => '是否实名（0：未实名，1：已实名）',
+            'mobile' => '手机号',
+            'wechat' => '微信',
+            'qq' => 'QQ号',
             'api_token' => '接口令牌',
             'auth_key' => 'cookie验证auth_key',
             'password_hash' => '加密后密码',

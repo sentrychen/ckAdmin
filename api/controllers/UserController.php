@@ -7,6 +7,7 @@
  */
 namespace api\controllers;
 use api\components\RestHttpException;
+use api\models\User;
 use Yii;
 
 class UserController extends ActiveController
@@ -59,6 +60,35 @@ class UserController extends ActiveController
 
         if ($user->save()) {
             return $user->toArray();
+        }
+        $errorReasons = $user->getErrors();
+
+        if (empty($errorReasons)) {
+            throw new RestHttpException();
+        } else {
+            $err = '';
+            foreach ($errorReasons as $errorReason) {
+                $err .= $errorReason[0] . '<br>';
+            }
+            $err = rtrim($err, '<br>');
+            throw new RestHttpException($err, 400);
+        }
+    }
+
+    /*
+     * 会员实名认证
+     */
+    public function actionRealnameAuth(){
+        $user = Yii::$app->getUser()->getIdentity();
+        if($user->id_card_status == User::STATUS_IDCARD_ON){
+            return ['status'=>1,'info'=>'您已经实名认证过了，无需重复认证！'];
+        }
+        $request = Yii::$app->request;
+        $user->id_card_status = User::STATUS_IDCARD_ON;
+        $user->realname = $request->post('realname');
+        $user->id_card = $request->post('id_card');
+        if ($user->save(false)) {
+            return ['status'=>2,'info'=>'恭喜您，实名认证成功！'];
         }
         $errorReasons = $user->getErrors();
 
