@@ -63,7 +63,7 @@ class XimaPlanSearch extends XimaPlan
         }
 
         // grid filtering conditions
-        $query->$query->andFilterWhere(['like', 'name', $this->name]);
+        $query->andFilterWhere(['like', 'name', $this->name]);
         return $dataProvider;
     }
 }

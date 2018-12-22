@@ -56,11 +56,6 @@ use common\widgets\ActiveForm;
                         <?= $form->field($model, 'apply_ip')->textInput(['maxlength' => true]) ?>
                         <div class="hr-line-dashed"></div>
 
-                        <?= $form->field($model, 'updated_at')->textInput() ?>
-                        <div class="hr-line-dashed"></div>
-
-                        <?= $form->field($model, 'created_at')->textInput() ?>
-                        <div class="hr-line-dashed"></div>
 
                         <?= $form->defaultButtons() ?>
                     <?php ActiveForm::end(); ?>
