@@ -33,8 +33,10 @@ $this->params['breadcrumbs'][] = '会员存款审核';
                     'showFooter' => true,
                     'footerRowOptions' => ['style' => 'font-weight:bold;'],
                     'columns' => [
-
-                        ['attribute' => 'id','footer' => '合计'],
+                        [
+                            'attribute' => 'id',
+                            'width' => '120',
+                            'footer' => '合计'],
                         [
                             'attribute' => 'user.username',
                         ],
@@ -55,7 +57,12 @@ $this->params['breadcrumbs'][] = '会员存款审核';
                             },
                             'footer' => '<span class="label label-default">' . Util::formatMoney($totals['confirm_amount'], false) . '</span>'
                         ],
-
+                        /*
+                        [
+                            'attribute' =>'companybank.bank_account',
+                            'width' => '120',
+                        ],
+                        */
                         [
                             'attribute' => 'pay_channel',
                             'value' => function ($model) {
@@ -92,7 +99,7 @@ $this->params['breadcrumbs'][] = '会员存款审核';
                         ],
                         [
                             'class' => ActionColumn::class,
-                            'width' => '80',
+                            'width' => '100',
                             'buttons' => [
 
                                 'audit' => function ($url, $model, $key) {

@@ -120,6 +120,17 @@ class UserDeposit extends \yii\db\ActiveRecord
         return $status[$key] ?? $status;
     }
 
+    public static function getSaveBank($key = null)
+    {
+        $list = CompanyBank::find()->asArray()->all();
+        $bank = [];
+        foreach($list as $value){
+            $bank[$value['id']]= $value['bank_account'];
+        }
+
+        return $bank[$key] ?? $bank;
+    }
+
     public static function getPayChannels($key = null)
     {
         $channels = [
@@ -136,6 +147,11 @@ class UserDeposit extends \yii\db\ActiveRecord
     public function getUser()
     {
         return $this->hasOne(User::class, ['id' => 'user_id']);
+    }
+
+    public function getCompanybank()
+    {
+        return $this->hasOne(CompanyBank::class, ['id' => 'save_bank_id']);
     }
 
     public function afterSave($insert, $changedAttributes)
