@@ -22,7 +22,7 @@ use yii\behaviors\TimestampBehavior;
  * @property int $created_at 创建日期
  * @property int $updated_at 修改日期
  */
-class UserBank extends \yii\db\ActiveRecord
+class UserBank extends \common\models\UserBank
 {
     /**
      * {@inheritdoc}

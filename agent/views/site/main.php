@@ -211,7 +211,6 @@ EchartAsset::register($this);
                 {type: 'line'},
                 {type: 'bar', stack: 'game'},
                 {type: 'bar', stack: 'game'},
-                {type: 'bar', stack: 'game'}
             ]
         };
         wlChart.setOption(wlOption);

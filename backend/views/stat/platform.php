@@ -39,11 +39,11 @@ $this->params['breadcrumbs'][] = '平台日报';
                         ['attribute' => 'platform_id', 'value' => 'platform.name'],
                         [
                             'attribute' => 'dnu',
-                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['dnu'], false) . '</span>'
+                            'footer' => '<span class="label label-default">' . number_format($totals['dnu'], 0) . '</span>'
                         ],
                         [
                             'attribute' => 'dau',
-                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['dau'], false) . '</span>'
+                            'footer' => '<span class="label label-default">' . number_format($totals['dau'], 0) . '</span>'
                         ],
                         [
                             'attribute' => 'dua',
@@ -64,15 +64,11 @@ $this->params['breadcrumbs'][] = '平台日报';
 
                         [
                             'attribute' => 'dbu',
-                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['dbu'], false) . '</span>'
+                            'footer' => '<span class="label label-default">' .number_format($totals['dbu'], 0) . '</span>'
                         ],
                         [
                             'attribute' => 'dbo',
-                            'format' => 'raw',
-                            'value' => function($model){
-                                return Util::formatMoney($model->dbo,false);
-                            },
-                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['dbo'], false) . '</span>'
+                            'footer' => '<span class="label label-default">' . number_format($totals['dbo'], 0) . '</span>'
                         ],
                         [
                             'attribute' => 'dba',

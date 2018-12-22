@@ -33,15 +33,15 @@ $this->params['breadcrumbs'][] = '代理日报';
                         ['attribute' => 'agent_id', 'value' => 'agent.username', 'label' => '代理名称'],
                         [
                             'attribute' => 'dnu',
-                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['dnu'], false) . '</span>'
+                            'footer' => '<span class="label label-default">' . number_format($totals['dnu'], 0) . '</span>'
                         ],
                         [
                             'attribute' => 'dau',
-                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['dau'], false) . '</span>'
+                            'footer' => '<span class="label label-default">' . number_format($totals['dau'], 0) . '</span>'
                         ],
                         [
                             'attribute' => 'ndu',
-                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['ndu'], false) . '</span>'
+                            'footer' => '<span class="label label-default">' . number_format($totals['ndu'], 0) . '</span>'
                         ],
 
                         [
@@ -55,11 +55,11 @@ $this->params['breadcrumbs'][] = '代理日报';
 
                         [
                             'attribute' => 'dbu',
-                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['dbu'], false) . '</span>'
+                            'footer' => '<span class="label label-default">' . number_format($totals['dbu'], 0) . '</span>'
                         ],
                         [
                             'attribute' => 'dbo',
-                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['dbo'], false) . '</span>'
+                            'footer' => '<span class="label label-default">' . number_format($totals['dbo'], 0) . '</span>'
                         ],
                         [
                             'attribute' => 'dba',
@@ -72,7 +72,7 @@ $this->params['breadcrumbs'][] = '代理日报';
 
                         [
                             'attribute' => 'ddu',
-                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['ddu'], false) . '</span>'
+                            'footer' => '<span class="label label-default">' . number_format($totals['ddu'], 0) . '</span>'
                         ],
                         [
                             'attribute' => 'dda',
@@ -85,7 +85,7 @@ $this->params['breadcrumbs'][] = '代理日报';
 
                         [
                             'attribute' => 'dwu',
-                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['dwu'], false) . '</span>'
+                            'footer' => '<span class="label label-default">' . number_format($totals['dwu'], 0) . '</span>'
                         ],
                         [
                             'attribute' => 'dwa',
@@ -113,7 +113,7 @@ $this->params['breadcrumbs'][] = '代理日报';
                         ],
                         [
                             'attribute' => 'dna',
-                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['dna'], false) . '</span>'
+                            'footer' => '<span class="label label-default">' . number_format($totals['dna'], 0) . '</span>'
                         ],
                     ],
                 ]); ?>

@@ -8,6 +8,7 @@
 
 namespace backend\controllers;
 
+use api\models\UserBank;
 use backend\actions\CreateAction;
 use backend\actions\DeleteAction;
 use backend\actions\IndexAction;
@@ -30,6 +31,7 @@ use backend\models\UserAccountRecord;
 use function GuzzleHttp\Psr7\copy_to_string;
 use yii;
 use yii\web\Response;
+
 use yii\web\UnprocessableEntityHttpException;
 
 
@@ -103,7 +105,6 @@ class UserController extends Controller
         //$username = yii::$app->getRequest()->get('username','');
 
         $model = UserSearch::findOne(['username' => $username]);
-
         return $this->render('report', ['model' => $model]);
     }
 
@@ -283,5 +284,32 @@ class UserController extends Controller
 
     }
 
+    /*
+     * 重置会员密码
+     * @param int $user_id 会员id
+     * @return mix/array
+     */
+    public function actionResetPwd($user_id=0)
+    {
+        $request = Yii::$app->request;
+        $user_id = $user_id==0?$request->post('user_id'):$user_id;
+        $post = $request->post();
+        $user = User::findOne($user_id);
+
+        if ($request->isPost) {
+            $password = $post['User']['new_password'];
+            $user->password_hash = Yii::$app->security->generatePasswordHash($password);
+
+            if ($user->save()) {
+                yii::$app->getSession()->setFlash('success', yii::t('app', 'Success'));
+                return $this->redirect(['index']);
+            }
+        }
+
+        return $this->render('reset-pwd', [
+            'model' => $user,
+        ]);
+
+    }
 
 }

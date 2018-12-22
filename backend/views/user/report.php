@@ -51,7 +51,10 @@ $this->params['breadcrumbs'][] = '会员报表';
                             'label' => '登陆日志',
                             'url' => ['user/log-list', 'id' => $model->id],
                         ],
-
+                        [
+                            'label' => '重置密码',
+                            'url' => ['user/reset-pwd', 'user_id' => $model->id],
+                        ],
                     ],
                 ]);
                 ?>

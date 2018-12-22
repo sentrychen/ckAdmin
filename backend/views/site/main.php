@@ -340,7 +340,6 @@ EchartAsset::register($this);
         series: [
             {type: 'line'},
             {type: 'line'},
-            {type: 'line'}
         ]
     };
     let wlOption = {
@@ -370,7 +369,7 @@ EchartAsset::register($this);
             {type: 'line'},
             {type: 'bar',stack:'game'},
             {type: 'bar',stack:'game'},
-            {type: 'bar',stack:'game'}
+
         ]
     };
     userChart.setOption(userOption);

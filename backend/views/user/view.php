@@ -12,6 +12,8 @@ use yii\data\ArrayDataProvider;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\DetailView;
+use backend\models\UserBank;
+use common\helpers\Util;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\User */
@@ -69,6 +71,35 @@ use yii\widgets\DetailView;
         'id',
         'username',
         'nickname',
+        'realname',
+        'id_card',
+        'mobile',
+        'wechat',
+        'qq',
+        [
+            'label' => '银行卡号',
+            'format' => 'raw',
+            'value' => function($model){
+                $data = UserBank::getUserBank($model->id);
+                $str = '';
+                foreach ($data as $key => $val){
+                    $str .= '<p>(';
+                    $str .= $key+1;
+                    $str .= ')</span>&nbsp;&nbsp;'.'<span>银行卡号：'.$val['bank_account'].'</span>&nbsp;&nbsp;'
+                            .'<span>银行名称：'.$val['bank_name'].'</span>&nbsp;&nbsp;<span>开户地址：'.$val['province'].$val['city'].'</span>&nbsp;&nbsp;'
+                            .' <span>开户支行：'.$val['branch_name'].'</span>';
+                    $str .= '</p>';
+                }
+                return $str;
+            },
+        ],
+        [
+            'label' => '存款-取款的差额(¥)',
+            'format' => 'raw',
+            'value' => function ($model) {
+                return Util::formatMoney($model->userStat->deposit_amount-$model->userStat->withdrawal_amount, false);
+            },
+        ],
         [
             'label'=>'所属代理',
             'attribute'=>'inviteAgent.username'

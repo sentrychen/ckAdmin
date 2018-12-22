@@ -17,6 +17,10 @@ use yii\db\ActiveRecord;
  * @property string $auth_key 管理员cookie验证auth_key
  * @property string $password_reset_token 管理员找回密码token
  * @property string $realname 真实姓名
+ * @property string $id_card 身份证号
+ * @property int $id_card_status 是否实名（0：未实名，1：已实名）
+ * @property string $wechat 微信
+ * @property string $qq QQ号
  * @property string $email 邮箱
  * @property string $mobile 手机号码
  * @property string $avatar 头像
@@ -50,6 +54,8 @@ class Agent extends ActiveRecord
     const STATUS_FROZEN = 2;
     const STATUS_LOCKED = 3;
     const STATUS_DISABLED = 4;
+    const STATUS_IDCARD_ON = 1;
+    const STATUS_IDCARD_OFF = 0;
 
     public $password;
 
@@ -116,8 +122,12 @@ class Agent extends ActiveRecord
             'auth_key' => '管理员cookie验证auth_key',
             'password_reset_token' => '管理员找回密码token',
             'realname' => '真实姓名',
+            'id_card' => '身份证号',
+            'id_card_status' => '是否实名（0：未实名，1：已实名）',
             'email' => '邮箱',
             'mobile' => '手机号码',
+            'wechat' => '微信',
+            'qq' => 'QQ号',
             'avatar' => '头像',
             'promo_code' => '推广码',
             'sub_permission' => '下级代理权限',
