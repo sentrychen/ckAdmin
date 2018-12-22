@@ -58,6 +58,8 @@ class User extends ActiveRecord
 
     public $password;
 
+    public $new_password;
+
     public $repassword;
 
     public $old_password;
@@ -145,7 +147,7 @@ class User extends ActiveRecord
             'id_card' => '身份证号',
             'id_card_status' => '是否实名（0：未实名，1：已实名）',
             'mobile' => '手机号',
-            'wechat' => '微信',
+            'wechat' => '微信号',
             'qq' => 'QQ号',
             'api_token' => '接口令牌',
             'auth_key' => 'cookie验证auth_key',
@@ -169,6 +171,7 @@ class User extends ActiveRecord
             'created_at' => '注册日期',
             'updated_at' => '最后修改时间',
             'password' => '密码',
+            'new_password' => '新密码',
             'repassword' => '确认密码',
             'old_password' => '旧密码'
         ];

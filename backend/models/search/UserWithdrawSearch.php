@@ -82,7 +82,7 @@ class UserWithdrawSearch extends UserWithdraw
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'user_id' => $this->user_id,
+            UserWithdraw::tableName() . '.user_id' => $this->user_id,
             UserWithdraw::tableName() . '.status' => $this->status,
         ]);
 
