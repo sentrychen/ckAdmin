@@ -44,7 +44,7 @@ $this->params['breadcrumbs'][] = '会员列表';
                                     'data-target' => '#create-modal',
                                     'data-confirm' => null,
                                    // 'onclick' => "if ($('#userGrid').yiiGridView('getSelectedRows').length()) {}",
-                                    'class' => 'btn btn-success',
+                                    'class' => 'btn btn-success btn-sm',
                                 ]);
                             },
                         ]

@@ -29,9 +29,12 @@ class PlatformXima extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['platform_id', 'xima_level_id', 'xima_rate'], 'required'],
+            [['platform_id', 'xima_level_id', 'xima_rate', 'xima_type'], 'required'],
             [['platform_id', 'xima_level_id', 'xima_type'], 'integer'],
             [['xima_rate'], 'number'],
+            [['xima_rate'], 'filter', 'filter' => function ($value) {
+                return $value / 100;
+            }],
         ];
     }
 
@@ -45,7 +48,7 @@ class PlatformXima extends \yii\db\ActiveRecord
             'platform_id' => '游戏平台ID',
             'xima_level_id' => '返佣级别ID',
             'xima_rate' => '洗码率',
-            'xima_type' => '洗码类型 1单边 2 双边',
+            'xima_type' => '洗码类型',
         ];
     }
 }

@@ -15,6 +15,7 @@ use yii\behaviors\TimestampBehavior;
  * @property int $type 方案类别 1 用户 2代理
  * @property int $agent_id 方案创建者ID，0为系统
  * @property int $is_default 是否为默认方案
+ * @property string $remark 备注
  * @property int $created_at 创建日期
  * @property int $updated_at 更新日期
  */
@@ -49,9 +50,10 @@ class XimaPlan extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name'], 'required'],
+            [['name', 'status', 'is_default'], 'required'],
             [['status', 'type', 'agent_id', 'is_default', 'created_at', 'updated_at'], 'integer'],
             [['name'], 'string', 'max' => 64],
+            [['remark'], 'string', 'max' => 255],
         ];
     }
 
@@ -67,6 +69,7 @@ class XimaPlan extends \yii\db\ActiveRecord
             'type' => '方案类别',
             'agent_id' => '方案创建者ID，0为系统',
             'is_default' => '是否为默认方案',
+            'remark' => '备注',
             'created_at' => '创建日期',
             'updated_at' => '更新日期',
         ];
@@ -83,6 +86,6 @@ class XimaPlan extends \yii\db\ActiveRecord
 
     public function getLevels()
     {
-        return $this->hasMany(XimaLevel::class, ['plan_id' => 'id'])->orderBy(['level' => SORT_ASC]);
+        return $this->hasMany(XimaLevel::class, ['plan_id' => 'id'])->orderBy(['bet_amount' => SORT_ASC]);
     }
 }
