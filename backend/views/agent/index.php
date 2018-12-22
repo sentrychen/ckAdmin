@@ -61,6 +61,18 @@ $this->params['breadcrumbs'][] = '代理列表';
                             }
                         ],
                         [
+                            'attribute' => 'member',
+                            'format' =>'raw',
+                            'value' => function($model){
+                                return Html::a(Agent::getMemberCount($model->id), Url::to(['/user/index?UserSearch[invite_agent_id]='.$model->id]), [
+                                    'title' => '会员数量',
+                                    'data-pjax' => '0',
+                                    'class' => 'btn btn-info btn-sm openContab',
+                                ]);
+                            },
+
+                        ],
+                        [
                             'attribute' => 'realname',
                         ],
                         [
@@ -73,11 +85,7 @@ $this->params['breadcrumbs'][] = '代理列表';
                                 return isset($status[$model->status]) ? $status[$model->status] : "异常";
                             },
                         ],
-                        [
-                            'class' => DateColumn::class,
-                            'attribute' => 'created_at',
 
-                        ],
                         [
                             'attribute' => 'rebate_rate',
                             'format' =>['percent',2],
@@ -103,10 +111,16 @@ $this->params['breadcrumbs'][] = '代理列表';
                             'footer' => '<span class="label label-default">' . Util::formatMoney($totals['account_available_amount'], false) . '</span>'
                         ],
                         [
+                            'class' => DateColumn::class,
+                            'attribute' => 'created_at',
+
+                        ],
+                        [
                             'class' => ActionColumn::class,
                             'width' => '80',
                             'template' => '{view-layer} {update}',
                         ],
+
                     ]
                 ]); ?>
             </div>

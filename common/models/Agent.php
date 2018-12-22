@@ -67,6 +67,8 @@ class Agent extends ActiveRecord
 
     public $permissions;
 
+    public $member;
+
     /**
      * {@inheritdoc}
      */
@@ -153,7 +155,8 @@ class Agent extends ActiveRecord
             'updated_at' => '修改日期',
             'password' => '密码',
             'repassword' => '确认密码',
-            'old_password' => '旧密码'
+            'old_password' => '旧密码',
+            'member' => '会员数',
 
         ];
     }
@@ -414,6 +417,17 @@ class Agent extends ActiveRecord
     public function getAccount()
     {
         return $this->hasOne(AgentAccount::class, ['agent_id' => 'id']);
+    }
+
+    /*
+     * 获取代理下面会员的数量
+     * @param $agent_id int 代理id
+     * @return int
+     */
+    public static function getMemberCount($agent_id)
+    {
+        $num = User::find()->where(['invite_agent_id'=>$agent_id,'status'=>1])->count();
+        return $num;
     }
     
     
