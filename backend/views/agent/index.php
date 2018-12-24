@@ -61,7 +61,7 @@ $this->params['breadcrumbs'][] = '代理列表';
                             }
                         ],
                         [
-                            'attribute' => 'member_num',
+                            'attribute' => 'member',
                             'format' =>'raw',
                             'value' => function($model){
                                 return Html::a(Agent::getMemberCount($model->id), Url::to(['/user/index?UserSearch[invite_agent_id]='.$model->id]), [
