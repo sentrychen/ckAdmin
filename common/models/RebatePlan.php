@@ -3,6 +3,7 @@
 namespace common\models;
 
 use Yii;
+use yii\behaviors\TimestampBehavior;
 
 /**
  * This is the model class for table "{{%rebate_plan}}".
@@ -34,6 +35,14 @@ class RebatePlan extends \yii\db\ActiveRecord
             [['name'], 'required'],
             [['agent_id', 'status', 'is_default', 'created_at', 'updated_at'], 'integer'],
             [['name'], 'string', 'max' => 64],
+            [['remark'], 'string', 'max' => 255],
+        ];
+    }
+
+    public function behaviors()
+    {
+        return [
+            TimestampBehavior::class,
         ];
     }
 
@@ -46,11 +55,26 @@ class RebatePlan extends \yii\db\ActiveRecord
             'id' => '返佣方案ID',
             'name' => '方案名称',
             'agent_id' => '创建代理ID 0 为系统默认',
-            'status' => '启用状态 0禁用 1启用',
+            'status' => '启用状态',
+            'remark' => '备注',
             'is_default' => '是否为默认方案',
             'created_at' => '创建日期',
             'updated_at' => '更新日期',
         ];
+    }
+
+    /**
+     * @return Agent|\yii\db\ActiveQuery|null
+     */
+    public function getAgent()
+    {
+        return $this->hasOne(Agent::class, ['id' => 'agent_id']);
+    }
+
+
+    public function getLevels()
+    {
+        return $this->hasMany(RebateLevel::class, ['plan_id' => 'id'])->orderBy(['profit_amount' => SORT_ASC]);
     }
 
 

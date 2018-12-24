@@ -31,6 +31,9 @@ class PlatformRebate extends \yii\db\ActiveRecord
             [['platform_id', 'rebate_level_id', 'rebate_rate'], 'required'],
             [['platform_id', 'rebate_level_id'], 'integer'],
             [['rebate_rate'], 'number'],
+            [['rebate_rate'], 'filter', 'filter' => function ($value) {
+                return $value / 100;
+            }],
         ];
     }
 

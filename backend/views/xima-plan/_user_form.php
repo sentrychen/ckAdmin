@@ -48,6 +48,7 @@ use yii\helpers\Html;
                             echo "<td>{$platform->name}</td>\n";
                         }
 
+                        echo "</tr>\n";
                         if (empty($model->levels)) {
                             $level = new XimaLevel();
                         } else {
@@ -58,18 +59,19 @@ use yii\helpers\Html;
                         echo "<tr class='tr-level'>\n";
 
                         echo "<td align='left'>\n";
-                        echo $form->field($level, 'bet_amount', ['template' => "{input}\n{error}"])->label('')->textInput();
+                        echo $form->field($level, 'bet_amount', ['template' => "{input}\n{error}"])->label('')->textInput(['value' => $level->bet_amount ? number_format($level->bet_amount, 2, '.', '') : '']);
 
                         echo "</td>\n";
                         echo "<td>\n";
 
-                        echo $form->field($level, 'xima_limit', ['template' => "{input}\n{error}"])->label('')->textInput();
+                        echo $form->field($level, 'xima_limit', ['template' => "{input}\n{error}"])->label('')->textInput(['value' => $level->xima_limit ? number_format($level->xima_limit, 2, '.', '') : '']);
                         echo "</td>\n";
                         foreach ($platforms as $platform) {
                             $rateModel = $level->getRate($platform->id);
-
+                            if (!$rateModel->id) {
+                                $rateModel->loadDefaultValues();
+                            }
                             echo "<td>\n";
-
                             echo $form->field($rateModel, '[' . $platform->id . ']xima_type', ['template' => "{input}\n{error}"])->label('')->radioList(Constants::getXiMaTypes());
                             echo $form->field($rateModel, '[' . $platform->id . ']xima_rate', ['template' => "{input}\n{error}"])->label('')->textInput(['afterAddon' => '%', 'value' => $rateModel->xima_rate * 100]);
 

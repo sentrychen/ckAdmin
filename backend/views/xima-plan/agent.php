@@ -1,18 +1,18 @@
 <?php
 
-use backend\models\CompanyBank;
 use common\grid\ActionColumn;
-use common\grid\CheckboxColumn;
 use common\grid\GridView;
 use common\libs\Constants;
 use common\widgets\Bar;
+use yii\helpers\Html;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\search\CompanyBankSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = '用户返佣方案';
-$this->params['breadcrumbs'][] = '用户返佣方案';
+$this->title = '代理洗码方案';
+$this->params['breadcrumbs'][] = '代理洗码方案';
 ?>
 <div class="row">
     <div class="col-sm-12">
@@ -22,19 +22,29 @@ $this->params['breadcrumbs'][] = '用户返佣方案';
                 <div class="toolbar clearfix">
                     <?= Bar::widget([
                         'template' => '{refresh} {create} ',
-                    ]) ?>
-                    <?= $this->render('_search', ['model' => $searchModel]); ?>
+                        'buttons' => [
+                            'create' => function () {
+                                return Html::a('<i class="fa fa-plus"></i> 新增', Url::to(['agent-create']), [
+                                    'title' => '新增代理洗码方案',
+                                    'data-pjax' => '0',
+                                    'class' => 'btn btn-primary btn-sm',
+                                ]);
+                            },
+                        ],
+                    ])
+                    ?>
+                    <?= $this->render('_agent_search', ['model' => $searchModel]); ?>
                 </div>
                 <?= GridView::widget([
                     'dataProvider' => $dataProvider,
                     'filterModel' => null,
                     'columns' => [
                         'name',
-                        'agent.username',
                         [
                             'attribute' => 'is_default',
+                            'format' => 'raw',
                             'value' => function ($model) {
-                                return $model->is_default ? '<span class="fa fa-check"></span>' : '';
+                                return $model->is_default ? '<span class="fa fa-check text-success"></span>' : '';
                             }
                         ],
                         [
@@ -43,12 +53,37 @@ $this->params['breadcrumbs'][] = '用户返佣方案';
                                 return Constants::getStatusItems($model->status);
                             }
                         ],
+                        'created_at:date',
                         [
                             'class' => ActionColumn::class,
-                            'template' => '{view-layer} {update}',
+                            'template' => '{view} {update} {delete}',
+                            'buttons' => [
+                                'view' => function ($url, $model, $key) {
+                                    return Html::a('<i class="fa fa-folder"></i> ' . Yii::t('yii', 'View'), Url::to(['agent-view', 'id' => $model->id]), [
+                                        'title' => Yii::t('app', 'View'),
+                                        'data-pjax' => '0',
+                                        'class' => 'btn btn-info btn-sm',
+                                    ]);
+                                },
+                                'update' => function ($url, $model, $key) {
+                                    return Html::a('<i class="fa fa-pencil"></i> 编辑', Url::to(['agent-update', 'id' => $model->id]), [
+                                        'title' => '编辑洗码方案',
+                                        'data-pjax' => '0',
+                                        'class' => 'btn btn-primary btn-sm',
+                                    ]);
+                                },
+                                'delete' => function ($url, $model, $key) {
+                                    return Html::a('<i class="glyphicon glyphicon-trash" aria-hidden="true"></i> ' . Yii::t('app', 'Delete'), Url::to(['agent-delete', 'id' => $model->id]), [
+                                        'title' => Yii::t('app', 'Delete'),
+                                        'data-confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
+                                        'data-method' => 'post',
+                                        'data-pjax' => '0',
+                                        'class' => 'btn btn-danger btn-sm',
+                                    ]);
+                                },
+                            ],
                         ],
                     ],
-
                 ]); ?>
             </div>
         </div>

@@ -39,7 +39,7 @@ class XimaPlanSearch extends XimaPlan
      * @param int $type 1 用户 2 代理
      * @return ActiveDataProvider
      */
-    public function search($params, $type = 1)
+    public function search($params, $type)
     {
         $query = XimaPlan::find()->where(['type' => $type]);
 

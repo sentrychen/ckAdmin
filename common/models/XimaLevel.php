@@ -51,16 +51,15 @@ class XimaLevel extends \yii\db\ActiveRecord
 
     public function getRates()
     {
-        return $this->hasMany(PlatformXima::class, ['xima_level_id' => 'id']);
+        return $this->hasMany(PlatformXima::class, ['xima_level_id' => 'id'])->orderBy(['platform_id' => SORT_ASC]);
     }
 
     public function getRate($platform_id)
     {
-
-        if (!empty($this->rates)) {
-            foreach ($this->rates as $rate) {
-                if ($rate->platform_id = $platform_id) return $rate;
-            }
+        if ($this->id) {
+            $rate = PlatformXima::findOne(['platform_id' => $platform_id, 'xima_level_id' => $this->id]);
+            if ($rate) return $rate;
+            return new PlatformXima(['platform_id' => $platform_id, 'xima_level_id' => $this->id]);
         }
 
         return new PlatformXima(['platform_id' => $platform_id]);

@@ -63,7 +63,7 @@ class RebatePlanSearch extends RebatePlan
         }
 
         // grid filtering conditions
-        $query->$query->andFilterWhere(['like', 'name', $this->name]);
+        $query->andFilterWhere(['like', 'name', $this->name]);
         return $dataProvider;
     }
 }

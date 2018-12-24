@@ -11,8 +11,8 @@ use yii\helpers\Url;
 /* @var $searchModel backend\models\search\CompanyBankSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = '用户返佣方案';
-$this->params['breadcrumbs'][] = '用户返佣方案';
+$this->title = '用户洗码方案';
+$this->params['breadcrumbs'][] = '用户洗码方案';
 ?>
 <div class="row">
     <div class="col-sm-12">
@@ -25,7 +25,7 @@ $this->params['breadcrumbs'][] = '用户返佣方案';
                         'buttons' => [
                             'create' => function () {
                                 return Html::a('<i class="fa fa-plus"></i> 新增', Url::to(['user-create']), [
-                                    'title' => '新增用户返佣方案',
+                                    'title' => '新增用户洗码方案',
                                     'data-pjax' => '0',
                                     'class' => 'btn btn-primary btn-sm',
                                 ]);

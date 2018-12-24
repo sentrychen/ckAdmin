@@ -48,4 +48,21 @@ class RebateLevel extends \yii\db\ActiveRecord
             'rebate_limit' => '返佣上限',
         ];
     }
+
+    public function getRates()
+    {
+        return $this->hasMany(PlatformRebate::class, ['rebate_level_id' => 'id'])->orderBy(['platform_id' => SORT_ASC]);
+    }
+
+    public function getRate($platform_id)
+    {
+        if ($this->id) {
+            $rate = PlatformRebate::findOne(['platform_id' => $platform_id, 'rebate_level_id' => $this->id]);
+            if ($rate) return $rate;
+            return new PlatformRebate(['platform_id' => $platform_id, 'rebate_level_id' => $this->id]);
+        }
+
+        return new PlatformRebate(['platform_id' => $platform_id]);
+    }
+
 }

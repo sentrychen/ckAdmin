@@ -6,10 +6,10 @@ use yii\helpers\Url;
 /* @var $model backend\models\CompanyBank */
 
 $this->params['breadcrumbs'] = [
-    ['label' => '代理返佣方案', 'url' => Url::to(['index'])],
-    ['label' => '编辑返佣方案'],
+    ['label' => '代理洗码方案', 'url' => Url::to(['agent'])],
+    ['label' => '编辑洗码方案'],
 ];
 ?>
-<?= $this->render('_form', [
+<?= $this->render('_agent_form', [
     'model' => $model,
 ]) ?>
