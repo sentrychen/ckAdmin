@@ -6,5 +6,4 @@ use Yii;
 
 class PlatformRebate extends \common\models\PlatformRebate
 {
-
 }

@@ -174,15 +174,16 @@ EchartAsset::register($this);
                                     return '<span class="label label-warning">' . yii::$app->formatter->asCurrency($model->account->available_amount) . '</span>';
                                 }],
                             ['label' => '会员推广链接',
-                                'format' => 'url',
+                                'format' => 'raw',
                                 'value' => function ($model) {
-                                    return yii::$app->option->agent_user_reg_url . '?code=' . $model->promo_code;
+                                    return Html::a(yii::$app->option->agent_user_reg_url . '?code=' . $model->promo_code, yii::$app->option->agent_user_reg_url . '?code=' . $model->promo_code, ['target' => '_blank']);
                                 }],
                             ['label' => '代理推广链接',
-                                'format' => 'url',
+                                'format' => 'raw',
                                 'value' => function ($model) {
-                                    return yii::$app->option->agent_reg_url . '?code=' . $model->promo_code;
-                                }],
+                                    return Html::a(yii::$app->option->agent_reg_url . '?code=' . $model->promo_code, yii::$app->option->agent_reg_url . '?code=' . $model->promo_code, ['target' => '_blank']);
+                                },
+                            ],
                             ['label' => '代理推广二维码',
                                 'format' => 'raw',
                                 'value' => '<img src=' . Url::to(['site/code']) . ' />',]],]) ?>

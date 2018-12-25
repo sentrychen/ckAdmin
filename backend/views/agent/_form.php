@@ -52,9 +52,9 @@ $this->title = '代理管理';
             <?php
             if (yii::$app->controller->action->id == 'update') {
                 ?>
-                <?= $form->field($model, 'rebate_plan_id')->dropDownList(RebatePlan::getPlanItems($model->id)) ?>
+                <?= $form->field($model, 'rebate_plan_id')->dropDownList(RebatePlan::getPlanItems($model->parent_id ? $model->parent_id : 0)) ?>
                 <div class="hr-line-dashed"></div>
-                <?= $form->field($model, 'xima_plan_id')->dropDownList(XimaPlan::getPlanItems($model->id, XimaPlan::TYPE_AGENT)) ?>
+                <?= $form->field($model, 'xima_plan_id')->dropDownList(XimaPlan::getPlanItems($model->parent_id ? $model->parent_id : 0, XimaPlan::TYPE_AGENT)) ?>
                 <div class="hr-line-dashed"></div>
                 <?php
             }

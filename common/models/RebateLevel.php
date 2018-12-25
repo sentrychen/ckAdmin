@@ -32,6 +32,7 @@ class RebateLevel extends \yii\db\ActiveRecord
             [['plan_id'], 'required'],
             [['plan_id', 'bet_user_num'], 'integer'],
             [['profit_amount', 'rebate_limit'], 'number'],
+            ['profit_amount', 'unique', 'targetAttribute' => ['bet_user_num', 'bet_user_num', 'plan_id'], 'message' => '层级条件不能相同'],
         ];
     }
 
@@ -47,6 +48,14 @@ class RebateLevel extends \yii\db\ActiveRecord
             'bet_user_num' => '投注用户数',
             'rebate_limit' => '返佣上限',
         ];
+    }
+
+    /**
+     * @return RebatePlan|\yii\db\ActiveQuery
+     */
+    public function getPlan()
+    {
+        return $this->hasOne(RebatePlan::class, ['id' => 'plan_id']);
     }
 
     public function getRates()

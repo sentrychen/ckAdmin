@@ -32,6 +32,7 @@ class XimaLevel extends \yii\db\ActiveRecord
             [['plan_id'], 'required'],
             [['plan_id', 'bet_user_num'], 'integer'],
             [['bet_amount', 'xima_limit'], 'number', 'min' => 0],
+            ['bet_amount', 'unique', 'targetAttribute' => ['bet_amount', 'plan_id'], 'message' => '层级条件不能相同']
         ];
     }
 
@@ -47,6 +48,14 @@ class XimaLevel extends \yii\db\ActiveRecord
             'bet_user_num' => '投注用户数',
             'xima_limit' => '返佣上限',
         ];
+    }
+
+    /**
+     * @return XimaPlan|\yii\db\ActiveQuery
+     */
+    public function getPlan()
+    {
+        return $this->hasOne(XimaPlan::class, ['id' => 'plan_id']);
     }
 
     public function getRates()
