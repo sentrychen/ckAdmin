@@ -42,6 +42,7 @@ class UserDeposit extends \yii\db\ActiveRecord
     const CHANNEL_BANK = 1;
     const CHANNEL_ALIPAY = 2;
     const CHANNEL_WEIXIN = 3;
+    const CHANNEL_ONLINE_PAYMENT = 4;
 
     /**
      * {@inheritdoc}
@@ -137,6 +138,7 @@ class UserDeposit extends \yii\db\ActiveRecord
             self::CHANNEL_BANK => '银行',
             self::CHANNEL_ALIPAY => '支付宝',
             self::CHANNEL_WEIXIN => '微信支付',
+            self::CHANNEL_ONLINE_PAYMENT => '线上存款',
         ];
         return $channels[$key] ?? $channels;
     }

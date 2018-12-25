@@ -7,7 +7,7 @@ use yii\widgets\DetailView;
 /* @var $model backend\models\CompanyBank */
 
 $this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => '二维码管理', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => '第三方支付列表', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="company-bank-view">
@@ -19,23 +19,12 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'id',
             'name',
-            //'url',
-            [
-                'attribute' => 'icon',
-                'label'=>'图标',
-                'format'=>'raw',
-                'value' => function($model){
-                    if($model->icon)
-                        return "<img style='max-width:120px;max-height:120px' src='" . $model->icon . "' >";
-                }
-            ],
+            'code',
             'deposit_min',
             'deposit_max',
             'withdraw_min',
             'withdraw_max',
-            //'url_code',
             'sort',
-            'code_type',
             'status',
             [
                 'attribute' => 'created_at',
