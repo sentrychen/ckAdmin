@@ -1,6 +1,6 @@
 <?php
 
-use backend\models\TwoBarCode;
+use backend\models\ThirdPayment;
 use common\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
@@ -22,10 +22,7 @@ use common\widgets\ActiveForm;
                         <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
                         <div class="hr-line-dashed"></div>
 
-                        <?= $form->field($model, 'url')->textInput(['maxlength' => true]) ?>
-                        <div class="hr-line-dashed"></div>
-
-                        <?= $form->field($model, 'icon')->widget('manks\FileInput', []); ?>
+                        <?= $form->field($model, 'code')->textInput(['maxlength' => true]) ?>
                         <div class="hr-line-dashed"></div>
 
                         <?= $form->field($model, 'deposit_min')->textInput(['deposit_min' => true]) ?>
@@ -43,10 +40,7 @@ use common\widgets\ActiveForm;
                         <?= $form->field($model, 'sort')->textInput(['maxlength' => true]) ?>
                         <div class="hr-line-dashed"></div>
 
-                        <?= $form->field($model, 'code_type')->radioList(TwoBarCode::getCodeType()) ?>
-                        <div class="hr-line-dashed"></div>
-
-                        <?= $form->field($model, 'status')->radioList(TwoBarCode::getStatuses()) ?>
+                        <?= $form->field($model, 'status')->radioList(ThirdPayment::getStatuses()) ?>
                         <div class="hr-line-dashed"></div>
 
                         <?= $form->defaultButtons() ?>

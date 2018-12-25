@@ -54,4 +54,20 @@ class BankController extends \yii\web\Controller
             ],
         ];
     }
+
+    /*
+  * 删除银行卡
+  * @param int $id 表ID
+  * @return bool
+  */
+    public function actionDeleteBank($id=0)
+    {
+        $bank = AgentBank::findOne($id);
+        $bank->status = AgentBank::STATUS_DELETE;
+        if($bank->save()){
+            yii::$app->getSession()->setFlash('success', yii::t('app', '删除成功'));
+            return $this->redirect(['index']);
+        }
+
+    }
 }

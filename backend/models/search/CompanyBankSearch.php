@@ -43,7 +43,7 @@ class CompanyBankSearch extends CompanyBank
      */
     public function search($params)
     {
-        $query = CompanyBank::find()->where(['<>','status',2]);
+        $query = CompanyBank::find()->where(['<>','status',CompanyBank::STATUS_DELETE]);
 
         // add conditions that should always apply here
 

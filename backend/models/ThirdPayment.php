@@ -1,4 +1,10 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: Administrator
+ * Date: 2018/12/25
+ * Time: 11:19
+ */
 
 namespace backend\models;
 
@@ -7,17 +13,15 @@ use yii\data\ActiveDataProvider;
  * This is the model class for table "{{%two_bar_code}}".
  *
  */
-class TwoBarCode extends \common\models\TwoBarCode
+class ThirdPayment extends \common\models\ThirdPayment
 {
-
+    /**
+     * @inheritdoc
+     */
     public function rules()
     {
         return [
-
-            [['url_code'], 'string'],
-            [['deposit_min', 'deposit_max', 'withdraw_min', 'withdraw_max', 'sort'], 'number'],
-            [['status', 'code_type','created_at', 'updated_at'], 'integer'],
-            [['name', 'url', 'icon'], 'string', 'max' => 255],
+            [['name','code','deposit_min', 'deposit_max', 'withdraw_min', 'withdraw_max', 'sort','created_at','updated_at'], 'safe'],
         ];
     }
     /**
@@ -29,7 +33,7 @@ class TwoBarCode extends \common\models\TwoBarCode
      */
     public function search($params)
     {
-        $query = TwoBarCode::find()->where(['<>','status',TwoBarCode::STATUS_DELETE]);
+        $query = self::find()->where(['<>','status',TwoBarCode::STATUS_DELETE]);
 
         // add conditions that should always apply here
 
@@ -49,16 +53,13 @@ class TwoBarCode extends \common\models\TwoBarCode
         $query->andFilterWhere([
             'id' => $this->id,
             'name' => $this->name,
-            'url' => $this->url,
-            'icon' => $this->icon,
-            'url_code' => $this->url_code,
+            'code' => $this->code,
             'deposit_min' => $this->deposit_min,
             'deposit_max' => $this->deposit_max,
             'withdraw_min' => $this->withdraw_min,
             'withdraw_max' => $this->withdraw_max,
             'sort' => $this->sort,
             'status' => $this->status,
-            'code_type' => $this->code_type,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ]);

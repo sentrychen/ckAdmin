@@ -42,7 +42,7 @@ class AgentBankSearch extends AgentBank
      */
     public function search($params)
     {
-        $query = AgentBank::find();
+        $query = AgentBank::find()->where(['<>','status',self::STATUS_DELETE]);
 
         // add conditions that should always apply here
 
