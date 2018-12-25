@@ -28,7 +28,7 @@ class AgentController extends Controller
                 'data' => $this->_getGridViewData(AgentSearch::class, ['account.xima_amount', 'account.available_amount'])
             ],
 
-            'view-layer' => [
+            'view' => [
                 'class' => ViewAction::class,
                 'modelClass' => Agent::class,
             ],

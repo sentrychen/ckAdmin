@@ -46,9 +46,11 @@ $this->title = 'AdminUser';
             <div class="hr-line-dashed"></div>
             <?= $form->field($model, 'status')->radioList(User::getStatuses()) ?>
             <div class="hr-line-dashed"></div>
-            <?= $form->field($model, 'xima_plan_id')->dropDownList(XimaPlan::getPlanItems(XimaPlan::TYPE_USER)) ?>
+            <?= $form->field($model, 'xima_plan_id')->dropDownList(XimaPlan::getPlanItems(yii::$app->getUser()->getId(), XimaPlan::TYPE_USER)) ?>
             <div class="hr-line-dashed"></div>
             <?php
+
+
             /*
 
             <?= $form->field($model, 'min_limit') ?>

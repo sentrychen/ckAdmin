@@ -7,5 +7,4 @@ use Yii;
 class XimaPlan extends \common\models\XimaPlan
 {
 
-
 }

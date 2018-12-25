@@ -4,6 +4,7 @@ namespace common\models;
 
 use Yii;
 use yii\behaviors\TimestampBehavior;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "{{%rebate_plan}}".
@@ -77,5 +78,15 @@ class RebatePlan extends \yii\db\ActiveRecord
         return $this->hasMany(RebateLevel::class, ['plan_id' => 'id'])->orderBy(['profit_amount' => SORT_ASC]);
     }
 
+    public static function getDefaultPlan($agent_id = 0)
+    {
+        return static::findOne(['agent_id' => $agent_id, 'is_default' => Constants::YesNo_Yes]);
+    }
+
+    public static function getPlanItems($agent_id = 0)
+    {
+        $plans = self::find()->where(['agent_id' => $agent_id])->asArray()->all();
+        return ArrayHelper::map($plans, 'id', 'name');
+    }
 
 }

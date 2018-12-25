@@ -40,7 +40,7 @@ class AgentController extends Controller
                 ]) ,
             ],
 
-            'view-layer' => [
+            'view' => [
                 'class' => ViewAction::class,
                 'modelClass' => Agent::class,
             ],

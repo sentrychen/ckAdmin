@@ -12,6 +12,7 @@
  */
 
 use backend\models\Agent;
+use backend\models\XimaPlan;
 use common\widgets\ActiveForm;
 use common\libs\Constants;
 use backend\models\User;
@@ -46,6 +47,13 @@ $this->title = '会员';
             <?= $form->field($model, 'status')->radioList(User::getStatuses()) ?>
             <div class="hr-line-dashed"></div>
             <?php
+
+            if (yii::$app->controller->action->id == 'update' && $model->invite_agent_id) {
+                ?>
+                <?= $form->field($model, 'xima_plan_id')->dropDownList(XimaPlan::getPlanItems($model->invite_agent_id, XimaPlan::TYPE_USER)) ?>
+                <div class="hr-line-dashed"></div>
+                <?php
+            }
             /*
 
             <div class="row">

@@ -51,10 +51,27 @@ $this->params['breadcrumbs'][] = '代理列表';
                         ],
                         [
                             'attribute' => 'username',
+                            'format' => 'raw',
+                            'value' => function ($model) {
+                                return Html::a($model->username, Url::to(['agent/view', 'id' => $model->id]), [
+                                    'title' => $model->username,
+                                    'data-pjax' => '0',
+                                    'class' => 'openContab',
+                                ]);
+                            }
                         ],
                         [
                             'attribute' => 'parent.username',
                             'label' => '上级代理',
+                            'format' => 'raw',
+                            'value' => function ($model) {
+                                if (!$model->parent) return '';
+                                return Html::a($model->parent->username, Url::to(['agent/view', 'id' => $model->parent->id]), [
+                                    'title' => $model->parent->username,
+                                    'data-pjax' => '0',
+                                    'class' => 'openContab',
+                                ]);
+                            }
                         ],
                         [
                             'attribute' => 'agent_level',
@@ -132,7 +149,7 @@ $this->params['breadcrumbs'][] = '代理列表';
                         [
                             'class' => ActionColumn::class,
                             'width' => '135',
-                            'template' => '{view-layer} {update}',
+                            'template' => '{view} {update}',
                             'buttons' => [
                                 'update' => function ($url, $model, $key, $index, $gridView) {
                                     if ($model->parent_id == yii::$app->getUser()->getId())

@@ -49,9 +49,9 @@ $this->title = 'AdminUser';
             <div class="hr-line-dashed"></div>
             <?= $form->field($model, 'sub_permission')->radioList(Constants::getYesNoItems()) ?>
             <div class="hr-line-dashed"></div>
-            <?= $form->field($model, 'rebate_plan_id')->dropDownList(RebatePlan::getPlanItems()) ?>
+            <?= $form->field($model, 'rebate_plan_id')->dropDownList(RebatePlan::getPlanItems(yii::$app->getUser()->getId())) ?>
             <div class="hr-line-dashed"></div>
-            <?= $form->field($model, 'xima_plan_id')->dropDownList(XimaPlan::getPlanItems(XimaPlan::TYPE_AGENT)) ?>
+            <?= $form->field($model, 'xima_plan_id')->dropDownList(XimaPlan::getPlanItems(yii::$app->getUser()->getId(), XimaPlan::TYPE_AGENT)) ?>
             <div class="hr-line-dashed"></div>
             <?php
             /*

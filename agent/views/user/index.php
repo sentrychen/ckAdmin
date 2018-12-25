@@ -45,16 +45,22 @@ $this->params['breadcrumbs'][] = '会员列表';
                     'columns' => [
 
                         [
-                            'attribute' => 'id',
-                            'footer' => '合计'
-                        ],
-                        [
                             'attribute' => 'username',
+                            'footer' => '合计',
                         ],
+
                         [
                             'attribute' => 'agent_name',
-                            'value' => 'inviteAgent.username',
                             'label' => '所属代理',
+                            'format' => 'raw',
+                            'value' => function ($model) {
+                                if (!$model->inviteAgent) return '';
+                                return Html::a($model->inviteAgent->username, Url::to(['agent/view', 'id' => $model->inviteAgent->id]), [
+                                    'title' => $model->username,
+                                    'data-pjax' => '0',
+                                    'class' => 'openContab',
+                                ]);
+                            }
                         ],
                         [
                             'attribute' => 'status',

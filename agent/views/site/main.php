@@ -9,6 +9,7 @@
 use agent\assets\EchartAsset;
 use agent\models\Agent;
 use common\widgets\JsBlock;
+use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\DetailView;
 use common\helpers\Util;
@@ -126,7 +127,7 @@ EchartAsset::register($this);
                 <div class="ibox-title">
                     <h5>当前代理信息</h5>
                 </div>
-                <div class="ibox-content" style="height:418px;">
+                <div class="ibox-content" style="height:458px;">
                     <?= DetailView::widget(['model' => yii::$app->getUser()->getIdentity(),
                         'attributes' => ['username',
                             ['label' => '上级代理',
@@ -137,16 +138,48 @@ EchartAsset::register($this);
                                     return isset($status[$model->status]) ? $status[$model->status] : "异常";
                                 }],
                             'created_at:date',
+                            [
+                                'attribute' => 'rebate_plan_id',
+                                'label' => '返佣方案',
+                                'format' => 'raw',
+                                'value' => function ($model) {
+                                    if ($model->rebate_plan_id) {
+                                        return Html::a($model->rebatePlan->name, Url::to(['rebate-plan/view', 'id' => $model->rebate_plan_id]), [
+                                            'title' => '查看返佣方案',
+                                            'data-pjax' => '0',
+                                            'class' => 'openContab'
+                                        ]);
+                                    }
+                                    return '';
+                                }
+                            ],
+                            [
+                                'attribute' => 'xima_plan_id',
+                                'label' => '洗码方案',
+                                'format' => 'raw',
+                                'value' => function ($model) {
+                                    if ($model->xima_plan_id) {
+                                        return Html::a($model->ximaPlan->name, Url::to(['xima-plan/agent-view', 'id' => $model->xima_plan_id]), [
+                                            'title' => '查看洗码方案',
+                                            'data-pjax' => '0',
+                                            'class' => 'openContab'
+                                        ]);
+                                    }
+                                    return '';
+                                }
+                            ],
                             ['label' => '可提现额度',
                                 'format' => 'raw',
                                 'value' => function ($model) {
                                     return '<span class="label label-warning">' . yii::$app->formatter->asCurrency($model->account->available_amount) . '</span>';
                                 }],
                             ['label' => '会员推广链接',
+                                'format' => 'url',
                                 'value' => function ($model) {
                                     return yii::$app->option->agent_user_reg_url . '?code=' . $model->promo_code;
                                 }],
                             ['label' => '代理推广链接',
+                                'format' => 'url',
                                 'value' => function ($model) {
                                     return yii::$app->option->agent_reg_url . '?code=' . $model->promo_code;
                                 }],
@@ -169,7 +202,7 @@ EchartAsset::register($this);
                     </div>
                 </div>
                 <div class="ibox-content">
-                    <div class="flot-chart" style="height:382px;">
+                    <div class="flot-chart" style="height:422px;">
                         <div class="flot-chart-content" id="flot-wl-chart"></div>
                     </div>
                 </div>

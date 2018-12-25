@@ -62,13 +62,29 @@ $this->params['breadcrumbs'][] = '会员列表';
 
                         [
                             'attribute' => 'username',
-                            'footer' => '合计'
+                            'footer' => '合计',
+                            'format' => 'raw',
+                            'value' => function ($model) {
+                                return Html::a($model->username, Url::to(['report', 'username' => $model->username]), [
+                                    'title' => $model->username,
+                                    'data-pjax' => '0',
+                                    'class' => 'openContab',
+                                ]);
+                            }
                         ],
 
                         [
                             'attribute' => 'agent_name',
-                            'value' => 'inviteAgent.username',
                             'label'=>'所属代理',
+                            'format' => 'raw',
+                            'value' => function ($model) {
+                                if (!$model->inviteAgent) return '';
+                                return Html::a($model->inviteAgent->username, Url::to(['agent/view', 'id' => $model->inviteAgent->id]), [
+                                    'title' => $model->username,
+                                    'data-pjax' => '0',
+                                    'class' => 'openContab',
+                                ]);
+                            }
                         ],
                         [
                             'attribute' => 'status',
@@ -77,18 +93,21 @@ $this->params['breadcrumbs'][] = '会员列表';
                                 return isset($status[$model->status]) ? $status[$model->status] : "异常";
                             }
                         ],
+
                         [
-                            'class' => DateColumn::class,
-                            'attribute' => 'created_at'
-                        ],
-                        [
-                            'class' => DateColumn::class,
-                            'attribute' => 'userStat.last_login_at',
-                        ],
-                        [
-                            'attribute' => 'userStat.login_number',
-                            'format'=>'integer',
-                            'footer' => '<span class="label label-default">' . number_format($totals['userStat_login_number'], 0) . '</span>'
+                            'attribute' => 'xima_plan_id',
+                            'label' => '洗码方案',
+                            'format' => 'raw',
+                            'value' => function ($model) {
+                                if ($model->xima_plan_id) {
+                                    return Html::a($model->ximaPlan->name, Url::to(['xima-plan/user-view', 'id' => $model->xima_plan_id]), [
+                                        'title' => '查看洗码方案',
+                                        'data-pjax' => '0',
+                                        'class' => 'openContab'
+                                    ]);
+                                }
+                                return '';
+                            }
                         ],
                         [
                             'attribute' => 'account.available_amount',
@@ -97,23 +116,6 @@ $this->params['breadcrumbs'][] = '会员列表';
                                 return Util::formatMoney($model->account->available_amount, false);
                             },
                             'footer' => '<span class="label label-default">' . Util::formatMoney($totals['account_available_amount'], false) . '</span>'
-                        ],
-                        [
-                            'attribute' => 'account.frozen_amount',
-                            'format' => 'raw',
-                            'value' => function ($model) {
-                                return Util::formatMoney($model->account->frozen_amount, false);
-                            },
-                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['account_frozen_amount'], false) . '</span>'
-                        ],
-
-                        [
-                            'attribute' => 'account.xima_amount',
-                            'format' => 'raw',
-                            'value' => function ($model) {
-                                return Util::formatMoney($model->account->xima_amount, false);
-                            },
-                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['account_xima_amount'], false) . '</span>'
                         ],
 
                         [
@@ -140,13 +142,26 @@ $this->params['breadcrumbs'][] = '会员列表';
                             },
                             'footer' => '<span class="label label-default">' . Util::formatMoney($totals['userStat_bet_amount'], false) . '</span>'
                         ],
+                        [
+                            'attribute' => 'account.xima_amount',
+                            'format' => 'raw',
+                            'value' => function ($model) {
+                                return Util::formatMoney($model->account->xima_amount, false);
+                            },
+                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['account_xima_amount'], false) . '</span>'
+                        ],
+
+                        [
+                            'class' => DateColumn::class,
+                            'attribute' => 'created_at'
+                        ],
 
                         [
                             'class' => ActionColumn::class,
                             'width' => '120',
                             'buttons' => [
                                 'report' => function ($url, $model, $key) {
-                                    return Html::a('<i class="fa fa-table"></i> 报表', Url::to(['report','username'=>$model->username]), [
+                                    return Html::a('<i class="fa fa-info"></i> 详情', Url::to(['report', 'username' => $model->username]), [
                                         'title' => $model->username,
                                         'data-pjax' => '0',
                                         'class' => 'btn btn-info btn-sm openContab',

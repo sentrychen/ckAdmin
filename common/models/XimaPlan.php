@@ -2,9 +2,11 @@
 
 namespace common\models;
 
+use common\libs\Constants;
 use common\models\XimaLevel;
 use Yii;
 use yii\behaviors\TimestampBehavior;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "{{%xima_plan}}".
@@ -87,5 +89,16 @@ class XimaPlan extends \yii\db\ActiveRecord
     public function getLevels()
     {
         return $this->hasMany(XimaLevel::class, ['plan_id' => 'id'])->orderBy(['bet_amount' => SORT_ASC]);
+    }
+
+    public static function getDefaultPlan($agent_id = 0, $type = null)
+    {
+        return static::find()->where(['agent_id' => $agent_id, 'is_default' => Constants::YesNo_Yes])->andFilterWhere(['type' => $type])->one();
+    }
+
+    public static function getPlanItems($agent_id = 0, $type = null)
+    {
+        $plans = self::find()->where(['agent_id' => $agent_id])->andFilterWhere(['type' => $type])->asArray()->all();
+        return ArrayHelper::map($plans, 'id', 'name');
     }
 }
