@@ -61,15 +61,18 @@ $this->params['breadcrumbs'][] = '银行卡管理';
                                         'class' => 'btn btn-info btn-sm openContab',
                                     ]);
                                 },
-                                'delete-bank' => function ($url, $model, $key) {
-                                    return Html::a('<i class="glyphicon glyphicon-trash"></i> 删除', Url::to(['delete-bank','id'=>$model->id]), [
-                                        'title' => '删除',
+
+                                'delete' => function ($url, $model, $key) {
+                                    return Html::a('<i class="glyphicon glyphicon-trash" aria-hidden="true"></i> ' . Yii::t('app', 'Delete'), Url::to(['delete-bank', 'id' => $model->id]), [
+                                        'title' => Yii::t('app', 'Delete'),
+                                        'data-confirm' => Yii::t('app', '您确定要删除吗?'),
+                                        'data-method' => 'post',
                                         'data-pjax' => '0',
                                         'class' => 'btn btn-danger btn-sm',
                                     ]);
                                 },
                             ],
-                            'template' => '{report} {view-layer} {update} {delete-bank}',
+                            'template' => '{report} {view-layer} {update} {delete}',
                         ],
                     ],
 
