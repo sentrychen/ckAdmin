@@ -33,6 +33,7 @@ use yii\db\ActiveRecord;
  * @property string $email 用户邮箱
  * @property string $avatar 用户头像url
  * @property int $status 会员状态             1、正常             2、冻结             3、锁定             4、注销
+ * @property string $xima_plan_id 洗码方案
  * @property string $xima_rate 洗码率
  * @property int $xima_type 洗码类别 1 单边 2 双边
  * @property int $xima_status 查看洗码 0 否 1是
@@ -85,24 +86,26 @@ class User extends ActiveRecord
             [['username'], 'required', 'on' => ['update', 'self-update']],
             [['username'], 'unique', 'on' => 'create'],
             [['repassword'], 'compare', 'compareAttribute' => 'password'],
-            [['status', 'xima_type', 'xima_status', 'min_limit', 'max_limit', 'dogfall_min_limit', 'dogfall_max_limit', 'pair_min_limit', 'pair_min_limit', 'invite_agent_id', 'invite_user_id', 'created_at', 'updated_at'], 'integer'],
+            [['status', 'xima_plan_id', 'xima_type', 'xima_status', 'min_limit', 'max_limit', 'dogfall_min_limit', 'dogfall_max_limit', 'pair_min_limit', 'pair_min_limit', 'invite_agent_id', 'invite_user_id', 'created_at', 'updated_at'], 'integer'],
             [['xima_rate'], 'number'],
             [['username', 'password_hash', 'password_pay', 'api_token', 'password_reset_token', 'email', 'avatar'], 'string', 'max' => 255],
             [['auth_key'], 'string', 'max' => 32],
-            [['max_limit'], 'compare', 'compareAttribute' => 'min_limit', 'operator' => '>='],
-            [['dogfall_max_limit'], 'compare', 'compareAttribute' => 'dogfall_min_limit', 'operator' => '>='],
-            [['pair_max_limit'], 'compare', 'compareAttribute' => 'pair_min_limit', 'operator' => '>='],
-            [['min_limit'], 'compare', 'compareValue' => yii::$app->option->game_min_limit, 'operator' => '>='],
-            [['max_limit'], 'compare', 'compareValue' => yii::$app->option->game_max_limit, 'operator' => '<='],
-            [['dogfall_min_limit'], 'compare', 'compareValue' => yii::$app->option->game_dogfall_min_limit, 'operator' => '>='],
-            [['dogfall_max_limit'], 'compare', 'compareValue' => yii::$app->option->game_dogfall_max_limit, 'operator' => '<='],
-            [['pair_min_limit'], 'compare', 'compareValue' => yii::$app->option->game_pair_min_limit, 'operator' => '>='],
-            [['pair_max_limit'], 'compare', 'compareValue' => yii::$app->option->game_pair_max_limit, 'operator' => '<='],
-            [['xima_rate'], 'compare', 'compareValue' => yii::$app->option->agent_xima_rate * 100, 'operator' => '<='],
-            [['xima_rate'], 'filter', 'filter' => function ($value) {
-                return $value / 100;
-            }],
-            [['xima_rate'], 'checkXimaRate'],
+            /*
+              [['max_limit'], 'compare', 'compareAttribute' => 'min_limit', 'operator' => '>='],
+              [['dogfall_max_limit'], 'compare', 'compareAttribute' => 'dogfall_min_limit', 'operator' => '>='],
+              [['pair_max_limit'], 'compare', 'compareAttribute' => 'pair_min_limit', 'operator' => '>='],
+              [['min_limit'], 'compare', 'compareValue' => yii::$app->option->game_min_limit, 'operator' => '>='],
+              [['max_limit'], 'compare', 'compareValue' => yii::$app->option->game_max_limit, 'operator' => '<='],
+              [['dogfall_min_limit'], 'compare', 'compareValue' => yii::$app->option->game_dogfall_min_limit, 'operator' => '>='],
+              [['dogfall_max_limit'], 'compare', 'compareValue' => yii::$app->option->game_dogfall_max_limit, 'operator' => '<='],
+              [['pair_min_limit'], 'compare', 'compareValue' => yii::$app->option->game_pair_min_limit, 'operator' => '>='],
+              [['pair_max_limit'], 'compare', 'compareValue' => yii::$app->option->game_pair_max_limit, 'operator' => '<='],
+              [['xima_rate'], 'compare', 'compareValue' => yii::$app->option->agent_xima_rate * 100, 'operator' => '<='],
+              [['xima_rate'], 'filter', 'filter' => function ($value) {
+                  return $value / 100;
+              }],
+              [['xima_rate'], 'checkXimaRate'],
+            */
         ];
     }
 
@@ -129,8 +132,8 @@ class User extends ActiveRecord
     {
         return [
             'default' => ['username', 'nickname', 'email'],
-            'update' => ['nickname', 'password', 'repassword', 'status', 'min_limit', 'max_limit', 'dogfall_min_limit', 'dogfall_max_limit', 'pair_min_limit', 'pair_max_limit', 'xima_status', 'xima_type', 'xima_rate'],
-            'create' => ['username', 'password', 'repassword', 'invite_agent_id', 'status', 'min_limit', 'max_limit', 'dogfall_min_limit', 'dogfall_max_limit', 'pair_min_limit', 'pair_max_limit', 'xima_status', 'xima_type', 'xima_rate'],
+            'update' => ['nickname', 'password', 'repassword', 'status', 'xima_plan_id', 'min_limit', 'max_limit', 'dogfall_min_limit', 'dogfall_max_limit', 'pair_min_limit', 'pair_max_limit', 'xima_status', 'xima_type', 'xima_rate'],
+            'create' => ['username', 'password', 'repassword', 'invite_agent_id', 'status', 'xima_plan_id', 'min_limit', 'max_limit', 'dogfall_min_limit', 'dogfall_max_limit', 'pair_min_limit', 'pair_max_limit', 'xima_status', 'xima_type', 'xima_rate'],
         ];
     }
 
@@ -157,6 +160,7 @@ class User extends ActiveRecord
             'email' => '用户邮箱',
             'avatar' => '用户头像url',
             'status' => '会员状态',
+            'xima_plan_id' => '洗码方案',
             'xima_rate' => '洗码率',
             'xima_type' => '洗码类别',
             'xima_status' => '查看洗码',
@@ -223,6 +227,13 @@ class User extends ActiveRecord
         return $this->hasOne(UserStat::class, ['user_id' => 'id']);
     }
 
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getXimaPlan()
+    {
+        return $this->hasOne(XimaPlan::class, ['id' => 'xima_plan_id']);
+    }
 
     /**
      * @return Agent|\yii\db\ActiveQuery

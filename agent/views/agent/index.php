@@ -20,6 +20,7 @@ use common\widgets\Bar;
 use common\grid\ActionColumn;
 use yii\helpers\Html;
 use common\helpers\Util;
+use yii\helpers\Url;
 
 $this->title = '代理列表';
 $this->params['breadcrumbs'][] = '代理列表';
@@ -82,12 +83,34 @@ $this->params['breadcrumbs'][] = '代理列表';
 
                         ],
                         [
-                            'attribute' => 'rebate_rate',
-                            'format' => ['percent', 2],
+                            'attribute' => 'rebate_plan_id',
+                            'label' => '返佣方案',
+                            'format' => 'raw',
+                            'value' => function ($model) {
+                                if ($model->rebate_plan_id) {
+                                    return Html::a($model->rebatePlan->name, Url::to(['rebate-plan/view', 'id' => $model->rebate_plan_id]), [
+                                        'title' => '查看返佣方案',
+                                        'data-pjax' => '0',
+                                        'class' => 'openContab'
+                                    ]);
+                                }
+                                return '';
+                            }
                         ],
                         [
-                            'attribute' => 'xima_rate',
-                            'format' => ['percent', 2],
+                            'attribute' => 'xima_plan_id',
+                            'label' => '洗码方案',
+                            'format' => 'raw',
+                            'value' => function ($model) {
+                                if ($model->xima_plan_id) {
+                                    return Html::a($model->ximaPlan->name, Url::to(['xima-plan/agent-view', 'id' => $model->xima_plan_id]), [
+                                        'title' => '查看洗码方案',
+                                        'data-pjax' => '0',
+                                        'class' => 'openContab'
+                                    ]);
+                                }
+                                return '';
+                            }
                         ],
                         [
                             'attribute' => 'account.xima_amount',

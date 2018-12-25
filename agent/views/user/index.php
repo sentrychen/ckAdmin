@@ -19,6 +19,7 @@ use common\grid\GridView;
 use common\widgets\Bar;
 use yii\helpers\Html;
 use common\helpers\Util;
+use yii\helpers\Url;
 
 $this->title = '会员';
 $this->params['breadcrumbs'][] = '会员列表';
@@ -94,8 +95,19 @@ $this->params['breadcrumbs'][] = '会员列表';
                             'footer' => '<span class="label label-default">' . Util::formatMoney($totals['userStat_bet_amount'], false) . '</span>'
                         ],
                         [
-                            'attribute' => 'xima_rate',
-                            'format' => ['percent', 2],
+                            'attribute' => 'xima_plan_id',
+                            'label' => '洗码方案',
+                            'format' => 'raw',
+                            'value' => function ($model) {
+                                if ($model->xima_plan_id) {
+                                    return Html::a($model->ximaPlan->name, Url::to(['xima-plan/user-view', 'id' => $model->xima_plan_id]), [
+                                        'title' => '查看洗码方案',
+                                        'data-pjax' => '0',
+                                        'class' => 'openContab'
+                                    ]);
+                                }
+                                return '';
+                            }
                         ],
                         [
                             'attribute' => 'account.xima_amount',

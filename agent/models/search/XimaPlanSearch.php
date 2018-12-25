@@ -1,11 +1,11 @@
 <?php
 
-namespace backend\models\search;
+namespace agent\models\search;
 
-use backend\models\XimaPlan;
+use agent\models\XimaPlan;
+use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use backend\models\Rebate;
 
 /**
  * RebateLevelSearch represents the model behind the search form about `backend\models\RebatePlan`.
@@ -41,7 +41,7 @@ class XimaPlanSearch extends XimaPlan
      */
     public function search($params, $type)
     {
-        $query = XimaPlan::find()->where(['type' => $type, 'agent_id' => 0]);
+        $query = XimaPlan::find()->where(['type' => $type])->andWhere(['agent_id' => Yii::$app->getUser()->getId()]);
 
         // add conditions that should always apply here
 

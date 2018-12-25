@@ -12,8 +12,10 @@
  */
 
 use agent\models\User;
+use agent\models\XimaPlan;
 use common\widgets\ActiveForm;
 use common\libs\Constants;
+use yii\helpers\ArrayHelper;
 
 $this->title = 'AdminUser';
 ?>
@@ -44,6 +46,11 @@ $this->title = 'AdminUser';
             <div class="hr-line-dashed"></div>
             <?= $form->field($model, 'status')->radioList(User::getStatuses()) ?>
             <div class="hr-line-dashed"></div>
+            <?= $form->field($model, 'xima_plan_id')->dropDownList(XimaPlan::getPlanItems(XimaPlan::TYPE_USER)) ?>
+            <div class="hr-line-dashed"></div>
+            <?php
+            /*
+
             <?= $form->field($model, 'min_limit') ?>
             <div class="hr-line-dashed"></div>
             <?= $form->field($model, 'max_limit') ?>
@@ -62,6 +69,8 @@ $this->title = 'AdminUser';
             <div class="hr-line-dashed"></div>
             <?= $form->field($model, 'xima_rate')->textInput(['afterAddon' => '%', 'value' => $model->xima_rate * 100]) ?>
             <div class="hr-line-dashed"></div>
+        */
+            ?>
             <?= $form->defaultButtons() ?>
             <?php ActiveForm::end(); ?>
         </div>

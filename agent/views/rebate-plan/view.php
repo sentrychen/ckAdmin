@@ -13,7 +13,7 @@ use yii\widgets\DetailView;
 
 $this->title = $model->name;
 $this->params['breadcrumbs'] = [
-    ['label' => '用户洗码方案', 'url' => Url::to(['user'])],
+    ['label' => '代理洗码方案', 'url' => Url::to(['index'])],
     ['label' => $model->name],
 ];
 ?>
@@ -47,9 +47,10 @@ $this->params['breadcrumbs'] = [
                 ]) ?>
                 <table id="user-form" class="table table-bordered">
                     <tr>
-                        <td rowspan="2" width="150">有效投注额达到</td>
-                        <td rowspan="2" width="150">每期洗码上限</td>
-                        <td colspan="2">洗码率</td>
+                        <td rowspan="2" width="150">盈利额度达到</td>
+                        <td rowspan="2" width="150">投注人数达到</td>
+                        <td rowspan="2" width="150">每期返佣上限</td>
+                        <td colspan="2">返佣率</td>
                     </tr>
                     <tr>
                         <?php
@@ -58,30 +59,27 @@ $this->params['breadcrumbs'] = [
 
                             echo "<td>{$platform->name}</td>\n";
                         }
-                        echo "</tr>\n";
 
-                        if ($model->levels) {
-
-
-                            $level = current($model->levels);
-
+                        foreach ($model->levels as $level) {
 
                             echo "<tr class='tr-level'>\n";
 
                             echo "<td align='left'>\n";
 
-                            echo $level->bet_amount ? Util::formatMoney($level->bet_amount, true) : '';
+                            echo $level->profit_amount ? Util::formatMoney($level->profit_amount, true) : '';
 
                             echo "</td>\n";
                             echo "<td>\n";
-                            echo $level->xima_limit ? Util::formatMoney($level->xima_limit, true) : '';
+                            echo $level->rebate_limit ? $level->bet_user_num : '';
+                            echo "</td>\n";
+                            echo "<td>\n";
+                            echo $level->rebate_limit ? Util::formatMoney($level->rebate_limit, true) : '';
                             echo "</td>\n";
                             foreach ($platforms as $platform) {
                                 $rateModel = $level->getRate($platform->id);
 
                                 echo "<td>\n";
-                                echo '洗码类型：' . Constants::getXimaTypes($rateModel->xima_type ?? Constants::XIMA_TWO_SIDED) . "<br>";
-                                echo '洗码率：' . Yii::$app->formatter->asPercent($rateModel->xima_rate, 2) . '<br>';
+                                echo Yii::$app->formatter->asPercent($rateModel->rebate_rate, 2);
 
 
                                 echo "</td>\n";

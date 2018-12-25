@@ -65,9 +65,9 @@ $this->params['breadcrumbs'][] = '代理列表';
                             'format' =>'raw',
                             'value' => function($model){
                                 return Html::a(Agent::getMemberCount($model->id), Url::to(['/user/index?UserSearch[invite_agent_id]='.$model->id]), [
-                                    'title' => '会员数量',
+                                    'title' => '查看会员',
                                     'data-pjax' => '0',
-                                    'class' => 'btn btn-info btn-sm openContab',
+                                    'class' => 'openContab',
                                 ]);
                             },
 

@@ -45,6 +45,9 @@ $this->title = '会员';
             <div class="hr-line-dashed"></div>
             <?= $form->field($model, 'status')->radioList(User::getStatuses()) ?>
             <div class="hr-line-dashed"></div>
+            <?php
+            /*
+
             <div class="row">
                 <div class="col-sm-4">
                     <?= $form->field($model, 'min_limit',['size'=>6])->label(null,['class'=>'col-sm-6 control-label']) ?>
@@ -84,6 +87,8 @@ $this->title = '会员';
             <div class="hr-line-dashed"></div>
             <?= $form->field($model, 'xima_rate')->textInput(['afterAddon' => '%','value'=>$model->xima_rate * 100]) ?>
             <div class="hr-line-dashed"></div>
+            */
+            ?>
             <?= $form->defaultButtons() ?>
             <?php ActiveForm::end(); ?>
         </div>

@@ -13,7 +13,7 @@ use yii\widgets\DetailView;
 
 $this->title = $model->name;
 $this->params['breadcrumbs'] = [
-    ['label' => '用户洗码方案', 'url' => Url::to(['user'])],
+    ['label' => '代理洗码方案', 'url' => Url::to(['agent'])],
     ['label' => $model->name],
 ];
 ?>
@@ -58,12 +58,8 @@ $this->params['breadcrumbs'] = [
 
                             echo "<td>{$platform->name}</td>\n";
                         }
-                        echo "</tr>\n";
 
-                        if ($model->levels) {
-
-
-                            $level = current($model->levels);
+                        foreach ($model->levels as $level) {
 
 
                             echo "<tr class='tr-level'>\n";
