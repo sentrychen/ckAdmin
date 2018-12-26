@@ -29,7 +29,10 @@ class MessageController extends ActiveController
     public function actionList()
     {
         $model = Message::find()->joinWith('messageFlag')
-            ->where([Message::tableName() . '.user_type' => Message::OBJ_MEMBER, Message::tableName() . '.is_deleted' => Constants::YesNo_No])
+            ->where([Message::tableName() . '.user_type' => Message::OBJ_MEMBER,
+                Message::tableName() . '.is_deleted' => Constants::YesNo_No,
+                Message::tableName() . '.user_id' => yii::$app->getUser()->getId()
+            ])
             ->andWhere(['or', [MessageFlag::tableName() . '.is_deleted' => Constants::YesNo_No],
                 ['notify_obj' => Message::SEND_ALL, MessageFlag::tableName() . '.id' => null]]);
         $request = Yii::$app->getRequest()->getQueryParams();
@@ -98,5 +101,37 @@ class MessageController extends ActiveController
         $messageFlag->save(false);
 
         return $result;
+    }
+
+    /*
+     * 未读消息
+     *
+     */
+    public function actionNoread(){
+        $model = Message::find()->joinWith('messageFlag')
+            ->where([Message::tableName() . '.user_type' => Message::OBJ_MEMBER,
+                Message::tableName() . '.is_deleted' => Constants::YesNo_No,
+                MessageFlag::tableName().'.is_read'=>MessageFlag::UN_READ,
+            ])
+            ->andWhere(['or', [MessageFlag::tableName() . '.is_deleted' => Constants::YesNo_No],
+                ['notify_obj' => Message::SEND_ALL, MessageFlag::tableName() . '.id' => null]])
+            ->count();
+
+        if($model){
+            return $model;
+        }
+        /*
+        $errorReasons = $model->getErrors();
+        if (empty($errorReasons)) {
+            throw new RestHttpException();
+        } else {
+            $err = '';
+            foreach ($errorReasons as $errorReason) {
+                $err .= $errorReason[0] . '<br>';
+            }
+            $err = rtrim($err, '<br>');
+            throw new RestHttpException($err, 400);
+        }
+        */
     }
 }
