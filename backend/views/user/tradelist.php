@@ -16,6 +16,7 @@
 use backend\models\UserAccountRecord;
 use common\grid\DateColumn;
 use common\grid\GridView;
+use common\helpers\Util;
 use yii\widgets\Pjax;
 
 ?>
@@ -24,10 +25,6 @@ use yii\widgets\Pjax;
     <div class="col-sm-12">
         <?php Pjax::begin(['id' => 'tradePjax']); ?>
         <div class="toolbar clearfix">
-            <div class="pull-left" style="line-height:44px">
-                合计收入 <span class="label label-warning"><?=Yii::$app->formatter->asCurrency($total['inAmount'])?></span>
-                合计支出 <span class="label label-warning"><?=Yii::$app->formatter->asCurrency($total['outAmount'])?></span>
-            </div>
             <?= $this->render('_search_tradelist', ['model' => $searchModel]); ?>
         </div>
 
@@ -35,10 +32,13 @@ use yii\widgets\Pjax;
         <?= GridView::widget([
             'dataProvider' => $dataProvider,
             'filterModel' => null,
+            'showFooter' => true,
+            'footerRowOptions' => ['style' => 'font-weight:bold;'],
             'columns' => [
 
                 [
                     'attribute' => 'trade_no',
+                    'footer' => '合计',
                 ],
                 [
                     'attribute' => 'trade_type_id',
@@ -57,12 +57,14 @@ use yii\widgets\Pjax;
 
                 [
                     'attribute' => 'amount',
-                    'format' => 'currency',
+                    'value' => function ($model) {
+                        return Util::formatMoney($model->amount, false);
+                    },
+                    'footer' => '<span class="label label-default">' . Util::formatMoney($totals['amount'], false) . '</span>'
                 ],
 
                 [
                     'attribute' => 'after_amount',
-                    'format' => 'currency',
                 ],
                 [
                     'attribute' => 'remark',

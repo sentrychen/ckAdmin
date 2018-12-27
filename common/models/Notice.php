@@ -2,6 +2,8 @@
 
 namespace common\models;
 
+use common\behaviors\NoticeBehavior;
+use common\components\notice\NoticeEvent;
 use common\libs\Constants;
 use Yii;
 use yii\behaviors\TimestampBehavior;
@@ -46,8 +48,10 @@ class Notice extends \yii\db\ActiveRecord
     {
         return [
             TimestampBehavior::class,
+            NoticeBehavior::class,
         ];
     }
+
     /**
      *
      * 获取最近的公告，如果不设限制，则返回全部未到期公告
@@ -77,8 +81,8 @@ class Notice extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['content','set_top','expire_at','user_type'], 'required'],
-            [['user_type', 'set_top',  'is_deleted', 'deleted_at', 'is_cancled', 'cancled_at', 'publish_by', 'updated_at', 'created_at'], 'integer'],
+            [['content', 'set_top', 'expire_at', 'user_type'], 'required'],
+            [['user_type', 'set_top', 'is_deleted', 'deleted_at', 'is_cancled', 'cancled_at', 'publish_by', 'updated_at', 'created_at'], 'integer'],
             [['content'], 'string', 'max' => 512],
             [['publish_name'], 'string', 'max' => 64],
         ];
@@ -138,11 +142,19 @@ class Notice extends \yii\db\ActiveRecord
 
         $this->expire_at = strtotime($this->expire_at);
         if ($this->expire_at < time())
-            $this->expire_at = time() + 7*24*3600;
+            $this->expire_at = time() + 7 * 24 * 3600;
 
         $this->publish_by = yii::$app->getUser()->getId();
         $this->publish_name = yii::$app->getUser()->getIdentity()->username;
 
         return parent::beforeSave($insert);
+    }
+
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+        if ($insert && ($this->user_type == self::OBJ_ALL || $this->user_type == self::OBJ_MEMBER)) {
+            $this->trigger(NoticeEvent::SYSTEM_NOTICE, new NoticeEvent(['uid' => 0, 'message' => $this->content]));
+        }
     }
 }

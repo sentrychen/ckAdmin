@@ -76,6 +76,7 @@ use common\helpers\Util;
         'mobile',
         'wechat',
         'qq',
+        'origin',
         [
             'label' => '银行卡号',
             'format' => 'raw',
@@ -111,10 +112,18 @@ use common\helpers\Util;
                 return isset($status[$model->status]) ? $status[$model->status] : "异常";
             }
         ],
+        [
+            'attribute' => 'online_status',
+            'value' => function ($model) {
+
+                return User::getOnlineStatuses($model->online_status);
+            }
+        ],
         'created_at:date',
         'userStat.login_number',
         'userStat.last_login_at:date',
         'userStat.last_login_ip',
+        'userStat.online_duration:duration',
         'userStat.deposit_number',
         'userStat.deposit_amount:currency',
         'userStat.withdrawal_number',
@@ -123,7 +132,6 @@ use common\helpers\Util;
         'userStat.bet_amount:currency',
         'account.available_amount:currency',
         'account.frozen_amount:currency',
-        'account.user_point',
         'account.xima_amount:currency',
 
     ],

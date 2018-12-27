@@ -111,7 +111,7 @@ class UserSearch extends User
 
         $query->andFilterWhere(['like', User::tableName() . '.username', $this->username])
             ->andFilterWhere(['between', UserAccount::tableName() . '.available_amount', $this->available_amount_min, $this->available_amount_max])
-            ->andFilterWhere([UserStat::tableName() . '.oneline_status' => $online])
+            ->andFilterWhere([UserStat::tableName() . '.online_status' => $online])
             ->andFilterWhere([User::tableName() . '.status' => $this->status]);
         if (empty($this->invite_agent_id)) {
             $agent_ids = yii\helpers\ArrayHelper::getColumn(Agent::getAgentTree(null, yii::$app->getUser()->getId(), null, true), 'id');

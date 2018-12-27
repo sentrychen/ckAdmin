@@ -1,16 +1,60 @@
 <?php
 header('Content-Type:application/json; charset=utf-8');
+header("Access-Control-Allow-Origin: *"); // 允许任意域名发起的跨域请求
+header('Access-Control-Allow-Headers: X-Requested-With,X_Requested_With');
 
-$data = ['code' => 0, 'data' => [
-    ['topic' => 'withdraw-success', 'message' => '取款申请成功'],
-    ['topic' => 'deposit-success', 'message' => '存款申请成功'],
-    ['topic' => 'withdraw-faild', 'message' => '取款申请失败'],
-    ['topic' => 'deposit-faild', 'message' => '存款申请失败'],
-    ['topic' => 'system-notice', 'message' => '晚上8点系统维护'],
-    ['topic' => 'platform-message', 'message' => '平台消息'],
-]];
+$params = $config = require __DIR__ . '/../config/params.php';
 
-if (rand(0, 5) == 1)
-    exit(json_encode($data, JSON_UNESCAPED_UNICODE));
-else
-    exit(json_encode(['code' => 0, 'data' => []], JSON_UNESCAPED_UNICODE));
+$token = $_GET['token'] ?? '';
+
+if (!preg_match('/^[A-Za-z0-9_-]{32}_\d{10}$/', $token, $matches)) {
+    exitCode(1);
+}
+
+$timestamp = (int)substr($token, -10);
+$expire = $params['user.apiTokenExpire'] ?? 3600;
+if ($timestamp + $expire < time()) {
+    exitCode(2);
+}
+
+
+try {
+    $config = require __DIR__ . '/../../common/config/main-local.php';
+    $config = $config['components']['redis'];
+
+    $redis = new Redis();
+    $timeout = $config['dataTimeout'] ?? 0;
+    $redis->connect($config['hostname'], $config['port'], $timeout);
+
+    if (isset($config['password'])) {
+        $redis->auth($config['password']);
+    }
+    if (isset($config['database'])) {
+        $redis->select($config['database']);
+    }
+
+    $uid = $redis->get('token:' . $token);
+    if (false === $uid) {
+        exitCode(0, [['topic' => 'login-other-client', 'message' => '账号在别的地方登录']]);
+    }
+
+    $notices = $redis->get('uid:notices:' . $uid);
+    if ($notices)
+        $notices = json_decode($notices);
+    else {
+        $notices = [];
+    }
+    $sys_notices = $redis->get('uid:notices:0');
+    if ($sys_notices)
+        $notices[] = json_decode($sys_notices);
+    $redis->setex('uid:notices:' . $uid, $params['user.noticeExpire'], '');
+    $redis->close();
+    exitCode(0, $notices);
+} catch (Exception $e) {
+    exitCode(3);
+}
+
+function exitCode($code, $data = [])
+{
+    exit(json_encode(['code' => $code, 'data' => $data], JSON_UNESCAPED_UNICODE));
+}

@@ -24,7 +24,10 @@ use yii\db\ActiveRecord;
  * @property int $id_card_status 0：未实名，1：已实名
  * @property string $mobile 手机号
  * @property string $wechat 微信
- * @property string $qq QQ号
+ * @property string $qq QQ号\
+ * @property string $deviceid 设备ID\
+ * @property string $ip 注册时IP地址\
+ * @property string $origin 注册来源\
  * @property string $api_token 接口令牌
  * @property string $auth_key cookie验证auth_key
  * @property string $password_hash 加密后密码
@@ -57,6 +60,9 @@ class User extends ActiveRecord
     const STATUS_IDCARD_ON = 1;
     const STATUS_IDCARD_OFF = 0;
 
+    const STATUS_OFFLINE = 0;
+    const STATUS_ONLINE = 1;
+
     public $password;
 
     public $new_password;
@@ -88,42 +94,13 @@ class User extends ActiveRecord
             [['repassword'], 'compare', 'compareAttribute' => 'password'],
             [['status', 'xima_plan_id', 'xima_type', 'xima_status', 'min_limit', 'max_limit', 'dogfall_min_limit', 'dogfall_max_limit', 'pair_min_limit', 'pair_min_limit', 'invite_agent_id', 'invite_user_id', 'created_at', 'updated_at'], 'integer'],
             [['xima_rate'], 'number'],
-            [['username', 'password_hash', 'password_pay', 'api_token', 'password_reset_token', 'email', 'avatar'], 'string', 'max' => 255],
+            [['username', 'password_hash', 'password_pay', 'api_token', 'password_reset_token', 'email', 'avatar', 'deviceid'], 'string', 'max' => 255],
+            [['ip', 'origin'], 'string', 'max' => 64],
             [['auth_key'], 'string', 'max' => 32],
-            /*
-              [['max_limit'], 'compare', 'compareAttribute' => 'min_limit', 'operator' => '>='],
-              [['dogfall_max_limit'], 'compare', 'compareAttribute' => 'dogfall_min_limit', 'operator' => '>='],
-              [['pair_max_limit'], 'compare', 'compareAttribute' => 'pair_min_limit', 'operator' => '>='],
-              [['min_limit'], 'compare', 'compareValue' => yii::$app->option->game_min_limit, 'operator' => '>='],
-              [['max_limit'], 'compare', 'compareValue' => yii::$app->option->game_max_limit, 'operator' => '<='],
-              [['dogfall_min_limit'], 'compare', 'compareValue' => yii::$app->option->game_dogfall_min_limit, 'operator' => '>='],
-              [['dogfall_max_limit'], 'compare', 'compareValue' => yii::$app->option->game_dogfall_max_limit, 'operator' => '<='],
-              [['pair_min_limit'], 'compare', 'compareValue' => yii::$app->option->game_pair_min_limit, 'operator' => '>='],
-              [['pair_max_limit'], 'compare', 'compareValue' => yii::$app->option->game_pair_max_limit, 'operator' => '<='],
-              [['xima_rate'], 'compare', 'compareValue' => yii::$app->option->agent_xima_rate * 100, 'operator' => '<='],
-              [['xima_rate'], 'filter', 'filter' => function ($value) {
-                  return $value / 100;
-              }],
-              [['xima_rate'], 'checkXimaRate'],
-            */
+
         ];
     }
 
-    public function checkXimaRate($attribute, $params)
-    {
-        if ($this->invite_agent_id) {
-            $agent = $this->getInviteAgent()->one();
-            if ($agent->xima_status == 0 && $this->xima_status != 0) {
-                $this->addError('xima_status', '当代理洗码不可见时，用户也必须设置为洗码不可见');
-            }
-            if ($agent->xima_type == 1 && $this->xima_type != 1) {
-                $this->addError('xima_type', '当代理类别为单边时，用户也必须是单边');
-            }
-
-            if (round($this->xima_rate, 4) > round($agent->xima_rate, 4))
-                $this->addError($attribute, '洗码率不能超出代理洗码率[' . $agent->xima_rate * 100 . '%]');
-        }
-    }
 
     /**
      * @inheritdoc
@@ -132,8 +109,8 @@ class User extends ActiveRecord
     {
         return [
             'default' => ['username', 'nickname', 'email'],
-            'update' => ['nickname', 'password', 'repassword', 'status', 'xima_plan_id', 'min_limit', 'max_limit', 'dogfall_min_limit', 'dogfall_max_limit', 'pair_min_limit', 'pair_max_limit', 'xima_status', 'xima_type', 'xima_rate'],
-            'create' => ['username', 'password', 'repassword', 'invite_agent_id', 'status', 'xima_plan_id', 'min_limit', 'max_limit', 'dogfall_min_limit', 'dogfall_max_limit', 'pair_min_limit', 'pair_max_limit', 'xima_status', 'xima_type', 'xima_rate'],
+            'update' => ['nickname', 'password', 'repassword', 'status', 'xima_plan_id'],
+            'create' => ['username', 'password', 'repassword', 'invite_agent_id', 'status', 'xima_plan_id', 'deviceid', 'ip'],
         ];
     }
 
@@ -159,7 +136,11 @@ class User extends ActiveRecord
             'password_reset_token' => '找回密码token',
             'email' => '用户邮箱',
             'avatar' => '用户头像url',
+            'ip' => '注册时IP',
+            'origin' => '来源',
+            'deviceid' => '设备ID',
             'status' => '会员状态',
+            'online_status' => '在线状态',
             'xima_plan_id' => '洗码方案',
             'xima_rate' => '洗码率',
             'xima_type' => '洗码类别',
@@ -204,6 +185,15 @@ class User extends ActiveRecord
             self::STATUS_FROZEN => '冻结',
             self::STATUS_LOCKED => '锁定',
             self::STATUS_DISABLED => '注销'
+        ];
+        return $status[$key] ?? $status;
+    }
+
+    public static function getOnlineStatuses($key = null)
+    {
+        $status = [
+            self::STATUS_OFFLINE => '离线',
+            self::STATUS_ONLINE => '在线',
         ];
         return $status[$key] ?? $status;
     }
@@ -273,9 +263,15 @@ class User extends ActiveRecord
     public function beforeSave($insert)
     {
         if ($insert) {
-            //$this->invite_agent_id = yii::$app->getUser()->getId();
             $this->generateAuthKey();
             $this->setPassword($this->password);
+            //如果用户没有设置洗码方案，则选择所属代理所设定的默认洗码方案
+            if (!$this->xima_plan_id && $this->invite_agent_id) {
+                $ximaModel = XimaPlan::getDefaultPlan($this->invite_agent_id, XimaPlan::TYPE_USER);
+                if ($ximaModel) {
+                    $this->xima_plan_id = $ximaModel->id;
+                }
+            }
 
         } else {
             if (isset($this->password) && $this->password != '') {
@@ -300,6 +296,21 @@ class User extends ActiveRecord
             //某代理下日新增用户
             AgentDaily::addCounter(['agent_id' => $this->invite_agent_id, 'dnu' => 1]);
         }
+    }
+
+    /**
+     * 处理用户登出
+     */
+    public function logout()
+    {
+        $this->api_token = null;
+        $this->online_status = self::STATUS_OFFLINE;
+        if ($this->userStat) {
+            $this->userStat->last_logout_at = time();
+            $this->userStat->online_duration += time() - $this->userStat->last_login_at;
+            $this->userStat->save(false);
+        }
+        $this->save(false);
     }
 
     /**

@@ -12,6 +12,7 @@ $config = [
     'components' => [
         'cache' => [//缓存组件 具体配置请参考 http://doc.feehi.com/configs.html
             'class' => yii\caching\DummyCache::class,//不使用缓存
+            //'class' =>yii\redis\Cache::class,
         ],
         'log' => [//此项具体详细配置，请访问http://wiki.feehi.com/index.php?title=Yii2_log
             'traceLevel' => YII_DEBUG ? 3 : 0,

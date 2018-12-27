@@ -25,6 +25,7 @@ use backend\models\search\LoginLogSearch;
 use backend\models\search\UserAccountRecordSearch;
 use backend\models\search\UserDepositSearch;
 use backend\models\search\UserSearch;
+use backend\models\search\UserStatSearch;
 use backend\models\search\UserWithdrawSearch;
 use backend\models\User;
 use backend\models\UserAccountRecord;
@@ -94,8 +95,8 @@ class UserController extends Controller
 
     public function actionOnline()
     {
-        $searchModel = new UserSearch();
-        $dataProvider = $searchModel->search([], null, 1);
+        $searchModel = new UserStatSearch();
+        $dataProvider = $searchModel->search(yii::$app->getRequest()->getQueryParams());
 
         return $this->render('online', ['dataProvider' => $dataProvider, 'searchModel' => $searchModel]);
     }
@@ -115,12 +116,9 @@ class UserController extends Controller
      */
     public function actionTradeList($id)
     {
-        $searchModel = new UserAccountRecordSearch();
-        $dataProvider = $searchModel->search(yii::$app->getRequest()->getQueryParams(), $id);
-        $query = clone $dataProvider->query;
-        $total = $query->select('SUM(case WHEN switch= ' . UserAccountRecord::SWITCH_IN . ' then amount else 0 end ) as inAmount,SUM(case WHEN switch = ' . UserAccountRecord::SWITCH_OUT . ' then amount else 0 end ) as outAmount')->asArray()->one();
-
-        return $this->render('tradelist', ['dataProvider' => $dataProvider, 'searchModel' => $searchModel, 'total' => $total]);
+        return $this->render('tradelist', $this->_getGridViewData(UserAccountRecordSearch::class, [
+            'amount', 'after_amount'
+        ], $id));
     }
 
     /**
@@ -129,12 +127,10 @@ class UserController extends Controller
      */
     public function actionDepositList($id)
     {
-        $searchModel = new UserDepositSearch();
-        $dataProvider = $searchModel->search(yii::$app->getRequest()->getQueryParams(), $id);
-        $query = clone $dataProvider->query;
-        //$total = $query->select('SUM(confirm_amount)')->asArray()->one();
-        $total = $query->sum('confirm_amount');
-        return $this->render('depositlist', ['dataProvider' => $dataProvider, 'searchModel' => $searchModel, 'total' => $total]);
+        return $this->render('depositlist',
+            $this->_getGridViewData(UserDepositSearch::class, [
+                'apply_amount', 'confirm_amount'
+            ], $id));
     }
 
     /**
@@ -143,12 +139,10 @@ class UserController extends Controller
      */
     public function actionWithdrawList($id)
     {
-        $searchModel = new UserWithdrawSearch();
-        $dataProvider = $searchModel->search(yii::$app->getRequest()->getQueryParams(), $id);
-        $query = clone $dataProvider->query;
-        $total = $query->sum('transfer_amount');
-
-        return $this->render('withdrawlist', ['dataProvider' => $dataProvider, 'searchModel' => $searchModel, 'total' => $total]);
+        return $this->render('withdrawlist',
+            $this->_getGridViewData(UserWithdrawSearch::class, [
+                'apply_amount', 'transfer_amount'
+            ], $id));
     }
 
     /**
@@ -157,12 +151,11 @@ class UserController extends Controller
      */
     public function actionBetList($id)
     {
-        $searchModel = new BetListSearch();
-        $dataProvider = $searchModel->search(yii::$app->getRequest()->getQueryParams(), $id);
-        $query = clone $dataProvider->query;
-        $total = $query->select('sum(bet_amount) as betAmount,sum(profit) as profit')->asArray()->one();
 
-        return $this->render('betlist', ['dataProvider' => $dataProvider, 'searchModel' => $searchModel, 'total' => $total]);
+        return $this->render('betlist',
+            $this->_getGridViewData(BetListSearch::class, [
+                'bet_amount', 'profit', 'xima'
+            ], $id));
     }
 
     /**
@@ -171,10 +164,8 @@ class UserController extends Controller
      */
     public function actionLogList($id)
     {
-        $searchModel = new LoginLogSearch();
-        $dataProvider = $searchModel->search(yii::$app->getRequest()->getQueryParams(), $id);
-
-        return $this->render('loglist', ['dataProvider' => $dataProvider, 'searchModel' => $searchModel]);
+        return $this->render('loglist',
+            $this->_getGridViewData(LoginLogSearch::class, [], $id));
     }
 
     /**

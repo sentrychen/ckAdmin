@@ -21,9 +21,9 @@ use common\libs\Constants;
 /* @var $form common\widgets\SearchForm */
 ?>
 <div class="toolbar-searchs">
-    <?php $form = SearchForm::begin([]); ?>
+    <?php $form = SearchForm::begin(['action' => ['user']]); ?>
 
     <?= $form->field($model, 'name')->textInput() ?>
-    <?= $form->searchButtons() ?>
+    <?= $form->searchButtons(['user']) ?>
     <?php SearchForm::end(); ?>
 </div>

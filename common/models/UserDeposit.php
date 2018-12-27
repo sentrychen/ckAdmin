@@ -2,6 +2,8 @@
 
 namespace common\models;
 
+use common\behaviors\NoticeBehavior;
+use common\components\notice\NoticeEvent;
 use common\libs\Constants;
 use Exception;
 use Yii;
@@ -64,6 +66,7 @@ class UserDeposit extends \yii\db\ActiveRecord
     {
         return [
             TimestampBehavior::class,
+            NoticeBehavior::class,
         ];
     }
 
@@ -231,6 +234,7 @@ class UserDeposit extends \yii\db\ActiveRecord
                     throw new dbException('存款更新会员统计记录失败！');
 
                 $tr->commit();
+                $this->trigger(NoticeEvent::DEPOSIT_SUCCESS, new NoticeEvent(['uid' => $this->user_id]));
             } catch (Exception $e) {
                 Yii::error($e->getMessage());
                 //回滚

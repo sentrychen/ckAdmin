@@ -228,15 +228,17 @@ class Util
      * 获取客户端类型
      *
      */
-    public static function getClientType()
+    public static function getDeviceType()
     {
-        $agent = $_SERVER['HTTP_USER_AGENT'];
+        $agent = Yii::$app->request->getUserAgent();
         if (strpos($agent, 'iPhone') || strpos($agent, 'iPad')) {
-            return 'IOS';
+            return 'iOS';
         } else if (strpos($agent, 'Android')) {
             return 'Android';
+        } else if (strpos($agent, 'windows')) {
+            return 'PC';
         } else {
-            return 'H5';
+            return 'Other';
         }
     }
 
@@ -246,7 +248,7 @@ class Util
      */
     public static function getClientVersion()
     {
-        $ua = $_SERVER['HTTP_USER_AGENT'];
+        $ua = Yii::$app->request->getUserAgent();
         $version = '';
 
         //微信打开

@@ -51,5 +51,16 @@ class User extends \common\models\User
             ->distinct()->count();
         return $number;
     }
+
+    public function beforeSave($insert)
+    {
+        if ($insert) {
+            $this->ip = Yii::$app->request->getUserIP();
+            $this->deviceid = Yii::$app->getUser()->getId();
+            $this->origin = 'backend';
+        }
+
+        return parent::beforeSave($insert);
+    }
 }
 

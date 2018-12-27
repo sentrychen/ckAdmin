@@ -16,6 +16,7 @@
 use backend\models\UserWithdraw;
 use common\grid\DateColumn;
 use common\grid\GridView;
+use common\helpers\Util;
 use yii\widgets\Pjax;
 
 ?>
@@ -24,9 +25,6 @@ use yii\widgets\Pjax;
     <div class="col-sm-12">
         <?php Pjax::begin(['id' => 'withdrawPjax']); ?>
         <div class="toolbar clearfix">
-            <div class="pull-left" style="line-height:44px">
-                合计取款 <span class="label label-warning"><?= Yii::$app->formatter->asCurrency($total) ?></span>
-            </div>
             <?= $this->render('_search_withdrawlist', ['model' => $searchModel]); ?>
         </div>
 
@@ -34,6 +32,8 @@ use yii\widgets\Pjax;
         <?= GridView::widget([
             'dataProvider' => $dataProvider,
             'filterModel' => null,
+            'showFooter' => true,
+            'footerRowOptions' => ['style' => 'font-weight:bold;'],
             'columns' => [
 
                 [
@@ -41,11 +41,17 @@ use yii\widgets\Pjax;
                 ],
                 [
                     'attribute' => 'apply_amount',
-                    'format' => 'currency',
+                    'value' => function ($model) {
+                        return Util::formatMoney($model->apply_amount, false);
+                    },
+                    'footer' => '<span class="label label-default">' . Util::formatMoney($totals['apply_amount'], false) . '</span>'
                 ],
                 [
                     'attribute' => 'transfer_amount',
-                    'format' => 'currency',
+                    'value' => function ($model) {
+                        return Util::formatMoney($model->transfer_amount, false);
+                    },
+                    'footer' => '<span class="label label-default">' . Util::formatMoney($totals['transfer_amount'], false) . '</span>'
                 ],
                 [
                     'attribute' => 'status',

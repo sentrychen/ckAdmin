@@ -12,20 +12,27 @@ use yii\behaviors\TimestampBehavior;
  * @property int $user_id 会员编号
  * @property string $username 会员名称
  * @property string $login_ip 登录IP
- * @property int $client_type 登录客户端类型
-             1、H5
-             2、安卓
-             3、iOS
+ * @property string $device_type 设备类型
+ * @property string $client_type 登录客户端类型
  * @property string $client_version 客户端版本号
+ * @property string $user_agent 浏览器信息
+ * @property string $deviceid 设备ID
  * @property int $created_at 创建时间
  * @property int $updated_at 最后修改时间
  */
 class UserLoginLog extends \yii\db\ActiveRecord
 {
 
-    const CLIENT_TYPE_H5 = 1;
-    const CLIENT_TYPE_ANDROID = 2;
-    const CLIENT_TYPE_IOS = 3;
+    const CLIENT_TYPE_H5 = 'H5';
+    const CLIENT_TYPE_APP = 'App';
+    const CLIENT_TYPE_WEB = 'Web';
+    const CLIENT_TYPE_OTHER = 'Other';
+
+    const DEVICE_TYPE_IOS = 'iOS';
+    const DEVICE_TYPE_ANDROID = 'Android';
+    const DEVICE_TYPE_PC = 'Pc';
+    const DEVICE_TYPE_OTHER = 'Other';
+
 
     /**
      * {@inheritdoc}
@@ -52,10 +59,10 @@ class UserLoginLog extends \yii\db\ActiveRecord
     {
         return [
             [['id'], 'required'],
-            [['id', 'user_id', 'client_type', 'created_at', 'updated_at'], 'integer'],
-            [['username'], 'string', 'max' => 64],
+            [['id', 'user_id', 'created_at', 'updated_at'], 'integer'],
+            [['username'], 'client_type', 'device_type', 'string', 'max' => 64],
             [['login_ip'], 'string', 'max' => 50],
-            [['client_version'], 'string', 'max' => 255],
+            [['client_version', 'deviceid', 'user_agent'], 'string', 'max' => 255],
             [['id'], 'unique'],
         ];
     }
@@ -70,8 +77,11 @@ class UserLoginLog extends \yii\db\ActiveRecord
             'user_id' => '会员编号',
             'username' => '会员名称',
             'login_ip' => '登录IP',
+            'device_type' => '设备类型',
             'client_type' => '登录客户端',
             'client_version' => '客户端版本号',
+            'user_agent' => '浏览器信息',
+            'deviceid' => '设备ID',
             'created_at' => '登陆时间',
             'updated_at' => '最后修改时间',
         ];
@@ -81,8 +91,20 @@ class UserLoginLog extends \yii\db\ActiveRecord
     {
         $ary = [
             static::CLIENT_TYPE_H5=> 'H5',
-            static::CLIENT_TYPE_ANDROID => '安卓',
-            static::CLIENT_TYPE_IOS => 'iOS',
+            static::CLIENT_TYPE_APP => 'App',
+            static::CLIENT_TYPE_WEB => 'Web',
+            static::CLIENT_TYPE_OTHER => '其它',
+        ];
+        return $ary[$key] ?? $ary;
+    }
+
+    public static function getDeviceTypes($key = null)
+    {
+        $ary = [
+            static::DEVICE_TYPE_IOS => '苹果',
+            static::DEVICE_TYPE_ANDROID => '安卓',
+            static::DEVICE_TYPE_PC => 'PC',
+            static::DEVICE_TYPE_OTHER => '其它',
         ];
         return $ary[$key]??$ary;
     }

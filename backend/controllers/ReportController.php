@@ -25,31 +25,6 @@ class ReportController extends Controller
     ]));
     }
 
-    /**
-     * @param string $modelClass
-     * @param array $sumColumns
-     * @return array
-     */
-    private function _getData($modelClass, $sumColumns = [])
-    {
-        $searchModel = new $modelClass;
-        $dataProvider = $searchModel->search(yii::$app->getRequest()->getQueryParams());
-        $totals = [];
-        if (!empty($sumColumns)) {
-            $query = clone $dataProvider->query;
-            $sumColumns = array_map(function ($v) {
-                return 'SUM(' . $v . ') as ' . $v;
-            }, $sumColumns);
-            $totals = $query->select(implode(',', $sumColumns))->createCommand()->queryOne();
-        }
-
-        return [
-            'dataProvider' => $dataProvider,
-            'searchModel' => $searchModel,
-            'totals' => $totals,
-        ];
-
-    }
 
     public function actionBet()
     {

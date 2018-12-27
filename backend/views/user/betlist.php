@@ -16,6 +16,7 @@
 use backend\models\BetList;
 use common\grid\DateColumn;
 use common\grid\GridView;
+use common\helpers\Util;
 use yii\widgets\Pjax;
 
 ?>
@@ -24,10 +25,6 @@ use yii\widgets\Pjax;
     <div class="col-sm-12">
         <?php Pjax::begin(['id' => 'betPjax']); ?>
         <div class="toolbar clearfix">
-            <div class="pull-left" style="line-height:44px">
-                投注总额 <span class="label label-warning"><?=Yii::$app->formatter->asCurrency($total['betAmount'])?></span>
-                合计赢输 <span class="label label-warning"><?=Yii::$app->formatter->asCurrency($total['profit'])?></span>
-            </div>
             <?= $this->render('_search_betlist', ['model' => $searchModel]); ?>
         </div>
 
@@ -35,6 +32,8 @@ use yii\widgets\Pjax;
         <?= GridView::widget([
             'dataProvider' => $dataProvider,
             'filterModel' => null,
+            'showFooter' => true,
+            'footerRowOptions' => ['style' => 'font-weight:bold;'],
             'columns' => [
 
                 [
@@ -60,7 +59,11 @@ use yii\widgets\Pjax;
                 ],
                 [
                     'attribute' => 'bet_amount',
-                    'format' => 'currency',
+                    'format' => 'raw',
+                    'value' => function ($model) {
+                        return Util::formatMoney($model->bet_amount, false);
+                    },
+                    'footer' => '<span class="label label-default">' . Util::formatMoney($totals['bet_amount'], false) . '</span>'
                 ],
                 [
                     'attribute' => 'bet_record',
@@ -90,7 +93,11 @@ use yii\widgets\Pjax;
                 ],
                 [
                     'attribute' => 'profit',
-                    'format' => 'currency',
+                    'format' => 'raw',
+                    'value' => function ($model) {
+                        return Util::formatMoney($model->profit, false);
+                    },
+                    'footer' => '<span class="label label-default">' . Util::formatMoney($totals['profit'], false) . '</span>'
                 ],
                 [
                     'attribute' => 'amount_before',
@@ -102,7 +109,11 @@ use yii\widgets\Pjax;
                 ],
                 [
                     'attribute' => 'xima',
-                    'format' => 'currency',
+                    'format' => 'raw',
+                    'value' => function ($model) {
+                        return Util::formatMoney($model->xima, false);
+                    },
+                    'footer' => '<span class="label label-default">' . Util::formatMoney($totals['xima'], false) . '</span>'
                 ],
                 [
                     'class' => DateColumn::class,

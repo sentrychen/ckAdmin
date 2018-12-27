@@ -12,8 +12,8 @@ use agent\models\AgentWithdraw;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use backend\behaviors\TimeSearchBehavior;
-use backend\components\search\SearchEvent;
+use agent\behaviors\TimeSearchBehavior;
+use agent\components\search\SearchEvent;
 use agent\models\AgentBank;
 
 /**

@@ -26,6 +26,7 @@ class UserSearch extends User
     public $available_amount;
     public $available_amount_min;
     public $available_amount_max;
+    public $duration;
 
     public function init()
     {
@@ -45,7 +46,7 @@ class UserSearch extends User
     public function rules()
     {
         return [
-            [['status','available_amount_min','available_amount_max','invite_agent_id','username','created_at'], 'safe'],
+            [['status', 'duration', 'available_amount_min', 'available_amount_max', 'invite_agent_id', 'username', 'created_at'], 'safe'],
         ];
     }
 
@@ -58,7 +59,7 @@ class UserSearch extends User
      * @param $params
      * @return \yii\data\ActiveDataProvider
      */
-    public function search($params,$agent_id = null,$online = null)
+    public function search($params, $agent_id = null)
     {
         $query = self::find()->joinWith('userStat')->joinWith('inviteAgent')->joinWith('account');
         $dataProvider = new ActiveDataProvider([
@@ -118,8 +119,55 @@ class UserSearch extends User
         $query->andFilterWhere(['like', User::tableName() . '.username', $this->username])
             ->andFilterWhere([User::tableName() . '.invite_agent_id' => $this->invite_agent_id])
             ->andFilterWhere(['between', UserAccount::tableName() .'.available_amount', $this->available_amount_min,$this->available_amount_max])
-            ->andFilterWhere([User::tableName() . '.invite_agent_id' => $agent_id])
-            ->andFilterWhere([UserStat::tableName() . '.oneline_status' => $online])
+//            ->andFilterWhere([User::tableName() . '.invite_agent_id' => $agent_id])
+            ->andFilterWhere([User::tableName() . '.status' => $this->status]);
+
+        $this->trigger(SearchEvent::BEFORE_SEARCH, new SearchEvent(['query' => $query]));
+        return $dataProvider;
+    }
+
+    /**
+     * @param $params
+     * @return \yii\data\ActiveDataProvider
+     */
+    public function searchOnline($params)
+    {
+        $query = self::find()->joinWith('userStat');
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'sort' => [
+                'defaultOrder' => [
+                    'userStat.last_login_at' => SORT_DESC,
+                ],
+            ]
+        ]);
+        $sort = $dataProvider->getSort();
+
+        $sort->attributes += [
+            'userStat.last_login_at' => [
+                'asc' => [UserStat::tableName() . '.last_login_at' => SORT_ASC],
+                'desc' => [UserStat::tableName() . '.last_login_at' => SORT_DESC],
+            ],
+            'duration' => [
+                'asc' => [UserStat::tableName() . '.last_login_at' => SORT_DESC],
+                'desc' => [UserStat::tableName() . '.last_login_at' => SORT_ASC],
+            ],
+            'userStat.login_number' => [
+                'asc' => [UserStat::tableName() . '.login_number' => SORT_ASC],
+                'desc' => [UserStat::tableName() . '.login_number' => SORT_DESC],
+            ],
+            'userStat.online_duration' => [
+                'asc' => [UserStat::tableName() . '.online_duration' => SORT_ASC],
+                'desc' => [UserStat::tableName() . '.online_duration' => SORT_DESC],
+            ],
+        ];
+
+        $this->load($params);
+        if (!$this->validate()) {
+            return $dataProvider;
+        }
+        $query->andFilterWhere(['like', User::tableName() . '.username', $this->username])
+            ->andFilterWhere([User::tableName() . '.invite_agent_id' => $this->invite_agent_id])
             ->andFilterWhere([User::tableName() . '.status' => $this->status]);
 
         $this->trigger(SearchEvent::BEFORE_SEARCH, new SearchEvent(['query' => $query]));

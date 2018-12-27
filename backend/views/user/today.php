@@ -40,9 +40,17 @@ $this->params['breadcrumbs'][] = '今日注册会员';
                         ],
                         [
                             'attribute' => 'username',
+                            'format' => 'raw',
+                            'value' => function ($model) {
+                                return Html::a($model->username, Url::to(['report', 'username' => $model->username]), [
+                                    'title' => '查看' . $model->username . '详情',
+                                    'data-pjax' => '0',
+                                    'class' => 'openContab',
+                                ]);
+                            }
                         ],
                         [
-                            'attribute' => 'nickname',
+                            'attribute' => 'realname',
                         ],
                         [
                             'attribute' => 'agent_name',

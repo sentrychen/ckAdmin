@@ -13,7 +13,7 @@ class UserStat extends \common\models\UserStat
      * @reture bool
      *
      */
-    public static function setRecord($user_id)
+    public static function setRecord($user_id, $log_id)
     {
         $model = static::findOne($user_id);
         if(!$model){
@@ -23,11 +23,11 @@ class UserStat extends \common\models\UserStat
         $data = [
             'last_login_at' => time(),
             'login_number' => $model->login_number+1,
+            'online_status' => 1,
+            'log_id' => $log_id,
             'last_login_ip' => Yii::$app->request->getUserIP(),
         ];
         $model->setAttributes($data);
-        if (!$model->save(false))
-            throw new dbException('登录会员统计记录失败！');
-
+        $model->save(false);
     }
 }

@@ -15,7 +15,7 @@ return [
     'homeUrl' => '/api',
     'components' => [
         'user' => [
-            'class' => yii\web\User::class,
+            'class' => common\components\User::class,
             'identityClass' => api\models\User::class,
             'loginUrl' => null,
             'enableAutoLogin' => true,

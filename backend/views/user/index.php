@@ -80,7 +80,7 @@ $this->params['breadcrumbs'][] = '会员列表';
                             'value' => function ($model) {
                                 if (!$model->inviteAgent) return '';
                                 return Html::a($model->inviteAgent->username, Url::to(['agent/view', 'id' => $model->inviteAgent->id]), [
-                                    'title' => $model->username,
+                                    'title' => '查看代理详情',
                                     'data-pjax' => '0',
                                     'class' => 'openContab',
                                 ]);
@@ -153,7 +153,7 @@ $this->params['breadcrumbs'][] = '会员列表';
 
                         [
                             'class' => DateColumn::class,
-                            'attribute' => 'created_at'
+                            'attribute' => 'created_at',
                         ],
 
                         [

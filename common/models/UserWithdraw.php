@@ -2,6 +2,8 @@
 
 namespace common\models;
 
+use common\behaviors\NoticeBehavior;
+use common\components\notice\NoticeEvent;
 use common\libs\Constants;
 use Exception;
 use Yii;
@@ -50,6 +52,7 @@ class UserWithdraw extends \yii\db\ActiveRecord
     {
         return [
             TimestampBehavior::class,
+            NoticeBehavior::class,
         ];
     }
 
@@ -208,8 +211,8 @@ class UserWithdraw extends \yii\db\ActiveRecord
                 $agent_id = $user->invite_agent_id;
                 $amount = $this->transfer_amount;
                 $count = UserWithdraw::find()->select('user_id')
-                         ->where(['status'=>UserWithdraw::STATUS_CHECKED,'user_id'=>$this->user_id])
-                         ->andFilterWhere(['between','audit_at',$start_time,$end_time])->count();
+                    ->where(['status'=>UserWithdraw::STATUS_CHECKED,'user_id'=>$this->user_id])
+                    ->andFilterWhere(['between','audit_at',$start_time,$end_time])->count();
                 if($count == 1){
                     Daily::addCounter(['dwu'=>1,'dwa'=>$amount]);
                     AgentDaily::addCounter(['agent_id'=>$agent_id,'dwu'=>1,'dwa'=>$amount]);
@@ -225,6 +228,7 @@ class UserWithdraw extends \yii\db\ActiveRecord
                     throw new dbException('取款会员统计记录失败！');
 
                 $tr->commit();
+                $this->trigger(NoticeEvent::WITHDRAW_SUCESSS, new NoticeEvent(['uid' => $this->user_id]));
             } catch (Exception $e) {
                 Yii::error($e->getMessage());
                 //回滚
@@ -249,6 +253,7 @@ class UserWithdraw extends \yii\db\ActiveRecord
                 if (!$userAccount->save(false))
                     throw new dbException('更新用户资金账户失败！');
                 $tr->commit();
+                $this->trigger(NoticeEvent::WITHDRAW_FAILD, new NoticeEvent(['uid' => $this->user_id]));
             } catch (Exception $e) {
                 Yii::error($e->getMessage());
                 //回滚
