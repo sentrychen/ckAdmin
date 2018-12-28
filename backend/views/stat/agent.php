@@ -115,6 +115,10 @@ $this->params['breadcrumbs'][] = '代理日报';
                             'attribute' => 'dna',
                             'footer' => '<span class="label label-default">' . number_format($totals['dna'], 0) . '</span>'
                         ],
+                        [
+                            'attribute' => 'dxm',
+                            'footer' => '<span class="label label-default">' . number_format($totals['dxm'], 0) . '</span>'
+                        ],
                     ],
                 ]); ?>
             </div>

@@ -27,7 +27,9 @@ use common\widgets\SearchForm;
 
     <?= $form->field($model, 'device_type')->dropDownList(UserLoginLog::getDeviceTypes()) ?>
     <?= $form->field($model, 'client_type')->dropDownList(UserLoginLog::getLoginClients()) ?>
-        <?= $form->field($model, 'created_at')->dateRange() ?>
+    <?= $form->field($model, 'login_ip')->label('登录IP')->textInput() ?>
+    <?= $form->field($model, 'deviceid')->label('设备ID')->textInput() ?>
+    <?= $form->field($model, 'created_at')->dateRange() ?>
     <?=$form->searchButtons(false)?>
     <?php SearchForm::end(); ?>
 </div>

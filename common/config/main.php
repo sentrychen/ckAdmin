@@ -10,7 +10,10 @@ $config = [
         '@npm'   => '@vendor/npm-asset',
     ],
     'components' => [
-        'cache' => [//缓存组件 具体配置请参考 http://doc.feehi.com/configs.html
+        'cdn' => [//支持使用
+            'class' => feehi\cdn\DummyTarget::class,//不使用cdn
+        ],
+        'cache' => [//缓存组件
             'class' => yii\caching\DummyCache::class,//不使用缓存
             //'class' =>yii\redis\Cache::class,
         ],

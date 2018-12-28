@@ -52,6 +52,7 @@ use yii\widgets\Pjax;
                 ],
 
                 'client_version',
+                'deviceid'
 
             ]
         ]); ?>

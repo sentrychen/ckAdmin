@@ -162,6 +162,11 @@ class UserDeposit extends \yii\db\ActiveRecord
     public function afterSave($insert, $changedAttributes)
     {
         parent::afterSave($insert, $changedAttributes);
+        if ($insert) {
+            $this->trigger(NoticeEvent::DEPOSIT_APPLY, new NoticeEvent(['roles' => ['财务管理', '超级管理员']]));
+        }
+
+
         //存款成功
         if ($this->status == self::STATUS_CHECKED && $changedAttributes['status'] != self::STATUS_CHECKED) {
 

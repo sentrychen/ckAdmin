@@ -18,6 +18,7 @@ use common\grid\CheckboxColumn;
 use common\grid\DateColumn;
 use common\grid\GridView;
 use common\widgets\Bar;
+use common\widgets\JsBlock;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\bootstrap\Modal;
@@ -36,14 +37,10 @@ $this->params['breadcrumbs'][] = '会员列表';
                         'template' => '{refresh} {create} {message}',
                         'buttons' => [
                             'message' => function () {
-                                return Html::a('<i class="fa fa-send"></i> 发消息', '#', [
-                                    'data-title' => '给选中用户发消息',
+                                return Html::a('<i class="fa fa-send"></i> 发消息', 'javascript:void(0);', [
+                                    'title' => '发消息给用户',
                                     'data-pjax' => '0',
-                                    'id' => 'create',
-                                    'data-toggle' => 'modal',
-                                    'data-target' => '#create-modal',
-                                    'data-confirm' => null,
-                                   // 'onclick' => "if ($('#userGrid').yiiGridView('getSelectedRows').length()) {}",
+                                    'onclick' => 'sendMessage()',
                                     'class' => 'btn btn-success btn-sm',
                                 ]);
                             },
@@ -72,7 +69,21 @@ $this->params['breadcrumbs'][] = '会员列表';
                                 ]);
                             }
                         ],
-
+                        [
+                            'attribute' => 'userStat.relate_number',
+                            'label' => '关联账号数',
+                            'format' => 'raw',
+                            'value' => function ($model) {
+                                if (isset($model->userStat) && $model->userStat->relate_number > 0) {
+                                    return Html::a($model->userStat->relate_number, Url::to(['relate', 'id' => $model->id]), [
+                                        'title' => $model->username . '的关联账号',
+                                        'data-pjax' => '0',
+                                        'class' => 'openContab'
+                                    ]);
+                                }
+                                return '-';
+                            }
+                        ],
                         [
                             'attribute' => 'agent_name',
                             'label'=>'所属代理',
@@ -184,12 +195,9 @@ $this->params['breadcrumbs'][] = '会员列表';
         </div>
     </div>
 </div>
-
-
-<script src="/admin/assets/3291a725/jquery.js"></script>
-<script>
-$(function(){
-    $('#create').on('click', function () {
+<?php JsBlock::begin() ?>
+    <script type="text/javascript">
+        function sendMessage() {
         var chk_value = [];
         var num = $('input[name="selection[]"]:checked').length;
         if(num == false){
@@ -199,25 +207,16 @@ $(function(){
         $('input[name="selection[]"]:checked').each(function(){
             chk_value.push($(this).val());
         });
+            var ids = chk_value.join(',');
+            layer.open({
+                type: 2,
+                title: '发送消息',
+                shadeClose: true,
+                shade: 0.8,
+                area: ['801px', '550px'],
+                content: "<?=Url::to(['message'])?>?ids=" + ids
+            });
+        }
 
-        var requestUrl =  "<?= Url::to(['/user/send-message']);?>";
-        $.get(requestUrl, {userIds:chk_value},
-            function (data) {
-                layer.open({
-                    type: 1,
-                    title: "<font size='4' color='green'><b>发消息</b></font>",
-                    skin: 'layui-layer-demo',
-                    closeBtn: 1,
-                    area: ['35%', '60%'],
-                    anim: 1,
-                    content: data,
-                    cancel: function(){
-                        window.location.reload();
-                    }
-                });
-            }
-        );
-    });
-});
 </script>
-
+<?php JsBlock::end() ?>

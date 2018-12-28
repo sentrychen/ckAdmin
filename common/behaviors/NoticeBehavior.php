@@ -9,6 +9,7 @@
 namespace common\behaviors;
 
 use common\components\notice\NoticeEvent;
+use common\models\Message;
 use common\models\User;
 use Yii;
 
@@ -25,23 +26,31 @@ class NoticeBehavior extends \yii\base\Behavior
     public function events()
     {
         return [
-            NoticeEvent::WITHDRAW_SUCESSS => 'sendNotice',
-            NoticeEvent::WITHDRAW_FAILD => 'sendNotice',
-            NoticeEvent::DEPOSIT_SUCCESS => 'sendNotice',
-            NoticeEvent::DEPOSIT_FAILD => 'sendNotice',
-            NoticeEvent::SYSTEM_NOTICE => 'sendNotice',
-            NoticeEvent::PLATFORM_MESSAGE => 'sendNotice',
+            NoticeEvent::WITHDRAW_SUCESSS => 'noticeUser',
+            NoticeEvent::WITHDRAW_FAILD => 'noticeUser',
+            NoticeEvent::DEPOSIT_SUCCESS => 'noticeUser',
+            NoticeEvent::DEPOSIT_FAILD => 'noticeUser',
+            NoticeEvent::CHANGAMOUNT_SUCCESS => 'noticeUser',
+            NoticeEvent::SYSTEM_NOTICE => 'noticeUser',
+            NoticeEvent::PLATFORM_MESSAGE => 'noticeUser',
+            NoticeEvent::WITHDRAW_APPLY => 'noticeAdmin',
+            NoticeEvent::DEPOSIT_APPLY => 'noticeAdmin',
+            NoticeEvent::CHANGAMOUNT_APPLY => 'noticeAdmin',
         ];
     }
 
     /**
      * @param $event NoticeEvent
      */
-    public function sendNotice($event)
+    public function noticeUser($event)
     {
         $uid = $event->uid;
         $topic = $event->name;
-        $message = $event->getMessage($topic);
+        $message = $event->message ? $event->message : $event->getMessage($topic);
+
+        if ($topic != NoticeEvent::SYSTEM_NOTICE && $topic != NoticeEvent::PLATFORM_MESSAGE) {
+            Message::sendSysMessageToUser([$uid], '系统消息', $message, Message::LEVEL_MID);
+        }
 
         if ($uid) {
             $user = User::findOne($uid);
@@ -59,4 +68,35 @@ class NoticeBehavior extends \yii\base\Behavior
         Yii::$app->redis->setex('uid:notices:' . $uid, Yii::$app->params['user.noticeExpire'], json_encode($notices));
     }
 
+    /**
+     * @param $event NoticeEvent
+     */
+    public function noticeAdmin($event)
+    {
+        if (!empty($event->roles)) {
+            $uids = [];
+            foreach ($event->roles as $role) {
+                $uids = array_merge($uids, Yii::$app->authManager->getUserIdsByRole($role));
+            }
+            $uids = array_keys(array_flip($uids));
+
+            if (!empty($uids)) {
+                $topic = $event->name;
+                $message = $event->getMessage($topic);
+
+                Message::sendSysMessageToAdmin($uids, '系统消息', $message, Message::LEVEL_MID);
+                foreach ($uids as $uid) {
+                    $notices = Yii::$app->redis->get('admin:notices:' . $uid);
+                    if ($notices)
+                        $notices = json_decode($notices);
+                    else {
+                        $notices = [];
+                    }
+                    $notices[] = ['topic' => $topic, 'message' => $message];
+                    Yii::$app->redis->setex('admin:notices:' . $uid, Yii::$app->params['admin.noticeExpire'], json_encode($notices));
+                }
+            }
+
+        }
+    }
 }

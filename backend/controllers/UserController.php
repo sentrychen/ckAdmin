@@ -24,6 +24,7 @@ use backend\models\search\BetListSearch;
 use backend\models\search\LoginLogSearch;
 use backend\models\search\UserAccountRecordSearch;
 use backend\models\search\UserDepositSearch;
+use backend\models\search\UserRelateSearch;
 use backend\models\search\UserSearch;
 use backend\models\search\UserStatSearch;
 use backend\models\search\UserWithdrawSearch;
@@ -169,6 +170,18 @@ class UserController extends Controller
     }
 
     /**
+     * @param $id
+     * @return array|string
+     */
+    public function actionRelate($id)
+    {
+        $data = $this->_getGridViewData(UserRelateSearch::class, [], $id);
+        $data['userid'] = $id;
+        return $this->render('relate', $data);
+    }
+
+
+    /**
      * @param $term
      * @return array
      */
@@ -219,60 +232,37 @@ class UserController extends Controller
         ]);
     }
 
-    public function actionMessage()
+    public function actionMessage($ids)
     {
-        $model = new Message();
-        $model->scenario = 'create';
+        $model = new Message(['ids' => $ids, 'user_type' => Message::OBJ_MEMBER, 'notify_obj' => Message::SEND_MULTI]);
+
+        //$model->scenario = 'create';
         if (yii::$app->getRequest()->getIsPost()) {
+
+            $model->sender_id = yii::$app->getUser()->getId();
+            $model->sender_name = yii::$app->getUser()->getIdentity()->username;
             if ($model->load(yii::$app->getRequest()->post()) && $model->save()) {
                 yii::$app->getSession()->setFlash('success', yii::t('app', 'Success'));
-                return $this->redirect(['index']);
+                // return ['status'=>'succ'];
+                return $this->render('message-ok', [
+                    'model' => $model
+                ]);
             } else {
                 $errors = $model->getErrors();
                 $err = '';
                 foreach ($errors as $v) {
                     $err .= $v[0] . '<br>';
                 }
-                yii::$app->getSession()->setFlash('error', $err);
+                //throw new UnprocessableEntityHttpException($err);
+                //return ['status'=>'fail'];
             }
+        } else {
+            $model->level = Message::LEVEL_LOW;
         }
         $model->loadDefaultValues();
         return $this->render('message', [
             'model' => $model
         ]);
-    }
-
-    public function actionSendMessage()
-    {
-        $message = new Message();
-        $message->loadDefaultValues();
-        $request = Yii::$app->request;
-        $id_str = $request->get('userIds') ? $request->get('userIds') : '';
-        if (yii::$app->getRequest()->getIsPost()) {
-            $message->notify_obj = Message::SEND_MULTI;
-            $message->user_type = Message::OBJ_MEMBER;
-            $message->sender_id = yii::$app->getUser()->getId();
-            $message->sender_name = yii::$app->getUser()->getIdentity()->username;
-            $message->ids = Yii::$app->request->post('ids_str');
-            if ($message->load(yii::$app->getRequest()->post(),'') && $message->save() && $message->afterSave(true,[])) {
-                yii::$app->getSession()->setFlash('success', yii::t('app', 'Success'));
-                return ['status'=>'succ'];
-            } else {
-                $errors = $message->getErrors();
-                $err = '';
-                foreach ($errors as $v) {
-                    $err .= $v[0] . '<br>';
-                }
-                //throw new UnprocessableEntityHttpException($err);
-                return ['status'=>'fail'];
-            }
-        }else{
-            return $this->render('_form_message', [
-                'model' => $message,
-                'id_str' => implode(',', $id_str)
-            ]);
-        }
-
     }
 
     /*

@@ -3,21 +3,17 @@
 namespace backend\models\search;
 
 use backend\behaviors\TimeSearchBehavior;
-use backend\components\search\SearchEvent;
-use Yii;
+use backend\models\UserRelate;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use backend\models\Message;
 
 /**
- * MessageSearch represents the model behind the search form about `backend\models\Message`.
+ * UserRelateSearch represents the model behind the search form about `backend\models\UserRelate`.
  */
-class MessageSearch extends Message
+class UserRelateSearch extends UserRelate
 {
 
-    public $status;
     public $username;
-    public $keyword;
 
     /**
      * @inheritdoc
@@ -25,8 +21,7 @@ class MessageSearch extends Message
     public function rules()
     {
         return [
-
-            [['keyword', 'user_type', 'is_deleted', 'created_at'], 'safe'],
+            [['id', 'user_id', 'realate_id', 'username', 'ip', 'deviceid'], 'safe'],
         ];
     }
 
@@ -51,11 +46,12 @@ class MessageSearch extends Message
      *
      * @param array $params
      *
+     * @param $userid int
      * @return ActiveDataProvider
      */
-    public function search($params)
+    public function search($params, $userid)
     {
-        $query = Message::find()->where(['!=', 'sender_id', 0]);
+        $query = UserRelate::find()->joinWith('user u')->joinWith('relateUser r');
 
         // add conditions that should always apply here
 
@@ -68,22 +64,17 @@ class MessageSearch extends Message
             ]
         ]);
 
-        $this->load($params);
 
+        $this->load($params);
+        $this->user_id = $userid;
         if (!$this->validate()) {
-            // uncomment the following line if you do not want to return any records when validation fails
-            // $query->where('0=1');
             return $dataProvider;
         }
 
-        // grid filtering conditions
-        $query->andFilterWhere([
-            'is_deleted' => $this->is_deleted?1:0,
-            'user_type' => $this->user_type,
-        ]);
-
-        $query->andFilterWhere(['or', ['like', 'title', $this->keyword], ['like', 'content', $this->keyword]]);
-        $this->trigger(SearchEvent::BEFORE_SEARCH, new SearchEvent(['query' => $query]));
+        $query->andFilterWhere(['or', ['and', ['like', 'u.username', $this->username], ['!=', 'u.id', $userid]], ['and', ['like', 'r.username', $this->username], ['!=', 'r.id', $userid]]])
+            ->andFilterWhere([UserRelate::tableName() . '.ip' => $this->ip])
+            ->andFilterWhere([UserRelate::tableName() . '.deviceid' => $this->deviceid])
+            ->andFilterWhere(['or', ['user_id' => $userid], ['relate_id' => $userid]]);
         return $dataProvider;
     }
 }

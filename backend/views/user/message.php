@@ -1,53 +1,45 @@
 <?php
-/**
- * Author: lf
- * Blog: https://blog.feehi.com
- * Email: job@feehi.com
- * Created at: 2016-03-25 11:15
- */
 
-/**
- * @var $this yii\web\View
- * @var $model backend\models\User
- */
-
-use backend\models\Agent;
+use backend\models\Message;
 use common\widgets\ActiveForm;
-use common\libs\Constants;
-use backend\models\User;
-use yii\helpers\ArrayHelper;
-use yii\helpers\Url;
-use yii\jui\AutoComplete;
+use common\widgets\JsBlock;
 
-$this->title = '发送消息';
+/* @var $this yii\web\View */
+/* @var $model backend\models\Message */
+/* @var $form common\widgets\ActiveForm */
 ?>
-<div class="col-sm-12">
-    <div class="ibox">
-        <?= $this->render('/widgets/_ibox-title') ?>
+<div class="row">
+    <div class="col-sm-12">
         <div class="ibox-content">
-
             <?php $form = ActiveForm::begin([
+                'action' => ['message', 'ids' => $model->ids],
                 'options' => [
                     'class' => 'form-horizontal'
-                ]
+                ],
+                'fieldConfig' => ['size' => 10],
             ]); ?>
-            <?php
 
-            $temp = ['maxlength' => 64];
+            <div class="form-group">
+                <label class="col-sm-2 control-label">发送给</label>
+                <div class="col-sm-10"><p class="form-control-static"><?= implode(',', $model->getUserNames()) ?></p>
+                </div>
+            </div>
 
-            if (yii::$app->controller->action->id == 'update') {
-                $temp['disabled'] = 'disabled';
-            }
-            ?>
-            <?= $form->field($model, 'username')->textInput($temp) ?>
+            <div class="hr-line-dashed"></div>
+            <?= $form->field($model, 'level')->radioList(Message::getLevels()) ?>
             <div class="hr-line-dashed"></div>
 
-            <?= $form->field($model, 'password')->passwordInput(['maxlength' => 512]) ?>
-            <div class="hr-line-dashed"></div>
-            <?= $form->field($model, 'repassword')->passwordInput(['maxlength' => 512]) ?>
+            <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
             <div class="hr-line-dashed"></div>
 
-            <?= $form->defaultButtons() ?>
+            <?= $form->field($model, 'content')->textarea() ?>
+            <div class="hr-line-dashed"></div>
+
+            <div class="form-group">
+                <div class="col-sm-4 col-sm-offset-2">
+                    <button class="btn btn-primary" type="submit">发送</button>
+                </div>
+            </div>
             <?php ActiveForm::end(); ?>
         </div>
     </div>

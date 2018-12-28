@@ -32,11 +32,7 @@ $this->title = "Admin";
                 ]); ?>
                 <?= $form->field($model, 'username')->textInput(['maxlength' => 64]) ?>
                 <div class="hr-line-dashed"></div>
-                <?= $form->field($model, 'avatar')->imgInput([
-                    'width' => '200px',
-                    'baseUrl' => yii::$app->params['admin']['url']
-                ]) ?>
-                <div class="hr-line-dashed"></div>
+
                 <?= $form->field($model, 'email')->textInput(['maxlength' => 64]) ?>
                 <div class="hr-line-dashed"></div>
                 <?= $form->field($model, 'password')->passwordInput(['maxlength' => 512]) ?>

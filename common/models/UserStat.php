@@ -14,6 +14,7 @@ use yii\behaviors\TimestampBehavior;
  * @property int $last_login_at 最后登录时间
  * @property int $last_logout_at 最后登出时间
  * @property int $login_number 登录次数
+ * @property int $relate_number 关联账号数量
  * @property int $log_id 登录日志ID
  * @property string $last_login_ip 最后登录IP
  * @property int $online_duration 在线时长
@@ -48,7 +49,7 @@ class UserStat extends \yii\db\ActiveRecord
     {
         return [
             [['user_id'], 'required'],
-            [['user_id', 'last_login_at', 'last_logout_at', 'log_id', 'login_number', 'online_duration', 'deposit_number', 'withdrawal_number', 'bet_number'], 'integer'],
+            [['user_id', 'last_login_at', 'last_logout_at', 'log_id', 'login_number', 'relate_number', 'online_duration', 'deposit_number', 'withdrawal_number', 'bet_number'], 'integer'],
             [['available_amount', 'frozen_amount', 'deposit_amount', 'withdrawal_amount', 'bet_amount'], 'number'],
             [['last_login_ip'], 'string', 'max' => 64],
             [['user_id'], 'unique'],
@@ -68,6 +69,7 @@ class UserStat extends \yii\db\ActiveRecord
             'last_login_at' => '最后登录时间',
             'last_logout_at' => '最后登出时间',
             'login_number' => '登录次数',
+            'relate_number' => '关联账号数',
             'log_id' => '登录日志ID',
             'last_login_ip' => '登录IP',
             'online_duration' => '累计在线时长',

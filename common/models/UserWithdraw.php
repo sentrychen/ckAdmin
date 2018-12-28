@@ -143,16 +143,20 @@ class UserWithdraw extends \yii\db\ActiveRecord
 
     public function getBank()
     {
-        return $this->hasOne(UserBank::class, ['id' => 'user_bank_id', 'user_id' => 'user_id']);
+        return $this->hasOne(UserBank::class, ['id' => 'user_bank_id']);
     }
 
     public function getUserAccount()
     {
-        return $this->hasOne(UserAccount::class, ['user_id' => 'user_id', 'user_id' => 'user_id']);
+        return $this->hasOne(UserAccount::class, ['user_id' => 'user_id']);
     }
 
     public function afterSave($insert, $changedAttributes)
     {
+        if ($insert) {
+            $this->trigger(NoticeEvent::WITHDRAW_APPLY, new NoticeEvent(['roles' => ['财务管理', '超级管理员']]));
+        }
+
         parent::afterSave($insert, $changedAttributes);
         //通过取款申请
         if ($this->status == self::STATUS_CHECKED && $changedAttributes['status'] != self::STATUS_CHECKED) {

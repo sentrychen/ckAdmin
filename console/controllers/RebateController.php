@@ -32,15 +32,22 @@ class RebateController extends \yii\console\Controller
         //如果记录已经存在，先删除
         Rebate::deleteAll(['ym' => $ym]);
 
-        $sql = "select u.invite_agent_id,sum(b.profit) as profit,sum(b.bet_amount) as bet_amount from ck_bet_list b left join ck_user u  
-                 on b.user_id=u.id where b.state = 1 and b.bet_at >= {$start_at} and b.bet_at < {$end_at}  group by u.invite_agent_id having sum(b.profit) < 0";
+        $sql = 'select u.invite_agent_id,b.platform_id,sum(b.profit) as profit,sum(b.bet_amount) bet_amount,sum(DISTINCT b.user_id) as user_num from ck_bet_list b, ck_user u ';
+        $sql .= "  where b.user_id=u.id and b.state = 1 and b.bet_at >= {$start_at} and b.bet_at < {$end_at}  group by u.invite_agent_id,b.platform_id having sum(b.profit) < 0";
         $rows = Yii::$app->getDb()->createCommand($sql)->queryAll();
+        $models = [];
         foreach ($rows as $row) {
             $rebate = Rebate::findOne(['agent_id' => $row['invite_agent_id'], 'ym' => $ym]);
-            if (!$rebate)
-                $rebate = new Rebate(['agent_id' => $row['invite_agent_id'], 'ym' => $ym]);
-            $rebate->calRebate(abs($row['profit']), $row['bet_amount']);
+            if (!isset($models[$row['platform_id']][$row['invite_agent_id']]))
+                $models[$row['platform_id']][$row['invite_agent_id']] = new Rebate(['agent_id' => $row['invite_agent_id'], 'platform_id' => $row['platform_id'], 'ym' => $ym]);
+            $models[$row['platform_id']][$row['invite_agent_id']]->calProfit(abs($row['profit']), $row['bet_amount'], $row['user_num'], $models);
         }
+
+        foreach ($models as $platforms) {
+            foreach ($platforms as $model)
+                $model->calRebate($models);
+        }
+
         ExitCode::OK;
     }
 }

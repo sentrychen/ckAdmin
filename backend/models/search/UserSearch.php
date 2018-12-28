@@ -85,7 +85,10 @@ class UserSearch extends User
                 'asc' => [UserStat::tableName() . '.login_number' => SORT_ASC],
                 'desc' => [UserStat::tableName() . '.login_number' => SORT_DESC],
             ],
-
+            'userStat.relate_number' => [
+                'desc' => [UserStat::tableName() . '.relate_number' => SORT_DESC],
+                'asc' => [UserStat::tableName() . '.relate_number' => SORT_ASC],
+            ],
             'account.frozen_amount' => [
                 'asc' => [UserAccount::tableName() . '.frozen_amount' => SORT_ASC],
                 'desc' => [UserAccount::tableName() . '.frozen_amount' => SORT_DESC],
@@ -126,52 +129,5 @@ class UserSearch extends User
         return $dataProvider;
     }
 
-    /**
-     * @param $params
-     * @return \yii\data\ActiveDataProvider
-     */
-    public function searchOnline($params)
-    {
-        $query = self::find()->joinWith('userStat');
-        $dataProvider = new ActiveDataProvider([
-            'query' => $query,
-            'sort' => [
-                'defaultOrder' => [
-                    'userStat.last_login_at' => SORT_DESC,
-                ],
-            ]
-        ]);
-        $sort = $dataProvider->getSort();
-
-        $sort->attributes += [
-            'userStat.last_login_at' => [
-                'asc' => [UserStat::tableName() . '.last_login_at' => SORT_ASC],
-                'desc' => [UserStat::tableName() . '.last_login_at' => SORT_DESC],
-            ],
-            'duration' => [
-                'asc' => [UserStat::tableName() . '.last_login_at' => SORT_DESC],
-                'desc' => [UserStat::tableName() . '.last_login_at' => SORT_ASC],
-            ],
-            'userStat.login_number' => [
-                'asc' => [UserStat::tableName() . '.login_number' => SORT_ASC],
-                'desc' => [UserStat::tableName() . '.login_number' => SORT_DESC],
-            ],
-            'userStat.online_duration' => [
-                'asc' => [UserStat::tableName() . '.online_duration' => SORT_ASC],
-                'desc' => [UserStat::tableName() . '.online_duration' => SORT_DESC],
-            ],
-        ];
-
-        $this->load($params);
-        if (!$this->validate()) {
-            return $dataProvider;
-        }
-        $query->andFilterWhere(['like', User::tableName() . '.username', $this->username])
-            ->andFilterWhere([User::tableName() . '.invite_agent_id' => $this->invite_agent_id])
-            ->andFilterWhere([User::tableName() . '.status' => $this->status]);
-
-        $this->trigger(SearchEvent::BEFORE_SEARCH, new SearchEvent(['query' => $query]));
-        return $dataProvider;
-    }
 
 }

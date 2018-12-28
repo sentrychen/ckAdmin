@@ -79,20 +79,20 @@ $this->params['breadcrumbs'][] = '平台日报';
                             'footer' => '<span class="label label-default">' . Util::formatMoney($totals['dba'], false) . '</span>'
                         ],
                         [
-                            'attribute' => 'dpa',
+                            'attribute' => 'dxm',
                             'format' => 'raw',
                             'value' => function($model){
-                                return Util::formatMoney($model->dpa,false);
+                                return Util::formatMoney($model->dxm, false);
                             },
-                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['dpa'], false) . '</span>'
+                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['dxm'], false) . '</span>'
                         ],
                         [
-                            'attribute' => 'dla',
+                            'attribute' => 'dpl',
                             'format' => 'raw',
                             'value' => function($model){
-                                return Util::formatMoney($model->dla,false);
+                                return Util::formatMoney((int)$model->dla - (int)$model->dpa - (float)$model->dxm, false);
                             },
-                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['dla'], false) . '</span>'
+                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['dla'] - $totals['dpa'] - $totals['dxm'], false) . '</span>'
                         ],
                     ],
                 ]); ?>

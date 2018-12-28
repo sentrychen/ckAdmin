@@ -13,7 +13,7 @@ class StatController extends Controller
     public function actionAgent()
     {
         return $this->render('agent', $this->_getGridViewData(AgentDailySearch::class,[
-            'dnu', 'dau', 'ndu','nda','dbu', 'dbo','dba','ddu','dda','dwu','dwa','dpa','dla','dna'
+            'dnu', 'dau', 'ndu', 'nda', 'dbu', 'dbo', 'dba', 'ddu', 'dda', 'dwu', 'dwa', 'dpa', 'dla', 'dna', 'dxm'
         ]));
 
     }
@@ -21,14 +21,14 @@ class StatController extends Controller
     public function actionPlatform()
     {
         return $this->render('platform',$this->_getGridViewData(PlatformDailySearch::class,[
-            'dnu', 'dau','dua','dda','dbu','dbo','dba','dpa','dla'
+            'dnu', 'dau', 'dua', 'dda', 'dbu', 'dbo', 'dba', 'dpa', 'dla', 'dxm'
         ]));
     }
 
     public function actionDaily()
     {
         return $this->render('daily', $this->_getGridViewData(DailySearch::class,[
-            'dnu','dau','ndu','nda','dbu','dba','ddu','dda','dwu','dwa','dpa','dla'
+            'dnu', 'dau', 'ndu', 'nda', 'dbu', 'dba', 'ddu', 'dda', 'dwu', 'dwa', 'dpa', 'dla', 'dxm'
         ]));
     }
 

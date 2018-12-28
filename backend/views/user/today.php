@@ -52,11 +52,14 @@ $this->params['breadcrumbs'][] = '今日注册会员';
                         [
                             'attribute' => 'realname',
                         ],
+
                         [
                             'attribute' => 'agent_name',
                             'value' => 'inviteAgent.username',
                             'label'=>'所属代理',
                         ],
+                        'origin',
+                        'ip',
                         [
                             'attribute' => 'status',
                             'value' => function ($model) {
