@@ -22,6 +22,7 @@ use yii\behaviors\TimestampBehavior;
  * @property int $period_boot 靴次
  * @property int $period_round 局次
  * @property int $bet_amount 投注金额
+ * @property int $bingo_amount 押中金额
  * @property string $game_result 开奖结果
  * @property string $bet_record 投注点
  * @property int $profit 赢输
@@ -31,6 +32,8 @@ use yii\behaviors\TimestampBehavior;
  * @property int $xima_type 洗码类型
  * @property string $xima_rate 洗码率
  * @property string $xima 洗码值
+ * @property string $xima_limit 洗码上限
+ * @property string $xima_plan_id 洗码方案
  * @property int $state 游戏状态
  * @property int $bet_at 投注时间
  * @property string $player_cards 闲家牌面
@@ -61,7 +64,7 @@ class BetList extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['record_id', 'user_id', 'platform_id', 'bet_amount', 'profit', 'amount_before', 'amount_after', 'state', 'bet_at', 'draw_at', 'created_at'], 'integer'],
+            [['record_id', 'user_id', 'platform_id', 'xima_plan_id', 'xima_limit', 'bet_amount', 'bingo_amount', 'profit', 'amount_before', 'amount_after', 'state', 'bet_at', 'draw_at', 'created_at'], 'integer'],
             [['user_id', 'platform_id'], 'required'],
             [['xima', 'xima_status', 'xima_type', 'xima_rate'], 'number'],
             [['username', 'platform_username', 'game_type'], 'string', 'max' => 64],
@@ -89,6 +92,7 @@ class BetList extends \yii\db\ActiveRecord
             'period_boot' => '靴次',
             'period_round' => '局次',
             'bet_amount' => '投注金额(' . $chart . ')',
+            'bingo_amount' => '押中(' . $chart . ')',
             'game_result' => '开奖结果',
             'bet_record' => '投注点',
             'profit' => '赢输(' . $chart . ')',
@@ -98,6 +102,8 @@ class BetList extends \yii\db\ActiveRecord
             'xima_type' => '洗码类型',
             'xima_rate' => '洗码率',
             'xima' => '洗码值(' . $chart . ')',
+            'xima_limit' => '洗码上限(' . $chart . ')',
+            'xima_plan_id' => '洗码方案',
             'state' => '游戏状态',
             'banker_cards' => '庄家牌面',
             'player_cards' => '闲家牌面',
@@ -168,9 +174,12 @@ class BetList extends \yii\db\ActiveRecord
         if ($this->xima_status !== null)
             return false;
 
+        //如果用户没有上级代理，则不计算洗码
+        if (!$this->user->inviteAgent) return false;
+
         $user = $this->user;
         $members[] = $user;
-        $members[] = $this->user->inviteAgent;
+        $members[] = $user->inviteAgent;
         while (end($members)->parent) {
             $members[] = end($members)->parent;
         }
@@ -178,18 +187,23 @@ class BetList extends \yii\db\ActiveRecord
         //获得顶级代理账号
         $model = array_pop($members);
 
+
+        $model->account->bet_amount += $this->bet_amount;
+        $model->account->save(false);
+
         $option = Yii::$app->option;
         //如果洗码状态为不可见,返回洗码值0
-        if ($option->agent_xima_status == Constants::YesNo_No || $model->xima_status == Constants::YesNo_No) {
+        if ($option->agent_xima_status == Constants::YesNo_No || !$model->ximaPlan) {
             $this->xima_status = Constants::YesNo_No;
             $this->xima = 0;
             $this->save(false);
             return false;
         }
 
-        if ($option->agent_xima_type == Constants::XIMA_ONE_SIDED && $model->xima_type == Constants::XIMA_TWO_SIDED) {
-            $model->xima_type = Constants::XIMA_ONE_SIDED;
-        }
+        //根据洗码方案获取洗码率
+        $bet_amount = $model->account->bet_amount;
+        $rate = $this->getXimaRate($model->ximaPlan,$bet_amount);
+
         if ($option->agent_xima_rate < $model->xima_rate) {
             $model->xima_rate = $option->agent_xima_rate;
         }
@@ -258,6 +272,11 @@ class BetList extends \yii\db\ActiveRecord
         return $userXimaRecord->save(false);
     }
 
+    private function getXimaRate($plan,$bet_amount)
+    {
+
+    }
+
     /**
      * 根据上级重置下级洗码设置
      * @param $parent
@@ -309,7 +328,7 @@ class BetList extends \yii\db\ActiveRecord
                     'dpa' => $win_profit, //日赢额度
                     'dla' => $lost_profit //日输额度
                 ];
-                if($agent_id!=0){
+                if ($agent_id != 0) {
                     if ($count == 1) {
                         $com_data['dbu'] = 1; //日投注用户数
                         $com_data['dbo'] = 1; //日投注单数
@@ -333,7 +352,7 @@ class BetList extends \yii\db\ActiveRecord
                 $userStat->bet_amount += $amount;
                 if (!$userStat->save(false))
                     throw new dbException('取款会员统计记录失败！');
-                    $tr->commit();
+                $tr->commit();
             } catch (Exception $e) {
                 Yii::error($e->getMessage());
                 //回滚

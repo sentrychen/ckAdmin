@@ -18,7 +18,7 @@ class RebateSearch extends Rebate
     public function rules()
     {
         return [
-            [['ym', 'agent_id','agent_level'], 'safe'],
+            [['ym', 'agent_id','agent_level','platform_id'], 'safe'],
         ];
     }
 
@@ -65,7 +65,7 @@ class RebateSearch extends Rebate
         $query->andFilterWhere([
             'ym' => $this->ym,
             'agent_id' => $this->agent_id,
-            'agent_level' => $this->agent_level,
+            'platform_id' => $this->platform_id,
         ]);
         return $dataProvider;
     }

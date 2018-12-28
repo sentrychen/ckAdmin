@@ -123,6 +123,8 @@ class Rebate extends \yii\db\ActiveRecord
      */
     public function calProfit($profit, $amount, $user_num, &$models, $parent = -1)
     {
+        if (!$this->agent) return;
+
         if ($this->agent->rebatePlan) {
             $this->rebate_plan_id = $this->agent->rebatePlan->id;
         }
@@ -152,27 +154,32 @@ class Rebate extends \yii\db\ActiveRecord
      */
     public function calRebate(&$models, $profit = 0, $sub_rate = -1)
     {
+        if (!$this->agent) return;
         if (!isset($this->rebate_rate)) {
             $this->total_bet_amount = (float)$this->sub_bet_amount + (float)$this->self_bet_amount;
             $this->total_bet_user_num = (int)$this->sub_bet_user_num + (float)$this->self_bet_user_num;
             $this->total_profit_loss = (float)$this->sub_profit_loss + (float)$this->self_profit_loss;
-            if (!$this->rebate_plan_id) $this->rebate_rate = 0;
+            if (!$this->rebatePlan) $this->rebate_rate = 0;
             else {
                 $rebateLevel = false;
-                foreach ($this->rebatePlan->levles as $level) {
+                foreach ($this->rebatePlan->levels as $level) {
                     if ($level->profit_amount <= $this->total_profit_loss && $level->bet_user_num <= $this->total_bet_user_num)
                         $rebateLevel = $level;
                 }
                 if ($rebateLevel) {
                     $rate = $rebateLevel->getRate($this->platform_id);
                     $this->rebate_rate = $rate->rebate_rate ?? 0;
+                    $this->rebate_limit = $rebateLevel->rebate_limit;
                 } else
                     $this->rebate_rate = 0;
             }
+            $this->self_rebate_amount = $this->rebate_rate * $this->self_profit_loss;
         }
+        $rebate_rate = $this->rebate_rate;
 
-        $this->self_rebate_amount = $this->rebate_rate * $this->self_profit_loss;
-        if ($sub_rate != -1) {
+        if ($sub_rate == -1) {
+            $profit = $this->self_profit_loss;
+        }else{
             if ($this->rebate_rate > $sub_rate) {
                 $this->sub_rebate_amount += ($this->rebate_rate - $sub_rate) * $profit;
             } else {
@@ -181,6 +188,10 @@ class Rebate extends \yii\db\ActiveRecord
             }
         }
 
+        if ($this->agent->parent && $this->agent->parent->id != $this->agent_id && isset($models[$this->platform_id][$this->agent->parent->id])) {
+
+            $models[$this->platform_id][$this->agent->parent->id]->calRebate($models, $profit,$rebate_rate);
+        }
 
 
     }
@@ -199,5 +210,13 @@ class Rebate extends \yii\db\ActiveRecord
     public function getAgent()
     {
         return $this->hasOne(Agent::class, ['id' => 'agent_id']);
+    }
+
+    /**
+     * @return Platform|\yii\db\ActiveQuery
+     */
+    public function getPlatform()
+    {
+        return $this->hasOne(Platform::class, ['id' => 'platform_id']);
     }
 }

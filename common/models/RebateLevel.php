@@ -32,7 +32,7 @@ class RebateLevel extends \yii\db\ActiveRecord
             [['plan_id'], 'required'],
             [['plan_id', 'bet_user_num'], 'integer'],
             [['profit_amount', 'rebate_limit'], 'number'],
-            ['profit_amount', 'unique', 'targetAttribute' => ['bet_user_num', 'bet_user_num', 'plan_id'], 'message' => '层级条件不能相同'],
+            ['profit_amount', 'unique', 'targetAttribute' => ['profit_amount', 'bet_user_num', 'plan_id'], 'message' => '层级条件不能相同'],
         ];
     }
 

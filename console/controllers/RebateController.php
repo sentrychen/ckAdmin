@@ -48,6 +48,19 @@ class RebateController extends \yii\console\Controller
                 $model->calRebate($models);
         }
 
+        foreach ($models as $platforms) {
+            foreach ($platforms as $model) {
+                if ($model->rebate_rate >0){
+                    $model->total_rebate_amount = $model->self_rebate_amount + $model->sub_rebate_amount;
+                    if ($model->rebate_limit > 0 && $model->total_rebate_amount > $model->rebate_limit){
+                        $model->total_rebate_amount = $model->rebate_limit;
+                    }
+                    $model->save(false);
+                }
+            }
+
+        }
+
         ExitCode::OK;
     }
 }
