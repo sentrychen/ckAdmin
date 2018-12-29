@@ -79,6 +79,7 @@ class AgentXimaRecord extends \yii\db\ActiveRecord
             'xima_type' => '洗码类型',
             'xima_rate' => '洗码率',
             'xima_limit' => '洗码上限(' . $chart . ')',
+            'xima_plan_id' =>'洗码方案',
             'sub_xima_rate' => '下级洗码率',
             'xima_amount' => '洗码值(' . $chart . ')',
             'real_xima_amount' => '实得洗码值(' . $chart . ')',
@@ -118,6 +119,14 @@ class AgentXimaRecord extends \yii\db\ActiveRecord
     public function getGameType()
     {
         return $this->hasOne(GameType::class, ['name_en' => 'game_type']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getXimaPlan()
+    {
+        return $this->hasOne(XimaPlan::class, ['id' => 'xima_plan_id']);
     }
 
     public function afterSave($insert, $changedAttributes)

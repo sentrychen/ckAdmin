@@ -17,6 +17,9 @@ use common\grid\DateColumn;
 use common\grid\GridView;
 use common\libs\Constants;
 use common\helpers\Util;
+use yii\helpers\Html;
+use yii\helpers\Url;
+
 ?>
 
 <div class="row">
@@ -40,13 +43,29 @@ use common\helpers\Util;
                         ],
                         [
                             'attribute' => 'agent_id',
-                            'value' => 'agent.username',
                             'label' => '代理',
+                            'format' => 'raw',
+                            'value' => function ($model) {
+                                if (!$model->agent) return '';
+                                return Html::a($model->agent->username, Url::to(['agent/view', 'id' => $model->agent->id]), [
+                                    'title' => '查看代理详情',
+                                    'data-pjax' => '0',
+                                    'class' => 'openContab',
+                                ]);
+                            }
                         ],
                         [
                             'attribute' => 'user_id',
-                            'value' => 'user.username',
                             'label' => '投注玩家',
+                            'format' => 'raw',
+                            'value' => function ($model) {
+                                if (!$model->user) return '';
+                                return Html::a($model->user->username, Url::to(['user/report', 'username' => $model->user->username]), [
+                                    'title' => $model->user->username,
+                                    'data-pjax' => '0',
+                                    'class' => 'openContab',
+                                ]);
+                            }
                         ],
                         [
                             'attribute' => 'platform_id',
@@ -84,7 +103,17 @@ use common\helpers\Util;
                         ],
                         [
                             'attribute' => 'xima_rate',
-                            'format' => ['percent', 2],
+                            'format' => 'raw',
+                            'value' => function ($model) {
+                                if ($model->ximaPlan) {
+                                    return Html::a(Yii::$app->formatter->asPercent($model->xima_rate, 2), Url::to(['xima-plan/agent-view', 'id' => $model->xima_plan_id]), [
+                                        'title' => $model->ximaPlan->name,
+                                        'data-pjax' => '0',
+                                        'class' => 'openContab'
+                                    ]);
+                                }
+                                return Yii::$app->formatter->asPercent($model->xima_rate, 2);
+                            }
                         ],
 
                         [

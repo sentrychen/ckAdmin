@@ -338,12 +338,12 @@ class BetList extends \yii\db\ActiveRecord
         }
         if (!$ximaLevel) return false;
         $rate = $ximaLevel->getRate($this->platform_id);
-        if (!$rate->rate) return false;
+        if (!$rate->xima_rate) return false;
         return [
             'xima_limit' => $ximaLevel->xima_limit ?? 0,
             'xima_type' => $rate->xima_type,
             'xima_rate' => $rate->xima_rate,
-            'xima_pland_id' => $plan->id
+            'xima_plan_id' => $plan->id
         ];
     }
 
