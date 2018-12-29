@@ -1,7 +1,8 @@
 <?php
 header('Content-Type:application/json; charset=utf-8');
 header("Access-Control-Allow-Origin: *"); // 允许任意域名发起的跨域请求
-header('Access-Control-Allow-Headers: X-Requested-With,X_Requested_With');
+header("Access-Control-Allow-Headers: Origin,X-Requested-With,Content-Type,Accept,No-Cache,If-Modified-Since,Last-Modified,Cache-Control,Expires,X-E4M-With");
+header("Access-Control-Request-Headers: *");
 
 $params = $config = require __DIR__ . '/../config/params.php';
 
