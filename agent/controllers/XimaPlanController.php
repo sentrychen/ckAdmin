@@ -158,7 +158,12 @@ class XimaPlanController extends Controller
                     throw new Exception(current($errors));
                 }
 
-                $levelModel = current($model->levels);
+                if($model->levels){
+                    $levelModel = current($model->levels);
+                }else{
+                    $levelModel = new XimaLevel(['plan_id' => $model->id]);
+                }
+
                 $levelModel->load($posts);
                 if (!$levelModel->save()) {
                     $errors = $levelModel->getFirstErrors();
