@@ -309,10 +309,10 @@ class Util
             $version = 'Android ' . $match[0];
         } elseif (strpos($ua, 'iPhone') !== false) {
             preg_match("/(?<=CPU iPhone OS )[\d\_]{1,}/", $ua, $match);
-            echo 'iPhone OS ' . str_replace('_', '.', $match[0]);
+            //   echo 'iPhone OS ' . str_replace('_', '.', $match[0]);
         } elseif (strpos($ua, 'iPad') !== false) {
             preg_match("/(?<=CPU OS )[\d\_]{1,}/", $ua, $match);
-            echo 'iPad OS ' . str_replace('_', '.', $match[0]);
+            // echo 'iPad OS ' . str_replace('_', '.', $match[0]);
         } else {
             $version = $ua;
         }
