@@ -23,6 +23,39 @@ class UserController extends ActiveController
         return Yii::$app->getUser()->getIdentity();
     }
 
+    /**
+     * 查询用户账户
+     */
+    public function actionAccount()
+    {
+        /**
+         * @var $user User
+         */
+        $user = Yii::$app->getUser()->getIdentity();
+        $free_amount = 0;
+        if ($user->userStat && $user->account) {
+            $free_amount = (float)$user->userStat->bet_amount - (float)$user->userStat->withdrawal_amount - (float)$user->account->frozen_withdraw_amount;
+            if ($free_amount < 0) $free_amount = 0;
+            else if ($free_amount > $user->account->available_amount) $free_amount = $user->account->available_amount;
+        }
+        $data = [
+            'user_id' => $user->id,
+            'username' => $user->username,
+            'realname' => $user->realname,
+            'mobile' => $user->mobile,
+            'available_amount' => (float)($user->account ? $user->account->available_amount : 0),
+            'frozen_amount' => (float)($user->account ? $user->account->frozen_amount : 0),
+            'user_point' => (int)($user->account ? $user->account->user_point : 0),
+            'xima_amount' => (float)($user->account ? $user->account->xima_amount : 0),
+            'total_xima_amount' => (float)($user->account ? $user->account->total_xima_amount : 0),
+            'free_amount' => (float)$free_amount,
+            'fee_rate' => (float)(Yii::$app->option->finance_withdraw_rate ?? 0)
+        ];
+
+        return $data;
+
+    }
+
     /*
      * 修改个人资料
      * @return obj
@@ -81,7 +114,7 @@ class UserController extends ActiveController
     public function actionRealnameAuth(){
         $user = Yii::$app->getUser()->getIdentity();
         if($user->id_card_status == User::STATUS_IDCARD_ON){
-            return ['status'=>1,'info'=>'您已经实名认证过了，无需重复认证！'];
+            throw new RestHttpException('您已经实名认证过了，无需重复认证！', 400);
         }
         $request = Yii::$app->request;
         $user->id_card_status = User::STATUS_IDCARD_ON;

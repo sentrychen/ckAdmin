@@ -55,6 +55,17 @@ use common\helpers\Util;
                             'footer' => '<span class="label label-default">' . Util::formatMoney($totals['apply_amount'], false) . '</span>'
                         ],
                         [
+                            'attribute' => 'free_amount',
+                            'format' => 'raw',
+                            'value' => function ($model) {
+                                return Util::formatMoney($model->free_amount, false);
+                            },
+                        ],
+                        [
+                            'attribute' => 'withdraw_rate',
+                            'format' => ['percent', 2],
+                        ],
+                        [
                             'attribute' => 'transfer_amount',
                             'format' => 'raw',
                             'value' => function($model){
