@@ -75,6 +75,7 @@ class UserXimaRecord extends \yii\db\ActiveRecord
             'xima_type' => '洗码类型',
             'xima_rate' => '洗码率',
             'xima_amount' => '洗码值(' . $chart . ')',
+            'xima_limit' => '洗码上限(' . $chart . ')',
             'real_xima_amount' => '实得洗码值(' . $chart . ')',
             'updated_at' => '更新日期',
             'created_at' => '创建日期',

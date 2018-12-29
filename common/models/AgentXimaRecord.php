@@ -78,6 +78,7 @@ class AgentXimaRecord extends \yii\db\ActiveRecord
             'profit' => '赢输(' . $chart . ')',
             'xima_type' => '洗码类型',
             'xima_rate' => '洗码率',
+            'xima_limit' => '洗码上限(' . $chart . ')',
             'sub_xima_rate' => '下级洗码率',
             'xima_amount' => '洗码值(' . $chart . ')',
             'real_xima_amount' => '实得洗码值(' . $chart . ')',

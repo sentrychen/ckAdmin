@@ -116,7 +116,7 @@ use common\helpers\Util;
                             'footer' => '<span class="label label-default">' . Util::formatMoney($totals['xima_limit'], false) . '</span>'
                         ],
                         [
-                            'attribute' => 'real_xima_limit',
+                            'attribute' => 'real_xima_amount',
                             'format' => 'raw',
                             'value' => function ($model) {
                                 return Util::formatMoney($model->real_xima_amount, false);
