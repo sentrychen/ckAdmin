@@ -107,6 +107,14 @@ class UserXimaRecord extends \yii\db\ActiveRecord
         return $this->hasOne(GameType::class, ['name_en' => 'game_type']);
     }
 
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getXimaPlan()
+    {
+        return $this->hasOne(XimaPlan::class, ['id' => 'xima_plan_id']);
+    }
+
     public function afterSave($insert, $changedAttributes)
     {
         parent::afterSave($insert, $changedAttributes);
