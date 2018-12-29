@@ -54,7 +54,7 @@ class SiteController extends ActiveController
         $user = Yii::$app->getUser()->getIdentity();
 
         if ($user) {
-            $user->logout();
+            $user->logout(true);
             Yii::$app->getUser()->logout(false);
         }
         return 'logout';

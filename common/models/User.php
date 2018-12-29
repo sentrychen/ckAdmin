@@ -301,9 +301,16 @@ class User extends ActiveRecord
     /**
      * 处理用户登出
      */
-    public function logout()
+    public function logout($removeToken = false)
     {
-        $this->api_token = null;
+        if ($removeToken) {
+            if ($this->api_token) {
+                yii::$app->redis->del('uid:notices:' . $this->id);
+                yii::$app->redis->del('token:' . $this->api_token);
+            }
+            $this->api_token = null;
+        }
+
         $this->online_status = self::STATUS_OFFLINE;
         if ($this->userStat) {
             $this->userStat->last_logout_at = time();

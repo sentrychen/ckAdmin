@@ -4,7 +4,7 @@ header("Access-Control-Allow-Origin: *"); // 允许任意域名发起的跨域�
 header("Access-Control-Allow-Headers: Origin,X-Requested-With,Content-Type,Accept,No-Cache,If-Modified-Since,Last-Modified,Cache-Control,Expires,X-E4M-With");
 header("Access-Control-Request-Headers: *");
 
-$params = $config = require __DIR__ . '/../config/params.php';
+$params = require __DIR__ . '/../../common/config/params.php';
 
 $token = $_GET['token'] ?? '';
 

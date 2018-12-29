@@ -105,7 +105,8 @@ class SyncController extends \yii\console\Controller
                             return ExitCode::DATAERR;
                         }
                         // $model->calculateXima(); //计算洗码值
-
+                        $members = [];
+                        $model->ximaStat($members); //计算洗码值
                     }
                 }
             }
@@ -226,7 +227,8 @@ class SyncController extends \yii\console\Controller
                             yii::error($logErr . '数据存储失败！原因：' . implode(',', $model->getErrors()), 'task');
                             return ExitCode::DATAERR;
                         }
-                        // $model->calculateXima(); //计算洗码值
+                        $members = [];
+                        $model->ximaStat($members); //计算洗码值
                     }
                 }
             }
