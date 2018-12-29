@@ -107,14 +107,7 @@ use yii\widgets\Pjax;
                     'attribute' => 'amount_after',
                     'format' => 'currency',
                 ],
-                [
-                    'attribute' => 'xima',
-                    'format' => 'raw',
-                    'value' => function ($model) {
-                        return Util::formatMoney($model->xima, false);
-                    },
-                    'footer' => '<span class="label label-default">' . Util::formatMoney($totals['xima'], false) . '</span>'
-                ],
+
                 [
                     'class' => DateColumn::class,
                     'attribute' => 'bet_at'
