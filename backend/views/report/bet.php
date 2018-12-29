@@ -41,6 +41,15 @@ use common\helpers\Util;
                         ],
                         [
                             'attribute' => 'username',
+                            'format' => 'raw',
+                            'value' => function ($model) {
+                                if (!$model->user) return '';
+                                return Html::a($model->user->username, Url::to(['user/report', 'username' => $model->user->username]), [
+                                    'title' => $model->user->username,
+                                    'data-pjax' => '0',
+                                    'class' => 'openContab',
+                                ]);
+                            }
                         ],
                         [
                             'attribute' => 'platform_id',
