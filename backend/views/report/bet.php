@@ -17,6 +17,8 @@ use backend\models\BetList;
 use common\grid\DateColumn;
 use common\grid\GridView;
 use common\helpers\Util;
+use yii\helpers\Html;
+use yii\helpers\Url;
 
 ?>
 
