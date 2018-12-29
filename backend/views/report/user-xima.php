@@ -82,7 +82,6 @@ use common\helpers\Util;
                             'attribute' => 'xima_rate',
                             'format' => ['percent', 2],
                         ],
-
                         [
                             'attribute' => 'xima_amount',
                             'format' => 'raw',
@@ -90,6 +89,22 @@ use common\helpers\Util;
                                 return Util::formatMoney($model->xima_amount, false);
                             },
                             'footer' => '<span class="label label-default">' . Util::formatMoney($totals['xima_amount'], false) . '</span>'
+                        ],
+                        [
+                            'attribute' => 'xima_limit',
+                            'format' => 'raw',
+                            'value' => function ($model) {
+                                return Util::formatMoney($model->xima_limit, false);
+                            },
+                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['xima_limit'], false) . '</span>'
+                        ],
+                        [
+                            'attribute' => 'real_xima_limit',
+                            'format' => 'raw',
+                            'value' => function ($model) {
+                                return Util::formatMoney($model->real_xima_amount, false);
+                            },
+                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['real_xima_amount'], false) . '</span>'
                         ],
                         [
                             'class' => DateColumn::class,

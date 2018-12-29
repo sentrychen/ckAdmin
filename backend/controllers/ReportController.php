@@ -72,14 +72,14 @@ class ReportController extends Controller
     public function actionUserXima()
     {
         return $this->render('user-xima', $this->_getGridViewData(UserXimaRecordSearch::class,[
-            'bet_amount','profit','xima_amount'
+            'bet_amount', 'profit', 'xima_amount', 'xima_limit', 'real_xima_amount'
         ]));
     }
 
     public function actionAgentXima()
     {
         return $this->render('agent-xima', $this->_getGridViewData(AgentXimaRecordSearch::class,[
-            'bet_amount','profit','xima_amount','sub_xima_amount'
+            'bet_amount', 'profit', 'xima_amount', 'sub_xima_amount', 'xima_limit', 'real_xima_amount'
         ]));
     }
 

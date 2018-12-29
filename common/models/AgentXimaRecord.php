@@ -16,12 +16,16 @@ use yii\behaviors\TimestampBehavior;
  * @property int $record_id 投注单号
  * @property int $bet_id 投注记录ID
  * @property int $bet_amount 投注金额
+ * @property int $for_xm_amount 用于洗码额度
  * @property int $profit 赢输
  * @property int $xima_type 洗码类型 1单边 2双边
  * @property string $xima_rate 洗码率
  * @property string $sub_xima_rate 下级洗码率
  * @property string $xima_amount 洗码值
  * @property string $sub_xima_amount 下级洗码值
+ * @property string $xima_limit 洗码上限
+ * @property string $xima_plan_id 洗码方案
+ * @property string $real_xima_amount 实得洗码值
  * @property int $updated_at 更新日期
  * @property int $created_at 创建日期
  */
@@ -48,9 +52,9 @@ class AgentXimaRecord extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['agent_id', 'user_id', 'platform_id', 'game_type', 'bet_id', 'profit'], 'required'],
-            [['agent_id', 'record_id', 'user_id', 'platform_id', 'bet_id', 'bet_amount', 'profit', 'xima_type', 'updated_at', 'created_at'], 'integer'],
-            [['xima_rate', 'sub_xima_rate', 'xima_amount', 'sub_xima_amount'], 'number'],
+            [['agent_id', 'user_id', 'platform_id', 'game_type', 'bet_id'], 'required'],
+            [['agent_id', 'record_id', 'user_id', 'platform_id', 'bet_id', 'xima_plan_id', 'profit', 'xima_type', 'updated_at', 'created_at'], 'integer'],
+            [['xima_rate', 'sub_xima_rate', 'xima_amount', 'sub_xima_amount', 'bet_amount', 'for_xm_amount', 'xima_limit', 'real_xima_amount'], 'number'],
             [['game_type'], 'string', 'max' => 64],
         ];
     }
@@ -70,11 +74,13 @@ class AgentXimaRecord extends \yii\db\ActiveRecord
             'record_id' => '投注单号',
             'bet_id' => '投注记录',
             'bet_amount' => '投注金额(' . $chart . ')',
+            'for_xm_amount' => '用于洗码额度(' . $chart . ')',
             'profit' => '赢输(' . $chart . ')',
             'xima_type' => '洗码类型',
             'xima_rate' => '洗码率',
             'sub_xima_rate' => '下级洗码率',
             'xima_amount' => '洗码值(' . $chart . ')',
+            'real_xima_amount' => '实得洗码值(' . $chart . ')',
             'sub_xima_amount' => '下级洗码值(' . $chart . ')',
             'updated_at' => '更新日期',
             'created_at' => '创建日期',
@@ -118,8 +124,14 @@ class AgentXimaRecord extends \yii\db\ActiveRecord
         parent::afterSave($insert, $changedAttributes);
 
         if ($insert) {
-            $this->agent->account->xima_amount += $this->xima_amount;
-            $this->agent->account->save(false);
+            $xima_amount = $this->real_xima_amount;
+            if ($this->agent->account) {
+                $this->agent->account->xima_amount += (float)$xima_amount;
+                $this->agent->account->save(false);
+            }
+            Daily::addCounter(['dxm' => $xima_amount]);
+            AgentDaily::addCounter(['dxm' => $xima_amount, 'agent_id' => $this->agent_id]);
+            PlatformDaily::addCounter(['dxm' => $xima_amount, 'platform_id' => $this->platform_id]);
         }
     }
 }

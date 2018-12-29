@@ -170,50 +170,41 @@ class BetList extends \yii\db\ActiveRecord
     /**
      *
      * 洗码统计
-     * 从上级往下级逐级计算洗码值
-     * 下级洗码率不能高于上级
-     * @param array $memebers
-     * @param int $bet_amount
-     * @param int $use_amout
-     * @param int $rateConfig
      * @return bool
      */
-    public function ximaStat(&$memebers, $bet_amount = 0, $use_amout = 0, $rateConfig = [])
+    public function ximaStat()
     {
 
-        //初始化洗码会员数组
-        if (empty($memebers)) {
-            //如果投注金额小于等于0 返回
-            if ($this->bet_amount <= 0) return false;
-            //如果已经洗码，则返回
-            if ($this->xima_status !== null) return false;
-            //如果系统禁止洗码，则返回
-            if (Yii::$app->option->agent_xima_status == Constants::YesNo_No) return false;
-            //如果投注记录对应的用户不存在，则返回
-            if (!$this->user) return false;
-            $user = $this->user;
-            $members[] = $user;
-            if ($user->inviteAgent) {
-                $members[] = $user->inviteAgent;
-                while (end($members)->parent) {
-                    $members[] = end($members)->parent;
-                }
+        $members = [];
+
+        //如果投注金额小于等于0 返回
+        if ($this->bet_amount <= 0) return false;
+        //如果已经洗码，则返回
+        if ($this->xima_status !== null) return false;
+        //如果系统禁止洗码，则返回
+        if (Yii::$app->option->agent_xima_status == Constants::YesNo_No) return false;
+        //如果投注记录对应的用户不存在，则返回
+        if (!$this->user) return false;
+        $user = $this->user;
+        $members[] = $user;
+        if ($user->inviteAgent) {
+            $members[] = $user->inviteAgent;
+            while (end($members)->parent) {
+                $members[] = end($members)->parent;
             }
         }
 
-        $model = array_pop($members);
+        $model = end($members);
         $total_bet_amount = 0;
         if ($model instanceof Agent) {
             if ($model->account) {
-                $model->account->bet_amount += (float)$this->bet_amount;
-                $model->account->save(false);
-                $total_bet_amount = $model->account->bet_amount;
+                $total_bet_amount = $model->account->bet_amount + (float)$this->bet_amount;;
             }
         } else if ($this->user->userStat) {
             $total_bet_amount = $this->user->userStat->bet_amount;
         }
 
-        //如果该对象没有设置洗码方案或者没有符合条件的洗码率则返回
+        //如果顶级对象没有设置洗码方案或者没有符合条件的洗码率则返回
         if (!$model->ximaPlan || !($rateConfig = $this->getXimaRate($model->ximaPlan, $total_bet_amount))) {
             $this->xima_status = Constants::YesNo_No;
             $this->xima = 0;
@@ -221,10 +212,113 @@ class BetList extends \yii\db\ActiveRecord
             return false;
         }
 
-        //如果是单边洗码,并且单边押中为0
-        if ($rateConfig['xima_type'] && !$this->bingo_amount) {
+        $this->xima_status = Constants::YesNo_Yes;
+        $this->xima_type = $rateConfig['xima_type'];
+        $this->xima_rate = $rateConfig['xima_rate'];
+        $this->xima_limit = $rateConfig['xima_limit'];
+        $this->xima_plan_id = $model->ximaPlan->id;
 
+        //如果是单边洗码,并且单边押中为0
+        $amount = $this->bet_amount;
+        if ($this->xima_type == Constants::XIMA_ONE_SIDED) {
+            if (!$this->bingo_amount) {
+                $this->xima = 0;
+                $this->save(false);
+                return false;
+            } else {
+                $amount = (float)$this->bingo_amount;
+            }
         }
+        $this->xima = $this->xima_rate * $amount;
+        $this->save(false);
+
+        return $this->createXimaRecord($members, $amount, $rateConfig);
+    }
+
+    /**
+     * 递归创建代理及用户洗码记录
+     * @param array $members
+     * @param int $amount
+     * @param array $rateConfig
+     * @return bool|AgentXimaRecord|UserXimaRecord
+     */
+    public function createXimaRecord($members, $amount = 0, $rateConfig = [])
+    {
+        if (empty($members)) return true;
+
+        $member = array_pop($members);
+        if ($member instanceof Agent) {
+            $ximaRecord = new AgentXimaRecord();
+            if ($member->account) {
+                $member->account->bet_amount += (float)$this->bet_amount;
+                $member->account->save(false);
+            }
+        } else {
+            $ximaRecord = new UserXimaRecord();
+        }
+
+        $ximaData = [
+            'user_id' => $this->user_id,
+            'bet_id' => $this->id,
+            'record_id' => $this->record_id,
+            'agent_id' => $member->id,
+            'bet_amount' => $this->bet_amount,
+            'for_xm_amount' => $amount,
+            'platform_id' => $this->platform_id,
+            'game_type' => $this->game_type,
+            'profit' => $this->profit,
+            'xima_type' => $this->xima_type,
+            'xima_rate' => $rateConfig['xima_rate'],
+            'xima_limit' => $rateConfig['xima_limit'],
+            'xima_plan_id' => $rateConfig['xima_plan_id'],
+        ];
+        $subRateConfig = false;
+        if (!empty($members)) {
+            $subMemeber = end($members);
+
+            $total_bet_amount = 0;
+            if ($subMemeber instanceof Agent) {
+                if ($subMemeber->account) {
+                    $total_bet_amount = $subMemeber->account->bet_amount + (float)$this->bet_amount;;
+                }
+            } else if ($this->user->userStat) {
+                $total_bet_amount = $this->user->userStat->bet_amount;
+            }
+            if ($subMemeber->ximaPlan)
+                $subRateConfig = $this->getXimaRate($subMemeber->ximaPlan, $total_bet_amount);
+        }
+        $ximaRecord->setAttributes($ximaData);
+        //如果下级不符合洗码条件
+        if (!$subRateConfig || ($subRateConfig['xima_type'] == Constants::XIMA_ONE_SIDED && !$this->bingo_amount)) {
+            if ($ximaRecord instanceof AgentXimaRecord) {
+                $ximaRecord->sub_xima_amount = 0;
+                $ximaRecord->sub_xima_rate = 0;
+            }
+            $ximaRecord->xima_amount = $rateConfig['xima_rate'] * $amount;
+            $ximaRecord->real_xima_amount = ($ximaRecord->xima_limit > 0 && $ximaRecord->xima_amount > $ximaRecord->xima_limit) ? $ximaRecord->xima_limit : $ximaRecord->xima_amount;
+
+            return $ximaRecord->save(false);
+        }
+
+        if ($subRateConfig['xima_rate'] > $rateConfig['xima_rate']) {
+            $subRateConfig['xima_rate'] = $rateConfig['xima_rate'];
+        }
+        //如果下级是单边洗码
+        if ($subRateConfig['xima_type'] == Constants::XIMA_ONE_SIDED) {
+            $bingo_amount = (float)$this->bingo_amount;
+            $ximaRecord->xima_amount = $rateConfig['xima_rate'] * ($amount - $bingo_amount) + ($rateConfig['xima_rate'] - $subRateConfig['xima_rate']) * $bingo_amount;
+            $amount = $bingo_amount;
+        } else
+            $ximaRecord->xima_amount = ($rateConfig['xima_rate'] - $subRateConfig['xima_rate']) * $amount;
+
+        if ($ximaRecord instanceof AgentXimaRecord) {
+            $ximaRecord->sub_xima_amount = $subRateConfig['xima_rate'] * $amount;
+            $ximaRecord->sub_xima_rate = $subRateConfig['xima_rate'];
+        }
+        $ximaRecord->real_xima_amount = ($ximaRecord->xima_limit > 0 && $ximaRecord->xima_amount > $ximaRecord->xima_limit) ? $ximaRecord->xima_limit : $ximaRecord->xima_amount;
+        $ximaRecord->save(false);
+        return $this->createXimaRecord($members, $amount, $subRateConfig);
+
 
     }
 
@@ -248,137 +342,11 @@ class BetList extends \yii\db\ActiveRecord
         return [
             'xima_limit' => $ximaLevel->xima_limit ?? 0,
             'xima_type' => $rate->xima_type,
-            'xima_rate' => $rate->xima_rate
+            'xima_rate' => $rate->xima_rate,
+            'xima_pland_id' => $plan->id
         ];
     }
 
-
-    public function calculateXima()
-    {
-
-        //如果状态不为null，则表示已经计算洗码
-        if ($this->xima_status !== null)
-            return false;
-
-        //如果用户没有上级代理，则不计算洗码
-        if (!$this->user->inviteAgent) return false;
-
-        $user = $this->user;
-        $members[] = $user;
-        $members[] = $user->inviteAgent;
-        while (end($members)->parent) {
-            $members[] = end($members)->parent;
-        }
-
-        //获得顶级代理账号
-        $model = array_pop($members);
-
-
-        $model->account->bet_amount += $this->bet_amount;
-        $model->account->save(false);
-
-        $option = Yii::$app->option;
-        //如果洗码状态为不可见,返回洗码值0
-        if ($option->agent_xima_status == Constants::YesNo_No || !$model->ximaPlan) {
-            $this->xima_status = Constants::YesNo_No;
-            $this->xima = 0;
-            $this->save(false);
-            return false;
-        }
-
-        //根据洗码方案获取洗码率
-        $bet_amount = $model->account->bet_amount;
-        $rate = $this->getXimaRate($model->ximaPlan, $bet_amount);
-
-        if ($option->agent_xima_rate < $model->xima_rate) {
-            $model->xima_rate = $option->agent_xima_rate;
-        }
-
-        $this->xima_status = $model->xima_status;
-        $this->xima_type = $model->xima_type;
-        $this->xima_rate = $model->xima_rate;
-
-
-        //如果投注结果为输，洗码为单边洗码则返回洗码值0
-        if ($this->xima_type == Constants::XIMA_ONE_SIDED && $this->profit <= 0) {
-            $this->xima = 0;
-            $this->save(false);
-            return false;
-        }
-
-        //洗码值等于洗码率 x 投注金额
-        $this->xima = $this->xima_rate * $this->bet_amount;
-        $this->save(false);
-        //逐级分配代理洗码值
-        while ($sub = array_pop($members)) {
-            $ximaRecord = new AgentXimaRecord([
-                'user_id' => $this->user_id,
-                'bet_id' => $this->id,
-                'record_id' => $this->record_id,
-                'agent_id' => $model->id,
-                'bet_amount' => $this->bet_amount,
-                'platform_id' => $this->platform_id,
-                'game_type' => $this->game_type,
-                'profit' => $this->profit,
-                'xima_type' => $model->xima_type,
-                'xima_rate' => $model->xima_rate
-            ]);
-            $sub = $this->resetXimaSetting($model, $sub);
-            if ($sub->xima_status == Constants::YesNo_No || ($sub->xima_type == Constants::XIMA_ONE_SIDED && $this->profit <= 0)) {
-                $ximaRecord->sub_xima_amount = 0;
-                $ximaRecord->sub_xima_rate = 0;
-                $ximaRecord->xima_amount = $model->xima_rate * $this->bet_amount;
-                return $ximaRecord->save(false);
-            }
-            $ximaRecord->sub_xima_rate = $sub->xima_rate;
-            $ximaRecord->sub_xima_amount = $sub->xima_rate * $this->bet_amount;
-            $ximaRecord->xima_amount = ($model->xima_rate - $sub->xima_rate) * $this->bet_amount;
-            $ximaRecord->save(false);
-            $model = clone $sub;
-        }
-
-        //计算用户洗码值
-
-        $userXimaRecord = new UserXimaRecord([
-            'user_id' => $this->user_id,
-            'bet_id' => $this->id,
-            'record_id' => $this->record_id,
-            'bet_amount' => $this->bet_amount,
-            'platform_id' => $this->platform_id,
-            'game_type' => $this->game_type,
-            'profit' => $this->profit,
-            'xima_type' => $model->xima_type,
-            'xima_rate' => $model->xima_rate
-        ]);
-
-        if ($model->xima_status == Constants::YesNo_No || ($model->xima_type == Constants::XIMA_ONE_SIDED && $this->profit <= 0)) {
-            return false;
-        }
-        $userXimaRecord->xima_amount = $model->xima_rate * $this->bet_amount;
-        return $userXimaRecord->save(false);
-    }
-
-
-    /**
-     * 根据上级重置下级洗码设置
-     * @param $parent
-     * @param $sub
-     */
-    private function resetXimaSetting($parent, $sub)
-    {
-        if ($parent->xima_status == Constants::YesNo_No) {
-            $sub->xima_status = Constants::YesNo_No;
-            $sub->xima_rate = 0;
-        }
-
-        if ($parent->xima_type == Constants::XIMA_ONE_SIDED && $sub->xima_type == Constants::XIMA_TWO_SIDED) {
-            $sub->xima_type = Constants::XIMA_ONE_SIDED;
-        }
-        if ($parent->xima_rate < $sub->xima_rate) {
-            $sub->xima_rate = $parent->xima_rate;
-        }
-        return $sub;
-    }
 
     public function afterSave($insert, $changedAttributes)
     {
@@ -402,12 +370,6 @@ class BetList extends \yii\db\ActiveRecord
             //开始事务
             $tr = Yii::$app->db->beginTransaction();
             try {
-
-                $platformUser = platformUser::findOne(['user_id' => $this->user_id, 'platform_id' => $this->platform_id]);
-                if ($platformUser) {
-                    $platformUser->bet_amount += (float)$this->bet_amount;
-                    $platformUser->save(false);
-                }
 
                 $count = BetList::find()->select(['platform_id',])->where(['user_id' => $user->id])
                     ->andFilterWhere(['between', 'bet_at', $start_time, $end_time])->count();
