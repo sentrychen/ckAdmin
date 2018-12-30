@@ -33,7 +33,7 @@ class RelateController extends \yii\console\Controller
         $sql .= " and a.user_id != b.user_id";
         $sql .= " and (a.login_ip = b.login_ip or a.deviceid = b.deviceid)";
         $sql .= " and not exists(select * from {{%user_relate}} c where (c.user_id=a.user_id and c.relate_id = b.user_id) or (c.user_id=b.user_id and c.relate_id = a.user_id))";
-        $sql .= " group by a.user_id,b.user_id";
+       // $sql .= " group by a.user_id,b.user_id";
 
 
         $rows = Yii::$app->db->createCommand($sql)->queryAll();
