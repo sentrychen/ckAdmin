@@ -2,6 +2,7 @@
 
 namespace api\controllers;
 
+use api\components\RestHttpException;
 use api\models\Message;
 use api\models\MessageFlag;
 use common\libs\Constants;
@@ -36,8 +37,7 @@ class MessageController extends ActiveController
             ->andWhere(['or', [MessageFlag::tableName() . '.is_deleted' => Constants::YesNo_No],
                 ['notify_obj' => Message::SEND_ALL, MessageFlag::tableName() . '.id' => null]]);
         $request = Yii::$app->getRequest()->getQueryParams();
-        if(!empty($request))
-        {
+        if(!empty($request)) {
             return $provider = new ActiveDataProvider([
                 'query' => $model,
                 'pagination' => [
