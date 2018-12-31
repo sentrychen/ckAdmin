@@ -31,7 +31,7 @@ class MessageController extends ActiveController
         $model = Message::find()->joinWith('messageFlag')
             ->where([Message::tableName() . '.user_type' => Message::OBJ_MEMBER,
                 Message::tableName() . '.is_deleted' => Constants::YesNo_No,
-                Message::tableName() . '.user_id' => yii::$app->getUser()->getId()
+                MessageFlag::tableName() . '.user_id' => yii::$app->getUser()->getId()
             ])
             ->andWhere(['or', [MessageFlag::tableName() . '.is_deleted' => Constants::YesNo_No],
                 ['notify_obj' => Message::SEND_ALL, MessageFlag::tableName() . '.id' => null]]);
@@ -71,7 +71,7 @@ class MessageController extends ActiveController
         $request = Yii::$app->request;
         $id = $request->get('id');
         $result = Message::findOne($id);
-        $messageFlag = $result->messageFlag;
+        $messageFlag = $result->messageFlag ?? false;
         if (!$messageFlag)
             $messageFlag = new MessageFlag(['message_id' => $id, 'user_id' => yii::$app->getUser()->getId(), 'user_type' => Message::OBJ_MEMBER]);
 

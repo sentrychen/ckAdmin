@@ -43,6 +43,7 @@ $this->params['breadcrumbs'] = [
                         'remark',
 
                         'created_at:date',
+                        'updated_at:date',
                     ],
                 ]) ?>
                 <table id="user-form" class="table table-bordered">
