@@ -56,8 +56,11 @@ class SiteController extends ActiveController
         if ($user) {
             $user->logout(true);
             Yii::$app->getUser()->logout(false);
+            return '账号登出成功';
+        } else {
+            throw new RestHttpException('令牌错误或已经失效', 400);
         }
-        return 'logout';
+
     }
 
     public function actionRegister()
