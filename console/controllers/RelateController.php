@@ -69,7 +69,7 @@ class RelateController extends \yii\console\Controller
             $update_sql .= " (select b.id, count(*) as nums from {{%user}} b,{{%user_relate}} c ";
             $update_sql .= " where (c.user_id = b.id or c.relate_id = b.id ) and b.id in (" . implode(',', $uids) . ") group by b.id) d";
             $update_sql .= " on d.id = a.user_id set a.relate_number = d.nums";
-            echo Yii::$app->db->createCommand($update_sql)->execute();
+            Yii::$app->db->createCommand($update_sql)->execute();
         }
 
         ExitCode::OK;

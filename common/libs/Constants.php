@@ -192,6 +192,7 @@ class Constants
     const TRADE_TYPE_REDUCEAMOUNT = 4;
     const TRADE_TYPE_ADMINADD = 5;
     const TRADE_TYPE_ADMINREDUCE = 6;
+    const TRADE_TYPE_XIMASETTLE = 7;
 
     public static function getTradeTypeItems($key = null)
     {
@@ -203,6 +204,7 @@ class Constants
             self::TRADE_TYPE_REDUCEAMOUNT => '下分',
             self::TRADE_TYPE_ADMINADD => '人工增加',
             self::TRADE_TYPE_ADMINREDUCE => '人工减少',
+            self::TRADE_TYPE_XIMASETTLE => '洗码结算',
         ];
         return self::getItems($items, $key);
     }

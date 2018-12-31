@@ -88,12 +88,4 @@ class UserAccountRecord extends \yii\db\ActiveRecord
         return $this->hasOne(User::class, ['id' => 'user_id']);
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getTradeType()
-    {
-        return $this->hasOne(TradeType::class, ['id' => 'trade_type_id']);
-    }
-
 }

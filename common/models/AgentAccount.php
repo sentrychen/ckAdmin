@@ -11,6 +11,8 @@ use Yii;
  * @property string $agent_name 代理账号
  * @property string $available_amount 可用余额
  * @property string $frozen_amount 冻结金额
+ * @property string $total_amount 累计金额
+ * @property string $total_xima_amount 累计洗码金额
  * @property string $xima_amount 洗码金额
  * @property int $updated_at 更新日期
  * @property int $created_at 创建日期
@@ -33,7 +35,7 @@ class AgentAccount extends \yii\db\ActiveRecord
         return [
             [['agent_id'], 'required'],
             [['agent_id', 'updated_at', 'created_at'], 'integer'],
-            [['available_amount', 'frozen_amount', 'xima_amount'], 'number'],
+            [['available_amount', 'frozen_amount', 'xima_amount', 'total_xima_amount', 'total_amount'], 'number'],
             [['agent_name'], 'string', 'max' => 64],
             [['agent_id'], 'unique'],
         ];
@@ -49,8 +51,10 @@ class AgentAccount extends \yii\db\ActiveRecord
             'agent_id' => '代理ID',
             'agent_name' => '代理账号',
             'available_amount' => '可用余额(' . $chart . ')',
+            'total_amount' => '累计收入(' . $chart . ')',
             'frozen_amount' => '冻结金额(' . $chart . ')',
             'xima_amount' => '洗码值(' . $chart . ')',
+            'total_xima_amount' => '累计洗码值(' . $chart . ')',
             'updated_at' => '更新日期',
             'created_at' => '创建日期',
         ];
