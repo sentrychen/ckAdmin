@@ -29,7 +29,7 @@ class RebateController extends \yii\console\Controller
     public function actionCalculate()
     {
         $start_at = strtotime(date('Y-m-01', strtotime('-1 month')));
-        $end_at = strtotime(date('Y-m-30'));
+        $end_at = strtotime(date('Y-m-01'));
         $ym = date('Ym', $start_at);
         //如果记录已经存在，先删除
         Rebate::deleteAll(['ym' => $ym]);
