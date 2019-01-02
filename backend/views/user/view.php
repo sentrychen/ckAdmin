@@ -133,6 +133,21 @@ use common\helpers\Util;
         'account.available_amount:currency',
         'account.frozen_amount:currency',
         'account.xima_amount:currency',
+        [
+            'attribute' => 'xima_plan_id',
+            'label' => '洗码方案',
+            'format' => 'raw',
+            'value' => function ($model) {
+                if ($model->xima_plan_id) {
+                    return Html::a($model->ximaPlan->name, Url::to(['xima-plan/user-view', 'id' => $model->xima_plan_id]), [
+                        'title' => '查看洗码方案',
+                        'data-pjax' => '0',
+                        'class' => 'openContab'
+                    ]);
+                }
+                return '';
+            }
+        ],
 
     ],
 ]) ?>
