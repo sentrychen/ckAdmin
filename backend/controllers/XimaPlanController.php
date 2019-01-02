@@ -361,8 +361,13 @@ class XimaPlanController extends Controller
                 }
 
                 if (!empty($ids)) {
-                    XimaLevel::deleteAll(['and', 'pland_id' => $model->id, ['not in', 'id', $ids]]);
+                    $levels = XimaLevel::find()->where(['plan_id' => $model->id])->andWhere(['not in', 'id', $ids])->all();
+                    foreach ($levels as $level) {
+                        PlatformXima::deleteAll(['xima_level_id' => $level->id]);
+                        $level->delete();
+                    }
                 }
+
                 $tr->commit();
                 yii::$app->getSession()->setFlash('success', yii::t('app', 'Success'));
                 return $this->redirect(['agent']);

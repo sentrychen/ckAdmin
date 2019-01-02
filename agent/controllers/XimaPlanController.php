@@ -3,7 +3,7 @@
 namespace agent\controllers;
 
 use agent\models\{
-    Agent, Platform, search\XimaPlanSearch, User, XimaLevel, XimaPlan
+    Agent, Platform, PlatformXima, search\XimaPlanSearch, User, XimaLevel, XimaPlan
 };
 use common\libs\Constants;
 use Yii;
@@ -360,7 +360,11 @@ class XimaPlanController extends Controller
                 }
 
                 if (!empty($ids)) {
-                    XimaLevel::deleteAll(['and', 'pland_id' => $model->id, ['not in', 'id', $ids]]);
+                    $levels = XimaLevel::find()->where(['plan_id' => $model->id])->andWhere(['not in', 'id', $ids])->all();
+                    foreach ($levels as $level) {
+                        PlatformXima::deleteAll(['xima_level_id' => $level->id]);
+                        $level->delete();
+                    }
                 }
                 $tr->commit();
                 yii::$app->getSession()->setFlash('success', yii::t('app', 'Success'));

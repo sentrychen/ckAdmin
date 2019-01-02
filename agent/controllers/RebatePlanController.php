@@ -3,7 +3,7 @@
 namespace agent\controllers;
 
 use agent\models\{
-    Agent, Platform, search\RebatePlanSearch, RebateLevel, RebatePlan
+    Agent, Platform, PlatformRebate, search\RebatePlanSearch, RebateLevel, RebatePlan
 };
 use common\libs\Constants;
 use Yii;
@@ -179,9 +179,12 @@ class RebatePlanController extends Controller
                     }
 
                 }
-
                 if (!empty($ids)) {
-                    RebateLevel::deleteAll(['and', 'pland_id' => $model->id, ['not in', 'id', $ids]]);
+                    $levels = RebateLevel::find()->where(['plan_id' => $model->id])->andWhere(['not in', 'id', $ids])->all();
+                    foreach ($levels as $level) {
+                        PlatformRebate::deleteAll(['rebate_level_id' => $level->id]);
+                        $level->delete();
+                    }
                 }
                 $tr->commit();
                 yii::$app->getSession()->setFlash('success', yii::t('app', 'Success'));
