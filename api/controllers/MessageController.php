@@ -95,14 +95,15 @@ class MessageController extends ActiveController
     {
         $user = Yii::$app->getUser()->getIdentity();
         $request = Yii::$app->request;
-        $id = $request->get('id');
+        $id = $request->post('id');
         $result = Message::findOne($id);
-        if ($result->user_type != Message::OBJ_MEMBER) {
-            throw new RestHttpException("错误的消息ID", 400);
-        }
 
         if (!$request)
             throw new RestHttpException("错误的消息ID", 400);
+
+        if ($result->user_type != Message::OBJ_MEMBER) {
+            throw new RestHttpException("错误的消息ID", 400);
+        }
         $messageFlag = $result->messageFlag ?? false;
         if (!$messageFlag) {
             if ($result->notify_obj != Message::SEND_ALL) {
