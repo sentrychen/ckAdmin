@@ -6,8 +6,8 @@ use api\components\RestHttpException;
 use api\models\Message;
 use api\models\MessageFlag;
 use common\libs\Constants;
-use yii\data\ActiveDataProvider;
 use Yii;
+use yii\data\ActiveDataProvider;
 
 /**
  * MessageController implements the CRUD actions for Message model.
@@ -39,7 +39,7 @@ class MessageController extends ActiveController
                 ['notify_obj' => Message::SEND_ALL, MessageFlag::tableName() . '.id' => null]]);
         $request = Yii::$app->getRequest()->getQueryParams();
 
-        if(!empty($request)) {
+        if (!empty($request)) {
             return $provider = new ActiveDataProvider([
                 'query' => $model,
                 'pagination' => [
@@ -97,9 +97,23 @@ class MessageController extends ActiveController
         $request = Yii::$app->request;
         $id = $request->get('id');
         $result = Message::findOne($id);
+        if ($result->user_type != Message::OBJ_MEMBER) {
+            throw new RestHttpException("错误的消息ID", 400);
+        }
+
+        if (!$request)
+            throw new RestHttpException("错误的消息ID", 400);
         $messageFlag = $result->messageFlag ?? false;
-        if (!$messageFlag)
+        if (!$messageFlag) {
+            if ($result->notify_obj != Message::SEND_ALL) {
+                throw new RestHttpException("错误的消息ID", 400);
+            }
             $messageFlag = new MessageFlag(['message_id' => $id, 'user_id' => yii::$app->getUser()->getId(), 'user_type' => Message::OBJ_MEMBER]);
+        } else {
+            if ($messageFlag->is_deleted == Constants::YesNo_Yes) {
+                throw new RestHttpException("消息已经被删除", 400);
+            }
+        }
 
         $messageFlag->is_deleted = Constants::YesNo_Yes;
         $messageFlag->deleted_at = time();
@@ -112,7 +126,8 @@ class MessageController extends ActiveController
      * 未读消息
      *
      */
-    public function actionNoread(){
+    public function actionNoread()
+    {
 
 
         return Message::getUnreadCount();
