@@ -84,8 +84,7 @@ class AgentWithdrawSearch extends AgentWithdraw
         ];
 
         $this->load($params);
-        if ($agent_id)
-            $this->agent_id = yii::$app->getUser()->getId();
+        $this->agent_id = $agent_id ? $agent_id : yii::$app->getUser()->getId();
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
             // $query->where('0=1');
