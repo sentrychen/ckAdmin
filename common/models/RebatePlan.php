@@ -2,6 +2,7 @@
 
 namespace common\models;
 
+use common\libs\Constants;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\helpers\ArrayHelper;
