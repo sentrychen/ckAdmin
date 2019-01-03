@@ -97,7 +97,7 @@ $this->params['breadcrumbs'][] = '代理列表';
                             'label' => '返佣方案',
                             'format' => 'raw',
                             'value' => function ($model) {
-                                if ($model->rebate_plan_id) {
+                                if ($model->rebatePlan) {
                                     return Html::a($model->rebatePlan->name, Url::to(['rebate-plan/view', 'id' => $model->rebate_plan_id]), [
                                         'title' => '查看返佣方案',
                                         'data-pjax' => '0',
