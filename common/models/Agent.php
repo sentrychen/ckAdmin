@@ -88,27 +88,15 @@ class Agent extends ActiveRecord
             [['username', 'password'], 'required', 'on' => ['create']],
             [['username'], 'unique', 'on' => 'create'],
             [['repassword'], 'compare', 'compareAttribute' => 'password'],
-            [['parent_id', 'top_id', 'sub_permission', 'agent_level', 'xima_status', 'xima_type', 'default_player_level', 'xima_plan_id', 'rebate_plan_id', 'reg_time', 'status', 'created_at', 'updated_at'], 'integer'],
+            [['parent_id', 'top_id', 'sub_permission', 'agent_level', 'default_player_level', 'xima_plan_id', 'rebate_plan_id', 'reg_time', 'status', 'created_at', 'updated_at'], 'integer'],
             [['parent_id'], 'checkParent', 'on' => 'create'],
-            [['xima_rate', 'rebate_rate', 'available_amount', 'frozen_amount', 'rebate_amount'], 'number'],
             [['username'], 'string', 'max' => 64],
             [['password_hash', 'password_reset_token', 'realname', 'email', 'avatar', 'memo'], 'string', 'max' => 255],
             [['password'],'string','min'=>6],
             [['auth_key', 'mobile', 'promo_code', 'reg_from', 'reg_ip'], 'string', 'max' => 32],
-            [['currency'], 'string', 'max' => 16],
             [['username'], 'unique'],
             [['promo_code'], 'unique'],
 
-            /*
-            [['rebate_rate'], 'compare', 'compareValue' => yii::$app->option->agent_max_rebate * 100, 'operator' => '<='],
-            [['xima_rate'], 'compare', 'compareValue' => yii::$app->option->agent_xima_rate * 100, 'operator' => '<='],
-            [['rebate_rate', 'xima_rate'], 'filter', 'filter' => function ($value) {
-                return $value ? $value / 100 : 0;
-            }],
-            [['rebate_rate'], 'checkRebateRate'],
-            [['xima_rate'], 'checkXimaRate'],
-
-            */
 
         ];
     }
@@ -138,17 +126,9 @@ class Agent extends ActiveRecord
             'parent_id' => '上层账号',
             'top_id' => '总代账号',
             'agent_level' => '代理层级',
-            'xima_status' => '查看洗码',
-            'xima_rate' => '洗码率',
-            'xima_type' => '洗码类别',
-            'rebate_rate' => '占成',
             'default_player_level' => '预设玩家层级',
             'rebate_plan_id' => '返佣方案',
             'xima_plan_id' => '洗码方案',
-            'available_amount' => '账户余额(' . $chart . ')',
-            'frozen_amount' => '冻结余额(' . $chart . ')',
-            'rebate_amount' => '返佣总额(' . $chart . ')',
-            'currency' => '主货币',
             'reg_from' => '创建渠道',
             'reg_time' => '注册时间',
             'reg_ip' => '注册IP',
@@ -319,23 +299,6 @@ class Agent extends ActiveRecord
             $account->agent_id = $this->id;
             $account->save(false);
         }
-    }
-
-
-    /**
-     * @param bool $skipIfSet
-     */
-    public function loadDefaultValues($skipIfSet = true)
-    {
-
-        /*
-        $identity = yii::$app->getUser()->getIdentity();
-        $this->rebate_rate = $identity->rebate_rate;
-        $this->xima_status = $identity->xima_status;
-        $this->xima_type = $identity->xima_type;
-        $this->xima_rate = $identity->xima_rate;
-        */
-        parent::loadDefaultValues();
     }
 
     /**

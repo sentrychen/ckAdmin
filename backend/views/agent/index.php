@@ -112,7 +112,7 @@ $this->params['breadcrumbs'][] = '代理列表';
                             'label' => '洗码方案',
                             'format' => 'raw',
                             'value' => function ($model) {
-                                if ($model->xima_plan_id) {
+                                if ($model->ximaPlan) {
                                     return Html::a($model->ximaPlan->name, Url::to(['xima-plan/agent-view', 'id' => $model->xima_plan_id]), [
                                         'title' => '查看洗码方案',
                                         'data-pjax' => '0',
@@ -138,7 +138,10 @@ $this->params['breadcrumbs'][] = '代理列表';
                             'attribute' => 'account.xima_amount',
                             'format' => 'raw',
                             'value' => function ($model) {
-                                return Util::formatMoney($model->account->xima_amount, false);
+                                if ($model->account)
+                                    return Util::formatMoney($model->account->xima_amount, false);
+                                else
+                                    return '-';
                             },
                             'footer' => '<span class="label label-default">' . Util::formatMoney($totals['account_xima_amount'], false) . '</span>'
                         ],
@@ -147,7 +150,10 @@ $this->params['breadcrumbs'][] = '代理列表';
                             'attribute' => 'account.available_amount',
                             'format' => 'raw',
                             'value' => function ($model) {
-                                return Util::formatMoney($model->available_amount, false);
+                                if ($model->account)
+                                    return Util::formatMoney($model->account->available_amount, false);
+                                else
+                                    return '-';
                             },
                             'footer' => '<span class="label label-default">' . Util::formatMoney($totals['account_available_amount'], false) . '</span>'
                         ],
