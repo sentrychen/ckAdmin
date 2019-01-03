@@ -37,15 +37,6 @@ use yii\db\ActiveRecord;
  * @property string $avatar 用户头像url
  * @property int $status 会员状态             1、正常             2、冻结             3、锁定             4、注销
  * @property string $xima_plan_id 洗码方案
- * @property string $xima_rate 洗码率
- * @property int $xima_type 洗码类别 1 单边 2 双边
- * @property int $xima_status 查看洗码 0 否 1是
- * @property int $min_limit 最小限红
- * @property int $max_limit 最大限红
- * @property int $dogfall_min_limit 最小和限红
- * @property int $dogfall_max_limit 最大和限红
- * @property int $pair_min_limit 最小对限红
- * @property int $pair_max_limit 最大和限红
  * @property int $invite_agent_id 邀请代理ID
  * @property string $invite_user_id 邀请用户ID
  * @property int $created_at 创建时间
@@ -92,8 +83,7 @@ class User extends ActiveRecord
             [['username'], 'required', 'on' => ['update', 'self-update']],
             [['username'], 'unique', 'on' => 'create'],
             [['repassword'], 'compare', 'compareAttribute' => 'password'],
-            [['status', 'xima_plan_id', 'xima_type', 'xima_status', 'min_limit', 'max_limit', 'dogfall_min_limit', 'dogfall_max_limit', 'pair_min_limit', 'pair_min_limit', 'invite_agent_id', 'invite_user_id', 'created_at', 'updated_at'], 'integer'],
-            [['xima_rate'], 'number'],
+            [['status', 'xima_plan_id', 'invite_agent_id', 'invite_user_id', 'created_at', 'updated_at'], 'integer'],
             [['username', 'password_hash', 'password_pay', 'api_token', 'password_reset_token', 'email', 'avatar', 'deviceid'], 'string', 'max' => 255],
             [['ip', 'origin'], 'string', 'max' => 64],
             [['auth_key'], 'string', 'max' => 32],
@@ -125,7 +115,7 @@ class User extends ActiveRecord
             'nickname' => '会员昵称',
             'realname' => '真实姓名',
             'id_card' => '身份证号',
-            'id_card_status' => '是否实名（0：未实名，1：已实名）',
+            'id_card_status' => '是否实名',
             'mobile' => '手机号',
             'wechat' => '微信号',
             'qq' => 'QQ号',
@@ -142,15 +132,6 @@ class User extends ActiveRecord
             'status' => '会员状态',
             'online_status' => '在线状态',
             'xima_plan_id' => '洗码方案',
-            'xima_rate' => '洗码率',
-            'xima_type' => '洗码类别',
-            'xima_status' => '查看洗码',
-            'min_limit' => '最小限红',
-            'max_limit' => '最大限红',
-            'dogfall_min_limit' => '最小和限红',
-            'dogfall_max_limit' => '最大和限红',
-            'pair_min_limit' => '最小对限红',
-            'pair_max_limit' => '最大和限红',
             'invite_agent_id' => '所属代理',
             'invite_user_id' => '邀请用户ID',
             'created_at' => '注册日期',
