@@ -133,10 +133,10 @@ class BetList extends \yii\db\ActiveRecord
             'big' => '<span class="label label-danger">大</span>',
             'even' => '<span class="label label-info">单</span>',
             'odd' => '<span class="label label-danger">双</span>',
-            'spade' => '<span class="label label-default">黑桃</span>',
+            'spade' => '<span class="label label-inverse">黑桃</span>',
             'heart' => '<span class="label label-danger">红桃</span>',
             'club' => '<span class="label label-default">梅花</span>',
-            'diamond' => '<span class="label label-danger">方块</span>',
+            'diamond' => '<span class="label text-danger bg-default">方块</span>',
             'joker' => '<span class="label label-warning">王</span>',
         ];
 
