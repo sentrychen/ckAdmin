@@ -17,6 +17,9 @@ use backend\models\UserAccountRecord;
 use common\grid\DateColumn;
 use common\grid\GridView;
 use common\helpers\Util;
+use yii\helpers\Html;
+use yii\helpers\Url;
+
 ?>
 
 <div class="row">
@@ -37,6 +40,17 @@ use common\helpers\Util;
                     'columns' => [
                         [
                             'attribute' => 'user.username',
+                            'format' => 'raw',
+                            'value' => function ($model) {
+                                if ($model->user)
+                                    return Html::a($model->user->username, Url::to(['user/report', 'username' => $model->user->username]), [
+                                        'title' => $model->user->username,
+                                        'data-pjax' => '0',
+                                        'class' => 'openContab',
+                                    ]);
+                                else
+                                    return $model->user_id;
+                            },
                             'footer' => '合计'
                         ],
                         [

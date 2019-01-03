@@ -7,6 +7,9 @@ use common\grid\GridView;
 use common\grid\DateColumn;
 use common\models\AgentAccountRecord;
 use common\helpers\Util;
+use yii\helpers\Html;
+use yii\helpers\Url;
+
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\search\AgentAccountRecordSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -31,8 +34,16 @@ $this->params['breadcrumbs'][] = '代理交易记录';
                         ['attribute' => 'id','footer' => '合计'],
                         [
                             'attribute' => 'agent_id',
-                            'value' => 'agent.username',
                             'label' => '代理账号',
+                            'format' => 'raw',
+                            'value' => function ($model) {
+                                if (!$model->agent) return '';
+                                return Html::a($model->agent->username, Url::to(['agent/view', 'id' => $model->agent->id]), [
+                                    'title' => $model->agent->username,
+                                    'data-pjax' => '0',
+                                    'class' => 'openContab',
+                                ]);
+                            }
 
                         ],
                         'name',
