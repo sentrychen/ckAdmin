@@ -9,6 +9,7 @@
 use agent\models\Agent;
 use agent\models\UserAccountRecord;
 use agent\models\TradeType;
+use common\libs\Constants;
 use yii\helpers\ArrayHelper;
 use common\widgets\SearchForm;
 
@@ -27,7 +28,7 @@ use common\widgets\SearchForm;
     <?= $form->field($model, 'agent_id')->label('所属代理')->dropDownList(Agent::getAgentTreeList(null, yii::$app->getUser()->getId(), null, true)) ?>
 
     <?= $form->field($model, 'switch')->label('收支')->dropDownList(UserAccountRecord::getSwitchStatus()) ?>
-    <?= $form->field($model, 'trade_type_id')->dropDownList(ArrayHelper::map(TradeType::find()->all(), 'id', 'name')) ?>
+    <?= $form->field($model, 'trade_type_id')->dropDownList(Constants::getTradeTypeItems()) ?>
     <?= $form->field($model, 'created_at')->dateRange() ?>
     <?= $form->searchButtons(['trade-list']) ?>
     <?php SearchForm::end(); ?>

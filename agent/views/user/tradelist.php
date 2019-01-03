@@ -51,7 +51,9 @@ $this->params['breadcrumbs'][] = '会员交易记录';
                         ],
                         [
                             'attribute' => 'trade_type_id',
-                            'value' => 'tradeType.name'
+                            'value' => function ($model) {
+                                return \common\libs\Constants::getTradeTypeItems($model->trade_type_id);
+                            }
                         ],
                         [
                             'attribute' => 'switch',
