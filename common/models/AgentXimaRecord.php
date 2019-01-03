@@ -139,6 +139,7 @@ class AgentXimaRecord extends \yii\db\ActiveRecord
             $ximaAmount = $this->real_xima_amount;
             if ($this->agent->account) {
                 $this->agent->account->available_amount += (float)$ximaAmount;
+                $this->agent->account->total_xima_amount += (float)$ximaAmount;
                 $this->agent->account->total_amount += (float)$ximaAmount;
                 if ($this->agent->account->save(false)) {
                     $userRecord = new AgentAccountRecord();
