@@ -36,7 +36,7 @@ class AgentController extends Controller
                 }
                 */
                 'data' =>$this->_getGridViewData(AgentSearch::class,[
-                    'account.xima_amount','account.available_amount'
+                    'account.available_amount', 'account.total_amount', 'account.bet_amount'
                 ]) ,
             ],
 

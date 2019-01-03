@@ -249,6 +249,7 @@ class BetList extends \yii\db\ActiveRecord
         $member = array_pop($members);
         if ($member instanceof Agent) {
             $ximaRecord = new AgentXimaRecord();
+            $ximaRecord->ym = date('Ym');
             if ($member->account) {
                 $member->account->bet_amount += (float)$this->bet_amount;
                 $member->account->save(false);
@@ -316,6 +317,7 @@ class BetList extends \yii\db\ActiveRecord
             $ximaRecord->sub_xima_rate = $subRateConfig['xima_rate'];
         }
         $ximaRecord->real_xima_amount = ($ximaRecord->xima_limit > 0 && $ximaRecord->xima_amount > $ximaRecord->xima_limit) ? $ximaRecord->xima_limit : $ximaRecord->xima_amount;
+
         $ximaRecord->save(false);
         return $this->createXimaRecord($members, $amount, $subRateConfig);
 

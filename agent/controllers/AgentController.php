@@ -25,7 +25,7 @@ class AgentController extends Controller
         return [
             'index' => [
                 'class' => IndexAction::class,
-                'data' => $this->_getGridViewData(AgentSearch::class, ['account.xima_amount', 'account.available_amount'])
+                'data' => $this->_getGridViewData(AgentSearch::class, ['account.available_amount', 'account.total_amount', 'account.bet_amount'])
             ],
 
             'view' => [

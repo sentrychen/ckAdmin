@@ -56,7 +56,7 @@ class AgentSearch extends Agent
      */
     public function search($params)
     {
-        $query = self::find();
+        $query = self::find()->joinWith('account');
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'sort' => [
@@ -65,12 +65,30 @@ class AgentSearch extends Agent
                 ]
             ]
         ]);
+        $sort = $dataProvider->getSort();
+
+        $sort->attributes += [
+            'account.available_amount' => [
+                'asc' => ['available_amount' => SORT_ASC],
+                'desc' => ['available_amount' => SORT_DESC],
+            ],
+            'account.bet_amount' => [
+                'asc' => ['bet_amount' => SORT_ASC],
+                'desc' => ['bet_amount' => SORT_DESC],
+            ],
+            'account.total_amount' => [
+                'asc' => ['total_amount' => SORT_ASC],
+                'desc' => ['total_amount' => SORT_DESC],
+            ]
+        ];
+
         $this->load($params);
         if (!$this->validate()) {
             return $dataProvider;
         }
-        $query->andFilterWhere(['id' => $this->id])
-            ->andFilterWhere(['like', 'realname', $this->realname])
+
+
+        $query->andFilterWhere(['like', 'realname', $this->realname])
             ->andFilterWhere(['like', 'username', $this->realname])
             ->andFilterWhere(['like', 'promo_code', $this->promo_code]);
         if (empty($this->parent_id)) {

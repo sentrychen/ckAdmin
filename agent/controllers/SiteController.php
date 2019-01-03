@@ -9,6 +9,7 @@
 namespace agent\controllers;
 
 use agent\models\Agent;
+use agent\models\AgentAccountRecord;
 use agent\models\AgentXimaRecord;
 use agent\models\BetList;
 use agent\models\Message;
@@ -122,26 +123,17 @@ class SiteController extends \yii\web\Controller
 
         //今日注册用户
         $statics['userToday'] = $query->andWhere(['>=', 'created_at', $today])->count();
+
+        //今日收入
+        $statics['amountToday'] = AgentAccountRecord::find()->where(['agent_id' => $agent_id, 'switch' => AgentAccountRecord::SWITCH_IN])
+            ->andWhere(['>=', 'created_at', $today])->sum('amount');
         //投注输赢
         $winLost = $this->getPlatFDailySum();
 
-        //累计洗码收入
-        $queryXima = AgentXimaRecord::find()->where(['agent_id' => $agent_id]);
-
-        $statics['ximaTotal'] = $queryXima->sum('xima_amount');
-
-        //今日洗码收入
-        $statics['ximaToday'] = $queryXima->andWhere(['>=', 'created_at', $today])->sum('xima_amount');
-
-        //累计返佣收入
-        $queryRebate = Rebate::find()->where(['agent_id' => $agent_id]);
-        $statics['rebateTotal'] = $queryRebate->sum('total_rebate_amount');
-
-        //上月返佣收入
-        $statics['rebateLastMonth'] = $queryRebate->andWhere(['ym' => date('Ym', strtotime('-1 month'))])->sum('total_rebate_amount');
 
         return $this->render('main', [
             'statics' => $statics,
+            'agent' => yii::$app->getUser()->getIdentity(),
             'winLost' => BaseJson::encode($winLost)
         ]);
     }

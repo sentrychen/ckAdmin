@@ -30,6 +30,7 @@ use yii\helpers\ArrayHelper;
  * @property string $total_bet_amount 合计投注额
  * @property string $total_rebate_amount 合计返佣
  * @property string $total_bet_user_num 合计投注人数
+ * @property string $xima_amount 当期洗码值
  * @property int $created_at 计佣时间
  */
 class Rebate extends \yii\db\ActiveRecord
@@ -60,7 +61,7 @@ class Rebate extends \yii\db\ActiveRecord
     {
         return [
             [['agent_id', 'agent_level', 'created_at'], 'integer'],
-            [['rebate_rate', 'self_bet_amount', 'self_profit_loss', 'sub_bet_amount', 'sub_profit_loss', 'sub_rebate_amount', 'self_rebate_amount', 'total_rebate_amount'], 'number'],
+            [['rebate_rate', 'self_bet_amount', 'self_profit_loss', 'sub_bet_amount', 'sub_profit_loss', 'sub_rebate_amount', 'self_rebate_amount', 'total_rebate_amount', 'xima_amount'], 'number'],
             [['ym'], 'string', 'max' => 7],
             [['agent_name'], 'string', 'max' => 255],
         ];
@@ -94,6 +95,7 @@ class Rebate extends \yii\db\ActiveRecord
             'total_profit_loss' => '合计损益(' . $chart . ')',
             'total_rebate_amount' => '合计返佣(' . $chart . ')',
             'total_bet_user_num' => '合计投注人数',
+            'xima_amount' => '当期洗码值(' . $chart . ')',
             'created_at' => '计佣时间',
         ];
     }

@@ -31,7 +31,7 @@ class RebateController extends Controller
                 }
                 */
                 'data' => $this->_getGridViewData(RebateSearch::class,
-                    ['self_bet_amount', 'self_profit_loss','sub_bet_amount','sub_profit_loss','sub_rebate_amount','self_rebate_amount','total_rebate_amount']
+                    ['self_bet_amount', 'self_profit_loss', 'sub_bet_amount', 'sub_profit_loss', 'sub_rebate_amount', 'self_rebate_amount', 'total_rebate_amount', 'xima_amount']
                 )
 
             ],

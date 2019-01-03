@@ -26,6 +26,7 @@ use yii\behaviors\TimestampBehavior;
  * @property string $xima_limit 洗码上限
  * @property string $xima_plan_id 洗码方案
  * @property string $real_xima_amount 实得洗码值
+ * @property int $ym 月度
  * @property int $updated_at 更新日期
  * @property int $created_at 创建日期
  */
@@ -53,7 +54,7 @@ class AgentXimaRecord extends \yii\db\ActiveRecord
     {
         return [
             [['agent_id', 'user_id', 'platform_id', 'game_type', 'bet_id'], 'required'],
-            [['agent_id', 'record_id', 'user_id', 'platform_id', 'bet_id', 'xima_plan_id', 'profit', 'xima_type', 'updated_at', 'created_at'], 'integer'],
+            [['agent_id', 'record_id', 'user_id', 'platform_id', 'ym', 'bet_id', 'xima_plan_id', 'profit', 'xima_type', 'updated_at', 'created_at'], 'integer'],
             [['xima_rate', 'sub_xima_rate', 'xima_amount', 'sub_xima_amount', 'bet_amount', 'for_xm_amount', 'xima_limit', 'real_xima_amount'], 'number'],
             [['game_type'], 'string', 'max' => 64],
         ];
@@ -79,11 +80,12 @@ class AgentXimaRecord extends \yii\db\ActiveRecord
             'xima_type' => '洗码类型',
             'xima_rate' => '洗码率',
             'xima_limit' => '洗码上限(' . $chart . ')',
-            'xima_plan_id' =>'洗码方案',
+            'xima_plan_id' => '洗码方案',
             'sub_xima_rate' => '下级洗码率',
             'xima_amount' => '洗码值(' . $chart . ')',
             'real_xima_amount' => '实得洗码值(' . $chart . ')',
             'sub_xima_amount' => '下级洗码值(' . $chart . ')',
+            'ym' => '月度',
             'updated_at' => '更新日期',
             'created_at' => '创建日期',
         ];
@@ -133,15 +135,27 @@ class AgentXimaRecord extends \yii\db\ActiveRecord
     {
         parent::afterSave($insert, $changedAttributes);
 
-        if ($insert) {
-            $xima_amount = $this->real_xima_amount;
+        if ($insert && $this->real_xima_amount > 0) {
+            $ximaAmount = $this->real_xima_amount;
             if ($this->agent->account) {
-                $this->agent->account->xima_amount += (float)$xima_amount;
-                $this->agent->account->save(false);
+                $this->agent->account->available_amount += (float)$ximaAmount;
+                $this->agent->account->total_amount += (float)$ximaAmount;
+                if ($this->agent->account->save(false)) {
+                    $userRecord = new AgentAccountRecord();
+                    $userRecord->agent_id = $this->agent_id;
+                    $userRecord->switch = AgentAccountRecord::SWITCH_IN;
+                    $userRecord->trade_no = $this->id;
+                    $userRecord->trade_type_id = AgentAccountRecord::TRADE_TYPE_XIMA;
+                    $userRecord->name = '洗码结算';
+                    $userRecord->remark = '洗码收入结算。投注用户:' . $this->user->username . ',游戏平台:' . $this->platform->name;
+                    $userRecord->amount = $ximaAmount;
+                    $userRecord->after_amount = $this->agent->account->available_amount;
+                    $userRecord->save(false);
+                }
             }
-            Daily::addCounter(['dxm' => $xima_amount]);
-            AgentDaily::addCounter(['dxm' => $xima_amount, 'agent_id' => $this->agent_id]);
-            PlatformDaily::addCounter(['dxm' => $xima_amount, 'platform_id' => $this->platform_id]);
+            Daily::addCounter(['dxm' => $ximaAmount]);
+            AgentDaily::addCounter(['dxm' => $ximaAmount, 'agent_id' => $this->agent_id]);
+            PlatformDaily::addCounter(['dxm' => $ximaAmount, 'platform_id' => $this->platform_id]);
         }
     }
 }

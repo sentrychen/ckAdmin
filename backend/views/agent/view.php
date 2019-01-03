@@ -69,15 +69,39 @@ $this->params['breadcrumbs'] = [
                             }
                         ],
                         [
-                            'label' => '可用额度',
+                            'label' => '可提现额度',
                             'value' => function ($model) {
                                 return Util::formatMoney($model->account->available_amount);
                             }
                         ],
                         [
-                            'label' => '洗码额度',
+                            'label' => '冻结额度',
                             'value' => function ($model) {
-                                return Util::formatMoney($model->account->xima_amount);
+                                return Util::formatMoney($model->account->frozen_amount);
+                            }
+                        ],
+                        [
+                            'label' => '累计收入',
+                            'value' => function ($model) {
+                                return Util::formatMoney($model->account->total_amount);
+                            }
+                        ],
+                        [
+                            'label' => '累计洗码额度',
+                            'value' => function ($model) {
+                                return Util::formatMoney($model->account->total_xima_amount);
+                            }
+                        ],
+                        [
+                            'label' => '累计返佣额度(扣除洗码收入外)',
+                            'value' => function ($model) {
+                                return Util::formatMoney($model->account->total_rebate_amount);
+                            }
+                        ],
+                        [
+                            'label' => '累计用户投注额度',
+                            'value' => function ($model) {
+                                return Util::formatMoney($model->account->bet_amount);
                             }
                         ],
 

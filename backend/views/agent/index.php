@@ -135,18 +135,6 @@ $this->params['breadcrumbs'][] = '代理列表';
 
 
                         [
-                            'attribute' => 'account.xima_amount',
-                            'format' => 'raw',
-                            'value' => function ($model) {
-                                if ($model->account)
-                                    return Util::formatMoney($model->account->xima_amount, false);
-                                else
-                                    return '-';
-                            },
-                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['account_xima_amount'], false) . '</span>'
-                        ],
-
-                        [
                             'attribute' => 'account.available_amount',
                             'format' => 'raw',
                             'value' => function ($model) {
@@ -157,6 +145,32 @@ $this->params['breadcrumbs'][] = '代理列表';
                             },
                             'footer' => '<span class="label label-default">' . Util::formatMoney($totals['account_available_amount'], false) . '</span>'
                         ],
+
+                        [
+                            'attribute' => 'account.total_amount',
+                            'format' => 'raw',
+                            'value' => function ($model) {
+                                if ($model->account)
+                                    return Util::formatMoney($model->account->total_amount, false);
+                                else
+                                    return '-';
+                            },
+                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['account_total_amount'], false) . '</span>'
+                        ],
+
+
+                        [
+                            'attribute' => 'account.bet_amount',
+                            'format' => 'raw',
+                            'value' => function ($model) {
+                                if ($model->account)
+                                    return Util::formatMoney($model->account->bet_amount, false);
+                                else
+                                    return '-';
+                            },
+                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['account_bet_amount'], false) . '</span>'
+                        ],
+
                         [
                             'class' => DateColumn::class,
                             'attribute' => 'created_at',

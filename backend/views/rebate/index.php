@@ -123,6 +123,14 @@ $this->params['breadcrumbs'][] = '代理佣金';
                             'footer' => '<span class="label label-default">' . Util::formatMoney($totals['total_rebate_amount'], false) . '</span>'
                         ],
                         [
+                            'attribute' => 'xima_amount',
+                            'format' => 'raw',
+                            'value' => function ($model) {
+                                return Util::formatMoney($model->xima_amount, false);
+                            },
+                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['xima_amount'], false) . '</span>'
+                        ],
+                        [
                             'class' => DateColumn::class,
                             'attribute' => 'created_at'
                         ],

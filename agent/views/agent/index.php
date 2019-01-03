@@ -46,10 +46,6 @@ $this->params['breadcrumbs'][] = '代理列表';
                     'columns' => [
 
                         [
-                            'attribute' => 'id',
-                            'footer' => '合计'
-                        ],
-                        [
                             'attribute' => 'username',
                             'format' => 'raw',
                             'value' => function ($model) {
@@ -58,7 +54,8 @@ $this->params['breadcrumbs'][] = '代理列表';
                                     'data-pjax' => '0',
                                     'class' => 'openContab',
                                 ]);
-                            }
+                            },
+                            'footer' => '合计'
                         ],
                         [
                             'attribute' => 'parent.username',
@@ -80,6 +77,18 @@ $this->params['breadcrumbs'][] = '代理列表';
                                 $class = ['danger', 'danger', 'warning', 'info'];
                                 return '<span class="badge label-' . ($class[$model->agent_level] ?? 'info') . '">' . $model->agent_level . '</span>';
                             }
+                        ],
+                        [
+                            'attribute' => 'member',
+                            'format' => 'raw',
+                            'value' => function ($model) {
+                                return Html::a(Agent::getMemberCount($model->id), Url::to(['/user/index?UserSearch[invite_agent_id]=' . $model->id]), [
+                                    'title' => '查看会员',
+                                    'data-pjax' => '0',
+                                    'class' => 'openContab',
+                                ]);
+                            },
+
                         ],
                         [
                             'attribute' => 'realname',
@@ -129,14 +138,7 @@ $this->params['breadcrumbs'][] = '代理列表';
                                 return '';
                             }
                         ],
-                        [
-                            'attribute' => 'account.xima_amount',
-                            'format' => 'raw',
-                            'value' => function ($model) {
-                                return Util::formatMoney($model->account->xima_amount, false);
-                            },
-                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['account_xima_amount'], false) . '</span>'
-                        ],
+
                         [
                             'attribute' => 'account.available_amount',
                             'format' => 'raw',
@@ -147,8 +149,32 @@ $this->params['breadcrumbs'][] = '代理列表';
 
                         ],
                         [
+                            'attribute' => 'account.total_amount',
+                            'format' => 'raw',
+                            'value' => function ($model) {
+                                if ($model->account)
+                                    return Util::formatMoney($model->account->total_amount, false);
+                                else
+                                    return '-';
+                            },
+                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['account_total_amount'], false) . '</span>'
+                        ],
+
+
+                        [
+                            'attribute' => 'account.bet_amount',
+                            'format' => 'raw',
+                            'value' => function ($model) {
+                                if ($model->account)
+                                    return Util::formatMoney($model->account->bet_amount, false);
+                                else
+                                    return '-';
+                            },
+                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['account_bet_amount'], false) . '</span>'
+                        ],
+                        [
                             'class' => ActionColumn::class,
-                            'width' => '135',
+                            'width' => '100',
                             'template' => '{view} {update}',
                             'buttons' => [
                                 'update' => function ($url, $model, $key, $index, $gridView) {

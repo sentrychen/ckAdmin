@@ -175,6 +175,9 @@ $this->title = yii::t('app', 'Backend Manage System');
                                     class="fa fa-user"> <?= Html::encode(yii::$app->getUser()->getIdentity()->username) ?></i><span
                                     class="caret"></span></a>
                         <ul class="dropdown-menu animated fadeInRight m-t-xs">
+                            <li><a class="J_menuItem"
+                                   href="<?= Url::to(['agent/view', 'id' => yii::$app->getUser()->getId()]) ?>">个人资料</a>
+                            </li>
                             <li><a class="J_menuItem" href="<?= Url::to(['site/update-self']) ?>">修改密码</a></li>
                             <li class="divider"></li>
                             <li><a data-method="post" href="<?= Url::toRoute('site/logout') ?>">登出系统</a></li>

@@ -8,115 +8,118 @@
 
 use agent\assets\EchartAsset;
 use agent\models\Agent;
+use common\helpers\Util;
 use common\widgets\JsBlock;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\DetailView;
-use common\helpers\Util;
 
 /**
  * @var $statics array
+ * @var $agent Agent
  */
 EchartAsset::register($this);
 ?>
     <div class="row">
-        <div class="col-sm-3">
+        <div class="col-sm-6">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <h5>代理总数</h5>
+                    <h4>会员发展</h4>
                 </div>
-                <div class="ibox-content openContab" href="<?= Url::to(['agent/index']) ?>"
-                     title="下级代理" style="cursor: pointer">
-                    <h1 class="no-margins"><?= $statics['agentTotal'] ?></h1>
-                    <div class="stat-percent font-bold text-success"></div>
-                    <small><?= yii::t('app', 'Total') ?></small>
+                <div class="ibox-content openContab" title="会员列表" href="<?= Url::to(['user/index']) ?>"
+                     style="cursor: pointer">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h1 class="no-margins"><?= $statics['userTotal'] ?></h1>
+                            <div class="font-bold text-navy">
+                                <small>累计注册</small>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <h1 class="no-margins"><?= $statics['userToday'] ?></h1>
+                            <div class="font-bold text-navy">
+                                <small>今日新增</small>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
-        <div class="col-sm-3">
+
+        <div class="col-sm-6">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <h5>今日新增代理</h5>
+                    <h4>代理发展</h4>
                 </div>
-                <div class="ibox-content">
-                    <h1 class="no-margins"><?= $statics['agentToday'] ?></h1>
-                    <div class="stat-percent font-bold text-info"></div>
-                    <small><?= yii::t('app', 'Total') ?></small>
+                <div class="ibox-content openContab" title="下级代理" href="<?= Url::to(['agent/index']) ?>"
+                     style="cursor: pointer">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h1 class="no-margins"><?= $statics['agentTotal'] ?></h1>
+                            <div class="font-bold text-navy">
+                                <small>累计注册</small>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <h1 class="no-margins"><?= $statics['agentToday'] ?></h1>
+                            <div class="font-bold text-navy">
+                                <small>今日新增</small>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
-        <div class="col-sm-3">
+
+        <div class="col-sm-6">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <h5>会员总数</h5>
+                    <h4>收入统计</h4>
                 </div>
-                <div class="ibox-content openContab" href="<?= Url::to(['user/index']) ?>"
-                     title="<?= yii::t('app', 'Users') ?>" style="cursor: pointer">
-                    <h1 class="no-margins"><?= $statics['userTotal'] ?></h1>
-                    <div class="stat-percent font-bold text-navy"></div>
-                    <small><?= yii::t('app', 'Total') ?></small>
+                <div class="ibox-content openContab" title="交易记录" href="<?= Url::to(['agent-trade/index']) ?>"
+                     style="cursor: pointer">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h1 class="no-margins"><?= Util::formatMoney($agent->account->total_amount, false) ?></h1>
+                            <div class="font-bold text-warning">
+                                <small>累计收入(￥)</small>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <h1 class="no-margins"><?= Util::formatMoney($statics['amountToday'], false) ?></h1>
+                            <div class="font-bold text-warning">
+                                <small>今日收入(￥)</small>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
-        <div class="col-sm-3">
+        <div class="col-sm-6">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <h5>今日新增会员</h5>
+                    <h4>账户余额</h4>
                 </div>
-                <div class="ibox-content">
-                    <h1 class="no-margins"><?= $statics['agentToday'] ?></h1>
-                    <div class="stat-percent font-bold text-info"></div>
-                    <small><?= yii::t('app', 'Total') ?></small>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-3">
-            <div class="ibox float-e-margins">
-                <div class="ibox-title">
-                    <h5>累计洗码额度(￥)</h5>
-                </div>
-                <div class="ibox-content">
-                    <h1 class="no-margins"><?= Util::formatMoney($statics['ximaTotal'],false) ?></h1>
-                    <div class="stat-percent font-bold text-success"></div>
-                    <small><?= yii::t('app', 'Total') ?></small>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-3">
-            <div class="ibox float-e-margins">
-                <div class="ibox-title">
-                    <h5>今日洗码额度(￥)</h5>
-                </div>
-                <div class="ibox-content">
-                    <h1 class="no-margins"><?= Util::formatMoney($statics['ximaToday'],false) ?></h1>
-                    <div class="stat-percent font-bold text-info"></div>
-                    <small><?= yii::t('app', 'Total') ?></small>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-3">
-            <div class="ibox float-e-margins">
-                <div class="ibox-title">
-                    <h5>累计返佣额度(￥)</h5>
-                </div>
-                <div class="ibox-content">
-                    <h1 class="no-margins"><?= Util::formatMoney($statics['rebateTotal'],false) ?></h1>
-                    <div class="stat-percent font-bold text-navy"></div>
-                    <small><?= yii::t('app', 'Total') ?></small>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-3">
-            <div class="ibox float-e-margins">
-                <div class="ibox-title">
-                    <h5>上月返佣额度(￥)</h5>
-                </div>
-                <div class="ibox-content">
-                    <h1 class="no-margins"><?= Util::formatMoney($statics['rebateLastMonth'],false) ?></h1>
-                    <div class="stat-percent font-bold text-info"></div>
-                    <small><?= yii::t('app', 'Total') ?></small>
+                <div class="ibox-content openContab" title="交易记录" href="<?= Url::to(['agent-trade/index']) ?>"
+                     style="cursor: pointer">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h1 class="no-margins"><?= Util::formatMoney($agent->account->available_amount, false) ?></h1>
+                            <div class="font-bold text-warning">
+                                <small>可提现额度(￥)</small>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <h1 class="no-margins"><?= Util::formatMoney($agent->account->frozen_amount, false) ?></h1>
+                            <div class="font-bold text-warning">
+                                <small>已冻结额度(￥)</small>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -127,16 +130,23 @@ EchartAsset::register($this);
                 <div class="ibox-title">
                     <h5>当前代理信息</h5>
                 </div>
-                <div class="ibox-content" style="height:458px;">
-                    <?= DetailView::widget(['model' => yii::$app->getUser()->getIdentity(),
-                        'attributes' => ['username',
-                            ['label' => '上级代理',
-                                'attribute' => 'parent.username'],
-                            ['attribute' => 'status',
+                <div class="ibox-content" style="height:414px;">
+                    <?= DetailView::widget(['model' => $agent,
+                        'attributes' => [
+                            [
+                                'attribute' => 'username',
+                                'format' => 'raw',
                                 'value' => function ($model) {
-                                    $status = Agent::getStatuses();
-                                    return isset($status[$model->status]) ? $status[$model->status] : "异常";
-                                }],
+                                    return Html::a($model->username, Url::to(['agent/view', 'id' => $model->id]), [
+                                        'title' => '查看个人详细资料',
+                                        'data-pjax' => '0',
+                                        'class' => 'openContab',
+                                    ]);
+                                },
+                            ],
+                            ['label' => '上级代理',
+                                'attribute' => 'parent.username'
+                            ],
                             'created_at:date',
                             [
                                 'attribute' => 'rebate_plan_id',
@@ -153,6 +163,7 @@ EchartAsset::register($this);
                                     return '';
                                 }
                             ],
+
                             [
                                 'attribute' => 'xima_plan_id',
                                 'label' => '洗码方案',
@@ -168,11 +179,6 @@ EchartAsset::register($this);
                                     return '';
                                 }
                             ],
-                            ['label' => '可提现额度',
-                                'format' => 'raw',
-                                'value' => function ($model) {
-                                    return '<span class="label label-warning">' . yii::$app->formatter->asCurrency($model->account->available_amount) . '</span>';
-                                }],
                             ['label' => '会员推广链接',
                                 'format' => 'raw',
                                 'value' => function ($model) {
@@ -203,7 +209,7 @@ EchartAsset::register($this);
                     </div>
                 </div>
                 <div class="ibox-content">
-                    <div class="flot-chart" style="height:422px;">
+                    <div class="flot-chart" style="height:378px;">
                         <div class="flot-chart-content" id="flot-wl-chart"></div>
                     </div>
                 </div>
