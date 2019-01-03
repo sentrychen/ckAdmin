@@ -45,6 +45,17 @@ use common\helpers\Util;
                         ['attribute' => 'id','footer' => '合计'],
                         [
                             'attribute' => 'user.username',
+                            'format' => 'raw',
+                            'value' => function ($model) {
+                                if ($model->user)
+                                    return Html::a($model->user->username, Url::to(['user/report', 'username' => $model->user->username]), [
+                                        'title' => $model->user->username,
+                                        'data-pjax' => '0',
+                                        'class' => 'openContab',
+                                    ]);
+                                else
+                                    return $model->user_id;
+                            }
                         ],
                         [
                             'attribute' => 'apply_amount',

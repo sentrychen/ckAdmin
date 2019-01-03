@@ -61,6 +61,11 @@ class AgentWithdrawSearch extends AgentWithdraw
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'sort' => [
+                'defaultOrder' => [
+                    'created_at' => SORT_DESC,
+                ],
+            ]
         ]);
 
         $sort = $dataProvider->getSort();

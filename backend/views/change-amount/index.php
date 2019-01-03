@@ -1,13 +1,12 @@
 <?php
 
 use backend\models\ChangeAmountRecord;
-use common\widgets\Bar;
-use common\grid\CheckboxColumn;
 use common\grid\ActionColumn;
 use common\grid\GridView;
+use common\helpers\Util;
+use common\widgets\Bar;
 use yii\helpers\Html;
 use yii\helpers\Url;
-use common\helpers\Util;
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\search\ChangeAmountRecordSearch */
@@ -34,10 +33,23 @@ $this->params['breadcrumbs'][] = '上下分审核';
                     'footerRowOptions' => ['style' => 'font-weight:bold;'],
                     'columns' => [
 
-                        ['attribute' => 'id','footer' => '合计'],
-                        'user.username',
+                        ['attribute' => 'id', 'footer' => '合计'],
                         [
-                            'attribute' => 'switch',
+                            'attribute' => 'user.username',
+                            'format' => 'raw',
+                            'value' => function ($model) {
+                                if ($model->user)
+                                    return Html::a($model->user->username, Url::to(['user/report', 'username' => $model->user->username]), [
+                                        'title' => $model->user->username,
+                                        'data-pjax' => '0',
+                                        'class' => 'openContab',
+                                    ]);
+                                else
+                                    return $model->user_id;
+                            }
+                        ],
+
+                        ['attribute' => 'switch',
                             'value' => function ($model) {
                                 return ChangeAmountRecord::getSwitchs($model->switch);
                             }
@@ -46,16 +58,16 @@ $this->params['breadcrumbs'][] = '上下分审核';
                         [
                             'attribute' => 'amount',
                             'format' => 'raw',
-                            'value' => function($model){
-                                return Util::formatMoney($model->amount,false);
+                            'value' => function ($model) {
+                                return Util::formatMoney($model->amount, false);
                             },
                             'footer' => '<span class="label label-default">' . Util::formatMoney($totals['amount'], false) . '</span>'
                         ],
                         [
                             'attribute' => 'after_amount',
                             'format' => 'raw',
-                            'value' => function($model){
-                                return Util::formatMoney($model->after_amount,false);
+                            'value' => function ($model) {
+                                return Util::formatMoney($model->after_amount, false);
                             },
                             'footer' => '<span class="label label-default">' . Util::formatMoney($totals['after_amount'], false) . '</span>'
                         ],

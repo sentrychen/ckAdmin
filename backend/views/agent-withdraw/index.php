@@ -47,6 +47,15 @@ use common\helpers\Util;
                         ],
                         [
                             'attribute' => 'agent.username',
+                            'format' => 'raw',
+                            'value' => function ($model) {
+                                if (!$model->agent) return '';
+                                return Html::a($model->agent->username, Url::to(['agent/view', 'id' => $model->agent->id]), [
+                                    'title' => $model->agent->username,
+                                    'data-pjax' => '0',
+                                    'class' => 'openContab',
+                                ]);
+                            }
                         ],
                         [
                             'attribute' => 'apply_amount',
@@ -65,12 +74,15 @@ use common\helpers\Util;
                             'footer' => '<span class="label label-default">' . Util::formatMoney($totals['transfer_amount'], false) . '</span>'
                         ],
                         [
-                            'attribute' => 'agent.frozen_amount',
+                            'label' => '冻结金额',
                             'format' => 'raw',
                             'value' => function($model){
-                                return Util::formatMoney($model->agent->frozen_amount,false);
+                                if ($model->agent && $model->agent->account)
+                                    return Util::formatMoney($model->agent->account->frozen_amount, false);
+                                else
+                                    return 0;
                             },
-                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['frozen_amount'], false) . '</span>'
+
                         ],
                         [
                             'attribute' => 'status',
