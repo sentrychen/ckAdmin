@@ -7,6 +7,7 @@
  */
 
 use backend\models\UserWithdraw;
+use common\helpers\Util;
 use common\widgets\ActiveForm;
 use common\widgets\JsBlock;
 use yii\helpers\Url;
@@ -17,7 +18,7 @@ $this->params['breadcrumbs'] = [
     ['label' => '取款审核'],
 ];
 /**
- * @var $model backend\models\Withdraw
+ * @var $model backend\models\UserWithdraw
  */
 ?>
 
@@ -64,21 +65,43 @@ $this->params['breadcrumbs'] = [
                 <div class="form-group">
                     <label class="col-sm-2 control-label">申请取款金额</label>
                     <div class="col-sm-10"><p
-                                class="form-control-static"><?= yii::$app->formatter->asCurrency($model->apply_amount) ?></p>
+                                class="form-control-static"><?= Util::formatMoney($model->apply_amount) ?></p>
                     </div>
                 </div>
                 <div class="hr-line-dashed"></div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">用户冻结金额</label>
                     <div class="col-sm-10"><p
-                                class="form-control-static"><?= yii::$app->formatter->asCurrency($model->user->account->frozen_amount) ?></p>
+                                class="form-control-static"><?= Util::formatMoney($model->user->account->frozen_amount) ?></p>
                     </div>
                 </div>
                 <div class="hr-line-dashed"></div>
-                <?= $form->field($model, 'status')->radioList([UserWithdraw::STATUS_CHECKED => '通过', UserWithdraw::STATUS_CANCLED => '取消']) ?>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">免费额度</label>
+                    <div class="col-sm-10"><p
+                                class="form-control-static"><?= Util::formatMoney($model->free_amount) ?></p>
+                    </div>
+                </div>
+                <div class="hr-line-dashed"></div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">超额扣费率</label>
+                    <div class="col-sm-10"><p
+                                class="form-control-static"><?= yii::$app->formatter->asPercent($model->withdraw_rate, 2) ?></p>
+                    </div>
+                </div>
+                <div class="hr-line-dashed"></div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">应出款金额</label>
+                    <div class="col-sm-10"><p
+                                class="form-control-static">申请金额 - 超额扣费率 x (申请金额 - 免费额度)
+                            = <?= (float)$model->transferAmount() ?></p>
+                    </div>
+                </div>
 
                 <div class="hr-line-dashed"></div>
-                <?= $form->field($model, 'transfer_amount')->label('出款金额')->textInput(['beforeAddon' => '￥', 'value' => (int)$model->apply_amount]) ?>
+                <?= $form->field($model, 'transfer_amount')->label('实出款金额')->textInput(['beforeAddon' => '￥', 'value' => (float)$model->transferAmount()]) ?>
+                <div class="hr-line-dashed"></div>
+                <?= $form->field($model, 'status')->radioList([UserWithdraw::STATUS_CHECKED => '通过', UserWithdraw::STATUS_CANCLED => '取消']) ?>
 
 
                 <div class="hr-line-dashed"></div>
@@ -94,7 +117,7 @@ $this->params['breadcrumbs'] = [
     <script>
 
         $(document).ready(function () {
-            var apply_amount = parseInt(<?=$model->apply_amount?>);
+            var apply_amount = '<?=(float)$model->transferAmount()?>';
 
             $('#userwithdraw-status input').change(function () {
                 let checked = $('#userwithdraw-status input:checked').val();

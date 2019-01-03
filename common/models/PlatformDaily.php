@@ -22,6 +22,8 @@ use Yii;
  */
 class PlatformDaily extends \yii\db\ActiveRecord
 {
+    public $dpl;
+
     /**
      * {@inheritdoc}
      */
@@ -61,6 +63,7 @@ class PlatformDaily extends \yii\db\ActiveRecord
             'dba' => '投注额度(' . $chart . ')',
             'dpa' => '赢额度(' . $chart . ')',
             'dla' => '输额度(' . $chart . ')',
+            'dpl' => '盈利(' . $chart . ')',
             'dxm' => '洗码值(' . $chart . ')',
         ];
     }

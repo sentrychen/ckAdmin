@@ -5,7 +5,8 @@ use common\grid\ActionColumn;
 use common\grid\CheckboxColumn;
 use common\grid\GridView;
 use common\widgets\Bar;
-
+use yii\helpers\Html;
+use yii\helpers\Url;
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\search\CompanyBankSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -41,6 +42,10 @@ $this->params['breadcrumbs'][] = '二维码管理';
                                     return "<img style='max-width:110px;max-height:110px' src='" . $model->icon. "' >";
                             }
                         ],
+                        'deposit_min',
+                        'deposit_max',
+                        'withdraw_min',
+                        'withdraw_max',
                         [
                             'attribute' => 'code_type',
                             'value' => function ($model) {
@@ -57,6 +62,19 @@ $this->params['breadcrumbs'][] = '二维码管理';
                         ],
                         [
                             'class' => ActionColumn::class,
+                            'width' => '100',
+                            'buttons' => [
+
+                                'delete' => function ($url, $model, $key) {
+                                    return Html::a('<i class="glyphicon glyphicon-trash" aria-hidden="true"></i> ' . Yii::t('app', 'Delete'), Url::to(['delete-barcode', 'id' => $model->id]), [
+                                        'title' => Yii::t('app', 'Delete'),
+                                        'data-confirm' => Yii::t('app', '您确定要删除吗?'),
+                                        'data-method' => 'post',
+                                        'data-pjax' => '0',
+                                        'class' => 'btn btn-danger btn-sm',
+                                    ]);
+                                },
+                            ],
                             'template' => '{view-layer} {update}{delete}',
                         ],
                     ],

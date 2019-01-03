@@ -3,8 +3,7 @@
 use backend\models\Agent;
 use backend\models\Rebate;
 use common\widgets\SearchForm;
-use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\search\RebateSearch */
@@ -14,8 +13,8 @@ use yii\widgets\ActiveForm;
     <?php $form = SearchForm::begin([]); ?>
 
     <?= $form->field($model, 'ym')->dropDownList(Rebate::getYms()) ?>
-    <?= $form->field($model, 'agent_id')->dropDownList(Agent::getAgentTreeList()) ?>
-    <?= $form->field($model, 'agent_level')->dropDownList(Rebate::getLevels()) ?>
+    <?= $form->field($model, 'agent_id')->label('代理账号')->dropDownList(Agent::getAgentTreeList()) ?>
+    <?= $form->field($model, 'platform_id')->label('平台')->dropDownList(\backend\models\Platform::getPlatformNames()) ?>
     <?=$form->searchButtons()?>
     <?php SearchForm::end(); ?>
 </div>

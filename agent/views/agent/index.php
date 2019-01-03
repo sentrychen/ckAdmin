@@ -20,6 +20,7 @@ use common\widgets\Bar;
 use common\grid\ActionColumn;
 use yii\helpers\Html;
 use common\helpers\Util;
+use yii\helpers\Url;
 
 $this->title = '代理列表';
 $this->params['breadcrumbs'][] = '代理列表';
@@ -50,10 +51,27 @@ $this->params['breadcrumbs'][] = '代理列表';
                         ],
                         [
                             'attribute' => 'username',
+                            'format' => 'raw',
+                            'value' => function ($model) {
+                                return Html::a($model->username, Url::to(['agent/view', 'id' => $model->id]), [
+                                    'title' => $model->username,
+                                    'data-pjax' => '0',
+                                    'class' => 'openContab',
+                                ]);
+                            }
                         ],
                         [
                             'attribute' => 'parent.username',
                             'label' => '上级代理',
+                            'format' => 'raw',
+                            'value' => function ($model) {
+                                if (!$model->parent) return '';
+                                return Html::a($model->parent->username, Url::to(['agent/view', 'id' => $model->parent->id]), [
+                                    'title' => $model->parent->username,
+                                    'data-pjax' => '0',
+                                    'class' => 'openContab',
+                                ]);
+                            }
                         ],
                         [
                             'attribute' => 'agent_level',
@@ -82,12 +100,34 @@ $this->params['breadcrumbs'][] = '代理列表';
 
                         ],
                         [
-                            'attribute' => 'rebate_rate',
-                            'format' => ['percent', 2],
+                            'attribute' => 'rebate_plan_id',
+                            'label' => '返佣方案',
+                            'format' => 'raw',
+                            'value' => function ($model) {
+                                if ($model->rebate_plan_id) {
+                                    return Html::a($model->rebatePlan->name, Url::to(['rebate-plan/view', 'id' => $model->rebate_plan_id]), [
+                                        'title' => '查看返佣方案',
+                                        'data-pjax' => '0',
+                                        'class' => 'openContab'
+                                    ]);
+                                }
+                                return '';
+                            }
                         ],
                         [
-                            'attribute' => 'xima_rate',
-                            'format' => ['percent', 2],
+                            'attribute' => 'xima_plan_id',
+                            'label' => '洗码方案',
+                            'format' => 'raw',
+                            'value' => function ($model) {
+                                if ($model->xima_plan_id) {
+                                    return Html::a($model->ximaPlan->name, Url::to(['xima-plan/agent-view', 'id' => $model->xima_plan_id]), [
+                                        'title' => '查看洗码方案',
+                                        'data-pjax' => '0',
+                                        'class' => 'openContab'
+                                    ]);
+                                }
+                                return '';
+                            }
                         ],
                         [
                             'attribute' => 'account.xima_amount',
@@ -109,7 +149,7 @@ $this->params['breadcrumbs'][] = '代理列表';
                         [
                             'class' => ActionColumn::class,
                             'width' => '135',
-                            'template' => '{view-layer} {update}',
+                            'template' => '{view} {update}',
                             'buttons' => [
                                 'update' => function ($url, $model, $key, $index, $gridView) {
                                     if ($model->parent_id == yii::$app->getUser()->getId())

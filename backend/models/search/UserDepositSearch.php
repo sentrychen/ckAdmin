@@ -25,7 +25,7 @@ class UserDepositSearch extends UserDeposit
     public function rules()
     {
         return [
-            [['id', 'user_id', 'status', 'created_at', 'username', 'audit_by_username', 'apply_amount_min', 'apply_amount_max'], 'safe'],
+            [['id', 'user_id', 'status', 'created_at', 'username', 'audit_by_username', 'save_bank_id','pay_channel','apply_amount_min', 'apply_amount_max'], 'safe'],
         ];
     }
 
@@ -55,12 +55,17 @@ class UserDepositSearch extends UserDeposit
      */
     public function search($params, $userid = null)
     {
-        $query = UserDeposit::find()->joinWith('user');
+        $query = UserDeposit::find()->joinWith('user')->joinWith('companybank');
 
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'sort' => [
+                'defaultOrder' => [
+                    'created_at' => SORT_DESC,
+                ],
+            ]
         ]);
         $sort = $dataProvider->getSort();
 
@@ -68,6 +73,10 @@ class UserDepositSearch extends UserDeposit
             'user.username' => [
                 'asc' => ['username' => SORT_ASC],
                 'desc' => ['username' => SORT_DESC],
+            ],
+            'companybank.bank_account' => [
+                'asc' => ['bank_account' => SORT_ASC],
+                'desc' => ['bank_account' => SORT_DESC],
             ],
         ];
 
@@ -81,14 +90,15 @@ class UserDepositSearch extends UserDeposit
         // grid filtering conditions
         $query->andFilterWhere([
             'user_id' => $this->user_id,
+            'save_bank_id' => $this->save_bank_id,
+            'pay_channel' => $this->pay_channel,
             UserDeposit::tableName() . '.status' => $this->status,
-
         ]);
 
         $query->andFilterWhere(['like', 'audit_by_username', $this->audit_by_username])
             ->andFilterWhere(['like', 'username', $this->username])
             ->andFilterWhere(['between', 'apply_amount', $this->apply_amount_min, $this->apply_amount_max]);
-
+        $query->orderBy(UserDeposit::tableName() .'.created_at DESC');
         $this->trigger(SearchEvent::BEFORE_SEARCH, new SearchEvent(['query' => $query]));
         return $dataProvider;
     }

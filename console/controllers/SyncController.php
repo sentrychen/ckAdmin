@@ -95,7 +95,7 @@ class SyncController extends \yii\console\Controller
                         $model->profit = $row['profit'];
                         $model->amount_before = $row['balance_before'];
                         $model->amount_after = $row['balance_after'];
-                        $model->xima = $row['xima'];
+                        //$model->xima = $row['xima'];
                         $model->state = $row['state'];
                         $model->bet_at = strtotime($row['bet_time']);
                         $model->draw_at = strtotime($row['draw_time']);
@@ -104,8 +104,8 @@ class SyncController extends \yii\console\Controller
                             yii::error($logErr . '数据存储失败！原因：' . implode(',', $model->getErrors()), 'task');
                             return ExitCode::DATAERR;
                         }
-                        $model->calculateXima(); //计算洗码值
-
+                        // $model->calculateXima(); //计算洗码值
+                        $model->ximaStat(); //计算洗码值
                     }
                 }
             }
@@ -198,9 +198,19 @@ class SyncController extends \yii\console\Controller
                         $model->game_result = $resultTypes[$row['gamePlayName']][$row['win']] ?? $row['win'];
                         $scores = explode(',', $row['score']);
                         $betRecords = [];
+                        $model->bingo_amount = 0;
                         foreach ($scores as $id => $score) {
-                            if ($score > 0)
-                                $betRecords[] = $betTypes[$row['gamePlayName']][$id] ?? '';
+                            if ($score > 0){
+                                $bet = $betTypes[$row['gamePlayName']][$id] ?? false;
+                                if ($bet){
+                                    $betRecords[] = $bet;
+                                    if (strpos($model->game_result.',',$bet.',') !==false){
+                                        $model->bingo_amount += (int) $score;
+                                    }
+                                }
+
+                            }
+
                         }
                         $model->bet_record = implode(',', $betRecords);
                         $model->profit = $row['betResult'];
@@ -208,7 +218,7 @@ class SyncController extends \yii\console\Controller
                         $model->amount_after = $row['afterAmount'];
                         $model->banker_cards = $row['bankCard'] ?? '';
                         $model->player_cards = $row['playCard'] ?? '';
-                        $model->xima = '';
+                        //$model->xima = '';
                         $model->state = 1;
                         $model->bet_at = round($row['gameTime'] / 1000);
                         $model->draw_at = round($row['gameTime'] / 1000);
@@ -216,7 +226,7 @@ class SyncController extends \yii\console\Controller
                             yii::error($logErr . '数据存储失败！原因：' . implode(',', $model->getErrors()), 'task');
                             return ExitCode::DATAERR;
                         }
-                        $model->calculateXima(); //计算洗码值
+                        $model->ximaStat(); //计算洗码值
                     }
                 }
             }

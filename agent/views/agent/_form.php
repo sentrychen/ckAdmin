@@ -11,6 +11,8 @@
  * @var $model backend\models\AdminUser
  */
 
+use agent\models\RebatePlan;
+use agent\models\XimaPlan;
 use common\widgets\ActiveForm;
 use common\libs\Constants;
 use backend\models\Agent;
@@ -29,8 +31,7 @@ $this->title = 'AdminUser';
                 ]
             ]); ?>
             <?php
-            $model->xima_rate *= 100;
-            $model->rebate_rate *= 100;
+
             $temp = ['maxlength' => 64];
             if (yii::$app->controller->action->id == 'update') {
                 $temp['disabled'] = 'disabled';
@@ -48,6 +49,13 @@ $this->title = 'AdminUser';
             <div class="hr-line-dashed"></div>
             <?= $form->field($model, 'sub_permission')->radioList(Constants::getYesNoItems()) ?>
             <div class="hr-line-dashed"></div>
+            <?= $form->field($model, 'rebate_plan_id')->dropDownList(RebatePlan::getPlanItems(yii::$app->getUser()->getId())) ?>
+            <div class="hr-line-dashed"></div>
+            <?= $form->field($model, 'xima_plan_id')->dropDownList(XimaPlan::getPlanItems(yii::$app->getUser()->getId(), XimaPlan::TYPE_AGENT)) ?>
+            <div class="hr-line-dashed"></div>
+            <?php
+            /*
+
             <?= $form->field($model, 'rebate_rate')->textInput(['afterAddon' => '%']) ?>
             <div class="hr-line-dashed"></div>
             <?= $form->field($model, 'xima_status')->radioList(Constants::getYesNoItems()) ?>
@@ -56,6 +64,7 @@ $this->title = 'AdminUser';
             <div class="hr-line-dashed"></div>
             <?= $form->field($model, 'xima_rate')->textInput(['afterAddon' => '%']) ?>
             <div class="hr-line-dashed"></div>
+            */ ?>
             <?= $form->defaultButtons() ?>
 
             <?php ActiveForm::end(); ?>

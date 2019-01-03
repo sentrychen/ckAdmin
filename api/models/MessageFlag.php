@@ -14,6 +14,7 @@ class MessageFlag extends \common\models\MessageFlag
         $count = static::find()
             ->where(['user_id' =>$user_id,'is_read'=>self::UN_READ])
             ->count();
+
         return $count;
     }
 

@@ -10,10 +10,10 @@ $config = [
         '@npm'   => '@vendor/npm-asset',
     ],
     'components' => [
-        'cdn' => [//支持使用 七牛 腾讯云 阿里云 网易云 具体配置请参见 http://doc.feehi.com/cdn.html
-            'class' => feehi\cdn\DummyTarget::className(),//不使用cdn
+        'cdn' => [//支持使用
+            'class' => feehi\cdn\DummyTarget::class,//不使用cdn
         ],
-        'cache' => [//缓存组件 具体配置请参考 http://doc.feehi.com/configs.html
+        'cache' => [//缓存组件
             'class' => yii\caching\DummyCache::class,//不使用缓存
         ],
         'log' => [//此项具体详细配置，请访问http://wiki.feehi.com/index.php?title=Yii2_log

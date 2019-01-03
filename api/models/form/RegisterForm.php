@@ -3,6 +3,7 @@
 namespace api\models\form;
 
 use api\models\Agent;
+use common\helpers\Util;
 use Yii;
 use yii\base\Model;
 use api\models\User;
@@ -15,6 +16,7 @@ class RegisterForm extends Model
 {
     public $username;
     public $password;
+    public $deviceid;
     public $promo_code;
 
 
@@ -45,6 +47,7 @@ class RegisterForm extends Model
             ],
             ['username', 'string', 'min' => 2, 'max' => 32],
             ['password', 'string', 'min' => 6],
+            ['deviceid', 'string'],
             ['promo_code', 'integer'],
             [
                 'promo_code',
@@ -64,6 +67,7 @@ class RegisterForm extends Model
         return [
             'username' => '用户名',
             'password' => '密码',
+            'deviceid' => '设备ID',
             'promo_code' => '邀请码',
         ];
     }
@@ -82,6 +86,18 @@ class RegisterForm extends Model
         $user = new User();
         $user->username = $this->username;
         $user->password = $this->password;
+        $user->ip = yii::$app->request->getUserIP();
+        $user->deviceid = $this->deviceid ? $this->deviceid : md5($user->ip . yii::$app->request->getUserAgent());
+        $deivceType = Util::getDeviceType();
+        if (substr($user->deviceid, 0, 2) == 'H5') {
+            $deivceType = $deivceType . ' H5';
+        } else if (substr($user->deviceid, 0, 3) == 'Web') {
+            $deivceType = $deivceType . ' Web';
+        } else if ($deivceType == 'iOS' || $deivceType == 'Android') {
+            $deivceType = $deivceType . ' App';
+        }
+
+        $user->origin = $deivceType;
         if (empty($this->promo_code)) {
             $this->promo_code = yii::$app->option->agent_default_code;
         }

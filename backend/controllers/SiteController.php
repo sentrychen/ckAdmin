@@ -32,6 +32,7 @@ use yii\web\HttpException;
 use yii\captcha\CaptchaAction;
 use yii\helpers\BaseJson;
 use common\helpers\Util;
+use yii\web\Response;
 
 /**
  * Site controller
@@ -232,6 +233,24 @@ class SiteController extends Controller
         Yii::$app->getUser()->logout(false);
 
         return $this->goHome();
+    }
+
+
+    /**
+     *  获得消息通知
+     */
+    public function actionNotice()
+    {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        $uid = Yii::$app->getUser()->getId();
+        $notices = Yii::$app->redis->get('admin:notices:' . $uid);
+        if ($notices)
+            $notices = json_decode($notices);
+        else {
+            $notices = [];
+        }
+        Yii::$app->redis->del('admin:notices:' . $uid);
+        return $notices;
     }
 
     /**

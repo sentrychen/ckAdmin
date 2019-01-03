@@ -41,7 +41,7 @@ class RebatePlanSearch extends RebatePlan
      */
     public function search($params)
     {
-        $query = RebatePlan::find();
+        $query = RebatePlan::find()->where(['agent_id' => 0]);
 
         // add conditions that should always apply here
 
@@ -63,7 +63,7 @@ class RebatePlanSearch extends RebatePlan
         }
 
         // grid filtering conditions
-        $query->$query->andFilterWhere(['like', 'name', $this->name]);
+        $query->andFilterWhere(['like', 'name', $this->name]);
         return $dataProvider;
     }
 }

@@ -25,31 +25,6 @@ class ReportController extends Controller
     ]));
     }
 
-    /**
-     * @param string $modelClass
-     * @param array $sumColumns
-     * @return array
-     */
-    private function _getData($modelClass, $sumColumns = [])
-    {
-        $searchModel = new $modelClass;
-        $dataProvider = $searchModel->search(yii::$app->getRequest()->getQueryParams());
-        $totals = [];
-        if (!empty($sumColumns)) {
-            $query = clone $dataProvider->query;
-            $sumColumns = array_map(function ($v) {
-                return 'SUM(' . $v . ') as ' . $v;
-            }, $sumColumns);
-            $totals = $query->select(implode(',', $sumColumns))->createCommand()->queryOne();
-        }
-
-        return [
-            'dataProvider' => $dataProvider,
-            'searchModel' => $searchModel,
-            'totals' => $totals,
-        ];
-
-    }
 
     public function actionBet()
     {
@@ -69,7 +44,7 @@ class ReportController extends Controller
     public function actionRebate()
     {
         return $this->render('rebate',$this->_getGridViewData(RebateSearch::class,[
-            'self_bet_amount','self_profit_loss','sub_bet_amount','sub_profit_loss','sub_rebate_amount','self_rebate_amount','total_rebate_amount'
+            'self_bet_user_num','self_profit_loss','sub_bet_user_num','sub_profit_loss','sub_rebate_amount','self_rebate_amount','total_rebate_amount'
         ]));
     }
 
@@ -97,14 +72,14 @@ class ReportController extends Controller
     public function actionUserXima()
     {
         return $this->render('user-xima', $this->_getGridViewData(UserXimaRecordSearch::class,[
-            'bet_amount','profit','xima_amount'
+            'bet_amount', 'profit', 'xima_amount', 'xima_limit', 'real_xima_amount'
         ]));
     }
 
     public function actionAgentXima()
     {
         return $this->render('agent-xima', $this->_getGridViewData(AgentXimaRecordSearch::class,[
-            'bet_amount','profit','xima_amount','sub_xima_amount'
+            'bet_amount', 'profit', 'xima_amount', 'sub_xima_amount', 'xima_limit', 'real_xima_amount'
         ]));
     }
 

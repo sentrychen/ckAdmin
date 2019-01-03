@@ -46,11 +46,28 @@ $this->params['breadcrumbs'][] = '代理列表';
 
                         [
                             'attribute' => 'username',
+                            'format' => 'raw',
+                            'value' => function ($model) {
+                                return Html::a($model->username, Url::to(['agent/view', 'id' => $model->id]), [
+                                    'title' => $model->username,
+                                    'data-pjax' => '0',
+                                    'class' => 'openContab',
+                                ]);
+                            },
                             'footer' => '合计'
                         ],
                         [
                             'attribute' => 'parent.username',
-                            'label' =>'上级代理',
+                            'label' => '上级代理',
+                            'format' => 'raw',
+                            'value' => function ($model) {
+                                if (!$model->parent) return '';
+                                return Html::a($model->parent->username, Url::to(['agent/view', 'id' => $model->parent->id]), [
+                                    'title' => $model->parent->username,
+                                    'data-pjax' => '0',
+                                    'class' => 'openContab',
+                                ]);
+                            }
                         ],
                         [
                             'attribute' => 'agent_level',
@@ -61,7 +78,49 @@ $this->params['breadcrumbs'][] = '代理列表';
                             }
                         ],
                         [
+                            'attribute' => 'member',
+                            'format' =>'raw',
+                            'value' => function($model){
+                                return Html::a(Agent::getMemberCount($model->id), Url::to(['/user/index?UserSearch[invite_agent_id]='.$model->id]), [
+                                    'title' => '查看会员',
+                                    'data-pjax' => '0',
+                                    'class' => 'openContab',
+                                ]);
+                            },
+
+                        ],
+                        [
                             'attribute' => 'realname',
+                        ],
+                        [
+                            'attribute' => 'rebate_plan_id',
+                            'label' => '返佣方案',
+                            'format' => 'raw',
+                            'value' => function ($model) {
+                                if ($model->rebate_plan_id) {
+                                    return Html::a($model->rebatePlan->name, Url::to(['rebate-plan/view', 'id' => $model->rebate_plan_id]), [
+                                        'title' => '查看返佣方案',
+                                        'data-pjax' => '0',
+                                        'class' => 'openContab'
+                                    ]);
+                                }
+                                return '';
+                            }
+                        ],
+                        [
+                            'attribute' => 'xima_plan_id',
+                            'label' => '洗码方案',
+                            'format' => 'raw',
+                            'value' => function ($model) {
+                                if ($model->xima_plan_id) {
+                                    return Html::a($model->ximaPlan->name, Url::to(['xima-plan/agent-view', 'id' => $model->xima_plan_id]), [
+                                        'title' => '查看洗码方案',
+                                        'data-pjax' => '0',
+                                        'class' => 'openContab'
+                                    ]);
+                                }
+                                return '';
+                            }
                         ],
                         [
                             'attribute' => 'promo_code',
@@ -73,15 +132,8 @@ $this->params['breadcrumbs'][] = '代理列表';
                                 return isset($status[$model->status]) ? $status[$model->status] : "异常";
                             },
                         ],
-                        [
-                            'class' => DateColumn::class,
-                            'attribute' => 'created_at',
 
-                        ],
-                        [
-                            'attribute' => 'rebate_rate',
-                            'format' =>['percent',2],
-                        ],
+
                         [
                             'attribute' => 'account.xima_amount',
                             'format' => 'raw',
@@ -90,10 +142,7 @@ $this->params['breadcrumbs'][] = '代理列表';
                             },
                             'footer' => '<span class="label label-default">' . Util::formatMoney($totals['account_xima_amount'], false) . '</span>'
                         ],
-                        [
-                            'attribute' => 'xima_rate',
-                            'format' =>['percent',2],
-                        ],
+
                         [
                             'attribute' => 'account.available_amount',
                             'format' => 'raw',
@@ -103,10 +152,16 @@ $this->params['breadcrumbs'][] = '代理列表';
                             'footer' => '<span class="label label-default">' . Util::formatMoney($totals['account_available_amount'], false) . '</span>'
                         ],
                         [
+                            'class' => DateColumn::class,
+                            'attribute' => 'created_at',
+
+                        ],
+                        [
                             'class' => ActionColumn::class,
                             'width' => '80',
-                            'template' => '{view-layer} {update}',
+                            'template' => '{view} {update}',
                         ],
+
                     ]
                 ]); ?>
             </div>

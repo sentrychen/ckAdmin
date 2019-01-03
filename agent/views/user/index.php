@@ -19,6 +19,7 @@ use common\grid\GridView;
 use common\widgets\Bar;
 use yii\helpers\Html;
 use common\helpers\Util;
+use yii\helpers\Url;
 
 $this->title = '会员';
 $this->params['breadcrumbs'][] = '会员列表';
@@ -44,16 +45,22 @@ $this->params['breadcrumbs'][] = '会员列表';
                     'columns' => [
 
                         [
-                            'attribute' => 'id',
-                            'footer' => '合计'
-                        ],
-                        [
                             'attribute' => 'username',
+                            'footer' => '合计',
                         ],
+
                         [
                             'attribute' => 'agent_name',
-                            'value' => 'inviteAgent.username',
                             'label' => '所属代理',
+                            'format' => 'raw',
+                            'value' => function ($model) {
+                                if (!$model->inviteAgent) return '';
+                                return Html::a($model->inviteAgent->username, Url::to(['agent/view', 'id' => $model->inviteAgent->id]), [
+                                    'title' => $model->username,
+                                    'data-pjax' => '0',
+                                    'class' => 'openContab',
+                                ]);
+                            }
                         ],
                         [
                             'attribute' => 'status',
@@ -74,7 +81,7 @@ $this->params['breadcrumbs'][] = '会员列表';
                         [
                             'attribute' => 'userStat.login_number',
                             'format' => 'integer',
-                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['userStat_login_number'], false) . '</span>'
+                            'footer' => '<span class="label label-default">' . number_format($totals['userStat_login_number'], 0) . '</span>'
                         ],
 
                         [
@@ -94,8 +101,19 @@ $this->params['breadcrumbs'][] = '会员列表';
                             'footer' => '<span class="label label-default">' . Util::formatMoney($totals['userStat_bet_amount'], false) . '</span>'
                         ],
                         [
-                            'attribute' => 'xima_rate',
-                            'format' => ['percent', 2],
+                            'attribute' => 'xima_plan_id',
+                            'label' => '洗码方案',
+                            'format' => 'raw',
+                            'value' => function ($model) {
+                                if ($model->xima_plan_id) {
+                                    return Html::a($model->ximaPlan->name, Url::to(['xima-plan/user-view', 'id' => $model->xima_plan_id]), [
+                                        'title' => '查看洗码方案',
+                                        'data-pjax' => '0',
+                                        'class' => 'openContab'
+                                    ]);
+                                }
+                                return '';
+                            }
                         ],
                         [
                             'attribute' => 'account.xima_amount',

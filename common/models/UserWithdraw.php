@@ -2,11 +2,13 @@
 
 namespace common\models;
 
+use common\behaviors\NoticeBehavior;
+use common\components\notice\NoticeEvent;
 use common\libs\Constants;
 use Exception;
 use Yii;
-use yii\db\Exception as dbException;
 use yii\behaviors\TimestampBehavior;
+use yii\db\Exception as dbException;
 
 /**
  * This is the model class for table "{{%user_withdraw}}".
@@ -16,6 +18,8 @@ use yii\behaviors\TimestampBehavior;
  * @property string remark 备注
  * @property string $apply_amount 申请取款金额
  * @property int $status 取款状态 1 申请中 2 已完成  0 已取消
+ * @property string $free_amount 免费额度
+ * @property string $withdraw_rate 行政扣费率
  * @property string $transfer_amount 实际转账金额
  * @property int $audit_by_id 处理人员ID
  * @property string $audit_by_username 处理人员
@@ -50,6 +54,7 @@ class UserWithdraw extends \yii\db\ActiveRecord
     {
         return [
             TimestampBehavior::class,
+            NoticeBehavior::class,
         ];
     }
 
@@ -69,7 +74,7 @@ class UserWithdraw extends \yii\db\ActiveRecord
         return [
             [['user_id', 'apply_amount', 'status'], 'required'],
             [['user_id', 'status', 'audit_by_id', 'audit_at', 'user_bank_id', 'updated_at', 'created_at'], 'integer'],
-            [['apply_amount', 'transfer_amount'], 'number'],
+            [['apply_amount', 'transfer_amount', 'free_amount', 'withdraw_rate'], 'number'],
             [['remark', 'audit_remark'], 'string', 'max' => 255],
             [['audit_by_username', 'bank_name', 'bank_account', 'apply_ip'], 'string', 'max' => 64],
             [['transfer_amount'], 'checkAmount'],
@@ -106,6 +111,8 @@ class UserWithdraw extends \yii\db\ActiveRecord
             'remark' => '备注',
             'apply_amount' => '申请取款金额(' . $chart . ')',
             'status' => '审核状态',
+            'free_amount' => '免费额度(' . $chart . ')',
+            'withdraw_rate' => '超额扣费率',
             'transfer_amount' => '出款金额(' . $chart . ')',
             'audit_by_id' => '处理人员ID',
             'audit_by_username' => '处理人员',
@@ -130,6 +137,14 @@ class UserWithdraw extends \yii\db\ActiveRecord
         return $status[$key] ?? $status;
     }
 
+    public function transferAmount()
+    {
+        if ($this->free_amount > $this->apply_amount)
+            return $this->apply_amount;
+        $amount = $this->apply_amount - ($this->apply_amount - $this->free_amount) * $this->withdraw_rate;
+        return (float)$amount;
+    }
+
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -140,19 +155,26 @@ class UserWithdraw extends \yii\db\ActiveRecord
 
     public function getBank()
     {
-        return $this->hasOne(UserBank::class, ['id' => 'user_bank_id', 'user_id' => 'user_id']);
+        return $this->hasOne(UserBank::class, ['id' => 'user_bank_id']);
     }
 
     public function getUserAccount()
     {
-        return $this->hasOne(UserAccount::class, ['user_id' => 'user_id', 'user_id' => 'user_id']);
+        return $this->hasOne(UserAccount::class, ['user_id' => 'user_id']);
     }
 
     public function afterSave($insert, $changedAttributes)
     {
-        parent::afterSave($insert, $changedAttributes);
+        if ($insert) {
+            $userAccount = UserAccount::findOne(['user_id' => $this->user_id]);
+            $userAccount->frozen_withdraw_amount += $this->apply_amount;
+            $userAccount->save(false);
+            $this->trigger(NoticeEvent::WITHDRAW_APPLY, new NoticeEvent(['roles' => ['财务管理', '超级管理员']]));
+        }
+
+
         //通过取款申请
-        if ($this->status == self::STATUS_CHECKED && $changedAttributes['status'] != self::STATUS_CHECKED) {
+        if (!$insert && $this->status == self::STATUS_CHECKED && $changedAttributes['status'] != self::STATUS_CHECKED) {
 
             //开始事务
             $tr = Yii::$app->db->beginTransaction();
@@ -187,6 +209,7 @@ class UserWithdraw extends \yii\db\ActiveRecord
                 //更新用户额度
                 $userAccount->frozen_amount -= $this->apply_amount;
                 $userAccount->available_amount += $this->apply_amount - $this->transfer_amount;
+                $userAccount->frozen_withdraw_amount -= $this->apply_amount;
                 if (!$userAccount->save(false))
                     throw new dbException('更新用户资金账户失败！');
                 //添加用户交易记录
@@ -208,14 +231,14 @@ class UserWithdraw extends \yii\db\ActiveRecord
                 $agent_id = $user->invite_agent_id;
                 $amount = $this->transfer_amount;
                 $count = UserWithdraw::find()->select('user_id')
-                         ->where(['status'=>UserWithdraw::STATUS_CHECKED,'user_id'=>$this->user_id])
-                         ->andFilterWhere(['between','audit_at',$start_time,$end_time])->count();
-                if($count == 1){
-                    Daily::addCounter(['dwu'=>1,'dwa'=>$amount]);
-                    AgentDaily::addCounter(['agent_id'=>$agent_id,'dwu'=>1,'dwa'=>$amount]);
-                }else{
-                    Daily::addCounter(['dwa'=>$amount]);
-                    AgentDaily::addCounter(['agent_id'=>$agent_id,'dwa'=>$amount]);
+                    ->where(['status' => UserWithdraw::STATUS_CHECKED, 'user_id' => $this->user_id])
+                    ->andFilterWhere(['between', 'audit_at', $start_time, $end_time])->count();
+                if ($count == 1) {
+                    Daily::addCounter(['dwu' => 1, 'dwa' => $amount]);
+                    AgentDaily::addCounter(['agent_id' => $agent_id, 'dwu' => 1, 'dwa' => $amount]);
+                } else {
+                    Daily::addCounter(['dwa' => $amount]);
+                    AgentDaily::addCounter(['agent_id' => $agent_id, 'dwa' => $amount]);
                 }
 
                 $userStat = UserStat::findOne($this->user_id);
@@ -225,6 +248,7 @@ class UserWithdraw extends \yii\db\ActiveRecord
                     throw new dbException('取款会员统计记录失败！');
 
                 $tr->commit();
+                $this->trigger(NoticeEvent::WITHDRAW_SUCESSS, new NoticeEvent(['uid' => $this->user_id]));
             } catch (Exception $e) {
                 Yii::error($e->getMessage());
                 //回滚
@@ -246,9 +270,11 @@ class UserWithdraw extends \yii\db\ActiveRecord
                 //更新用户额度
                 $userAccount->frozen_amount -= $this->apply_amount;
                 $userAccount->available_amount += $this->apply_amount;
+                $userAccount->frozen_withdraw_amount -= $this->apply_amount;
                 if (!$userAccount->save(false))
                     throw new dbException('更新用户资金账户失败！');
                 $tr->commit();
+                $this->trigger(NoticeEvent::WITHDRAW_FAILD, new NoticeEvent(['uid' => $this->user_id]));
             } catch (Exception $e) {
                 Yii::error($e->getMessage());
                 //回滚
@@ -258,5 +284,6 @@ class UserWithdraw extends \yii\db\ActiveRecord
                 $this->save(false);
             }
         }
+        parent::afterSave($insert, $changedAttributes);
     }
 }

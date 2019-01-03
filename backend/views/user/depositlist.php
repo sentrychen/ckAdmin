@@ -16,6 +16,7 @@
 use backend\models\UserDeposit;
 use common\grid\DateColumn;
 use common\grid\GridView;
+use common\helpers\Util;
 use yii\widgets\Pjax;
 
 ?>
@@ -24,9 +25,6 @@ use yii\widgets\Pjax;
     <div class="col-sm-12">
         <?php Pjax::begin(['id' => 'depositPjax']); ?>
         <div class="toolbar clearfix">
-            <div class="pull-left" style="line-height:44px">
-                合计确认存款 <span class="label label-warning"><?= Yii::$app->formatter->asCurrency($total) ?></span>
-            </div>
             <?= $this->render('_search_depositlist', ['model' => $searchModel]); ?>
         </div>
 
@@ -34,18 +32,27 @@ use yii\widgets\Pjax;
         <?= GridView::widget([
             'dataProvider' => $dataProvider,
             'filterModel' => null,
+            'showFooter' => true,
+            'footerRowOptions' => ['style' => 'font-weight:bold;'],
             'columns' => [
 
                 [
                     'attribute' => 'id',
+                    'footer' => '合计',
                 ],
                 [
                     'attribute' => 'apply_amount',
-                    'format' => 'currency',
+                    'value' => function ($model) {
+                        return Util::formatMoney($model->apply_amount, false);
+                    },
+                    'footer' => '<span class="label label-default">' . Util::formatMoney($totals['apply_amount'], false) . '</span>'
                 ],
                 [
                     'attribute' => 'confirm_amount',
-                    'format' => 'currency',
+                    'value' => function ($model) {
+                        return Util::formatMoney($model->confirm_amount, false);
+                    },
+                    'footer' => '<span class="label label-default">' . Util::formatMoney($totals['confirm_amount'], false) . '</span>'
                 ],
 
                 [

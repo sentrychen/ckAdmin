@@ -20,6 +20,8 @@ use common\widgets\SearchForm;
     <?php $form = SearchForm::begin([]); ?>
 
     <?= $form->field($model, 'username')->label('会员名称')->textInput() ?>
+    <?= $form->field($model, 'save_bank_id')->label('存款账号')->dropDownList(UserDeposit::getSaveBank()) ?>
+    <?= $form->field($model, 'pay_channel')->label('支付方式')->dropDownList(UserDeposit::getPayChannels()) ?>
     <?= $form->field($model, 'status')->label('审核状态')->dropDownList(UserDeposit::getStatuses()) ?>
     <?= $form->field($model, 'apply_amount')->label('存款金额')->numRange(['style' => 'width:100px;']) ?>
     <?= $form->field($model, 'audit_by_username')->label('处理人员')->textInput() ?>

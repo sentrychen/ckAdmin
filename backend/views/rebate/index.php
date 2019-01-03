@@ -6,6 +6,8 @@ use common\grid\ActionColumn;
 use common\grid\GridView;
 use common\grid\DateColumn;
 use common\helpers\Util;
+use yii\helpers\Html;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\search\RebateSearch */
@@ -33,66 +35,90 @@ $this->params['breadcrumbs'][] = '代理佣金';
                             'attribute' => 'ym',
                             'footer' => '合计'
                         ],
-                        'agent_id',
-                        'agent_name',
-                        'agent_level',
                         [
-                            'attribute' => 'rebate_rate',
-                            'format'=>['percent',2],
+                            'attribute' => 'agent.username',
+                            'label' => '代理',
+                            'format' => 'raw',
+                            'value' => function ($model) {
+                                return Html::a($model->agent->username, Url::to(['agent/view', 'id' => $model->agent->id]), [
+                                    'title' => $model->agent->username,
+                                    'data-pjax' => '0',
+                                    'class' => 'openContab',
+                                ]);
+                            }
                         ],
                         [
-                            'attribute' => 'self_bet_amount',
-                            'format'=>'raw',
-                            'value' => function($model){
-                                return Util::formatMoney($model->self_bet_amount,false);
-                            },
-                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['self_bet_amount'], false) . '</span>'
+                            'attribute' => 'platform.name',
+                            'label' => '平台',
+                        ],
+                        [
+                            'attribute' => 'self_bet_user_num',
+
+                            'footer' => '<span class="label label-default">' . $totals['self_bet_user_num'] . '</span>'
                         ],
                         [
                             'attribute' => 'self_profit_loss',
-                            'format'=>'raw',
-                            'value' => function($model){
-                                return Util::formatMoney($model->self_profit_loss,false);
+                            'format' => 'raw',
+                            'value' => function ($model) {
+                                return Util::formatMoney($model->self_profit_loss, false);
                             },
                             'footer' => '<span class="label label-default">' . Util::formatMoney($totals['self_profit_loss'], false) . '</span>'
                         ],
                         [
-                            'attribute' => 'sub_bet_amount',
-                            'format'=>'raw',
-                            'value' => function($model){
-                                return Util::formatMoney($model->sub_bet_amount,false);
-                            },
-                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['sub_bet_amount'], false) . '</span>'
+                            'attribute' => 'sub_bet_user_num',
+
+                            'footer' => '<span class="label label-default">' . $totals['sub_bet_user_num'] . '</span>'
                         ],
                         [
                             'attribute' => 'sub_profit_loss',
-                            'format'=>'raw',
-                            'value' => function($model){
-                                return Util::formatMoney($model->sub_profit_loss,false);
+                            'format' => 'raw',
+                            'value' => function ($model) {
+                                return Util::formatMoney($model->sub_profit_loss, false);
                             },
                             'footer' => '<span class="label label-default">' . Util::formatMoney($totals['sub_profit_loss'], false) . '</span>'
                         ],
                         [
                             'attribute' => 'sub_rebate_amount',
-                            'format'=>'raw',
-                            'value' => function($model){
-                                return Util::formatMoney($model->sub_rebate_amount,false);
+                            'format' => 'raw',
+                            'value' => function ($model) {
+                                return Util::formatMoney($model->sub_rebate_amount, false);
                             },
                             'footer' => '<span class="label label-default">' . Util::formatMoney($totals['sub_rebate_amount'], false) . '</span>'
                         ],
                         [
                             'attribute' => 'self_rebate_amount',
-                            'format'=>'raw',
-                            'value' => function($model){
-                                return Util::formatMoney($model->self_rebate_amount,false);
+                            'format' => 'raw',
+                            'value' => function ($model) {
+                                return Util::formatMoney($model->self_rebate_amount, false);
                             },
                             'footer' => '<span class="label label-default">' . Util::formatMoney($totals['self_rebate_amount'], false) . '</span>'
                         ],
                         [
+                            'attribute' => 'rebate_limit',
+                            'format' => 'raw',
+                            'value' => function ($model) {
+                                return Util::formatMoney($model->rebate_limit, false);
+                            },
+                        ],
+                        [
+                            'attribute' => 'rebate_rate',
+                            'format' => 'raw',
+                            'value' => function ($model) {
+                                if ($model->rebate_plan_id) {
+                                    return Html::a(Yii::$app->formatter->asPercent($model->rebate_rate, 2), Url::to(['rebate-plan/view', 'id' => $model->rebate_plan_id]), [
+                                        'title' => $model->rebatePlan->name,
+                                        'data-pjax' => '0',
+                                        'class' => 'openContab'
+                                    ]);
+                                }
+                                return Yii::$app->formatter->asPercent($model->rebate_rate, 2);
+                            }
+                        ],
+                        [
                             'attribute' => 'total_rebate_amount',
-                            'format'=>'raw',
-                            'value' => function($model){
-                                return Util::formatMoney($model->total_rebate_amount,false);
+                            'format' => 'raw',
+                            'value' => function ($model) {
+                                return Util::formatMoney($model->total_rebate_amount, false);
                             },
                             'footer' => '<span class="label label-default">' . Util::formatMoney($totals['total_rebate_amount'], false) . '</span>'
                         ],

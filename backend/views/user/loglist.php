@@ -23,11 +23,8 @@ use yii\widgets\Pjax;
     <div class="col-sm-12">
         <?php Pjax::begin(['id' => 'logPjax']); ?>
         <div class="toolbar clearfix">
-
             <?= $this->render('_search_loglist', ['model' => $searchModel]); ?>
         </div>
-
-
         <?= GridView::widget([
             'dataProvider' => $dataProvider,
             'filterModel' => null,
@@ -38,17 +35,24 @@ use yii\widgets\Pjax;
                     'attribute' => 'created_at'
 
                 ],
-
+                'login_ip',
+                [
+                    'attribute' => 'device_type',
+                    'value' => function ($model) {
+                        $devices = UserLoginLog::getDeviceTypes();
+                        return $devices[$model->device_type] ?? $model->device_type;
+                    }
+                ],
                 [
                     'attribute' => 'client_type',
                     'value' => function($model){
-                        return UserLoginLog::getLoginClients($model->client_type);
+                        $clients = UserLoginLog::getLoginClients();
+                        return $clients[$model->client_type] ?? $model->client_type;
                     }
                 ],
 
-                [
-                    'attribute' => 'login_ip',
-                ],
+                'client_version',
+                'deviceid'
 
             ]
         ]); ?>

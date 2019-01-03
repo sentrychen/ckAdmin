@@ -11,10 +11,17 @@
  * @var $model backend\models\User
  */
 
+use yii\helpers\Url;
 use yii\jui\Tabs;
 
-$this->title = '会员管理';
-$this->params['breadcrumbs'][] = '会员报表';
+$this->title = '会员详情';
+
+
+$this->params['breadcrumbs'] = [
+    ['label' => '会员列表', 'url' => Url::to(['index'])],
+    ['label' => '会员报表：' . $model->username],
+];
+
 
 ?>
 
@@ -51,7 +58,10 @@ $this->params['breadcrumbs'][] = '会员报表';
                             'label' => '登陆日志',
                             'url' => ['user/log-list', 'id' => $model->id],
                         ],
-
+                        [
+                            'label' => '重置密码',
+                            'url' => ['user/reset-pwd', 'user_id' => $model->id],
+                        ],
                     ],
                 ]);
                 ?>

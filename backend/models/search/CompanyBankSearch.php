@@ -43,12 +43,17 @@ class CompanyBankSearch extends CompanyBank
      */
     public function search($params)
     {
-        $query = CompanyBank::find();
+        $query = CompanyBank::find()->where(['<>','status',CompanyBank::STATUS_DELETE]);
 
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'sort' => [
+                'defaultOrder' => [
+                    'created_at' => SORT_DESC,
+                ],
+            ]
         ]);
 
         $this->load($params);

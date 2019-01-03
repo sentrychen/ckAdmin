@@ -39,9 +39,9 @@ class XimaPlanSearch extends XimaPlan
      * @param int $type 1 用户 2 代理
      * @return ActiveDataProvider
      */
-    public function search($params, $type = 1)
+    public function search($params, $type)
     {
-        $query = XimaPlan::find()->where(['type' => $type]);
+        $query = XimaPlan::find()->where(['type' => $type, 'agent_id' => 0]);
 
         // add conditions that should always apply here
 
@@ -63,7 +63,7 @@ class XimaPlanSearch extends XimaPlan
         }
 
         // grid filtering conditions
-        $query->$query->andFilterWhere(['like', 'name', $this->name]);
+        $query->andFilterWhere(['like', 'name', $this->name]);
         return $dataProvider;
     }
 }

@@ -26,6 +26,7 @@ class UserSearch extends User
     public $available_amount;
     public $available_amount_min;
     public $available_amount_max;
+    public $duration;
 
     public function init()
     {
@@ -45,7 +46,7 @@ class UserSearch extends User
     public function rules()
     {
         return [
-            [['status','available_amount_min','available_amount_max','invite_agent_id','username','created_at'], 'safe'],
+            [['status', 'duration', 'available_amount_min', 'available_amount_max', 'invite_agent_id', 'username', 'created_at'], 'safe'],
         ];
     }
 
@@ -58,7 +59,7 @@ class UserSearch extends User
      * @param $params
      * @return \yii\data\ActiveDataProvider
      */
-    public function search($params,$agent_id = null,$online = null)
+    public function search($params, $agent_id = null)
     {
         $query = self::find()->joinWith('userStat')->joinWith('inviteAgent')->joinWith('account');
         $dataProvider = new ActiveDataProvider([
@@ -84,7 +85,10 @@ class UserSearch extends User
                 'asc' => [UserStat::tableName() . '.login_number' => SORT_ASC],
                 'desc' => [UserStat::tableName() . '.login_number' => SORT_DESC],
             ],
-
+            'userStat.relate_number' => [
+                'desc' => [UserStat::tableName() . '.relate_number' => SORT_DESC],
+                'asc' => [UserStat::tableName() . '.relate_number' => SORT_ASC],
+            ],
             'account.frozen_amount' => [
                 'asc' => [UserAccount::tableName() . '.frozen_amount' => SORT_ASC],
                 'desc' => [UserAccount::tableName() . '.frozen_amount' => SORT_DESC],
@@ -118,12 +122,12 @@ class UserSearch extends User
         $query->andFilterWhere(['like', User::tableName() . '.username', $this->username])
             ->andFilterWhere([User::tableName() . '.invite_agent_id' => $this->invite_agent_id])
             ->andFilterWhere(['between', UserAccount::tableName() .'.available_amount', $this->available_amount_min,$this->available_amount_max])
-            ->andFilterWhere([User::tableName() . '.invite_agent_id' => $agent_id])
-            ->andFilterWhere([UserStat::tableName() . '.oneline_status' => $online])
+//            ->andFilterWhere([User::tableName() . '.invite_agent_id' => $agent_id])
             ->andFilterWhere([User::tableName() . '.status' => $this->status]);
 
         $this->trigger(SearchEvent::BEFORE_SEARCH, new SearchEvent(['query' => $query]));
         return $dataProvider;
     }
+
 
 }

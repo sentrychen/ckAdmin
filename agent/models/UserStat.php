@@ -13,8 +13,8 @@ use Yii;
  * @property int $last_login_at 最后登录时间
  * @property int $login_number 登录次数
  * @property string $last_login_ip 最后登录IP
- * @property int $oneline_status 在线状态 0：离线 1：在线
- * @property int $oneline_duration 在线时长
+ * @property int $online_status 在线状态 0：离线 1：在线
+ * @property int $online_duration 在线时长
  * @property int $deposit_number
  * @property string $deposit_amount
  * @property int $withdrawal_number 取款次数
@@ -39,7 +39,7 @@ class UserStat extends \yii\db\ActiveRecord
     {
         return [
             [['user_id'], 'required'],
-            [['user_id', 'last_login_at', 'login_number', 'oneline_status', 'oneline_duration', 'deposit_number', 'withdrawal_number', 'bet_number'], 'integer'],
+            [['user_id', 'last_login_at', 'login_number', 'online_status', 'online_duration', 'deposit_number', 'withdrawal_number', 'bet_number'], 'integer'],
             [['available_amount', 'frozen_amount', 'deposit_amount', 'withdrawal_amount', 'bet_amount'], 'number'],
             [['last_login_ip'], 'string', 'max' => 64],
             [['user_id'], 'unique'],
@@ -58,8 +58,8 @@ class UserStat extends \yii\db\ActiveRecord
             'last_login_at' => '最后登录时间',
             'login_number' => '登录次数',
             'last_login_ip' => '最后登录IP',
-            'oneline_status' => '在线状态',
-            'oneline_duration' => '在线时长',
+            'online_status' => '在线状态',
+            'online_duration' => '在线时长',
             'deposit_number' => '存款次数',
             'deposit_amount' => '存款总额',
             'withdrawal_number' => '取款次数',

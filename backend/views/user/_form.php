@@ -12,8 +12,8 @@
  */
 
 use backend\models\Agent;
+use backend\models\XimaPlan;
 use common\widgets\ActiveForm;
-use common\libs\Constants;
 use backend\models\User;
 
 $this->title = '会员';
@@ -45,45 +45,16 @@ $this->title = '会员';
             <div class="hr-line-dashed"></div>
             <?= $form->field($model, 'status')->radioList(User::getStatuses()) ?>
             <div class="hr-line-dashed"></div>
-            <div class="row">
-                <div class="col-sm-4">
-                    <?= $form->field($model, 'min_limit',['size'=>6])->label(null,['class'=>'col-sm-6 control-label']) ?>
-                </div>
-                <div class="col-sm-4">
-                    <?= $form->field($model, 'max_limit',['size'=>6])->label(null,['class'=>'col-sm-3 control-label']) ?>
-                </div>
-            </div>
-            <div class="hr-line-dashed"></div>
-            <div class="form-group">
-                <div class="col-sm-4">
-                    <?= $form->field($model, 'dogfall_min_limit',['size'=>6])->label(null,['class'=>'col-sm-6 control-label']) ?>
-                </div>
-                <div class="col-sm-4">
-                    <?= $form->field($model, 'dogfall_max_limit',['size'=>6])->label(null,['class'=>'col-sm-3 control-label']) ?>
-                </div>
-            </div>
-            <div class="hr-line-dashed"></div>
-            <div class="form-group">
-                <div class="col-sm-4">
-                    <?= $form->field($model, 'pair_min_limit',['size'=>6])->label(null,['class'=>'col-sm-6 control-label']) ?>
-                </div>
-                <div class="col-sm-4">
-                    <?= $form->field($model, 'pair_max_limit',['size'=>6])->label(null,['class'=>'col-sm-3 control-label']) ?>
-                </div>
-            </div>
-            <div class="hr-line-dashed"></div>
-            <div class="form-group">
-                <div class="col-sm-4">
-                    <?= $form->field($model, 'xima_status')->radioList(Constants::getYesNoItems())->label(null,['class'=>'col-sm-6 control-label']) ?>
-                </div>
-                <div class="col-sm-4">
-                    <?= $form->field($model, 'xima_type')->radioList(Constants::getXiMaTypes())->label(null,['class'=>'col-sm-3 control-label']) ?>
-                </div>
-            </div>
+            <?php
 
-            <div class="hr-line-dashed"></div>
-            <?= $form->field($model, 'xima_rate')->textInput(['afterAddon' => '%','value'=>$model->xima_rate * 100]) ?>
-            <div class="hr-line-dashed"></div>
+            if (yii::$app->controller->action->id == 'update' && $model->invite_agent_id) {
+                ?>
+                <?= $form->field($model, 'xima_plan_id')->dropDownList(XimaPlan::getPlanItems($model->invite_agent_id, XimaPlan::TYPE_USER)) ?>
+                <div class="hr-line-dashed"></div>
+                <?php
+            }
+
+            ?>
             <?= $form->defaultButtons() ?>
             <?php ActiveForm::end(); ?>
         </div>

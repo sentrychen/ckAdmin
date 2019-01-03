@@ -30,7 +30,14 @@ class User extends \common\models\User implements IdentityInterface
      */
     public function generateApiToken()
     {
+        if ($this->api_token) {
+            yii::$app->redis->del('uid:notices:' . $this->id);
+            yii::$app->redis->del('token:' . $this->api_token);
+        }
         $this->api_token = Yii::$app->security->generateRandomString() . '_' . time();
+        $expire = Yii::$app->params['user.apiTokenExpire'];
+        yii::$app->redis->setex('token:' . $this->api_token, $expire, $this->id);
+        yii::$app->redis->setex('uid:notices:' . $this->id, yii::$app->params['user.noticeExpire'], '');
     }
 
     /**
@@ -97,24 +104,4 @@ class User extends \common\models\User implements IdentityInterface
     {
         return $this->auth_key;
     }
-
-    public function beforeSave($insert)
-    {
-        if ($insert) {
-            $option = yii::$app->option;
-            $attrs = ['min_limit', 'max_limit', 'dogfall_min_limit', 'dogfall_max_limit', 'pair_min_limit', 'pair_max_limit'];
-            foreach ($attrs as $attr) {
-                if ($this->{$attr} === null && isset($option->{'game_' . $attr})) {
-                    $this->{$attr} = $option->{'game_' . $attr};
-                }
-            }
-
-            $this->xima_status = Constants::YesNo_No;
-            $this->xima_type = Constants::XIMA_ONE_SIDED;
-            $this->xima_rate = 0;
-
-        }
-        return parent::beforeSave($insert);
-    }
-
 }

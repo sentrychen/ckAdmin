@@ -161,12 +161,21 @@ class Agent extends \common\models\Agent implements IdentityInterface
     public function loadDefaultValues($skipIfSet = true)
     {
 
+        if ($default_plan = XimaPlan::getDefaultPlan(XimaPlan::TYPE_AGENT)) {
+            $this->xima_plan_id = $default_plan->id;
+        }
+
+        if ($default_rebate = RebatePlan::getDefaultPlan()) {
+            $this->rebate_plan_id = $default_rebate->id;
+        }
         parent::loadDefaultValues();
+        /*
         $parent = Agent::findOne(yii::$app->getUser()->getId());
         $this->rebate_rate = $parent->rebate_rate;
         $this->xima_status = $parent->xima_status;
         $this->xima_type = $parent->xima_type;
         $this->xima_rate = $parent->xima_rate;
+        */
     }
 
 }

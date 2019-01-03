@@ -15,7 +15,7 @@ class TwoBarCode extends \common\models\TwoBarCode
         return [
 
             [['url_code'], 'string'],
-            [['sort'], 'number'],
+            [['deposit_min', 'deposit_max', 'withdraw_min', 'withdraw_max', 'sort'], 'number'],
             [['status', 'code_type','created_at', 'updated_at'], 'integer'],
             [['name', 'url', 'icon'], 'string', 'max' => 255],
         ];
@@ -29,7 +29,7 @@ class TwoBarCode extends \common\models\TwoBarCode
      */
     public function search($params)
     {
-        $query = TwoBarCode::find();
+        $query = TwoBarCode::find()->where(['<>','status',TwoBarCode::STATUS_DELETE]);
 
         // add conditions that should always apply here
 
@@ -52,6 +52,10 @@ class TwoBarCode extends \common\models\TwoBarCode
             'url' => $this->url,
             'icon' => $this->icon,
             'url_code' => $this->url_code,
+            'deposit_min' => $this->deposit_min,
+            'deposit_max' => $this->deposit_max,
+            'withdraw_min' => $this->withdraw_min,
+            'withdraw_max' => $this->withdraw_max,
             'sort' => $this->sort,
             'status' => $this->status,
             'code_type' => $this->code_type,

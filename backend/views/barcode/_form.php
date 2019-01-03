@@ -28,6 +28,18 @@ use common\widgets\ActiveForm;
                         <?= $form->field($model, 'icon')->widget('manks\FileInput', []); ?>
                         <div class="hr-line-dashed"></div>
 
+                        <?= $form->field($model, 'deposit_min')->textInput(['deposit_min' => true]) ?>
+                        <div class="hr-line-dashed"></div>
+
+                        <?= $form->field($model, 'deposit_max')->textInput(['deposit_max' => true]) ?>
+                        <div class="hr-line-dashed"></div>
+
+                        <?= $form->field($model, 'withdraw_min')->textInput(['withdraw_min' => true]) ?>
+                        <div class="hr-line-dashed"></div>
+
+                        <?= $form->field($model, 'withdraw_max')->textInput(['withdraw_max' => true]) ?>
+                        <div class="hr-line-dashed"></div>
+
                         <?= $form->field($model, 'sort')->textInput(['maxlength' => true]) ?>
                         <div class="hr-line-dashed"></div>
 

@@ -1,58 +1,101 @@
 <?php
-/**
- * Author: lf
- * Blog: https://blog.feehi.com
- * Email: job@feehi.com
- * Created at: 2018-02-24 13:38
- */
 
 use backend\models\Agent;
-use common\libs\Constants;
-use agent\models\User;
+use common\helpers\Util;
+use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\widgets\DetailView;
 
-/* @var $this yii\web\View */
-/* @var $model agent\models\User */
+
+$this->title = $model->username;
+$this->params['breadcrumbs'] = [
+    ['label' => '代理详情', 'url' => Url::to(['agent/index'])],
+    ['label' => $model->username],
+];
 ?>
-<?= DetailView::widget([
-    'model' => $model,
-    'attributes' => [
-        'id',
-        'username',
-        'realname',
-        'promo_code',
-        ['attribute' => 'rebate_rate', 'format' => ['percent', 2]],
-        [
-            'attribute' => 'xima_status',
-            'value' => function ($model) {
-                return Constants::getYesNoItems($model->xima_status);
-            }
-        ],
-        [
-            'attribute' => 'xima_type',
-            'value' => function ($model) {
-                return Constants::getXiMaTypes($model->xima_type);
-            }
-        ],
-        ['attribute' => 'xima_rate', 'format' => ['percent', 2]],
-        [
-            'attribute' => 'status',
-            'value' => function ($model) {
-                $status = Agent::getStatuses();
-                return $status[$model->status];
-            }
-        ],
-        'created_at:datetime',
-        'updated_at:datetime',
-        ['label' => '会员推广链接',
-            'value' => function ($model) {
-                return yii::$app->option->agent_user_reg_url . '?code=' . $model->promo_code;
-            }
-        ],
-        ['label' => '代理推广链接',
-            'value' => function ($model) {
-                return yii::$app->option->agent_reg_url . '?code=' . $model->promo_code;
-            }
-        ]
-    ],
-]) ?>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="ibox">
+            <?= $this->render('/widgets/_ibox-title') ?>
+            <div class="ibox-content">
+
+                <?= DetailView::widget([
+                    'model' => $model,
+                    'attributes' => [
+                        'id',
+                        'username',
+                        [
+                            'attribute' => 'parent.username',
+                            'label' => '上级代理',
+                        ],
+                        'realname',
+                        'promo_code',
+
+                        [
+                            'attribute' => 'status',
+                            'value' => function ($model) {
+                                $status = Agent::getStatuses();
+                                return $status[$model->status];
+                            }
+                        ],
+                        [
+                            'attribute' => 'rebate_plan_id',
+                            'label' => '返佣方案',
+                            'format' => 'raw',
+                            'value' => function ($model) {
+                                if ($model->rebate_plan_id) {
+                                    return Html::a($model->rebatePlan->name, Url::to(['rebate-plan/view', 'id' => $model->rebate_plan_id]), [
+                                        'title' => '查看返佣方案',
+                                        'data-pjax' => '0',
+                                        'class' => 'openContab'
+                                    ]);
+                                }
+                                return '';
+                            }
+                        ],
+                        [
+                            'attribute' => 'xima_plan_id',
+                            'label' => '洗码方案',
+                            'format' => 'raw',
+                            'value' => function ($model) {
+                                if ($model->xima_plan_id) {
+                                    return Html::a($model->ximaPlan->name, Url::to(['xima-plan/agent-view', 'id' => $model->xima_plan_id]), [
+                                        'title' => '查看洗码方案',
+                                        'data-pjax' => '0',
+                                        'class' => 'openContab'
+                                    ]);
+                                }
+                                return '';
+                            }
+                        ],
+                        [
+                            'label' => '可用额度',
+                            'value' => function ($model) {
+                                return Util::formatMoney($model->account->available_amount);
+                            }
+                        ],
+                        [
+                            'label' => '洗码额度',
+                            'value' => function ($model) {
+                                return Util::formatMoney($model->account->xima_amount);
+                            }
+                        ],
+
+                        'created_at:datetime',
+                        'updated_at:datetime',
+                        ['label' => '会员推广链接',
+                            'value' => function ($model) {
+                                return yii::$app->feehi->agent_user_reg_url . '?code=' . $model->promo_code;
+                            }
+                        ],
+                        ['label' => '代理推广链接',
+                            'value' => function ($model) {
+                                return yii::$app->feehi->agent_reg_url . '?code=' . $model->promo_code;
+                            }
+                        ]
+                    ],
+                ]) ?>
+            </div>
+        </div>
+    </div>
+</div>

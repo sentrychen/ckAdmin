@@ -12,6 +12,8 @@
  */
 
 use backend\models\Agent;
+use backend\models\RebatePlan;
+use backend\models\XimaPlan;
 use common\widgets\ActiveForm;
 use common\libs\Constants;
 use yii\helpers\ArrayHelper;
@@ -30,8 +32,6 @@ $this->title = '代理管理';
                 ]
             ]); ?>
             <?php
-            $model->xima_rate *= 100;
-            $model->rebate_rate *= 100;
             $temp = ['maxlength' => 64];
             if (yii::$app->controller->action->id == 'update') {
                 $temp['disabled'] = 'disabled';
@@ -49,6 +49,17 @@ $this->title = '代理管理';
             <div class="hr-line-dashed"></div>
             <?= $form->field($model, 'sub_permission')->radioList(Constants::getYesNoItems()) ?>
             <div class="hr-line-dashed"></div>
+            <?php
+            if (yii::$app->controller->action->id == 'update') {
+                ?>
+                <?= $form->field($model, 'rebate_plan_id')->dropDownList(RebatePlan::getPlanItems($model->parent_id ? $model->parent_id : 0)) ?>
+                <div class="hr-line-dashed"></div>
+                <?= $form->field($model, 'xima_plan_id')->dropDownList(XimaPlan::getPlanItems($model->parent_id ? $model->parent_id : 0, XimaPlan::TYPE_AGENT)) ?>
+                <div class="hr-line-dashed"></div>
+                <?php
+            }
+            /*
+
             <?= $form->field($model, 'rebate_rate')->textInput(['afterAddon' => '%']) ?>
             <div class="hr-line-dashed"></div>
             <?php
@@ -63,7 +74,7 @@ $this->title = '代理管理';
                 <div class="hr-line-dashed"></div>
                 <?php
             }
-
+*/
             ?>
             <?= $form->defaultButtons() ?>
 

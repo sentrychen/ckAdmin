@@ -2,6 +2,8 @@
 
 namespace common\models;
 
+use common\behaviors\NoticeBehavior;
+use common\components\notice\NoticeEvent;
 use common\libs\Constants;
 use Exception;
 use Yii;
@@ -42,6 +44,7 @@ class UserDeposit extends \yii\db\ActiveRecord
     const CHANNEL_BANK = 1;
     const CHANNEL_ALIPAY = 2;
     const CHANNEL_WEIXIN = 3;
+    const CHANNEL_ONLINE_PAYMENT = 4;
 
     /**
      * {@inheritdoc}
@@ -63,6 +66,7 @@ class UserDeposit extends \yii\db\ActiveRecord
     {
         return [
             TimestampBehavior::class,
+            NoticeBehavior::class,
         ];
     }
 
@@ -120,12 +124,24 @@ class UserDeposit extends \yii\db\ActiveRecord
         return $status[$key] ?? $status;
     }
 
+    public static function getSaveBank($key = null)
+    {
+        $list = CompanyBank::find()->asArray()->all();
+        $bank = [];
+        foreach($list as $value){
+            $bank[$value['id']]= $value['bank_account'];
+        }
+
+        return $bank[$key] ?? $bank;
+    }
+
     public static function getPayChannels($key = null)
     {
         $channels = [
             self::CHANNEL_BANK => '银行',
             self::CHANNEL_ALIPAY => '支付宝',
             self::CHANNEL_WEIXIN => '微信支付',
+            self::CHANNEL_ONLINE_PAYMENT => '线上存款',
         ];
         return $channels[$key] ?? $channels;
     }
@@ -138,9 +154,19 @@ class UserDeposit extends \yii\db\ActiveRecord
         return $this->hasOne(User::class, ['id' => 'user_id']);
     }
 
+    public function getCompanybank()
+    {
+        return $this->hasOne(CompanyBank::class, ['id' => 'save_bank_id']);
+    }
+
     public function afterSave($insert, $changedAttributes)
     {
         parent::afterSave($insert, $changedAttributes);
+        if ($insert) {
+            $this->trigger(NoticeEvent::DEPOSIT_APPLY, new NoticeEvent(['roles' => ['财务管理', '超级管理员']]));
+        }
+
+
         //存款成功
         if ($this->status == self::STATUS_CHECKED && $changedAttributes['status'] != self::STATUS_CHECKED) {
 
@@ -213,6 +239,7 @@ class UserDeposit extends \yii\db\ActiveRecord
                     throw new dbException('存款更新会员统计记录失败！');
 
                 $tr->commit();
+                $this->trigger(NoticeEvent::DEPOSIT_SUCCESS, new NoticeEvent(['uid' => $this->user_id]));
             } catch (Exception $e) {
                 Yii::error($e->getMessage());
                 //回滚

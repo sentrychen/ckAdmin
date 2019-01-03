@@ -29,12 +29,22 @@ $this->params['breadcrumbs'][] = $this->title;
                         return "<img style='max-width:120px;max-height:120px' src='" . $model->icon . "' >";
                 }
             ],
+            'deposit_min',
+            'deposit_max',
+            'withdraw_min',
+            'withdraw_max',
             //'url_code',
             'sort',
             'code_type',
             'status',
-            'created_at',
-            'updated_at',
+            [
+                'attribute' => 'created_at',
+                'format'=>'date',
+            ],
+            [
+                'attribute' => 'updated_at',
+                'format'=>'date',
+            ],
         ],
     ]) ?>
 

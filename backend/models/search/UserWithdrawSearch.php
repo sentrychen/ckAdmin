@@ -60,6 +60,11 @@ class UserWithdrawSearch extends UserWithdraw
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'sort' => [
+                'defaultOrder' => [
+                    'created_at' => SORT_DESC,
+                ],
+            ]
         ]);
 
         $sort = $dataProvider->getSort();
@@ -82,7 +87,7 @@ class UserWithdrawSearch extends UserWithdraw
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'user_id' => $this->user_id,
+            UserWithdraw::tableName() . '.user_id' => $this->user_id,
             UserWithdraw::tableName() . '.status' => $this->status,
         ]);
 

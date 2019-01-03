@@ -8,6 +8,7 @@
 
 namespace backend\controllers;
 
+use api\models\UserBank;
 use backend\actions\CreateAction;
 use backend\actions\DeleteAction;
 use backend\actions\IndexAction;
@@ -23,13 +24,16 @@ use backend\models\search\BetListSearch;
 use backend\models\search\LoginLogSearch;
 use backend\models\search\UserAccountRecordSearch;
 use backend\models\search\UserDepositSearch;
+use backend\models\search\UserRelateSearch;
 use backend\models\search\UserSearch;
+use backend\models\search\UserStatSearch;
 use backend\models\search\UserWithdrawSearch;
 use backend\models\User;
 use backend\models\UserAccountRecord;
 use function GuzzleHttp\Psr7\copy_to_string;
 use yii;
 use yii\web\Response;
+
 use yii\web\UnprocessableEntityHttpException;
 
 
@@ -92,8 +96,8 @@ class UserController extends Controller
 
     public function actionOnline()
     {
-        $searchModel = new UserSearch();
-        $dataProvider = $searchModel->search([], null, 1);
+        $searchModel = new UserStatSearch();
+        $dataProvider = $searchModel->search(yii::$app->getRequest()->getQueryParams());
 
         return $this->render('online', ['dataProvider' => $dataProvider, 'searchModel' => $searchModel]);
     }
@@ -103,7 +107,6 @@ class UserController extends Controller
         //$username = yii::$app->getRequest()->get('username','');
 
         $model = UserSearch::findOne(['username' => $username]);
-
         return $this->render('report', ['model' => $model]);
     }
 
@@ -114,12 +117,9 @@ class UserController extends Controller
      */
     public function actionTradeList($id)
     {
-        $searchModel = new UserAccountRecordSearch();
-        $dataProvider = $searchModel->search(yii::$app->getRequest()->getQueryParams(), $id);
-        $query = clone $dataProvider->query;
-        $total = $query->select('SUM(case WHEN switch= ' . UserAccountRecord::SWITCH_IN . ' then amount else 0 end ) as inAmount,SUM(case WHEN switch = ' . UserAccountRecord::SWITCH_OUT . ' then amount else 0 end ) as outAmount')->asArray()->one();
-
-        return $this->render('tradelist', ['dataProvider' => $dataProvider, 'searchModel' => $searchModel, 'total' => $total]);
+        return $this->render('tradelist', $this->_getGridViewData(UserAccountRecordSearch::class, [
+            'amount', 'after_amount'
+        ], $id));
     }
 
     /**
@@ -128,12 +128,10 @@ class UserController extends Controller
      */
     public function actionDepositList($id)
     {
-        $searchModel = new UserDepositSearch();
-        $dataProvider = $searchModel->search(yii::$app->getRequest()->getQueryParams(), $id);
-        $query = clone $dataProvider->query;
-        //$total = $query->select('SUM(confirm_amount)')->asArray()->one();
-        $total = $query->sum('confirm_amount');
-        return $this->render('depositlist', ['dataProvider' => $dataProvider, 'searchModel' => $searchModel, 'total' => $total]);
+        return $this->render('depositlist',
+            $this->_getGridViewData(UserDepositSearch::class, [
+                'apply_amount', 'confirm_amount'
+            ], $id));
     }
 
     /**
@@ -142,12 +140,10 @@ class UserController extends Controller
      */
     public function actionWithdrawList($id)
     {
-        $searchModel = new UserWithdrawSearch();
-        $dataProvider = $searchModel->search(yii::$app->getRequest()->getQueryParams(), $id);
-        $query = clone $dataProvider->query;
-        $total = $query->sum('transfer_amount');
-
-        return $this->render('withdrawlist', ['dataProvider' => $dataProvider, 'searchModel' => $searchModel, 'total' => $total]);
+        return $this->render('withdrawlist',
+            $this->_getGridViewData(UserWithdrawSearch::class, [
+                'apply_amount', 'transfer_amount'
+            ], $id));
     }
 
     /**
@@ -156,12 +152,11 @@ class UserController extends Controller
      */
     public function actionBetList($id)
     {
-        $searchModel = new BetListSearch();
-        $dataProvider = $searchModel->search(yii::$app->getRequest()->getQueryParams(), $id);
-        $query = clone $dataProvider->query;
-        $total = $query->select('sum(bet_amount) as betAmount,sum(profit) as profit')->asArray()->one();
 
-        return $this->render('betlist', ['dataProvider' => $dataProvider, 'searchModel' => $searchModel, 'total' => $total]);
+        return $this->render('betlist',
+            $this->_getGridViewData(BetListSearch::class, [
+                'bet_amount', 'profit', 'xima'
+            ], $id));
     }
 
     /**
@@ -170,11 +165,21 @@ class UserController extends Controller
      */
     public function actionLogList($id)
     {
-        $searchModel = new LoginLogSearch();
-        $dataProvider = $searchModel->search(yii::$app->getRequest()->getQueryParams(), $id);
-
-        return $this->render('loglist', ['dataProvider' => $dataProvider, 'searchModel' => $searchModel]);
+        return $this->render('loglist',
+            $this->_getGridViewData(LoginLogSearch::class, [], $id));
     }
+
+    /**
+     * @param $id
+     * @return array|string
+     */
+    public function actionRelate($id)
+    {
+        $data = $this->_getGridViewData(UserRelateSearch::class, [], $id);
+        $data['userid'] = $id;
+        return $this->render('relate', $data);
+    }
+
 
     /**
      * @param $term
@@ -227,22 +232,32 @@ class UserController extends Controller
         ]);
     }
 
-    public function actionMessage()
+    public function actionMessage($ids)
     {
-        $model = new Message();
-        $model->scenario = 'create';
+        $model = new Message(['ids' => $ids, 'user_type' => Message::OBJ_MEMBER, 'notify_obj' => Message::SEND_MULTI]);
+
+        //$model->scenario = 'create';
         if (yii::$app->getRequest()->getIsPost()) {
+
+            $model->sender_id = yii::$app->getUser()->getId();
+            $model->sender_name = yii::$app->getUser()->getIdentity()->username;
             if ($model->load(yii::$app->getRequest()->post()) && $model->save()) {
                 yii::$app->getSession()->setFlash('success', yii::t('app', 'Success'));
-                return $this->redirect(['index']);
+                // return ['status'=>'succ'];
+                return $this->render('message-ok', [
+                    'model' => $model
+                ]);
             } else {
                 $errors = $model->getErrors();
                 $err = '';
                 foreach ($errors as $v) {
                     $err .= $v[0] . '<br>';
                 }
-                yii::$app->getSession()->setFlash('error', $err);
+                //throw new UnprocessableEntityHttpException($err);
+                //return ['status'=>'fail'];
             }
+        } else {
+            $model->level = Message::LEVEL_LOW;
         }
         $model->loadDefaultValues();
         return $this->render('message', [
@@ -250,38 +265,32 @@ class UserController extends Controller
         ]);
     }
 
-    public function actionSendMessage()
+    /*
+     * 重置会员密码
+     * @param int $user_id 会员id
+     * @return mix/array
+     */
+    public function actionResetPwd($user_id=0)
     {
-        $message = new Message();
-        $message->loadDefaultValues();
         $request = Yii::$app->request;
-        $id_str = $request->get('userIds') ? $request->get('userIds') : '';
-        if (yii::$app->getRequest()->getIsPost()) {
-            $message->notify_obj = Message::SEND_MULTI;
-            $message->user_type = Message::OBJ_MEMBER;
-            $message->sender_id = yii::$app->getUser()->getId();
-            $message->sender_name = yii::$app->getUser()->getIdentity()->username;
-            $message->ids = Yii::$app->request->post('ids_str');
-            if ($message->load(yii::$app->getRequest()->post(),'') && $message->save() && $message->afterSave(true,[])) {
+        $user_id = $user_id==0?$request->post('user_id'):$user_id;
+        $post = $request->post();
+        $user = User::findOne($user_id);
+
+        if ($request->isPost) {
+            $password = $post['User']['new_password'];
+            $user->password_hash = Yii::$app->security->generatePasswordHash($password);
+
+            if ($user->save()) {
                 yii::$app->getSession()->setFlash('success', yii::t('app', 'Success'));
-                return ['status'=>'succ'];
-            } else {
-                $errors = $message->getErrors();
-                $err = '';
-                foreach ($errors as $v) {
-                    $err .= $v[0] . '<br>';
-                }
-                //throw new UnprocessableEntityHttpException($err);
-                return ['status'=>'fail'];
+                return $this->redirect(['index']);
             }
-        }else{
-            return $this->render('_form_message', [
-                'model' => $message,
-                'id_str' => implode(',', $id_str)
-            ]);
         }
 
-    }
+        return $this->render('reset-pwd', [
+            'model' => $user,
+        ]);
 
+    }
 
 }

@@ -15,7 +15,7 @@ use yii\behaviors\TimestampBehavior;
  * @property string $city 开户城市
  * @property string $branch_name 网点名称
  * @property int $card_type 银行卡类型 1:借记卡  2：信用卡
- * @property int $status 账号状态 1：启用 0：停用
+ * @property int $status 账号状态 1：启用 0：停用 2:已删除
  * @property int $created_by_id 创建者ID
  * @property string $created_by_ip 创建者IP
  * @property int $created_at 创建日期
@@ -27,8 +27,9 @@ class CompanyBank extends \yii\db\ActiveRecord
     const CARD_DEBIT = 1;
     const CARD_CREDIT = 2;
 
-    const STATUS_ENABLED = 1;
-    const STATUS_DISABLED = 0;
+    const STATUS_ENABLED = 1;  //启用
+    const STATUS_DISABLED = 0; //停用
+    const STATUS_DELETE = 2;   //删除
 
     /**
      * {@inheritdoc}
@@ -100,6 +101,7 @@ class CompanyBank extends \yii\db\ActiveRecord
         $status = [
             self::STATUS_ENABLED => '启用',
             self::STATUS_DISABLED => '停用',
+            self::STATUS_DELETE => '删除',
         ];
         return $status[$key] ?? $status;
     }

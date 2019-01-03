@@ -18,6 +18,7 @@ use common\grid\CheckboxColumn;
 use common\grid\DateColumn;
 use common\grid\GridView;
 use common\widgets\Bar;
+use common\widgets\JsBlock;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\bootstrap\Modal;
@@ -36,15 +37,11 @@ $this->params['breadcrumbs'][] = '会员列表';
                         'template' => '{refresh} {create} {message}',
                         'buttons' => [
                             'message' => function () {
-                                return Html::a('<i class="fa fa-send"></i> 发消息', '#', [
-                                    'data-title' => '给选中用户发消息',
+                                return Html::a('<i class="fa fa-send"></i> 发消息', 'javascript:void(0);', [
+                                    'title' => '发消息给用户',
                                     'data-pjax' => '0',
-                                    'id' => 'create',
-                                    'data-toggle' => 'modal',
-                                    'data-target' => '#create-modal',
-                                    'data-confirm' => null,
-                                   // 'onclick' => "if ($('#userGrid').yiiGridView('getSelectedRows').length()) {}",
-                                    'class' => 'btn btn-success',
+                                    'onclick' => 'sendMessage()',
+                                    'class' => 'btn btn-success btn-sm',
                                 ]);
                             },
                         ]
@@ -62,13 +59,43 @@ $this->params['breadcrumbs'][] = '会员列表';
 
                         [
                             'attribute' => 'username',
-                            'footer' => '合计'
+                            'footer' => '合计',
+                            'format' => 'raw',
+                            'value' => function ($model) {
+                                return Html::a($model->username, Url::to(['report', 'username' => $model->username]), [
+                                    'title' => $model->username,
+                                    'data-pjax' => '0',
+                                    'class' => 'openContab',
+                                ]);
+                            }
                         ],
-
+                        [
+                            'attribute' => 'userStat.relate_number',
+                            'label' => '关联账号数',
+                            'format' => 'raw',
+                            'value' => function ($model) {
+                                if (isset($model->userStat) && $model->userStat->relate_number > 0) {
+                                    return Html::a($model->userStat->relate_number, Url::to(['relate', 'id' => $model->id]), [
+                                        'title' => $model->username . '的关联账号',
+                                        'data-pjax' => '0',
+                                        'class' => 'openContab'
+                                    ]);
+                                }
+                                return '-';
+                            }
+                        ],
                         [
                             'attribute' => 'agent_name',
-                            'value' => 'inviteAgent.username',
                             'label'=>'所属代理',
+                            'format' => 'raw',
+                            'value' => function ($model) {
+                                if (!$model->inviteAgent) return '';
+                                return Html::a($model->inviteAgent->username, Url::to(['agent/view', 'id' => $model->inviteAgent->id]), [
+                                    'title' => '查看代理详情',
+                                    'data-pjax' => '0',
+                                    'class' => 'openContab',
+                                ]);
+                            }
                         ],
                         [
                             'attribute' => 'status',
@@ -77,18 +104,21 @@ $this->params['breadcrumbs'][] = '会员列表';
                                 return isset($status[$model->status]) ? $status[$model->status] : "异常";
                             }
                         ],
+
                         [
-                            'class' => DateColumn::class,
-                            'attribute' => 'created_at'
-                        ],
-                        [
-                            'class' => DateColumn::class,
-                            'attribute' => 'userStat.last_login_at',
-                        ],
-                        [
-                            'attribute' => 'userStat.login_number',
-                            'format'=>'integer',
-                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['userStat_login_number'], false) . '</span>'
+                            'attribute' => 'xima_plan_id',
+                            'label' => '洗码方案',
+                            'format' => 'raw',
+                            'value' => function ($model) {
+                                if ($model->xima_plan_id) {
+                                    return Html::a($model->ximaPlan->name, Url::to(['xima-plan/user-view', 'id' => $model->xima_plan_id]), [
+                                        'title' => '查看洗码方案',
+                                        'data-pjax' => '0',
+                                        'class' => 'openContab'
+                                    ]);
+                                }
+                                return '';
+                            }
                         ],
                         [
                             'attribute' => 'account.available_amount',
@@ -97,23 +127,6 @@ $this->params['breadcrumbs'][] = '会员列表';
                                 return Util::formatMoney($model->account->available_amount, false);
                             },
                             'footer' => '<span class="label label-default">' . Util::formatMoney($totals['account_available_amount'], false) . '</span>'
-                        ],
-                        [
-                            'attribute' => 'account.frozen_amount',
-                            'format' => 'raw',
-                            'value' => function ($model) {
-                                return Util::formatMoney($model->account->frozen_amount, false);
-                            },
-                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['account_frozen_amount'], false) . '</span>'
-                        ],
-
-                        [
-                            'attribute' => 'account.xima_amount',
-                            'format' => 'raw',
-                            'value' => function ($model) {
-                                return Util::formatMoney($model->account->xima_amount, false);
-                            },
-                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['account_xima_amount'], false) . '</span>'
                         ],
 
                         [
@@ -140,13 +153,26 @@ $this->params['breadcrumbs'][] = '会员列表';
                             },
                             'footer' => '<span class="label label-default">' . Util::formatMoney($totals['userStat_bet_amount'], false) . '</span>'
                         ],
+                        [
+                            'attribute' => 'account.xima_amount',
+                            'format' => 'raw',
+                            'value' => function ($model) {
+                                return Util::formatMoney($model->account->xima_amount, false);
+                            },
+                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['account_xima_amount'], false) . '</span>'
+                        ],
+
+                        [
+                            'class' => DateColumn::class,
+                            'attribute' => 'created_at',
+                        ],
 
                         [
                             'class' => ActionColumn::class,
                             'width' => '120',
                             'buttons' => [
                                 'report' => function ($url, $model, $key) {
-                                    return Html::a('<i class="fa fa-table"></i> 报表', Url::to(['report','username'=>$model->username]), [
+                                    return Html::a('<i class="fa fa-info"></i> 详情', Url::to(['report', 'username' => $model->username]), [
                                         'title' => $model->username,
                                         'data-pjax' => '0',
                                         'class' => 'btn btn-info btn-sm openContab',
@@ -169,12 +195,9 @@ $this->params['breadcrumbs'][] = '会员列表';
         </div>
     </div>
 </div>
-
-
-<script src="/admin/assets/3291a725/jquery.js"></script>
-<script>
-$(function(){
-    $('#create').on('click', function () {
+<?php JsBlock::begin() ?>
+    <script type="text/javascript">
+        function sendMessage() {
         var chk_value = [];
         var num = $('input[name="selection[]"]:checked').length;
         if(num == false){
@@ -184,25 +207,16 @@ $(function(){
         $('input[name="selection[]"]:checked').each(function(){
             chk_value.push($(this).val());
         });
+            var ids = chk_value.join(',');
+            layer.open({
+                type: 2,
+                title: '发送消息',
+                shadeClose: true,
+                shade: 0.8,
+                area: ['801px', '550px'],
+                content: "<?=Url::to(['message'])?>?ids=" + ids
+            });
+        }
 
-        var requestUrl =  "<?= Url::to(['/user/send-message']);?>";
-        $.get(requestUrl, {userIds:chk_value},
-            function (data) {
-                layer.open({
-                    type: 1,
-                    title: "<font size='4' color='green'><b>发消息</b></font>",
-                    skin: 'layui-layer-demo',
-                    closeBtn: 1,
-                    area: ['35%', '60%'],
-                    anim: 1,
-                    content: data,
-                    cancel: function(){
-                        window.location.reload();
-                    }
-                });
-            }
-        );
-    });
-});
 </script>
-
+<?php JsBlock::end() ?>

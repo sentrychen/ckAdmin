@@ -228,15 +228,18 @@ class Util
      * 获取客户端类型
      *
      */
-    public static function getClientType()
+    public static function getDeviceType()
     {
-        $agent = $_SERVER['HTTP_USER_AGENT'];
+        $agent = Yii::$app->request->getUserAgent();
         if (strpos($agent, 'iPhone') || strpos($agent, 'iPad')) {
-            return 'IOS';
-        } else if (strpos($agent, 'Android')) {
+            return 'iOS';
+        } else if (strpos($agent, 'Android') || strpos($agent, 'okhttp')) {
             return 'Android';
+        } else
+            if (strpos($agent, 'windows')) {
+            return 'PC';
         } else {
-            return 'H5';
+            return 'Other';
         }
     }
 
@@ -246,7 +249,7 @@ class Util
      */
     public static function getClientVersion()
     {
-        $ua = $_SERVER['HTTP_USER_AGENT'];
+        $ua = Yii::$app->request->getUserAgent();
         $version = '';
 
         //微信打开
@@ -305,12 +308,15 @@ class Util
         } else if (strpos($ua, 'Android') !== false) {//strpos()定位出第一次出现字符串的位置，这里定位为0
             preg_match("/(?<=Android )[\d\.]{1,}/", $ua, $match);
             $version = 'Android ' . $match[0];
-        } elseif (strpos($ua, 'iPhone') !== false) {
+        } elseif (strpos($ua, 'CPU iPhone') !== false) {
             preg_match("/(?<=CPU iPhone OS )[\d\_]{1,}/", $ua, $match);
-            echo 'iPhone OS ' . str_replace('_', '.', $match[0]);
+            $version = 'iPhone OS ' . str_replace('_', '.', $match[0]);
+        } elseif (strpos($ua, 'wangTGJ') !== false) {
+            preg_match("/iOS\s+([\d\.]+)+/", $ua, $match);
+            $version = 'iPhone OS ' . $match[1];
         } elseif (strpos($ua, 'iPad') !== false) {
             preg_match("/(?<=CPU OS )[\d\_]{1,}/", $ua, $match);
-            echo 'iPad OS ' . str_replace('_', '.', $match[0]);
+            $version = 'iPad OS ' . str_replace('_', '.', $match[0]);
         } else {
             $version = $ua;
         }

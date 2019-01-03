@@ -7,16 +7,17 @@
  */
 
 /* @var $this \yii\web\View */
+
 /* @var $content string */
 
+use backend\assets\IndexAsset;
+use backend\models\Menu;
 use common\helpers\{
     FileDependencyHelper, StringHelper
 };
 use yii\caching\FileDependency;
 use yii\helpers\Html;
 use yii\helpers\Url;
-use backend\models\Menu;
-use backend\assets\IndexAsset;
 
 IndexAsset::register($this);
 
@@ -72,8 +73,8 @@ $this->title = yii::t('app', 'Backend Manage System');
                     ],
                     'dependency' => $dependency
                 ])
-                )
-                {?>
+                ) {
+                    ?>
                     <?= Menu::getBackendMenu(); ?>
                     <?php $this->endCache();
                 } ?>
@@ -204,12 +205,14 @@ $this->title = yii::t('app', 'Backend Manage System');
             </button>
             <nav class="page-tabs J_menuTabs">
                 <div class="page-tabs-content">
-                    <a href="javascript:;" class="active J_menuTab" data-id="<?= Url::to(['site/main']) ?>"><?= yii::t('app', 'Home') ?></a>
+                    <a href="javascript:;" class="active J_menuTab"
+                       data-id="<?= Url::to(['site/main']) ?>"><?= yii::t('app', 'Home') ?></a>
                 </div>
             </nav>
             <button class="roll-nav roll-right J_tabRight"><i class="fa fa-forward"></i></button>
             <div class="btn-group roll-nav roll-right">
-                <button class="dropdown J_tabClose" data-toggle="dropdown"><?= yii::t('app', 'Close') ?><span class="caret"></span></button>
+                <button class="dropdown J_tabClose" data-toggle="dropdown"><?= yii::t('app', 'Close') ?><span
+                            class="caret"></span></button>
                 <ul role="menu" class="dropdown-menu dropdown-menu-right">
                     <li class="J_tabShowActive"><a><?= yii::t('app', 'Locate Current Tab') ?></a></li>
                     <li class="divider"></li>
@@ -217,16 +220,20 @@ $this->title = yii::t('app', 'Backend Manage System');
                     <li class="J_tabCloseOther"><a><?= yii::t('app', 'Close Other Tab') ?></a></li>
                 </ul>
             </div>
-            <?= Html::a('<i class="fa fa fa-sign-out"></i>' . yii::t('app', 'Logout'), Url::toRoute('site/logout'), ['data-method'=>'post', 'class'=>'roll-nav roll-right J_tabExit'])?>
+            <?= Html::a('<i class="fa fa fa-sign-out"></i>' . yii::t('app', 'Logout'), Url::toRoute('site/logout'), ['data-method' => 'post', 'class' => 'roll-nav roll-right J_tabExit']) ?>
         </div>
         <div class="row J_mainContent" id="content-main">
-            <iframe class="J_iframe" name="iframe0" width="100%" height="100%" src="<?= Url::to(['site/main']) ?>" frameborder="0" data-id="<?= Url::to(['site/main']) ?>" seamless></iframe>
+            <iframe class="J_iframe" name="iframe0" width="100%" height="100%" src="<?= Url::to(['site/main']) ?>"
+                    frameborder="0" data-id="<?= Url::to(['site/main']) ?>" seamless></iframe>
         </div>
         <div class="footer">
             <div class="pull-right">&copy; 2015-<?= date('Y') ?> <a href="http://www.abc.com/" target="_blank">abc</a>
             </div>
+
         </div>
     </div>
+    <audio src='<?= yii::$app->getRequest()->getBaseUrl() . '/static/wav/msg.wav' ?>' style='display:none'
+           id='audio'></audio>
     <!--右侧部分结束-->
     <!--右侧边栏开始-->
     <?php $this->endBody() ?>
@@ -237,9 +244,30 @@ $this->title = yii::t('app', 'Backend Manage System');
         current_iframe[0].contentWindow.location.reload();
         return false;
     }
+
     if (window.top !== window.self) {
         window.top.location = window.location;
     }
+
+    function getNotice() {
+
+        $.getJSON('<?=Url::to(['site/notice'])?>', function (res) {
+            var content = "";
+            $.each(res, function (i, v) {
+                content += "<br>" + v.message;
+            });
+            if (content != '') {
+                $('#audio')[0].play();
+                layer.msg(content, {
+                    title: '消息通知',
+                    offset: '30px',
+                    time: 3000
+                });
+            }
+        });
+    }
+
+    setInterval(getNotice, 10000);
 </script>
 </html>
 <?php $this->endPage() ?>

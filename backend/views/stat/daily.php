@@ -38,15 +38,15 @@ $this->params['breadcrumbs'][] = '系统日报';
                         ],
                         [
                             'attribute' => 'dnu',
-                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['dnu'], false) . '</span>'
+                            'footer' => '<span class="label label-default">' . number_format($totals['dnu'], 0) . '</span>'
                         ],
                         [
                             'attribute' => 'dau',
-                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['dau'], false) . '</span>'
+                            'footer' => '<span class="label label-default">' . number_format($totals['dau'], 0) . '</span>'
                         ],
                         [
                             'attribute' => 'ndu',
-                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['ndu'], false) . '</span>'
+                            'footer' => '<span class="label label-default">' . number_format($totals['ndu'], 0) . '</span>'
                         ],
                         [
                             'attribute' => 'nda',
@@ -59,7 +59,7 @@ $this->params['breadcrumbs'][] = '系统日报';
 
                         [
                             'attribute' => 'dbu',
-                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['dbu'], false) . '</span>'
+                            'footer' => '<span class="label label-default">' . number_format($totals['dbu'], 0) . '</span>'
                         ],
                         [
                             'attribute' => 'dba',
@@ -72,7 +72,7 @@ $this->params['breadcrumbs'][] = '系统日报';
 
                         [
                             'attribute' => 'ddu',
-                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['ddu'], false) . '</span>'
+                            'footer' => '<span class="label label-default">' . number_format($totals['ddu'], 0) . '</span>'
                         ],
                         [
                             'attribute' => 'dda',
@@ -84,7 +84,7 @@ $this->params['breadcrumbs'][] = '系统日报';
                         ],
                         [
                             'attribute' => 'dwu',
-                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['dwu'], false) . '</span>'
+                            'footer' => '<span class="label label-default">' . number_format($totals['dwu'], 0) . '</span>'
                         ],
                         [
                             'attribute' => 'dwa',
@@ -95,21 +95,22 @@ $this->params['breadcrumbs'][] = '系统日报';
                             'footer' => '<span class="label label-default">' . Util::formatMoney($totals['dwa'], false) . '</span>'
                         ],
                         [
-                            'attribute' => 'dpa',
+                            'attribute' => 'dxm',
                             'format' => 'raw',
                             'value' => function($model){
-                                return Util::formatMoney($model->dpa,false);
+                                return Util::formatMoney($model->dxm, false);
                             },
-                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['dpa'], false) . '</span>'
+                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['dxm'], false) . '</span>'
                         ],
                         [
-                            'attribute' => 'dla',
+                            'attribute' => 'dpl',
                             'format' => 'raw',
                             'value' => function($model){
-                                return Util::formatMoney($model->dla,false);
+                                return Util::formatMoney((int)$model->dla - (int)$model->dpa - (float)$model->dxm, false);
                             },
-                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['dla'], false) . '</span>'
+                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['dla'] - $totals['dpa'] - $totals['dxm'], false) . '</span>'
                         ],
+
                     ],
                 ]); ?>
             </div>

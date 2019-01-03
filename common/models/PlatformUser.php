@@ -24,6 +24,8 @@ use yii\helpers\Json;
  * @property string $last_login_ip 最后登陆IP
  * @property string $available_amount 用户余额
  * @property string $frozen_amount 冻结余额
+ * @property string $bet_amount 投注总额
+ * @property string $xima_amount 洗码总额
  * @property int $updated_at 更新日期
  * @property int $created_at 创建日期
  */
@@ -46,7 +48,7 @@ class PlatformUser extends \yii\db\ActiveRecord
         return [
             [['platform_id', 'user_id'], 'required'],
             [['platform_id', 'user_id', 'user_status', 'last_login_at', 'updated_at', 'created_at'], 'integer'],
-            [['available_amount', 'frozen_amount'], 'number'],
+            [['available_amount', 'frozen_amount', 'xima_amount', 'bet_amount'], 'number'],
             [['username', 'first_login_ip', 'last_login_ip'], 'string', 'max' => 64],
             [['game_account_id', 'game_account', 'game_password'], 'string', 'max' => 255],
         ];
@@ -73,6 +75,8 @@ class PlatformUser extends \yii\db\ActiveRecord
             'last_login_ip' => '最后登陆IP',
             'available_amount' => '用户余额',
             'frozen_amount' => '冻结余额',
+            'bet_amount' => '投注总额',
+            'xima_amount' => '洗码总额',
             'updated_at' => '更新日期',
             'created_at' => '创建日期',
         ];

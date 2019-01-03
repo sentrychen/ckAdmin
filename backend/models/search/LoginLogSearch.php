@@ -36,7 +36,7 @@ class LoginLogSearch extends UserLoginLog
     public function rules()
     {
         return [
-            [['client_type','created_at'], 'safe'],
+            [['client_type', 'device_type', 'login_ip', 'deviceid', 'created_at'], 'safe'],
         ];
     }
 
@@ -70,7 +70,10 @@ class LoginLogSearch extends UserLoginLog
             return $dataProvider;
         }
         $query->andFilterWhere(['user_id' => $this->user_id])
-            ->andFilterWhere(['client_type' => $this->client_type]);
+            ->andFilterWhere(['client_type' => $this->client_type])
+            ->andFilterWhere(['device_type' => $this->device_type])
+            ->andFilterWhere(['login_ip' => $this->login_ip])
+            ->andFilterWhere(['deviceid' => $this->deviceid]);
 
         $this->trigger(SearchEvent::BEFORE_SEARCH, new SearchEvent(['query' => $query]));
         return $dataProvider;
