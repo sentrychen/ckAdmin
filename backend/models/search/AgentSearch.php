@@ -69,15 +69,19 @@ class AgentSearch extends Agent
         ]);
         $sort = $dataProvider->getSort();
 
-        $sort->attributes +=[
-            'parent.username' => [
-                'asc' => ['parent_id' => SORT_ASC],
-                'desc' => ['parent_id' => SORT_DESC],
+        $sort->attributes += [
+            'account.available_amount' => [
+                'asc' => ['available_amount' => SORT_ASC],
+                'desc' => ['available_amount' => SORT_DESC],
             ],
-            'account.xima_amount' => [
-                'asc' => [AgentAccount::tableName() . '.xima_amount' => SORT_ASC],
-                'desc' => [AgentAccount::tableName() . '.xima_amount' => SORT_DESC],
+            'account.bet_amount' => [
+                'asc' => ['bet_amount' => SORT_ASC],
+                'desc' => ['bet_amount' => SORT_DESC],
             ],
+            'account.total_amount' => [
+                'asc' => ['total_amount' => SORT_ASC],
+                'desc' => ['total_amount' => SORT_DESC],
+            ]
         ];
             $this->load($params);
         if (!$this->validate()) {
