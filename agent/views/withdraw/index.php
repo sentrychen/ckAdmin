@@ -30,7 +30,7 @@ use common\helpers\Util;
             <div class="ibox-content">
                 <div class="toolbar clearfix">
                     <?= Bar::widget([
-                        'template' => '{refresh}{add}',
+                        'template' => '{refresh} {add}',
                         'buttons' => [
                             'add' => function () {
                                 return Html::a('申请取款', Url::to(['add']), [
@@ -72,12 +72,15 @@ use common\helpers\Util;
                             'footer' => '<span class="label label-default">' . Util::formatMoney($totals['transfer_amount'], false) . '</span>'
                         ],
                         [
-                            'attribute' => 'agent.frozen_amount',
+                            'label' => '冻结金额',
                             'format' => 'raw',
                             'value' => function($model){
-                                return Util::formatMoney(isset($model->account->frozen_amount)?$model->account->frozen_amount:0,false);
+                                if ($model->agent && $model->agent->account)
+                                    return Util::formatMoney($model->agent->account->frozen_amount, false);
+                                else
+                                    return 0;
                             },
-                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['agent_frozen_amount'], false) . '</span>'
+
                         ],
                         [
                             'attribute' => 'status',

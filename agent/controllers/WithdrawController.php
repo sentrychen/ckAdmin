@@ -41,7 +41,7 @@ class WithdrawController extends Controller
                         ];
                     
                 }*/
-                'data' => $this->_getGridViewData(AgentWithdrawSearch::class, ['apply_amount', 'transfer_amount','agent.frozen_amount'])
+                'data' => $this->_getGridViewData(AgentWithdrawSearch::class, ['apply_amount', 'transfer_amount'])
 
             ],
             'view-layer' => [
