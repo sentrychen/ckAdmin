@@ -31,9 +31,9 @@ class HjClient extends ClientAbstract
             'sign' => $this->sign,
             'username' => $username,
             'password' => $password,
-            'ratio_switch' => $user->xima_type,
-            'ratio' => $user->xima_rate,
-            'ratio_setting' => $user->xima_status
+            'ratio_switch' => 0,
+            'ratio' => 0,
+            'ratio_setting' => 0
         ];
         $url = "{$this->apiHost}/regedit";
 
