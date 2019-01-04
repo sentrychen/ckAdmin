@@ -8,9 +8,7 @@
 
 namespace console\controllers;
 
-
-use common\clients\HjClient;
-use common\clients\JxbClient;
+use common\components\ApiPlatform;
 use common\models\PlatformUser;
 use console\models\BetList;
 use console\models\Platform;
@@ -32,6 +30,8 @@ class SyncController extends \yii\console\Controller
         try {
             $platform = Platform::findOne(['code' => 'HJ', 'status' => Platform::STATUS_ENABLED]);
 
+            if (!$platform) return ExitCode::UNAVAILABLE;
+
             $startTime = BetList::find()->where(['platform_id' => $platform->id])->max('bet_at');
 
             if (!$startTime) {
@@ -50,13 +50,18 @@ class SyncController extends \yii\console\Controller
             $stepTime = 7 * 24 * 3600;
 
 
-            $config = yii::$app->params['clients']['HJ'];
-            $client = yii::createObject($config);
+            //$config = yii::$app->params['clients']['HJ'];
+            //$client = yii::createObject($config);
+            $api = ApiPlatform::findByCode('HJ');
+            if (!$api || !$api->client) {
+                yii::error($logErr . '接口调用失败！原因：皇家国际平台未激活', 'task');
+                return ExitCode::UNAVAILABLE;
+            }
             $data = [];
             while ($now > $startTime) {
                 if ($endTime - $startTime > $stepTime)
                     $endTime = $startTime + $stepTime;
-                $res = $client->betList(date('Y-m-d H:i:s', $startTime), date('Y-m-d H:i:s', $endTime));
+                $res = $api->client->betList(date('Y-m-d H:i:s', $startTime), date('Y-m-d H:i:s', $endTime));
 
                 if ($res['error'] == '') {
                     $data = array_merge($data, $res['data']);
@@ -122,6 +127,7 @@ class SyncController extends \yii\console\Controller
 
         try {
             $platform = Platform::findOne(['code' => 'JXB', 'status' => Platform::STATUS_ENABLED]);
+            if (!$platform) return ExitCode::UNAVAILABLE;
 
             $startTime = BetList::find()->where(['platform_id' => $platform->id])->max('bet_at');
 
@@ -142,13 +148,18 @@ class SyncController extends \yii\console\Controller
             $stepTime = 7 * 24 * 3600;
 
 
-            $config = yii::$app->params['clients']['JXB'];
-            $client = yii::createObject($config);
+            //$config = yii::$app->params['clients']['JXB'];
+            //$client = yii::createObject($config);
+            $api = ApiPlatform::findByCode('JXB');
+            if (!$api || !$api->client) {
+                yii::error($logErr . '接口调用失败！原因：机械臂平台未激活', 'task');
+                return ExitCode::UNAVAILABLE;
+            }
             $data = [];
             while ($now > $startTime) {
                 if ($endTime - $startTime > $stepTime)
                     $endTime = $startTime + $stepTime;
-                $res = $client->betList($startTime, $endTime);
+                $res = $api->client->betList($startTime, $endTime);
                 if ($res['error'] == '') {
                     $data = array_merge($data, $res['data']);
                 } else {
@@ -232,7 +243,7 @@ class SyncController extends \yii\console\Controller
             }
             return ExitCode::OK;
         } catch (\Exception $e) {
-            yii::error('[同步机械版投注记录] 失败！原因：' . $e->getMessage(), 'task');
+            yii::error('[同步机械臂投注记录] 失败！原因：' . $e->getMessage(), 'task');
             return ExitCode::UNSPECIFIED_ERROR;
         }
     }

@@ -35,6 +35,8 @@ use common\widgets\ActiveForm;
 
                         <?= $form->field($model, 'login_url')->textInput(['maxlength' => true]) ?>
                         <div class="hr-line-dashed"></div>
+                <?= $form->field($model, 'other_param')->textarea()->hint('json格式,例如{"webCode":"123456"}') ?>
+                <div class="hr-line-dashed"></div>
 
                 <?= $form->field($model, 'status')->radioList(Platform::getStatuses()) ?>
                         <div class="hr-line-dashed"></div>

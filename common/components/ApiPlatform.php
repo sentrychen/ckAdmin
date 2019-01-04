@@ -6,44 +6,37 @@
  * Created at: 2017-10-08 00:30
  */
 
-namespace common\services;
-
+namespace common\components;
 
 use common\clients\ClientAbstract;
+use common\libs\Constants;
 use common\models\Platform;
+use common\models\PlatformAccountRecord;
 use common\models\PlatformUser;
-use yii;
-use yii\base\BaseObject;
+use common\models\UserAccountRecord;
+use common\models\UserLoginPlatformLog;
+use Yii;
+use yii\base\Exception;
 use yii\base\InvalidArgumentException;
 use yii\base\InvalidCallException;
-use yii\db\Exception;
+use yii\base\InvalidConfigException;
+use yii\helpers\Json;
 use yii\db\Exception as dbException;
 
-class PlatformService extends BaseObject
+class ApiPlatform extends Platform
 {
 
     /**
-     * @var $client \common\clients\ClientAbstract
+     * @var ClientAbstract
      */
-    public $client;
+    public $client = null;
 
     /**
-     * @var $model \common\models\PlatformUser
+     * @var PlatformUser
      */
-    public $model;
+    public $platformUser = null;
 
-    /**
-     * 游戏类型
-     * @var $gameType string
-     */
-    public $gameType;
-
-    /**
-     * 用户ID
-     * @var $userId int
-     */
-    public $userId;
-
+    public $user_id;
 
     /**
      * 尝试注册次数
@@ -51,44 +44,43 @@ class PlatformService extends BaseObject
      */
     public $registerTryTimes = 5;
 
+    public static function getApi($code, $user_id = null)
+    {
+        $self = self::findByCode($code);
+        $self->setClient();
+        if ($user_id)
+            $self->setPlatformUser($user_id);
+        return $self;
+    }
 
-    public function init()
+    public function setClient()
     {
         parent::init();
-        if ($this->model instanceof PlatformUser) {
-            $this->gameType = $this->model->platform_code;
-            $this->userId = $this->model->user_id;
+        $class = 'common\clients\\' . ucfirst(strtolower($this->code)) . 'Client';
+        $params = [];
+        if ($this->other_param) {
+            $params = Json::decode($this->other_param);
+            if (!is_array($params))
+                $params = [];
         }
-    }
+        $params['class'] = $class;
+        $params['api_host'] = $this->api_host;
+        $params['app_id'] = $this->app_id;
+        $params['app_secret'] = $this->app_secret;
+        $params['login_url'] = $this->login_url;
 
-    /**
-     * @return PlatformUser|null
-     *
-     */
-    public function getModel()
-    {
-        if (!$this->model) {
-            if (!$this->gameType || !$this->userId) {
-                throw new InvalidArgumentException('游戏类型或用户ID必须设置');
-            }
-            $this->model = PlatformUser::findOne(['platform_code' => $this->gameType, 'user_id' => $this->userId]);
-        }
-        return $this->model;
-    }
+        $this->client = Yii::createObject($params);
 
-    public function getClient()
-    {
         if (!$this->client instanceof ClientAbstract) {
-            $clients = yii::$app->params['clients'];
-            if (!isset($clients[strtoupper($this->gameType)]))
-                return false;
-            $platform = Platform::findOne(['code' => $this->gameType, 'status' => Platform::STATUS_ENABLED]);
-            if (!$platform) return false;
-            $this->client = yii::createObject($clients[strtoupper($this->gameType)]['class'], ['platform' => $platform]);
-            if (!$this->client instanceof ClientAbstract)
-                return false;
+            throw new InvalidConfigException('平台API客户端创建失败');
         }
-        return $this->client;
+
+    }
+
+    public function setPlatformUser($user_id)
+    {
+        $this->user_id = $user_id;
+        $this->platformUser = PlatformUser::findOne(['platform_code' => $this->code, 'user_id' => $user_id]);
     }
 
 
@@ -101,30 +93,34 @@ class PlatformService extends BaseObject
     public function getLoginInfo($redirectUrl = null, $amount = 0)
     {
 
-        $model = $this->getModel();
         //注册用户
-        if (!$model) {
+        if (!$this->platformUser) {
             $this->register();
-            $model = $this->getModel();
         }
 
-
         //登陆
-        $res = $this->getClient()->login($model, $redirectUrl);
+        $res = $this->client->login($this->platformUser, $redirectUrl);
         if ($res['error'] != '') {
             throw new InvalidCallException($res['error']);
         }
         //开始上分
-        if ($amount > -1) {
+        if ($amount >= 0) {
             try {
                 $this->addAmount($amount);
             } catch (Exception $e) {
             }
         }
 
-        $model->last_login_at = time();
-        $model->last_login_ip = yii::$app->request->getUserIP();
-        $model->save(false);
+        $this->platformUser->last_login_at = time();
+        $this->platformUser->last_login_ip = yii::$app->request->getUserIP();
+        $this->platformUser->save(false);
+        $log_id = 0;
+        if ($this->platformUser->user->userStat) {
+            $log_id = $this->platformUser->user->userStat->log_id;
+        }
+        //记录平台登录日志
+        $log = new UserLoginPlatformLog(['user_id' => $this->platformUser->user_id, 'platform_id' => $this->id, 'login_log_id' => $log_id]);
+        $log->save(false);
         return $res['data'];
     }
 
@@ -134,9 +130,13 @@ class PlatformService extends BaseObject
      */
     public function register()
     {
-        if ($this->getModel()) return true;
+        if ($this->platformUser) return true;
 
-        $model = new PlatformUser(['platform_code' => $this->gameType, 'user_id' => $this->userId]);
+        if (!$this->user_id) {
+            throw new InvalidArgumentException('未设置用户ID');
+        }
+
+        $model = new PlatformUser(['platform_code' => $this->code, 'user_id' => $this->user_id]);
 
         if (!$model->platform) {
             throw new InvalidArgumentException('错误的游戏类型');
@@ -158,7 +158,7 @@ class PlatformService extends BaseObject
             //生成用户名
             $username = $model->user->username . ($loop ? rand(100, 999) : '');
 
-            $res = $this->getClient()->register($username, $password, $model->user);
+            $res = $this->client->register($username, $password, $model->user);
             if ($res['error'] == '') {
                 if (isset($res['data']['account_id'])) {
                     $model->game_account_id = $res['data']['account_id'];
@@ -172,7 +172,7 @@ class PlatformService extends BaseObject
                 if (!$model->save(false)) {
                     throw new InvalidCallException('保存平台账户失败！');
                 }
-                $this->model = $model;
+                $this->platformUser = $model;
                 return true;
             }
 
@@ -191,7 +191,7 @@ class PlatformService extends BaseObject
         if ($amount < 0)
             throw new InvalidArgumentException('上分额度不能小于0');
 
-        $model = $this->getModel();
+        $model = $this->platformUser;
         if (!$model)
             throw new InvalidArgumentException('平台用户账户不存在！');
 
@@ -212,10 +212,31 @@ class PlatformService extends BaseObject
             $model->available_amount += $amount;
             if (!$model->save(false))
                 throw new dbException('更新用户平台账户失败！');
-            $res = $this->getClient()->addAmount($amount, $model);
+            $res = $this->client->addAmount($amount, $model);
             if ($res['error'] != '') {
                 throw new InvalidCallException($res['error']);
             }
+
+            $userAccountRecord = new UserAccountRecord();
+            $userAccountRecord->user_id = $this->platformUser->user_id;
+            $userAccountRecord->switch = UserAccountRecord::SWITCH_OUT;
+            $userAccountRecord->trade_no = $this->id;
+            $userAccountRecord->trade_type_id = Constants::TRADE_TYPE_ADDAMOUNT;
+            $userAccountRecord->remark = "用户上分到" . $this->name;
+            $userAccountRecord->amount = $amount;
+            $userAccountRecord->after_amount = $account->available_amount;
+            $userAccountRecord->save(false);
+
+            $platformRecord = new PlatformAccountRecord();
+            $platformRecord->platform_id = $this->id;
+            $platformRecord->trade_no = $userAccountRecord->id;
+            $platformRecord->user_id = $this->platformUser->user_id;
+            $platformRecord->name = '用户上分';
+            $platformRecord->amount = $amount;
+            $platformRecord->switch = PlatformAccountRecord::SWITCH_OUT;
+            $platformRecord->remark = "用户上分到" . $this->name;
+            $platformRecord->save(false);
+
             $tr->commit();
             return $amount;
         } catch (\Exception $e) {
@@ -235,7 +256,7 @@ class PlatformService extends BaseObject
         if ($amount < 0)
             throw new InvalidArgumentException('回收分数额度不能小于0');
 
-        $model = $this->getModel();
+        $model = $this->platformUser;
         if (!$model)
             throw new InvalidArgumentException('平台用户账户不存在！');
 
@@ -247,7 +268,7 @@ class PlatformService extends BaseObject
             throw new InvalidArgumentException('平台可回收分数额度小于:' . $amount);
         }
 
-        $res = $this->getClient()->reduceAmount($amount, $model);
+        $res = $this->client->reduceAmount($amount, $model);
         if ($res['error'] != '') {
             throw new InvalidCallException($res['error']);
         }
@@ -262,11 +283,32 @@ class PlatformService extends BaseObject
             $model->available_amount = $qamount - $res['data'];
             if (!$model->save(false))
                 throw new dbException('更新用户平台账户失败！');
+
+            $userAccountRecord = new UserAccountRecord();
+            $userAccountRecord->user_id = $this->platformUser->user_id;
+            $userAccountRecord->switch = UserAccountRecord::SWITCH_IN;
+            $userAccountRecord->trade_no = $this->id;
+            $userAccountRecord->trade_type_id = Constants::TRADE_TYPE_REDUCEAMOUNT;
+            $userAccountRecord->remark = "用户从" . $this->name . '下分';
+            $userAccountRecord->amount = $res['data'];
+            $userAccountRecord->after_amount = $account->available_amount;
+            $userAccountRecord->save(false);
+
+            $platformRecord = new PlatformAccountRecord();
+            $platformRecord->platform_id = $this->id;
+            $platformRecord->trade_no = $userAccountRecord->id;
+            $platformRecord->user_id = $this->platformUser->user_id;
+            $platformRecord->name = '用户下分';
+            $platformRecord->amount = $res['data'];
+            $platformRecord->switch = PlatformAccountRecord::SWITCH_IN;
+            $platformRecord->remark = "用户从" . $this->name . '下分';
+            $platformRecord->save(false);
+
             $tr->commit();
             return $res['data'];
 
         } catch (\Exception $e) {
-            @$this->getClient()->addAmount($res['data'], $model);
+            @$this->client->addAmount($res['data'], $model);
             $tr->rollBack();
             throw new InvalidCallException($e->getMessage());
         }
@@ -277,14 +319,15 @@ class PlatformService extends BaseObject
      */
     public function queryAmount()
     {
-        $model = $this->getModel();
+        $model = $this->platformUser;
         if (!$model)
             throw new InvalidArgumentException('平台用户账户不存在！');
-        $res = $this->getClient()->queryAmount($model);
+        $res = $this->client->queryAmount($model);
         if ($res['error'] != '') {
             throw new InvalidCallException($res['error']);
         }
         return $res['data'];
     }
+
 
 }

@@ -14,6 +14,11 @@ use yii\base\BaseObject;
 
 abstract class  ClientAbstract extends BaseObject
 {
+    public $api_host;
+    public $app_id;
+    public $app_secret;
+    public $login_url;
+
     protected $_error;
 
     public static function post($url, $data = null, $header = false, $timeout = 30)

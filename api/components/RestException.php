@@ -12,6 +12,6 @@ class RestException extends RestHttpException
 {
     public function __construct($message, $code = 400)
     {
-        parent::__construct($code, $message, $code);
+        parent::__construct($message, $code);
     }
 }

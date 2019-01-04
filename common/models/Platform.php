@@ -14,8 +14,9 @@ use yii\helpers\ArrayHelper;
  * @property string $code 平台代码
  * @property string $api_host api地址
  * @property string $app_id 应用ID
- * @property string $app_secret ap密钥
+ * @property string $app_secret api密钥
  * @property string $login_url 登陆地址
+ * @property string $other_param 登陆地址
  * @property int $status 平台状态 1 激活 0 停用
  * @property int $updated_at 更新日期
  * @property int $created_at 创建日期
@@ -53,6 +54,7 @@ class Platform extends \yii\db\ActiveRecord
             [['status', 'updated_at', 'created_at'], 'integer'],
             [['name'], 'string', 'max' => 64],
             [['code'], 'string', 'max' => 16],
+            [['other_param'], 'string'],
             [['api_host', 'app_id', 'app_secret', 'login_url'], 'string', 'max' => 255],
         ];
     }
@@ -68,8 +70,9 @@ class Platform extends \yii\db\ActiveRecord
             'code' => '平台代码',
             'api_host' => 'api地址',
             'app_id' => '应用ID',
-            'app_secret' => 'ap密钥',
+            'app_secret' => 'api密钥',
             'login_url' => '登陆地址',
+            'other_param' => '其它参数',
             'status' => '状态',
             'updated_at' => '更新日期',
             'created_at' => '创建日期',
@@ -78,7 +81,7 @@ class Platform extends \yii\db\ActiveRecord
 
     public static function findByCode($code)
     {
-        return static::findOne(['code' => $code, 'status' => static::STATUS_ENABLED]);
+        return static::findOne(['code' => strtoupper($code), 'status' => static::STATUS_ENABLED]);
     }
 
     public static function getStatuses($key = null)

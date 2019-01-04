@@ -13,10 +13,6 @@ use yii\helpers\Json;
 class HjClient extends ClientAbstract
 {
 
-    public $sign = "35274a28abbd18857d523912603758d0";
-    public $apiHost = "http://api.hj8828.com/api";
-    public $loginHost = "http://appapp.gzlwcg.com/login-third.html";
-
     /**
      * 用户注册
      *
@@ -28,14 +24,14 @@ class HjClient extends ClientAbstract
     public function register($username, $password, $user)
     {
         $params = [
-            'sign' => $this->sign,
+            'sign' => $this->app_id,
             'username' => $username,
             'password' => $password,
             'ratio_switch' => 0,
             'ratio' => 0,
             'ratio_setting' => 0
         ];
-        $url = "{$this->apiHost}/regedit";
+        $url = "{$this->api_host}/regedit";
 
         $res = static::get($url, $params);
         if ($res) {
@@ -59,13 +55,13 @@ class HjClient extends ClientAbstract
     {
         $amount = (float)$amount;
         $params = [
-            'sign' => $this->sign,
+            'sign' => $this->app_id,
             'username' => $user->game_account,
             'password' => $user->game_password,
             'integral' => $amount,
         ];
 
-        $url = "{$this->apiHost}/addintegral";
+        $url = "{$this->api_host}/addintegral";
 
         $res = static::get($url, $params);
         if ($res) {
@@ -88,12 +84,12 @@ class HjClient extends ClientAbstract
 
         $amount = (float)$amount;
         $params = [
-            'sign' => $this->sign,
+            'sign' => $this->app_id,
             'username' => $user->game_account,
             'password' => $user->game_password,
             'integral' => $amount,
         ];
-        $url = "{$this->apiHost}/reduceintegral";
+        $url = "{$this->api_host}/reduceintegral";
         $res = static::get($url, $params);
         if ($res) {
             $res = Json::decode($res);
@@ -112,10 +108,10 @@ class HjClient extends ClientAbstract
     public function queryAmount($user)
     {
         $params = [
-            'sign' => $this->sign,
+            'sign' => $this->app_id,
             'username' => $user->game_account,
         ];
-        $url = "{$this->apiHost}/query";
+        $url = "{$this->api_host}/query";
         $res = static::get($url, $params);
         if ($res) {
             $res = Json::decode($res);
@@ -141,11 +137,11 @@ class HjClient extends ClientAbstract
             return false;
         }
         $params = [
-            'sign' => $this->sign,
+            'sign' => $this->app_id,
             'begindate' => date('Y-m-d H:i:s', $begin),
             'enddate' => date('Y-m-d H:i:s', $end)
         ];
-        $url = "{$this->apiHost}/betlist";
+        $url = "{$this->api_host}/betlist";
 
         $res = static::get($url, $params);
         if ($res) {
@@ -169,7 +165,7 @@ class HjClient extends ClientAbstract
 
         $password = md5(md5($user->game_password));
 
-        return $this->success($this->loginHost . '?loginUrl=' . urlencode($redirectUrl) . '&username=' . $user->game_account . '&password=' . $password . '&sign=' . $this->sign);
+        return $this->success($this->login_url . '?loginUrl=' . urlencode($redirectUrl) . '&username=' . $user->game_account . '&password=' . $password . '&sign=' . $this->app_id);
     }
 
 }

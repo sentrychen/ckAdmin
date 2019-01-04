@@ -12,6 +12,7 @@ use yii;
  * @property int $platform_id 代理ID
  * @property string $name 变更名称
  * @property string $trade_no 交易单号
+ * @property int $user_id 用户ID
  * @property string $amount 变更额度
  * @property int $switch 收支 1 收入 2支出
  * @property string $after_amount 变更后余额
@@ -41,7 +42,7 @@ class PlatformAccountRecord extends \yii\db\ActiveRecord
     {
         return [
             [['platform_id', 'switch', 'amount'], 'required'],
-            [['platform_id', 'switch', 'updated_at', 'created_at'], 'integer'],
+            [['platform_id', 'switch', 'user_id', 'updated_at', 'created_at'], 'integer'],
             [['amount', 'after_amount'], 'integer', 'min' => 0],
             [['amount'], 'checkAmount'],
             [['name', 'remark'], 'string', 'max' => 255],
@@ -85,6 +86,7 @@ class PlatformAccountRecord extends \yii\db\ActiveRecord
         return [
             'id' => '游戏平台账户变更记录ID',
             'platform_id' => '游戏平台',
+            'user_id' => '用户ID',
             'name' => '交易名称',
             'trade_no' => '交易单号',
             'amount' => '交易额度(' . $chart . ')',

@@ -15,9 +15,6 @@ use yii\helpers\Json;
 class JxbClient extends ClientAbstract
 {
 
-    public $apiHost = "http://103.231.167.85:8888";
-
-
     /**
      * 用户注册
      *
@@ -31,7 +28,7 @@ class JxbClient extends ClientAbstract
 
         $data['username'] = $username;
         $data['password'] = $password;
-        $res = static::get("{$this->apiHost}/user/register", $data);
+        $res = static::get("{$this->api_host}/user/register", $data);
 
         if ($res) {
             $res = Json::decode($res);
@@ -53,7 +50,7 @@ class JxbClient extends ClientAbstract
     public function addAmount($amount, $user)
     {
         $amount = (float)$amount;
-        $url = "{$this->apiHost}/admin/backend/points";
+        $url = "{$this->api_host}/admin/backend/points";
 
         $data['userid'] = $user->game_account_id;
         $data['score'] = $amount;
@@ -80,7 +77,7 @@ class JxbClient extends ClientAbstract
     {
 
         $amount = (float)$amount;
-        $url = "{$this->apiHost}/admin/backend/points";
+        $url = "{$this->api_host}/admin/backend/points";
         $data['userid'] = $user->game_account_id;
         $data['score'] = $amount;
         $data['type'] = 1;
@@ -103,7 +100,7 @@ class JxbClient extends ClientAbstract
     public function queryAmount($user)
     {
 
-        $url = "{$this->apiHost}/admin/backend/user";
+        $url = "{$this->api_host}/admin/backend/user";
         //$authData = $user->decodeAuthData();
         $data['userid'] = $user->game_account_id;
         $res = static::get($url, $data);
@@ -126,7 +123,7 @@ class JxbClient extends ClientAbstract
     {
         $data['beginTime'] = $begindate * 1000;
         $data['endTime'] = $enddate * 1000;
-        $url = "{$this->apiHost}/admin/backend/user/gamerecord/list";
+        $url = "{$this->api_host}/admin/backend/user/gamerecord/list";
         $res = static::get($url, $data);
         if ($res) {
             $res = Json::decode($res);
@@ -150,13 +147,13 @@ class JxbClient extends ClientAbstract
     {
         $post['username'] = $user->game_account;
         $post['password'] = $user->game_password;
-        $res = static::post("{$this->apiHost}/user/login", $post);
+        $res = static::post("{$this->api_host}/user/login", $post);
         if ($res) {
             $res = Json::decode($res);
             if (isset($res['code']) && $res['code'] == 0) return $this->success($res['data']);
             return $this->error($res['message'] ?? '登录失败', $res);
         } else
-            return $this->error('登录失败');
+            return $this->error("登录失败");
     }
 
 }
