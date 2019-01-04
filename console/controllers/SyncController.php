@@ -52,7 +52,7 @@ class SyncController extends \yii\console\Controller
 
             //$config = yii::$app->params['clients']['HJ'];
             //$client = yii::createObject($config);
-            $api = ApiPlatform::findByCode('HJ');
+            $api = ApiPlatform::getApi('HJ');
             if (!$api || !$api->client) {
                 yii::error($logErr . '接口调用失败！原因：皇家国际平台未激活', 'task');
                 return ExitCode::UNAVAILABLE;
@@ -150,7 +150,7 @@ class SyncController extends \yii\console\Controller
 
             //$config = yii::$app->params['clients']['JXB'];
             //$client = yii::createObject($config);
-            $api = ApiPlatform::findByCode('JXB');
+            $api = ApiPlatform::getApi('JXB');
             if (!$api || !$api->client) {
                 yii::error($logErr . '接口调用失败！原因：机械臂平台未激活', 'task');
                 return ExitCode::UNAVAILABLE;
