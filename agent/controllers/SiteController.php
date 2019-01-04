@@ -234,8 +234,8 @@ class SiteController extends \yii\web\Controller
     {
         $code = yii::$app->getRequest()->get('code', yii::$app->option->agent_default_code);
 
-        $client = Util::getClientType();
-        if ($client == 'IOS') {
+        $client = Util::getDeviceType();
+        if ($client == 'iOS') {
             return $this->redirect(yii::$app->option->agent_ios_url);
         } else {
             return $this->redirect(yii::$app->option->agent_apk_url);
