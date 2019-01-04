@@ -9,13 +9,15 @@ use common\widgets\SearchForm;
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="toolbar-searchs">
-    <?php $form = SearchForm::begin([]); ?>
+<div class="toolbar-searchs" style="width:100%;">
+    <?php $form = SearchForm::begin([
+        'action' => ['agent-trade']
+    ]); ?>
 
     <?= $form->field($model, 'agent_id')->label('代理')->dropDownList(Agent::getAgentTreeList()) ?>
     <?= $form->field($model, 'name')->textInput() ?>
     <?= $form->field($model, 'switch')->label('收支')->dropDownList(AgentAccountRecord::getSwitchStatus()) ?>
     <?= $form->field($model, 'created_at')->dateRange() ?>
-    <?= $form->searchButtons() ?>
+    <?= $form->searchButtons(['agent-trade']) ?>
     <?php SearchForm::end(); ?>
 </div>

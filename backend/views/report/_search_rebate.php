@@ -9,7 +9,7 @@ use common\widgets\SearchForm;
 /* @var $model backend\models\search\RebateSearch */
 /* @var $form yii\widgets\ActiveForm */
 ?>
-<div class="toolbar-searchs">
+<div class="toolbar-searchs" style="width:100%;">
     <?php $form = SearchForm::begin(['action'=>['rebate']]); ?>
 
     <?= $form->field($model, 'ym')->dropDownList(Rebate::getYms()) ?>
