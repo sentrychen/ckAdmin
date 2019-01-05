@@ -72,7 +72,7 @@ class LoginLogSearch extends UserLoginLog
         $query->andFilterWhere(['user_id' => $this->user_id])
             ->andFilterWhere(['client_type' => $this->client_type])
             ->andFilterWhere(['device_type' => $this->device_type])
-            ->andFilterWhere(['login_ip' => $this->login_ip])
+            ->andFilterWhere(['login_ip' => sprintf("%u", ip2long($this->login_ip))])
             ->andFilterWhere(['deviceid' => $this->deviceid]);
 
         $this->trigger(SearchEvent::BEFORE_SEARCH, new SearchEvent(['query' => $query]));

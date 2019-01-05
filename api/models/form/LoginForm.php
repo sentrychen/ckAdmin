@@ -148,7 +148,7 @@ class LoginForm extends Model
         $loginData = [
             'user_id' => $this->_user->id,
             'username' => $this->username,
-            'login_ip' => $userIp,
+            'login_ip' => sprintf("%u", ip2long($userIp)),
             'device_type' => $deivceType,
             'client_type' => $clientType,
             'deviceid' => $this->deviceid,

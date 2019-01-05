@@ -8,9 +8,10 @@
 
 namespace console\controllers;
 
+use common\models\UserLoginLog;
+use common\models\UserRelate;
 use Yii;
 use yii\console\ExitCode;
-use yii\db\Query;
 
 set_time_limit(0);
 
@@ -25,16 +26,11 @@ class RelateController extends \yii\console\Controller
      */
     public function actionStat()
     {
-        $end_at = strtotime(date('Y-m-d'));
-        $start_at = $end_at - 24 * 3600;
-        $sql = "select a.id as user_log_id, a.user_id,a.login_ip as ip,a.deviceid,b.id as relate_log_id,b.user_id as relate_id,b.login_ip as relate_login_ip,b.deviceid as relate_deviceid ";
-        $sql .= "from {{%user_login_log}} a,{{%user_login_log}} b";
-        $sql .= " where a.created_at > {$start_at} and a.created_at < {$end_at} and b.created_at < {$end_at} ";
-        $sql .= " and a.user_id != b.user_id";
-        $sql .= " and (a.login_ip = b.login_ip or a.deviceid = b.deviceid)";
-        $sql .= " and not exists(select * from {{%user_relate}} c where (c.user_id=a.user_id and c.relate_id = b.user_id) or (c.user_id=b.user_id and c.relate_id = a.user_id))";
-       // $sql .= " group by a.user_id,b.user_id";
+        $start_id = (int)Yii::$app->cache->get('max_login_log_id');
+        $max_id = UserLoginLog::find()->max('id');
+        Yii::$app->cache->set('max_login_log_id', $max_id);
 
+        $sql = "select min(id) as user_log_id,user_id,login_ip,deviceid from {{%user_login_log}} where id > $start_id group by login_ip,deviceid,user_id";
 
         $rows = Yii::$app->db->createCommand($sql)->queryAll();
         $data = [];
@@ -43,31 +39,55 @@ class RelateController extends \yii\console\Controller
         $map = [];
         foreach ($rows as $row) {
 
-            if (isset($data[$row['user_id'] . '-' . $row['relate_id']]) || isset($data[$row['relate_id'] . '-' . $row['user_id']])) continue;
-
-            if (isset($row['deviceid']) && $row['deviceid'] == $row['relate_deviceid']) {
-                $row['remark'] = '登录设备ID相同';
-            } else if (isset($row['ip']) && $row['ip'] == $row['relate_login_ip']) {
-                $row['remark'] = '登录IP相同';
-            } else {
-                continue;
+            $sql = "select id,user_id,login_ip,deviceid from {{%user_login_log}} where login_ip = {$row['login_ip']} and user_id != {$row['user_id']} ";
+            if (!empty($row['deviceid'])) {
+                $sql .= " union all ";
+                $sql .= "select id,user_id,login_ip,deviceid from {{%user_login_log}} where deviceid = '{$row['deviceid']}' and user_id != {$row['user_id']} ";
             }
 
-            unset($row['relate_login_ip'], $row['relate_deviceid']);
-            $row['created_at'] = $row['updated_at'] = time();
-            if (empty($keys)) $keys = array_keys($row);
-            $data[$row['user_id'] . '-' . $row['relate_id']] = array_values($row);
+            $rows2 = Yii::$app->db->createCommand($sql)->queryAll();
+            foreach ($rows2 as $row2) {
+                if (isset($map[$row2['user_id'] . '-' . $row['user_id']]) || isset($map[$row['user_id'] . '-' . $row2['user_id']])) continue;
 
-            if (!isset($uids[$row['user_id']])) $uids[$row['user_id']] = $row['user_id'];
-            if (!isset($uids[$row['relate_id']])) $uids[$row['relate_id']] = $row['relate_id'];
+                if (UserRelate::findOne(['user_id' => $row2['user_id'], 'relate_id' => $row['user_id']])) continue;
+                if (UserRelate::findOne(['user_id' => $row['user_id'], 'relate_id' => $row2['user_id']])) continue;
+
+
+                if (!empty($row2['deviceid']) && $row2['deviceid'] == $row['deviceid']) {
+                    $row['remark'] = '登录设备ID相同';
+                } else if ($row2['login_ip'] == $row['login_ip']) {
+                    $row['remark'] = '登录IP相同';
+                } else {
+                    continue;
+                }
+                $row3 = $row;
+                $row3['relate_id'] = $row2['user_id'];
+                $row3['relate_log_id'] = $row2['id'];
+                $row3['ip'] = long2ip($row['login_ip']);
+                $row3['created_at'] = $row3['updated_at'] = time();
+                unset($row3['login_ip']);
+
+                if (empty($keys)) $keys = array_keys($row3);
+                $map[$row3['user_id'] . '-' . $row3['relate_id']] = 1;
+                $data[] = array_values($row3);
+                if (!isset($uids[$row3['user_id']])) $uids[$row3['user_id']] = $row3['user_id'];
+                if (!isset($uids[$row3['relate_id']])) $uids[$row3['relate_id']] = $row3['relate_id'];
+                if (count($data) > 99) {
+                    Yii::$app->db->createCommand()->batchInsert('{{%user_relate}}', $keys, $data)->execute();
+                    $data = [];
+                }
+            }
 
         }
-        if (!empty($data)) {
-            Yii::$app->db->createCommand()->batchInsert('{{%user_relate}}', $keys, $data)->execute();
+
+        if (!empty($uids)) {
+            if (!empty($data)) {
+                Yii::$app->db->createCommand()->batchInsert('{{%user_relate}}', $keys, $data)->execute();
+            }
 
             $update_sql = "update {{%user_stat}} a inner join ";
             $update_sql .= " (select b.id, count(*) as nums from {{%user}} b,{{%user_relate}} c ";
-            $update_sql .= " where (c.user_id = b.id or c.relate_id = b.id ) and b.id in (" . implode(',', $uids) . ") group by b.id) d";
+            $update_sql .= " where b.id in (" . implode(',', $uids) . ") and (c.user_id = b.id or c.relate_id = b.id ) group by b.id) d";
             $update_sql .= " on d.id = a.user_id set a.relate_number = d.nums";
             Yii::$app->db->createCommand($update_sql)->execute();
         }

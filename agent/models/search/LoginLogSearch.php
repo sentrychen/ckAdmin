@@ -40,7 +40,7 @@ class LoginLogSearch extends UserLoginLog
     public function rules()
     {
         return [
-            [['username', 'agent_id', 'client_type', 'created_at'], 'safe'],
+            [['username', 'agent_id', 'client_type', 'device_type', 'created_at'], 'safe'],
         ];
     }
 
@@ -75,7 +75,8 @@ class LoginLogSearch extends UserLoginLog
             $this->agent_id = $agent_id;
         $query->andFilterWhere(['user_id' => $this->user_id])
             ->andFilterWhere(['like', 'u.username', $this->username])
-            ->andFilterWhere(['client_type' => $this->client_type]);
+            ->andFilterWhere(['client_type' => $this->client_type])
+            ->andFilterWhere(['device_type' => $this->device_type]);
         if (empty($this->agent_id)) {
             $agent_ids = yii\helpers\ArrayHelper::getColumn(Agent::getAgentTree(null, yii::$app->getUser()->getId(), null, true), 'id');
             $query->andFilterWhere(['u.invite_agent_id' => $agent_ids]);

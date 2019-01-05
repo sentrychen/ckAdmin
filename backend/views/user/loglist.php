@@ -35,7 +35,12 @@ use yii\widgets\Pjax;
                     'attribute' => 'created_at'
 
                 ],
-                'login_ip',
+                [
+                    'attribute' => 'login_ip',
+                    'value' => function ($model) {
+                        return long2ip($model->login_ip);
+                    }
+                ],
                 [
                     'attribute' => 'device_type',
                     'value' => function ($model) {

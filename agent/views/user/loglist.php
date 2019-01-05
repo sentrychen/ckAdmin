@@ -51,15 +51,27 @@ $this->params['breadcrumbs'][] = '会员登陆记录';
                         ],
 
                         [
+                            'attribute' => 'login_ip',
+                            'value' => function ($model) {
+                                return long2ip($model->login_ip);
+                            }
+                        ],
+                        [
+                            'attribute' => 'device_type',
+                            'value' => function ($model) {
+                                $devices = UserLoginLog::getDeviceTypes();
+                                return $devices[$model->device_type] ?? $model->device_type;
+                            }
+                        ],
+                        [
                             'attribute' => 'client_type',
                             'value' => function ($model) {
-                                return UserLoginLog::getLoginClients($model->client_type);
+                                $clients = UserLoginLog::getLoginClients();
+                                return $clients[$model->client_type] ?? $model->client_type;
                             }
                         ],
 
-                        [
-                            'attribute' => 'login_ip',
-                        ],
+                        'client_version',
 
                     ]
                 ]); ?>

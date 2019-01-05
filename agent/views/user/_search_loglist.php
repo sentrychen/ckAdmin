@@ -25,7 +25,7 @@ use common\widgets\SearchForm;
 
     <?= $form->field($model, 'username')->label('会员名')->textInput() ?>
     <?= $form->field($model, 'agent_id')->label('所属代理')->dropDownList(Agent::getAgentTreeList(null, yii::$app->getUser()->getId(), null, true)) ?>
-
+    <?= $form->field($model, 'device_type')->dropDownList(UserLoginLog::getDeviceTypes()) ?>
     <?= $form->field($model, 'client_type')->dropDownList(UserLoginLog::getLoginClients()) ?>
     <?= $form->field($model, 'created_at')->dateRange() ?>
     <?= $form->searchButtons(['log-list']) ?>
