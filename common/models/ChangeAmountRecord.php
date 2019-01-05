@@ -3,7 +3,8 @@
 namespace common\models;
 
 use common\behaviors\NoticeBehavior;
-use common\components\notice\NoticeEvent;
+use common\components\notice\AdminNoticeEvent;
+use common\components\notice\UserNoticeEvent;
 use common\libs\Constants;
 use Exception;
 use Yii;
@@ -221,11 +222,11 @@ class ChangeAmountRecord extends \yii\db\ActiveRecord
                 $record->save(false);
 
                 $mssage = $this->switch == 1 ? '系统上分成功' : '系统下分成功';
-                $this->trigger(NoticeEvent::CHANGAMOUNT_SUCCESS, new NoticeEvent(['uid' => $this->user_id, 'message' => $mssage]));
+                $this->trigger(UserNoticeEvent::CHANGAMOUNT_SUCCESS, new UserNoticeEvent(['uid' => $this->user_id, 'message' => $mssage]));
 
             } else if ($this->status == 1) {
                 $mssage = $this->switch == 1 ? '请审核用户上分申请' : '请审核用户下分申请';
-                $this->trigger(NoticeEvent::CHANGAMOUNT_APPLY, new NoticeEvent(['roles' => ['财务管理', '超级管理员'], 'message' => $mssage]));
+                $this->trigger(AdminNoticeEvent::CHANGAMOUNT_APPLY, new AdminNoticeEvent(['roles' => ['财务管理', '超级管理员'], 'message' => $mssage]));
             }
 
         } else {
@@ -260,7 +261,7 @@ class ChangeAmountRecord extends \yii\db\ActiveRecord
                     $tr->commit();
 
                     $mssage = $this->switch == 1 ? '系统上分成功' : '系统下分成功';
-                    $this->trigger(NoticeEvent::CHANGAMOUNT_SUCCESS, new NoticeEvent(['uid' => $this->user_id, 'message' => $mssage]));
+                    $this->trigger(UserNoticeEvent::CHANGAMOUNT_SUCCESS, new UserNoticeEvent(['uid' => $this->user_id, 'message' => $mssage]));
                 } catch (Exception $e) {
                     Yii::error($e->getMessage());
                     //回滚

@@ -66,6 +66,10 @@ class PlatformSearch extends Platform
                 'asc' => [PlatformAccount::tableName() . '.frozen_amount' => SORT_ASC],
                 'desc' => [PlatformAccount::tableName() . '.frozen_amount' => SORT_DESC],
             ],
+            'account.alarm_amount' => [
+                'asc' => [PlatformAccount::tableName() . '.alarm_amount' => SORT_ASC],
+                'desc' => [PlatformAccount::tableName() . '.alarm_amount' => SORT_DESC],
+            ],
         ];
 
 

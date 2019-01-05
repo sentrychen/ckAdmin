@@ -3,7 +3,7 @@
 namespace common\models;
 
 use common\behaviors\NoticeBehavior;
-use common\components\notice\NoticeEvent;
+use common\components\notice\UserNoticeEvent;
 use common\libs\Constants;
 use Yii;
 use yii\behaviors\TimestampBehavior;
@@ -154,7 +154,7 @@ class Notice extends \yii\db\ActiveRecord
     {
         parent::afterSave($insert, $changedAttributes);
         if ($insert && ($this->user_type == self::OBJ_ALL || $this->user_type == self::OBJ_MEMBER)) {
-            $this->trigger(NoticeEvent::SYSTEM_NOTICE, new NoticeEvent(['uid' => 0, 'message' => $this->content]));
+            $this->trigger(UserNoticeEvent::SYSTEM_NOTICE, new UserNoticeEvent(['uid' => 0, 'message' => $this->content]));
         }
     }
 }

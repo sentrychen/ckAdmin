@@ -41,7 +41,6 @@ $this->params['breadcrumbs'] = [
                     <label class="col-sm-2 control-label">游戏平台代号</label>
                     <div class="col-sm-10"><p class="form-control-static"><?= $platformModel->code ?></p></div>
                 </div>
-
                 <div class="hr-line-dashed"></div>
                 <?= $form->field($model, 'switch')->radioList(PlatformAccountRecord::getSwitchs()) ?>
                 <div class="hr-line-dashed"></div>

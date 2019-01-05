@@ -2,6 +2,10 @@
 
 namespace common\models;
 
+use common\behaviors\NoticeBehavior;
+use common\components\notice\AdminNoticeEvent;
+use common\components\notice\UserNoticeEvent;
+use common\helpers\Util;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 
@@ -46,6 +50,7 @@ class PlatformAccount extends \yii\db\ActiveRecord
     {
         return [
             TimestampBehavior::class,
+            NoticeBehavior::class,
         ];
     }
 
@@ -78,4 +83,15 @@ class PlatformAccount extends \yii\db\ActiveRecord
         return static::find()->sum('available_amount');
     }
 
+
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+        if (isset($changedAttributes['available_amount'])
+            && $changedAttributes['available_amount'] >= $this->alarm_amount
+            && $this->available_amount < $this->alarm_amount) {
+            $message = $this->platform->name . "资金额度只剩（" . Util::formatMoney($this->available_amount) . "）低于告警额度（" . Util::formatMoney($this->alarm_amount) . "）";
+            $this->trigger(AdminNoticeEvent::PLATFORM_AMOUNT_BELOW, new AdminNoticeEvent(['roles' => ['财务管理', '超级管理员']]));
+        }
+    }
 }

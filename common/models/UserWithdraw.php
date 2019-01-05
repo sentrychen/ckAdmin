@@ -3,7 +3,8 @@
 namespace common\models;
 
 use common\behaviors\NoticeBehavior;
-use common\components\notice\NoticeEvent;
+use common\components\notice\AdminNoticeEvent;
+use common\components\notice\UserNoticeEvent;
 use common\libs\Constants;
 use Exception;
 use Yii;
@@ -169,7 +170,7 @@ class UserWithdraw extends \yii\db\ActiveRecord
             $userAccount = UserAccount::findOne(['user_id' => $this->user_id]);
             $userAccount->frozen_withdraw_amount += $this->apply_amount;
             $userAccount->save(false);
-            $this->trigger(NoticeEvent::WITHDRAW_APPLY, new NoticeEvent(['roles' => ['财务管理', '超级管理员']]));
+            $this->trigger(AdminNoticeEvent::WITHDRAW_APPLY, new AdminNoticeEvent(['roles' => ['财务管理', '超级管理员']]));
         }
 
 
@@ -248,7 +249,7 @@ class UserWithdraw extends \yii\db\ActiveRecord
                     throw new dbException('取款会员统计记录失败！');
 
                 $tr->commit();
-                $this->trigger(NoticeEvent::WITHDRAW_SUCESSS, new NoticeEvent(['uid' => $this->user_id]));
+                $this->trigger(UserNoticeEvent::WITHDRAW_SUCESSS, new UserNoticeEvent(['uid' => $this->user_id]));
             } catch (Exception $e) {
                 Yii::error($e->getMessage());
                 //回滚
@@ -274,7 +275,7 @@ class UserWithdraw extends \yii\db\ActiveRecord
                 if (!$userAccount->save(false))
                     throw new dbException('更新用户资金账户失败！');
                 $tr->commit();
-                $this->trigger(NoticeEvent::WITHDRAW_FAILD, new NoticeEvent(['uid' => $this->user_id]));
+                $this->trigger(UserNoticeEvent::WITHDRAW_FAILD, new UserNoticeEvent(['uid' => $this->user_id]));
             } catch (Exception $e) {
                 Yii::error($e->getMessage());
                 //回滚

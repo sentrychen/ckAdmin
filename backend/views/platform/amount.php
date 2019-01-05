@@ -72,17 +72,24 @@ $this->params['breadcrumbs'][] = '游戏平台管理';
                             'format' => 'raw',
                             'value' => function ($model) {
                                 $status = Platform::getStatuses();
-                                return '<span class="label label-' . $model->status == Platform::STATUS_ENABLED ? 'success' : 'danger' . '">' . isset($status[$model->status]) ? $status[$model->status] : "异常" . '</span>';
+                                return '<span class="label label-' . ($model->status == Platform::STATUS_ENABLED ? 'primary' : 'danger') . '">' . (isset($status[$model->status]) ? $status[$model->status] : "异常") . '</span>';
                             }
                         ],
                         ['class' => ActionColumn::className(),
-                            'template' => '{change-amount} ',
+                            'template' => '{change-amount} {alarm-amount}',
                             'buttons' => [
                                 'change-amount' => function ($url, $model, $key) {
                                     return Html::a('<i class="fa fa-credit-card"></i> 额度调整', Url::to(['change-amount', 'platform_id' => $model->id]), [
                                         'title' => '平台额度调整',
                                         'data-pjax' => '0',
                                         'class' => 'btn btn-warning btn-sm',
+                                    ]);
+                                },
+                                'alarm-amount' => function ($url, $model, $key) {
+                                    return Html::a('<i class="fa fa-warning"></i> 告警设置', Url::to(['alarm-amount', 'platform_id' => $model->id]), [
+                                        'title' => '平台资金告警额度设置',
+                                        'data-pjax' => '0',
+                                        'class' => 'btn btn-danger btn-sm',
                                     ]);
                                 },
 

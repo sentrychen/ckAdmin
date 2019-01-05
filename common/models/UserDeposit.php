@@ -3,7 +3,8 @@
 namespace common\models;
 
 use common\behaviors\NoticeBehavior;
-use common\components\notice\NoticeEvent;
+use common\components\notice\AdminNoticeEvent;
+use common\components\notice\UserNoticeEvent;
 use common\libs\Constants;
 use Exception;
 use Yii;
@@ -163,7 +164,7 @@ class UserDeposit extends \yii\db\ActiveRecord
     {
         parent::afterSave($insert, $changedAttributes);
         if ($insert) {
-            $this->trigger(NoticeEvent::DEPOSIT_APPLY, new NoticeEvent(['roles' => ['财务管理', '超级管理员']]));
+            $this->trigger(AdminNoticeEvent::DEPOSIT_APPLY, new AdminNoticeEvent(['roles' => ['财务管理', '超级管理员']]));
         }
 
 
@@ -239,7 +240,7 @@ class UserDeposit extends \yii\db\ActiveRecord
                     throw new dbException('存款更新会员统计记录失败！');
 
                 $tr->commit();
-                $this->trigger(NoticeEvent::DEPOSIT_SUCCESS, new NoticeEvent(['uid' => $this->user_id]));
+                $this->trigger(UserNoticeEvent::DEPOSIT_SUCCESS, new UserNoticeEvent(['uid' => $this->user_id]));
             } catch (Exception $e) {
                 Yii::error($e->getMessage());
                 //回滚

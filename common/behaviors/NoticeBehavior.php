@@ -8,7 +8,8 @@
 
 namespace common\behaviors;
 
-use common\components\notice\NoticeEvent;
+use common\components\notice\AdminNoticeEvent;
+use common\components\notice\UserNoticeEvent;
 use common\models\Message;
 use common\models\User;
 use Yii;
@@ -26,21 +27,21 @@ class NoticeBehavior extends \yii\base\Behavior
     public function events()
     {
         return [
-            NoticeEvent::WITHDRAW_SUCESSS => 'noticeUser',
-            NoticeEvent::WITHDRAW_FAILD => 'noticeUser',
-            NoticeEvent::DEPOSIT_SUCCESS => 'noticeUser',
-            NoticeEvent::DEPOSIT_FAILD => 'noticeUser',
-            NoticeEvent::CHANGAMOUNT_SUCCESS => 'noticeUser',
-            NoticeEvent::SYSTEM_NOTICE => 'noticeUser',
-            NoticeEvent::PLATFORM_MESSAGE => 'noticeUser',
-            NoticeEvent::WITHDRAW_APPLY => 'noticeAdmin',
-            NoticeEvent::DEPOSIT_APPLY => 'noticeAdmin',
-            NoticeEvent::CHANGAMOUNT_APPLY => 'noticeAdmin',
+            UserNoticeEvent::WITHDRAW_SUCESSS => 'noticeUser',
+            UserNoticeEvent::WITHDRAW_FAILD => 'noticeUser',
+            UserNoticeEvent::DEPOSIT_SUCCESS => 'noticeUser',
+            UserNoticeEvent::DEPOSIT_FAILD => 'noticeUser',
+            UserNoticeEvent::CHANGAMOUNT_SUCCESS => 'noticeUser',
+            UserNoticeEvent::SYSTEM_NOTICE => 'noticeUser',
+            UserNoticeEvent::PLATFORM_MESSAGE => 'noticeUser',
+            AdminNoticeEvent::WITHDRAW_APPLY => 'noticeAdmin',
+            AdminNoticeEvent::DEPOSIT_APPLY => 'noticeAdmin',
+            AdminNoticeEvent::CHANGAMOUNT_APPLY => 'noticeAdmin',
         ];
     }
 
     /**
-     * @param $event NoticeEvent
+     * @param $event UserNoticeEvent
      */
     public function noticeUser($event)
     {
@@ -48,7 +49,7 @@ class NoticeBehavior extends \yii\base\Behavior
         $topic = $event->name;
         $message = $event->message ? $event->message : $event->getMessage($topic);
 
-        if ($topic != NoticeEvent::SYSTEM_NOTICE && $topic != NoticeEvent::PLATFORM_MESSAGE) {
+        if ($topic != UserNoticeEvent::SYSTEM_NOTICE && $topic != UserNoticeEvent::PLATFORM_MESSAGE) {
             Message::sendSysMessageToUser([$uid], '系统消息', $message, Message::LEVEL_MID);
         }
 
@@ -69,7 +70,7 @@ class NoticeBehavior extends \yii\base\Behavior
     }
 
     /**
-     * @param $event NoticeEvent
+     * @param $event UserNoticeEvent
      */
     public function noticeAdmin($event)
     {

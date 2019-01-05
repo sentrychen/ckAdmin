@@ -53,9 +53,10 @@ $this->params['breadcrumbs'][] = '游戏平台管理';
 
                         [
                             'attribute' => 'status',
+                            'format' => 'raw',
                             'value' => function ($model) {
                                 $status = Platform::getStatuses();
-                                return isset($status[$model->status]) ? $status[$model->status] : "异常";
+                                return '<span class="label label-' . ($model->status == Platform::STATUS_ENABLED ? 'primary' : 'danger') . '">' . (isset($status[$model->status]) ? $status[$model->status] : "异常") . '</span>';
                             }
                         ],
 

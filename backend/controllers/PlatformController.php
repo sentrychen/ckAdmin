@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use backend\models\PlatformAccount;
 use backend\models\PlatformAccountRecord;
 use Yii;
 use backend\models\search\PlatformSearch;
@@ -86,6 +87,33 @@ class PlatformController extends Controller
         $model->loadDefaultValues();
         return $this->render('change-amount', [
             'model' => $model, 'platformModel' => $platformModel
+        ]);
+    }
+
+    public function actionAlarmAmount($platform_id)
+    {
+        $model = PlatformAccount::findOne(['platform_id' => $platform_id]);
+
+        if (yii::$app->getRequest()->getIsPost()) {
+            if ($model->load(yii::$app->getRequest()->post())) {
+                if ($model->save()) {
+                    yii::$app->getSession()->setFlash('success', yii::t('app', 'Success'));
+                    return $this->redirect(['amount']);
+                }
+
+            }
+            $errors = $model->getErrors();
+            $err = '';
+            foreach ($errors as $v) {
+                $err .= $v[0] . '<br>';
+            }
+            yii::$app->getSession()->setFlash('error', $err);
+
+        }
+
+        $model->loadDefaultValues();
+        return $this->render('alarm-amount', [
+            'model' => $model
         ]);
     }
 }
