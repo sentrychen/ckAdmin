@@ -68,17 +68,32 @@ $this->params['breadcrumbs'][] = '在线会员';
                         [
                             'attribute' => 'log.device_type',
                             'value' => function ($model) {
-                                return UserLoginLog::getDeviceTypes($model->log->device_type);
+                                if ($model->log)
+                                    return UserLoginLog::getDeviceTypes($model->log->device_type);
+                                else
+                                    return "-";
                             }
                         ],
 
                         [
                             'attribute' => 'log.client_type',
                             'value' => function ($model) {
-                                return UserLoginLog::getLoginClients($model->log->client_type);
+                                if ($model->log)
+                                    return UserLoginLog::getLoginClients($model->log->client_type);
+                                else
+                                    return "-";
                             }
                         ],
-                        'log.client_version',
+                        [
+                            'attribute' => 'log.client_version',
+                            'value' => function ($model) {
+                                if ($model->log)
+                                    return $model->log->client_version;
+                                else
+                                    return "-";
+                            }
+                        ],
+
                         [
                             'class' => DateColumn::class,
                             'attribute' => 'last_login_at',
