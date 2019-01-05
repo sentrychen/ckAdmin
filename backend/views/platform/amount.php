@@ -59,7 +59,22 @@ $this->params['breadcrumbs'][] = '游戏平台管理';
                             },
                             'footer' => '<span class="label label-default">' . Util::formatMoney($totals['account_frozen_amount'], false) . '</span>'
                         ],
-
+                        [
+                            'attribute' => 'account.alarm_amount',
+                            'format' => 'raw',
+                            'value' => function ($model) {
+                                return Util::formatMoney($model->account->alarm_amount, false);
+                            },
+                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['account_alarm_amount'], false) . '</span>'
+                        ],
+                        [
+                            'attribute' => 'status',
+                            'format' => 'raw',
+                            'value' => function ($model) {
+                                $status = Platform::getStatuses();
+                                return '<span class="label label-' . $model->status == Platform::STATUS_ENABLED ? 'success' : 'danger' . '">' . isset($status[$model->status]) ? $status[$model->status] : "异常" . '</span>';
+                            }
+                        ],
                         ['class' => ActionColumn::className(),
                             'template' => '{change-amount} ',
                             'buttons' => [

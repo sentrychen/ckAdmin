@@ -118,4 +118,10 @@ class Platform extends \yii\db\ActiveRecord
             ->andFilterWhere(['status' => Platform::STATUS_ENABLED])
             ->asArray()->all(), 'id', 'name');
     }
+
+
+    public static function getToalAvailableAmount()
+    {
+        return static::find()->joinWith('account')->where(['status' => static::STATUS_ENABLED])->sum('available_amount');
+    }
 }

@@ -90,7 +90,7 @@ class SiteController extends Controller
     {
 
         $counts = [
-            'AMOUNT' => PlatformAccount::getToalAvailableAmount(),
+            'AMOUNT' => Platform::getToalAvailableAmount(),
             'DESPOSIT' => UserDeposit::getUncheckedCount(),
             'WITHDRAW' => UserWithdraw::getUncheckedCount(),
             'MESSAGE' => Message::getUnreads(10),

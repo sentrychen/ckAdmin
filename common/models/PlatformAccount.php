@@ -11,6 +11,7 @@ use yii\behaviors\TimestampBehavior;
  * @property int $platform_id 代理ID
  * @property string $available_amount 可用余额
  * @property string $frozen_amount 冻结金额
+ * @property string $alarm_amount 告警额度
  * @property int $updated_at 更新日期
  * @property int $created_at 创建日期
  */
@@ -32,7 +33,7 @@ class PlatformAccount extends \yii\db\ActiveRecord
         return [
             [['platform_id'], 'required'],
             [['platform_id', 'updated_at', 'created_at'], 'integer'],
-            [['available_amount', 'frozen_amount'], 'number'],
+            [['available_amount', 'frozen_amount', 'alarm_amount'], 'number'],
             [['platform_id'], 'unique'],
         ];
     }
@@ -58,9 +59,18 @@ class PlatformAccount extends \yii\db\ActiveRecord
             'platform_id' => '代理ID',
             'available_amount' => '可用余额(' . $chart . ')',
             'frozen_amount' => '冻结金额(' . $chart . ')',
+            'alarm_amount' => '告警金额(' . $chart . ')',
             'updated_at' => '更新日期',
             'created_at' => '创建日期',
         ];
+    }
+
+    /**
+     * @return Platform|\yii\db\ActiveQuery
+     */
+    public function getPlatform()
+    {
+        return $this->hasOne(Platform::class, ['id' => 'platform_id']);
     }
 
     public static function getToalAvailableAmount()

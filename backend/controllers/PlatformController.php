@@ -55,7 +55,7 @@ class PlatformController extends Controller
     public function actionAmount()
     {
         return $this->render('amount',$this->_getGridViewData(PlatformSearch::class,
-            ['account.available_amount','account.frozen_amount']));
+            ['account.available_amount', 'account.frozen_amount', 'account.alarm_amount']));
 
     }
 
