@@ -16,7 +16,7 @@ use common\widgets\SearchForm;
 /* @var $form common\widgets\SearchForm */
 
 ?>
-<div class="toolbar-searchs">
+<div class="toolbar-searchs" style="width: 100%">
     <?php $form = SearchForm::begin([]); ?>
 
     <?= $form->field($model, 'username')->label('会员名称')->textInput() ?>

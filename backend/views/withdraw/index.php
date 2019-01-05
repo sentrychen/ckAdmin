@@ -30,9 +30,6 @@ use common\helpers\Util;
             <?= $this->render('/widgets/_ibox-title') ?>
             <div class="ibox-content">
                 <div class="toolbar clearfix">
-                    <?= Bar::widget([
-                        'template' => '{refresh}',
-                    ]) ?>
                     <?= $this->render('_search', ['model' => $searchModel]); ?>
                 </div>
                 <?= GridView::widget([

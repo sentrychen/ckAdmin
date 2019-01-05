@@ -9,7 +9,9 @@ use backend\actions\UpdateAction;
 use backend\actions\IndexAction;
 use backend\actions\DeleteAction;
 use backend\actions\SortAction;
+use yii\web\BadRequestHttpException;
 use yii\web\Response;
+use yii\web\UnprocessableEntityHttpException;
 
 class BarcodeController extends \yii\web\Controller
 {

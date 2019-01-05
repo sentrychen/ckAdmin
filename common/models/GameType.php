@@ -4,6 +4,7 @@ namespace common\models;
 
 use Yii;
 use yii\behaviors\TimestampBehavior;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "{{%game_type}}".
@@ -47,6 +48,11 @@ class GameType extends \yii\db\ActiveRecord
         ];
     }
 
+    public static function getTypeNames()
+    {
+        return ArrayHelper::map(self::find()->orderBy("id asc")
+            ->asArray()->all(), 'id', 'name');
+    }
     /**
      * {@inheritdoc}
      */
