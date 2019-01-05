@@ -295,7 +295,8 @@ class User extends ActiveRecord
         $this->online_status = self::STATUS_OFFLINE;
         if ($this->userStat) {
             $this->userStat->last_logout_at = time();
-            $this->userStat->online_duration += time() - $this->userStat->last_login_at;
+            if ($this->userStat->last_login_at > 0)
+                $this->userStat->online_duration += time() - $this->userStat->last_login_at;
             $this->userStat->save(false);
         }
         $this->save(false);
