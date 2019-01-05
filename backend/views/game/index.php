@@ -19,9 +19,12 @@ $this->params['breadcrumbs'][] = '游戏管理';
         <div class="ibox">
             <?= $this->render('/widgets/_ibox-title') ?>
             <div class="ibox-content">
-                <?= Bar::widget([
-                    'template' => '{refresh} {create} ',
-                ]) ?>
+                <div class="toolbar clearfix">
+                    <?= Bar::widget([
+                        'template' => '{refresh} {create} ',
+                    ]) ?>
+                    <?= $this->render('_search', ['model' => $searchModel]); ?>
+                </div>
                 <?= GridView::widget([
                     'dataProvider' => $dataProvider,
                     'filterModel' => null,
