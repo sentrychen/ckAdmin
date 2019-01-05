@@ -34,7 +34,7 @@ return [
             ],
         ],
         'cache' => [//缓存组件
-            'class' => yii\redis\cache::class,
+            'class' => yii\redis\Cache::class,
         ],
         'session' => [
             'class' => yii\web\Session::className()
