@@ -6,6 +6,7 @@ use common\widgets\Bar;
 use common\grid\CheckboxColumn;
 use common\grid\ActionColumn;
 use common\grid\GridView;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\search\PlatformGameSearch */
@@ -60,7 +61,7 @@ $this->params['breadcrumbs'][] = '游戏管理';
                             'format' => 'raw',
                             'value' => function ($model) {
                                 if ($model->game_icon_url)
-                                    return "<img style='max-width: 150px;max-height: 100px' src='{$model->game_icon_url}'>";
+                                    return "<img style='max-width: 150px;max-height: 100px' src='" . Url::to('@web' . $model->game_icon_url) . "'>";
                                 else
                                     return '-';
                             }

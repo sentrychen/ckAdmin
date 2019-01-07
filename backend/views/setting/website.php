@@ -25,6 +25,8 @@ $this->params['breadcrumbs'][] = yii::t('app', 'Website Setting');
                 <?php $form = ActiveForm::begin(); ?>
                 <?= $form->field($model, 'website_title') ?>
                 <div class="hr-line-dashed"></div>
+                <?= $form->field($model, 'website_logo')->imgInput(['style' => "max-width:200px;max-height:150px"]); ?>
+                <div class="hr-line-dashed"></div>
                 <?= $form->field($model, 'website_url') ?>
                 <div class="hr-line-dashed"></div>
                 <?= $form->field($model, 'seo_keywords') ?>

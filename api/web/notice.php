@@ -24,7 +24,7 @@ try {
     $config = $config['components']['redis'];
 
     $redis = new Redis();
-    $timeout = $config['dataTimeout'] ?? 0;
+    $timeout = $config['dataTimeout'] ?? 2;
     $redis->connect($config['hostname'], $config['port'], $timeout);
 
     if (isset($config['password'])) {

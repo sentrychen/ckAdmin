@@ -250,7 +250,7 @@ $this->title = yii::t('app', 'Backend Manage System');
     }
 
     function getNotice() {
-
+        return true;
         $.getJSON('<?=Url::to(['site/notice'])?>', function (res) {
             var content = "";
             $.each(res, function (i, v) {

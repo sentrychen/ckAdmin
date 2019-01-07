@@ -106,6 +106,73 @@ class ActiveField extends \yii\widgets\ActiveField
     }
 
     /**
+     * 美化过的select选框
+     *
+     * @param array $items 需要设置的option元素,数组key作为值，数组value显示为option选项内容
+     * @param bool $multiple 是否多选，默认单选
+     * @param array $options htmp属性设置
+     *  - 具体的参数配置请参考jquery chosen官方文档: https://harvesthq.github.io/chosen/options.html
+     * @param bool $generateDefault 是否生成请选择选项，默认是
+     * @return \yii\widgets\ActiveField
+     */
+    public function chosenSelect($items, $multiple = false, $options = [], $generateDefault = true)
+    {
+        if (isset($options['class'])) {
+            $options['class'] .= " chosen-select";
+        } else {
+            $options['class'] = "chosen-select";
+        }
+        $multiple && $options['multiple'] = "1";
+        !isset($options['allow_single_deselect']) && $options['allow_single_deselect'] = true;
+        $options['allow_single_deselect'] === true && $options['allow_single_deselect'] = 'true';
+        $options['allow_single_deselect'] === false && $options['allow_single_deselect'] = 'false';
+        !isset($options['disable_search']) && $options['disable_search'] = false;
+        $options['disable_search'] === true && $options['disable_search'] = 'true';
+        $options['disable_search'] === false && $options['disable_search'] = 'false';
+        !isset($options['disable_search_threshold']) && $options['disable_search_threshold'] = 0;
+        !isset($options['enable_split_word_search']) && $options['enable_split_word_search'] = true;
+        $options['enable_split_word_search'] === true && $options['enable_split_word_search'] = 'true';
+        $options['enable_split_word_search'] === false && $options['enable_split_word_search'] = 'false';
+        !isset($options['inherit_select_classes']) && $options['inherit_select_classes'] = false;
+        $options['inherit_select_classes'] === true && $options['inherit_select_classes'] = 'true';
+        $options['inherit_select_classes'] === false && $options['inherit_select_classes'] = 'false';
+        !isset($options['max_selected_options']) && $options['max_selected_options'] = 'Infinity';
+        !isset($options['no_results_text']) && $options['no_results_text'] = Yii::t('app', 'None');
+        !isset($options['placeholder_text_multiple']) && $options['placeholder_text_multiple'] = Yii::t('app', 'Please select some');;
+        !isset($options['placeholder_text_single']) && $options['placeholder_text_single'] = Yii::t('app', 'Please select');
+        !isset($options['search_contains']) && $options['search_contains'] = true;
+        $options['search_contains'] === true && $options['search_contains'] = 'true';
+        $options['search_contains'] === false && $options['search_contains'] = 'false';
+        !isset($options['group_search']) && $options['group_search'] = true;
+        $options['group_search'] === true && $options['group_search'] = 'true';
+        $options['group_search'] === false && $options['group_search'] = 'false';
+        !isset($options['single_backstroke_delete']) && $options['single_backstroke_delete'] = true;
+        $options['single_backstroke_delete'] === true && $options['single_backstroke_delete'] = 'true';
+        $options['single_backstroke_delete'] === false && $options['single_backstroke_delete'] = 'false';
+        !isset($options['width']) && $options['width'] = '100%';
+        !isset($options['display_disabled_options']) && $options['display_disabled_options'] = true;
+        $options['display_disabled_options'] === true && $options['display_disabled_options'] = 'true';
+        $options['display_disabled_options'] === false && $options['display_disabled_options'] = 'false';
+        !isset($options['display_selected_options']) && $options['display_selected_options'] = true;
+        $options['display_selected_options'] === true && $options['display_selected_options'] = 'true';
+        $options['display_selected_options'] === false && $options['display_selected_options'] = 'false';
+        !isset($options['include_group_label_in_selected']) && $options['include_group_label_in_selected'] = false;
+        $options['include_group_label_in_selected'] === true && $options['include_group_label_in_selected'] = 'true';
+        $options['include_group_label_in_selected'] === false && $options['include_group_label_in_selected'] = 'false';
+        !isset($options['max_shown_results']) && $options['max_shown_results'] = 'Infinity';
+        !isset($options['case_sensitive_search']) && $options['case_sensitive_search'] = false;
+        $options['case_sensitive_search'] === true && $options['case_sensitive_search'] = 'true';
+        $options['case_sensitive_search'] === false && $options['case_sensitive_search'] = 'false';
+        !isset($options['hide_results_on_select']) && $options['hide_results_on_select'] = true;
+        $options['hide_results_on_select'] === true && $options['hide_results_on_select'] = 'true';
+        $options['hide_results_on_select'] === false && $options['hide_results_on_select'] = 'false';
+        !isset($options['rtl']) && $options['trl'] = false;
+        $options['trl'] === true && $options['trl'] = 'true';
+        $options['trl'] === false && $options['trl'] = 'false';
+        return $this->dropDownList($items, $options, $generateDefault);
+    }
+
+    /**
      * @inheritdoc
      */
     public function readOnly($value = null, $options = [])
@@ -220,20 +287,22 @@ class ActiveField extends \yii\widgets\ActiveField
      */
     public function imgInput($options = [])
     {
-        if( $this->template === "{label}\n<div class=\"col-sm-{size}\">{input}\n{error}</div>\n{hint}" ) {
+        //if( $this->template === "{label}\n<div class=\"col-sm-{size}\">{input}\n{error}</div>\n{hint}" ) {
             $this->template = "{label}\n<div class=\"col-sm-{size} image\">{input}<div style='position: relative'>{img}{actions}</div>\n{error}</div>\n{hint}";
-        }
+        //}
         $attribute = $this->attribute;
-        $src = key_exists('value', $options) ? $options['value'] : $this->model->$attribute;
+        $baseUrl = yii::$app->request->baseUrl;
+        $src = key_exists('value', $options) ? $options['value'] : $baseUrl . $this->model->$attribute;
         /** @var $cdn \feehi\cdn\TargetAbstract */
-         $cdn = yii::$app->cdn;
-         $baseUrl = $cdn->host;
+        // $cdn = yii::$app->cdn;
+        // $baseUrl = $cdn->host;
+
         $nonePicUrl = isset($options['default']) ? $options['default'] : $baseUrl . '/static/images/none.jpg';
         if ($src != '') {
-            if( strpos($src, $baseUrl) !== 0 ){
-                $temp = parse_url($src);
-                $src = (! isset($temp['host'])) ? $cdn->getCdnUrl($src) : $src;
-            }
+            //if( strpos($src, $baseUrl) !== 0 ){
+            //   $temp = parse_url($src);
+            //  $src = (! isset($temp['host'])) ? $cdn->getCdnUrl($src) : $src;
+            // }
             $delete = yii::t('app', 'Delete');
             $this->parts['{actions}'] = "<div onclick=\"$(this).parents('.image').find('input[type=hidden]').val(0);$(this).prev().attr('src', '$nonePicUrl');$(this).remove()\" style='position: absolute;width: 50px;padding: 5px 3px 3px 5px;top:5px;left:6px;background: black;opacity: 0.6;color: white;cursor: pointer'><i class='fa fa-trash' aria-hidden='true'> {$delete}</i></div>";
         }else{

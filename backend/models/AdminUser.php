@@ -249,7 +249,7 @@ class AdminUser extends ActiveRecord implements IdentityInterface
      */
     public function beforeSave($insert)
     {
-        Util::handleModelSingleFileUpload($this, 'avatar', $insert, '@admin/uploads/avatar/');
+        // Util::handleModelSingleFileUpload($this, 'avatar', $insert, '@admin/uploads/avatar/');
         if ($insert) {
             $this->generateAuthKey();
             $this->setPassword($this->password);

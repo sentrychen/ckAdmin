@@ -5,14 +5,19 @@
  * Email: job@feehi.com
  * Created at: 2016-03-23 12:54
  */
+
 namespace backend\models\form;
 
-use yii;
+use common\helpers\Util;
 use common\models\Options;
+use yii;
+use yii\web\UploadedFile;
 
 class SettingWebsiteForm extends \common\models\Options
 {
     public $website_title;
+
+    public $website_logo;
 
     public $website_email;
 
@@ -42,7 +47,8 @@ class SettingWebsiteForm extends \common\models\Options
     public function attributeLabels()
     {
         return [
-            'website_title' => yii::t('app', 'Website Title'),
+            'website_title' => '平台名称',
+            'website_logo' => '平台图标',
             'website_email' => yii::t('app', 'Website Email'),
             'website_icp' => yii::t('app', 'Icp Sn'),
             'website_statics_script' => yii::t('app', 'Statics Script'),
@@ -65,6 +71,7 @@ class SettingWebsiteForm extends \common\models\Options
             [
                 [
                     'website_title',
+                    'website_logo',
                     'website_email',
                     'website_icp',
                     'website_statics_script',
@@ -75,6 +82,7 @@ class SettingWebsiteForm extends \common\models\Options
                 ],
                 'string'
             ],
+            [['website_logo'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, jpeg, gif, webp'],
             [['website_status', 'website_comment', 'website_comment_need_verify'], 'integer'],
         ];
     }
@@ -124,5 +132,4 @@ class SettingWebsiteForm extends \common\models\Options
         }
         return true;
     }
-
 }

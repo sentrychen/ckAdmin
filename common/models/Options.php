@@ -117,7 +117,7 @@ class Options extends \yii\db\ActiveRecord
                 $upload = UploadedFile::getInstanceByName($key);
                 $old = Options::findOne($this->id);
                 /* @var $cdn \feehi\cdn\TargetInterface */
-                $cdn = yii::$app->get('cdn');
+                // $cdn = yii::$app->get('cdn');
                 if($upload !== null){
                     $uploadPath = yii::getAlias('@uploads/setting/custom-setting/');
                     if (! FileHelper::createDirectory($uploadPath)) {
@@ -130,17 +130,17 @@ class Options extends \yii\db\ActiveRecord
                         return false;
                     }
                     $this->value = str_replace(yii::getAlias('@agent/web'), '', $fullName);
-                    $cdn->upload($fullName, $this->value);
+                    //   $cdn->upload($fullName, $this->value);
                     if( $old !== null ){
                         $file = yii::getAlias('@agent/web') . $old->value;
                         if( file_exists($file) && is_file($file) ) unlink($file);
-                        if( $cdn->exists($old->value) ) $cdn->delete($old->value);
+                        //     if( $cdn->exists($old->value) ) $cdn->delete($old->value);
                     }
                 }else{
                     if( $this->value !== '' ){
                         $file = yii::getAlias('@agent/web') . $old->value;
                         if( file_exists($file) && is_file($file) ) unlink($file);
-                        if( $cdn->exists($old->value) ) $cdn->delete($old->value);
+                        //   if( $cdn->exists($old->value) ) $cdn->delete($old->value);
                         $this->value = '';
                     }else {
                         $this->value = $old->value;
@@ -159,10 +159,10 @@ class Options extends \yii\db\ActiveRecord
         $banners = json_decode($model->value, true);
         ArrayHelper::multisort($banners, 'sort');
         /** @var $cdn \feehi\cdn\TargetInterface */
-        $cdn = yii::$app->get('cdn');
+        //$cdn = yii::$app->get('cdn');
         foreach ($banners as $k => &$banner){
-            if( $banner['status'] == Constants::Status_Desable ) unset($banners[$k]);
-            $banner['img'] = $cdn->getCdnUrl($banner['img']);
+            if ($banner['status'] == Constants::STATUS_DISABLE) unset($banners[$k]);
+            //    $banner['img'] = $cdn->getCdnUrl($banner['img']);
         }
         return $banners;
     }

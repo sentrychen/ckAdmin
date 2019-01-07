@@ -33,7 +33,7 @@ class Util
     {
         $upload = UploadedFile::getInstance($model, $field);
         /* @var $cdn \feehi\cdn\TargetInterface */
-        $cdn = yii::$app->get('cdn');
+        // $cdn = yii::$app->get('cdn');
         if ($upload !== null) {
             $uploadPath = yii::getAlias($uploadPath);
             if (strpos(strrev($uploadPath), '/') !== 0) $uploadPath .= '/';
@@ -46,20 +46,21 @@ class Util
                 $model->addError($field, yii::t('app', 'Upload {attribute} error: ' . $upload->error, ['attribute' => yii::t('app', ucfirst($field))]) . ': ' . $fullName);
                 return false;
             }
-            $model->$field = str_replace(yii::getAlias('@webroot'), '', $fullName);
-            $cdn->upload($fullName, $model->$field);
+            $model->$field = str_replace(yii::getAlias('@backend/web'), '', $fullName);
+            //$model->$field = $fullName;
+            //  $cdn->upload($fullName, $model->$field);
             if (isset($options['thumbSizes'])) self::thumbnails($fullName, $options['thumbSizes']);
             if (!$insert) {
-                $file = yii::getAlias('@webroot') . $model->getOldAttribute($field);
+                $file = yii::getAlias('@backend/web') . $model->getOldAttribute($field);
                 if (file_exists($file) && is_file($file)) unlink($file);
-                if ($cdn->exists($model->getOldAttribute($field))) $cdn->delete($model->getOldAttribute($field));
+                //   if ($cdn->exists($model->getOldAttribute($field))) $cdn->delete($model->getOldAttribute($field));
                 if (isset($options['thumbSizes'])) self::deleteThumbnails($file, $options['thumbSizes']);
             }
         } else {
             if ($model->$field === '0') {//删除
-                $file = yii::getAlias('@webroot') . $model->getOldAttribute($field);
+                $file = yii::getAlias('@backend/web') . $model->getOldAttribute($field);
                 if (file_exists($file) && is_file($file)) unlink($file);
-                if ($cdn->exists($model->getOldAttribute($field))) $cdn->delete($model->getOldAttribute($field));
+                //  if ($cdn->exists($model->getOldAttribute($field))) $cdn->delete($model->getOldAttribute($field));
                 if (isset($options['thumbSizes'])) self::deleteThumbnails($file, $options['thumbSizes']);
                 $model->$field = '';
             } else {
@@ -89,7 +90,7 @@ class Util
         if (!isset($options['deleteOldFile'])) $options['deleteOldFile'] = false;//删除旧文件
         $upload = UploadedFile::getInstance($model, $field);
         /* @var $cdn \feehi\cdn\TargetInterface */
-        $cdn = yii::$app->get('cdn');
+        //$cdn = yii::$app->get('cdn');
         if ($upload !== null) {
             $uploadPath = yii::getAlias($uploadPath);
 
@@ -103,20 +104,20 @@ class Util
                 $model->addError($field, yii::t('app', 'Upload {attribute} error: ' . $upload->error, ['attribute' => yii::t('app', ucfirst($field))]) . ': ' . $fullName);
                 return false;
             }
-            $model->$field = str_replace(yii::getAlias('@webroot'), '', $fullName);
-            $cdn->upload($fullName, $model->$field);
+            $model->$field = str_replace(yii::getAlias('@backend/web'), '', $fullName);
+            //  $cdn->upload($fullName, $model->$field);
             if (isset($options['thumbSizes'])) self::thumbnails($fullName, $options['thumbSizes']);
             if ($options['successDeleteOld'] && $oldFullname) {
-                $file = yii::getAlias('@webroot') . $oldFullname;
+                $file = yii::getAlias('@backend/web') . $oldFullname;
                 if (file_exists($file) && is_file($file)) unlink($file);
-                if ($cdn->exists($oldFullname)) $cdn->delete($oldFullname);
+                //    if ($cdn->exists($oldFullname)) $cdn->delete($oldFullname);
                 if (isset($options['thumbSizes'])) self::deleteThumbnails($file, $options['thumbSizes']);
             }
         } else {
             if ($model->$field === '0') {//删除
-                $file = yii::getAlias('@webroot') . $oldFullname;
+                $file = yii::getAlias('@backend/web') . $oldFullname;
                 if (file_exists($file) && is_file($file)) unlink($file);
-                if ($cdn->exists($oldFullname)) $cdn->delete($oldFullname);
+                //if ($cdn->exists($oldFullname)) $cdn->delete($oldFullname);
                 if (isset($options['thumbSizes'])) self::deleteThumbnails($file, $options['thumbSizes']);
                 $model->$field = '';
             } else {
@@ -124,9 +125,9 @@ class Util
             }
         }
         if ($options['deleteOldFile']) {
-            $file = yii::getAlias('@webroot') . $oldFullname;
+            $file = yii::getAlias('@backend/web') . $oldFullname;
             if (file_exists($file) && is_file($file)) unlink($file);
-            if ($cdn->exists($oldFullname)) $cdn->delete($oldFullname);
+            //if ($cdn->exists($oldFullname)) $cdn->delete($oldFullname);
             if (isset($options['thumbSizes'])) self::deleteThumbnails($file, $options['thumbSizes']);
         }
     }
@@ -143,8 +144,8 @@ class Util
             $thumbFullName = self::getThumbName($fullName, $info['w'], $info['h']);
             Image::thumbnail($fullName, $info['w'], $info['h'])->save($thumbFullName);
             /** @var $cdn \feehi\cdn\TargetInterface */
-            $cdn = yii::$app->get('cdn');
-            $cdn->upload($thumbFullName, str_replace(yii::getAlias('@webroot'), '', $thumbFullName));
+            // /$cdn = yii::$app->get('cdn');
+            // $cdn->upload($thumbFullName, str_replace(yii::getAlias('@backend/web'), '', $thumbFullName));
         }
     }
 
@@ -159,8 +160,8 @@ class Util
         foreach ($thumbSizes as $info) {
             $thumbFullName = self::getThumbName($fullName, $info['w'], $info['h']);
             if (file_exists($thumbFullName) && is_file($thumbFullName)) unlink($thumbFullName);
-            $cdn = yii::$app->get('cdn');
-            $cdn->delete(str_replace(yii::getAlias("@webroot"), '', $thumbFullName));
+            //  $cdn = yii::$app->get('cdn');
+            //  $cdn->delete(str_replace(yii::getAlias("@backend/web"), '', $thumbFullName));
         }
         if ($deleteOrigin) {
             file_exists($fullName) && unlink($fullName);

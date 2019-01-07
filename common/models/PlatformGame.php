@@ -2,6 +2,7 @@
 
 namespace common\models;
 
+use common\helpers\Util;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 
@@ -106,5 +107,12 @@ class PlatformGame extends \yii\db\ActiveRecord
             'created_at' => '创建日期',
             'updated_at' => '更新日期',
         ];
+    }
+
+    public function beforeSave($insert)
+    {
+        Util::handleModelSingleFileUpload($this, 'game_icon_url', $insert, '@uploads/games/');
+        return parent::beforeSave($insert);
+
     }
 }
