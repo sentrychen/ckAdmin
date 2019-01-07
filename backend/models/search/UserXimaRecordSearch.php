@@ -72,7 +72,7 @@ class UserXimaRecordSearch extends UserXimaRecord
             return $dataProvider;
         }
         $query->andFilterWhere(['user_id' => $this->user_id])
-            ->andFilterWhere(['like', 'record_id', $this->record_id])
+            ->andFilterWhere(['record_id' => $this->record_id])
             ->andFilterWhere(['like', 'username', $this->username])
             ->andFilterWhere(['game_type' => $this->game_type])
             ->andFilterWhere(['platform_id' => $this->platform_id]);
