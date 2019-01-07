@@ -70,7 +70,7 @@ class AgentXimaRecordSearch extends AgentXimaRecord
         }
         $query->andFilterWhere(['user_id' => $this->user_id])
             ->andFilterWhere(['agent_id' => $this->agent_id])
-            ->andFilterWhere(['record_id' => $this->record_id])
+            ->andFilterWhere(['like', 'record_id', $this->record_id])
             ->andFilterWhere(['like', 'username', $this->username])
             ->andFilterWhere(['game_type' => $this->game_type])
             ->andFilterWhere(['platform_id' => $this->platform_id]);

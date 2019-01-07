@@ -15,6 +15,7 @@ use console\models\BetList;
 use console\models\Platform;
 use Yii;
 use yii\console\ExitCode;
+use yii\helpers\ArrayHelper;
 
 set_time_limit(0);
 
@@ -75,7 +76,7 @@ class SyncController extends \yii\console\Controller
                 $endTime = $now;
             }
 
-            $gameTypeIds = array_flip(GameType::getTypeNames());
+            $gameTypeIds = ArrayHelper::map(GameType::find()->asArray()->all(), 'name_en', 'id');
 
             if (!empty($data)) {
 
@@ -190,7 +191,7 @@ class SyncController extends \yii\console\Controller
                 'duel' => ['spade', 'heart', 'club', 'diamond', 'joker'],
             ];
             $gameTypes = ['dragonTiger' => 'dragon_tiger', 'baccarat' => 'baccarat', 'duel' => 'duel'];
-            $gameTypeIds = array_flip(GameType::getTypeNames());
+            $gameTypeIds = ArrayHelper::map(GameType::find()->asArray()->all(), 'name_en', 'id');
             if (!empty($data)) {
 
                 foreach ($data as $row) {
