@@ -181,7 +181,7 @@ class SyncController extends \yii\console\Controller
                 'duel' => ['spade', 'heart', 'club', 'diamond', 'joker'],
             ];
             $betTypes = [
-                'baccarat' => ['player', 'banker', 'tie', 'player_pair', 'banker_pair'],
+                'baccarat' => ['player', 'banker', 'tie', 'player_pair', 'banker_pair', 'small', 'big'],
                 'dragonTiger' => ['dragon', 'tiger', 'tie'],
                 'duel' => ['spade', 'heart', 'club', 'diamond', 'joker'],
             ];
