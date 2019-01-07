@@ -40,7 +40,7 @@ use yii\helpers\Url;
                         [
                             'attribute' => 'record_id',
                             'value' => function ($model) {
-                                return $model->record_id % 1000000000;
+                                return $model->record_id % 10000000;
                             },
                             'footer' => '合计'
                         ],
