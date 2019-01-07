@@ -92,10 +92,6 @@ $this->params['breadcrumbs'][] = '游戏管理';
                         ],
                         [
                             'attribute' => 'bet_num',
-                            'format' => 'raw',
-                            'value' => function ($model) {
-                                return Util::formatMoney($model->bet_num, false);
-                            },
                             'footer' => '<span class="label label-default">' . $totals['bet_num'] . '</span>'
                         ],
 
