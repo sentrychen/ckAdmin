@@ -73,7 +73,6 @@ use yii\helpers\Url;
                         ],
                         [
                             'attribute' => 'period_boot',
-                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['bet_amount'], false) . '</span>'
                         ],
                         [
                             'attribute' => 'period_round',
@@ -126,7 +125,6 @@ use yii\helpers\Url;
                             'value' => function ($model) {
                                 return Util::formatMoney($model->amount_before, false);
                             },
-                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['amount_before'], false) . '</span>'
                         ],
                         [
                             'attribute' => 'amount_after',
@@ -134,7 +132,6 @@ use yii\helpers\Url;
                             'value' => function ($model) {
                                 return Util::formatMoney($model->amount_after, false);
                             },
-                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['amount_after'], false) . '</span>'
                         ],
                         [
                             'attribute' => 'xima',
