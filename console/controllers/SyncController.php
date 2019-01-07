@@ -200,14 +200,14 @@ class SyncController extends \yii\console\Controller
 
                         $platformUser = PlatformUser::findOne(['game_account' => $row['username'], 'platform_id' => $platform->id]);
                         if (!$platformUser) continue;
-                        $model->record_id = $row['id'];
+                        $model->record_id = $row['id'] % 10000;
                         $model->user_id = $platformUser->user_id;
                         $model->username = $platformUser->user->username;
                         $model->platform_username = $row['username'];
                         $model->platform_id = $platform->id;
                         $model->game_type = $gameTypes[$row['gamePlayName']] ?? $row['gamePlayName'];
-                        $model->game_type_id = $gameTypeIds[$row['game_type']] ?? 0;
-                        $model->table_no = $row['roomId'];
+                        $model->game_type_id = $gameTypeIds[$model->game_type] ?? 0;
+                        $model->table_no = $row['roomId'] % 1000;
                         $model->period_boot = 0;
                         $model->period_round = $row['numberId'];
                         $model->bet_amount = round($row['betCoin']);
