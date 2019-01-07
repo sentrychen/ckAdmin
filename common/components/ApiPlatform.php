@@ -119,7 +119,7 @@ class ApiPlatform extends Platform
             $log_id = $this->platformUser->user->userStat->log_id;
         }
         //记录平台登录日志
-        $log = new UserLoginPlatformLog(['user_id' => $this->platformUser->user_id, 'platform_id' => $this->id, 'login_log_id' => $log_id]);
+        $log = new UserLoginPlatformLog(['user_id' => $this->platformUser->user_id, 'platform_id' => $this->platformUser->platform_id, 'login_log_id' => $log_id]);
         $log->save(false);
         return $res['data'];
     }
@@ -220,7 +220,7 @@ class ApiPlatform extends Platform
             $userAccountRecord = new UserAccountRecord();
             $userAccountRecord->user_id = $this->platformUser->user_id;
             $userAccountRecord->switch = UserAccountRecord::SWITCH_OUT;
-            $userAccountRecord->trade_no = $this->id;
+            $userAccountRecord->trade_no = $this->platformUser->platform_id;
             $userAccountRecord->trade_type_id = Constants::TRADE_TYPE_ADDAMOUNT;
             $userAccountRecord->remark = "用户上分到" . $this->name;
             $userAccountRecord->amount = $amount;
@@ -228,7 +228,7 @@ class ApiPlatform extends Platform
             $userAccountRecord->save(false);
 
             $platformRecord = new PlatformAccountRecord();
-            $platformRecord->platform_id = $this->id;
+            $platformRecord->platform_id = $this->platformUser->platform_id;
             $platformRecord->trade_no = $userAccountRecord->id;
             $platformRecord->user_id = $this->platformUser->user_id;
             $platformRecord->name = '用户上分';

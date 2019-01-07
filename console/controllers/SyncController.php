@@ -9,6 +9,7 @@
 namespace console\controllers;
 
 use common\components\ApiPlatform;
+use common\models\GameType;
 use common\models\PlatformUser;
 use console\models\BetList;
 use console\models\Platform;
@@ -74,6 +75,8 @@ class SyncController extends \yii\console\Controller
                 $endTime = $now;
             }
 
+            $gameTypeIds = array_flip(GameType::getTypeNames());
+
             if (!empty($data)) {
 
                 foreach ($data as $row) {
@@ -89,6 +92,7 @@ class SyncController extends \yii\console\Controller
                         $model->username = $platformUser->user->username;
                         $model->platform_username = $row['username'];
                         $model->platform_id = $platform->id;
+                        $model->game_type_id = $gameTypeIds[$row['game_type']] ?? 0;
                         $model->game_type = $row['game_type'];
                         $model->table_no = $row['table_id'];
                         $periods = explode('/', $row['period_info']);
@@ -186,7 +190,7 @@ class SyncController extends \yii\console\Controller
                 'duel' => ['spade', 'heart', 'club', 'diamond', 'joker'],
             ];
             $gameTypes = ['dragonTiger' => 'dragon_tiger', 'baccarat' => 'baccarat', 'duel' => 'duel'];
-
+            $gameTypeIds = array_flip(GameType::getTypeNames());
             if (!empty($data)) {
 
                 foreach ($data as $row) {
@@ -202,6 +206,7 @@ class SyncController extends \yii\console\Controller
                         $model->platform_username = $row['username'];
                         $model->platform_id = $platform->id;
                         $model->game_type = $gameTypes[$row['gamePlayName']] ?? $row['gamePlayName'];
+                        $model->game_type_id = $gameTypeIds[$row['game_type']] ?? 0;
                         $model->table_no = $row['roomId'];
                         $model->period_boot = 0;
                         $model->period_round = $row['numberId'];

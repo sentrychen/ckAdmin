@@ -17,6 +17,7 @@ use yii\db\Exception as dbException;
  * @property string $username 用户名
  * @property string $platform_username 平台用户名
  * @property int $platform_id 游戏平台ID
+ * @property string $game_type_id 游戏类型
  * @property string $game_type 游戏类型
  * @property string $table_no 桌号
  * @property int $period_boot 靴次
@@ -64,7 +65,7 @@ class BetList extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['record_id', 'user_id', 'platform_id', 'xima_plan_id', 'xima_limit', 'bet_amount', 'bingo_amount', 'profit', 'amount_before', 'amount_after', 'state', 'bet_at', 'draw_at', 'created_at'], 'integer'],
+            [['record_id', 'user_id', 'platform_id', 'game_type_id', 'xima_plan_id', 'xima_limit', 'bet_amount', 'bingo_amount', 'profit', 'amount_before', 'amount_after', 'state', 'bet_at', 'draw_at', 'created_at'], 'integer'],
             [['user_id', 'platform_id'], 'required'],
             [['xima', 'xima_status', 'xima_type', 'xima_rate'], 'number'],
             [['username', 'platform_username', 'game_type'], 'string', 'max' => 64],
@@ -87,6 +88,7 @@ class BetList extends \yii\db\ActiveRecord
             'username' => '用户名',
             'platform_username' => '平台用户名',
             'platform_id' => '游戏平台ID',
+            'game_type_id' => '游戏类型ID',
             'game_type' => '游戏类型',
             'table_no' => '桌号',
             'period_boot' => '靴次',
@@ -405,6 +407,15 @@ class BetList extends \yii\db\ActiveRecord
                 $userStat->bet_amount += $amount;
                 if (!$userStat->save(false))
                     throw new dbException('保存会员统计记录失败！');
+
+                $game = PlatformGame::findOne(['platform_id' => $platform_id, 'game_type_id' => $this->game_type_id]);
+                if ($game) {
+                    $game->bet_num += 1;
+                    $game->bet_amount += $amount;
+                    $game->profit += $lost_profit - $win_profit;
+                    $game->save(false);
+                }
+
                 $tr->commit();
             } catch (Exception $e) {
                 Yii::error($e->getMessage());

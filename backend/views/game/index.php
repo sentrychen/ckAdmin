@@ -96,16 +96,9 @@ $this->params['breadcrumbs'][] = '游戏管理';
                             'value' => function ($model) {
                                 return Util::formatMoney($model->bet_num, false);
                             },
-                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['bet_num'], false) . '</span>'
+                            'footer' => '<span class="label label-default">' . $totals['bet_num'] . '</span>'
                         ],
-                        [
-                            'attribute' => 'bet_user_num',
-                            'format' => 'raw',
-                            'value' => function ($model) {
-                                return Util::formatMoney($model->bet_user_num, false);
-                            },
-                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['bet_user_num'], false) . '</span>'
-                        ],
+
                         ['class' => ActionColumn::className(),
                             'template' => '{update} {delete}',
                         ],
