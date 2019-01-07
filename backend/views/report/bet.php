@@ -39,6 +39,9 @@ use yii\helpers\Url;
 
                         [
                             'attribute' => 'record_id',
+                            'value' => function ($model) {
+                                return $model->record_id % 1000000000;
+                            },
                             'footer' => '合计'
                         ],
                         [
@@ -64,6 +67,9 @@ use yii\helpers\Url;
                         ],
                         [
                             'attribute' => 'table_no',
+                            'value' => function ($model) {
+                                return $model->table_no % 1000;
+                            },
                         ],
                         [
                             'attribute' => 'period_boot',
