@@ -96,6 +96,9 @@ class UserController extends ActiveController
         if (!$user->validatePassword($old_password)) {
             throw new RestHttpException('旧密码验证失败', 400);
         }
+        if (strlen($password) < 6) {
+            throw new RestHttpException('密码长度不能小于6', 400);
+        }
         $user->setPassword($password);
         //$user->password_hash = Yii::$app->security->generatePasswordHash($password);
         if ($user->save(false)) {
@@ -129,6 +132,9 @@ class UserController extends ActiveController
         $password = $request->post('password');
         if (!$user->validatePassword($password)) {
             throw new RestHttpException('密码验证失败', 400);
+        }
+        if (!preg_match("/^[\d]{6}$/", $password_pay)) {
+            throw new RestHttpException('支付密码必须是6位长度的数字', 400);
         }
 
         $user->password_pay = Yii::$app->security->generatePasswordHash($password_pay);

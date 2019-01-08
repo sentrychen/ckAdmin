@@ -45,7 +45,7 @@ class RegisterForm extends Model
                 'targetClass' => User::class,
                 'message' => '用户名已经被使用'
             ],
-            ['username', 'string', 'min' => 2, 'max' => 32],
+            ['username', 'string', 'min' => 4, 'max' => 16],
             ['password', 'string', 'min' => 6],
             ['deviceid', 'string'],
             ['promo_code', 'integer'],

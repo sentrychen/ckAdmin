@@ -82,11 +82,14 @@ class User extends ActiveRecord
             [['username', 'password', 'invite_agent_id'], 'required', 'on' => ['create']],
             [['username'], 'required', 'on' => ['update', 'self-update']],
             [['username'], 'unique', 'on' => 'create'],
+            ['username', 'string', 'min' => 4, 'max' => 16],
+            ['password', 'string', 'min' => 6],
             [['repassword'], 'compare', 'compareAttribute' => 'password'],
             [['status', 'xima_plan_id', 'invite_agent_id', 'invite_user_id', 'created_at', 'updated_at'], 'integer'],
             [['username', 'password_hash', 'password_pay', 'api_token', 'password_reset_token', 'email', 'avatar', 'deviceid'], 'string', 'max' => 255],
             [['ip', 'origin'], 'string', 'max' => 64],
             [['auth_key'], 'string', 'max' => 32],
+
 
         ];
     }
