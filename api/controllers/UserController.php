@@ -65,7 +65,7 @@ class UserController extends ActiveController
         $user = Yii::$app->getUser()->getIdentity();
         $user->setAttributes(Yii::$app->request->post());
         if ($user->save()) {
-            return $user->toArray();
+            return $user;
         }
         $errorReasons = $user->getErrors();
 
@@ -86,13 +86,20 @@ class UserController extends ActiveController
      */
     public function actionPassword()
     {
+        /**
+         * @var $user User
+         */
         $user = Yii::$app->getUser()->getIdentity();
         $request = Yii::$app->request;
         $password = $request->post('password');
-        $user->password_hash = Yii::$app->security->generatePasswordHash($password);
-
-        if ($user->save()) {
-            return $user->toArray();
+        $old_password = $request->post('old_password');
+        if (!$user->validatePassword($old_password)) {
+            throw new RestHttpException('旧密码验证失败', 400);
+        }
+        $user->setPassword($password);
+        //$user->password_hash = Yii::$app->security->generatePasswordHash($password);
+        if ($user->save(false)) {
+            return 'success';
         }
         $errorReasons = $user->getErrors();
 
@@ -107,6 +114,42 @@ class UserController extends ActiveController
             throw new RestHttpException($err, 400);
         }
     }
+
+    /*
+     * 修改取款密码
+     */
+    public function actionPasswordPay()
+    {
+        /**
+         * @var $user User
+         */
+        $user = Yii::$app->getUser()->getIdentity();
+        $request = Yii::$app->request;
+        $password_pay = $request->post('password_pay');
+        $password = $request->post('password');
+        if (!$user->validatePassword($password)) {
+            throw new RestHttpException('密码验证失败', 400);
+        }
+
+        $user->password_pay = Yii::$app->security->generatePasswordHash($password_pay);
+
+        if ($user->save(false)) {
+            return 'success';
+        }
+        $errorReasons = $user->getErrors();
+
+        if (empty($errorReasons)) {
+            throw new RestHttpException();
+        } else {
+            $err = '';
+            foreach ($errorReasons as $errorReason) {
+                $err .= $errorReason[0] . '<br>';
+            }
+            $err = rtrim($err, '<br>');
+            throw new RestHttpException($err, 400);
+        }
+    }
+
 
     /*
      * 会员实名认证

@@ -13,7 +13,7 @@ use yii\filters\Cors;
 
 class ActiveController extends \yii\rest\ActiveController
 {
-    public $modelClass = null;
+    public $modelClass = "api\models\User";
 
     public $serializer = [
         'class' => 'yii\rest\Serializer',

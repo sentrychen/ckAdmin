@@ -151,7 +151,7 @@ class LoginForm extends Model
             'login_ip' => sprintf("%u", ip2long($userIp)),
             'device_type' => $deivceType,
             'client_type' => $clientType,
-            'deviceid' => $this->deviceid,
+            'deviceid' => substr($this->deviceid, 0, 32),
             'user_agent' => Yii::$app->request->getUserAgent(),
             'client_version' => Util::getClientVersion()
         ];

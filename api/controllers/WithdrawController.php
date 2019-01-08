@@ -74,7 +74,19 @@ class WithdrawController extends ActiveController
         // if($user->id_card_status == User::STATUS_IDCARD_OFF){
         //    return ['status'=>'1','info'=>'您还未实名认证，请先实名认证再申请取款！'];
         // }
+
+
         $request = Yii::$app->request;
+
+        /**
+         * 暂时先不验证支付密码
+         */
+        /*
+        $password_pay =$request->post('password_pay');
+        if (Yii::$app->security->generatePasswordHash($password_pay) != $user->password_pay){
+            throw new RestHttpException('支付密码错误', 400);
+        }
+        */
         $condition = [
             'id' => $request->post('user_bank_id'),
             'user_id' => $user->getId(),
