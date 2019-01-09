@@ -39,7 +39,7 @@ class UserBank extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id', 'user_id', 'username', 'bank_username', 'bank_account', 'bank_name'], 'required'],
+            [['user_id', 'username', 'bank_username', 'bank_account', 'bank_name'], 'required'],
             [['id', 'user_id', 'card_type', 'status', 'created_at', 'updated_at'], 'integer'],
             [['username', 'bank_username', 'bank_account', 'bank_name'], 'string', 'max' => 64],
             [['province', 'city'], 'string', 'max' => 32],
