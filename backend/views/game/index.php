@@ -3,7 +3,6 @@
 use backend\models\PlatformGame;
 use common\helpers\Util;
 use common\widgets\Bar;
-use common\grid\CheckboxColumn;
 use common\grid\ActionColumn;
 use common\grid\GridView;
 use yii\helpers\Url;

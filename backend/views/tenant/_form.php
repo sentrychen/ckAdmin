@@ -1,5 +1,6 @@
 <?php
 
+use backend\models\Agent;
 use common\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
@@ -15,7 +16,15 @@ use common\widgets\ActiveForm;
                     'options' => [
                         'class' => 'form-horizontal'
                     ]
-                ]); ?>
+                ]);
+                $temp = [];
+                if (yii::$app->controller->action->id == 'update') {
+                    $temp['disabled'] = 'disabled';
+                }
+                ?>
+                <div class="hr-line-dashed"></div>
+                <?= $form->field($model, 'agent_id')->dropDownList(Agent::getAgentTreeList(Agent::STATUS_NORMAL), $temp) ?>
+
                 <div class="hr-line-dashed"></div>
                 <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
                 <div class="hr-line-dashed"></div>
@@ -23,23 +32,10 @@ use common\widgets\ActiveForm;
                 <?= $form->field($model, 'app_name')->textInput(['maxlength' => true]) ?>
                 <div class="hr-line-dashed"></div>
 
-                <?= $form->field($model, 'app_logo')->textInput(['maxlength' => true]) ?>
+                <?= $form->field($model, 'app_logo')->imgInput(['style' => "max-width:200px;max-height:150px"]); ?>
                 <div class="hr-line-dashed"></div>
 
-                <?= $form->field($model, 'agent_id')->textInput() ?>
-                <div class="hr-line-dashed"></div>
 
-                <?= $form->field($model, 'app_id')->textInput(['maxlength' => true]) ?>
-                <div class="hr-line-dashed"></div>
-
-                <?= $form->field($model, 'app_secret')->textInput(['maxlength' => true]) ?>
-                <div class="hr-line-dashed"></div>
-
-                <?= $form->field($model, 'created_at')->textInput() ?>
-                <div class="hr-line-dashed"></div>
-
-                <?= $form->field($model, 'updated_at')->textInput() ?>
-                <div class="hr-line-dashed"></div>
 
                 <?= $form->defaultButtons() ?>
                 <?php ActiveForm::end(); ?>

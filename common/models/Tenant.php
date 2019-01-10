@@ -3,6 +3,7 @@
 namespace common\models;
 
 use Yii;
+use yii\behaviors\TimestampBehavior;
 
 /**
  * This is the model class for table "{{%tenant}}".
@@ -38,6 +39,25 @@ class Tenant extends \yii\db\ActiveRecord
             [['name', 'app_name'], 'string', 'max' => 64],
             [['app_logo', 'app_id', 'app_secret'], 'string', 'max' => 255],
         ];
+    }
+
+
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return [
+            TimestampBehavior::class,
+        ];
+    }
+
+    /**
+     * @return Agent|\yii\db\ActiveQuery
+     */
+    public function getAgent()
+    {
+        return $this->hasOne(Agent::class, ['id' => 'agent_id']);
     }
 
     /**

@@ -63,6 +63,7 @@ class PlatformGame extends \yii\db\ActiveRecord
     {
         return [
             [['platform_id', 'game_name', 'game_name_en', 'game_type_id'], 'required'],
+            ['game_name_en', 'unique', 'targetAttribute' => ['platform_id', 'game_name_en'], 'message' => '同一个平台下游戏英文名不能相同'],
             [['platform_id', 'game_type_id', 'status', 'bet_num', 'bet_user_num', 'created_at', 'updated_at'], 'integer'],
             [['bet_amount', 'profit'], 'number'],
             [['game_name', 'game_name_en'], 'string', 'max' => 64],

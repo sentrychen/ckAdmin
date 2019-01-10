@@ -7,8 +7,8 @@ use yii\helpers\Url;
 /* @var $model common\models\Tenant */
 
 $this->params['breadcrumbs'] = [
-    ['label' => yii::t('app', 'Tenant'), 'url' => Url::to(['index'])],
-    ['label' => yii::t('app', 'Create') . yii::t('app', 'Tenant')],
+    ['label' => '租户管理', 'url' => Url::to(['index'])],
+    ['label' => '创建租户'],
 ];
 ?>
 <?= $this->render('_form', [

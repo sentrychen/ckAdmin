@@ -4,7 +4,7 @@ namespace backend\controllers;
 
 use Yii;
 use backend\models\search\TenantSearch;
-use common\models\Tenant;
+use backend\models\Tenant;
 use backend\actions\CreateAction;
 use backend\actions\UpdateAction;
 use backend\actions\IndexAction;
@@ -14,23 +14,14 @@ use backend\actions\SortAction;
 /**
  * TenantController implements the CRUD actions for Tenant model.
  */
-class TenantController extends \yii\web\Controller
+class TenantController extends Controller
 {
     public function actions()
     {
         return [
             'index' => [
                 'class' => IndexAction::className(),
-                'data' => function () {
-
-                    $searchModel = new Tenant();
-                    $dataProvider = $searchModel->search(yii::$app->getRequest()->getQueryParams());
-                    return [
-                        'dataProvider' => $dataProvider,
-                        'searchModel' => $searchModel,
-                    ];
-
-                }
+                'data' => $this->_getGridViewData(TenantSearch::class)
             ],
             'create' => [
                 'class' => CreateAction::className(),
