@@ -6,5 +6,4 @@ use Yii;
 
 class BetList extends \common\models\BetList
 {
-
 }
