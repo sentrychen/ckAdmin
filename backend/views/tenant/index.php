@@ -41,7 +41,15 @@ $this->params['breadcrumbs'][] = '租户管理';
                                     return '-';
                             }
                         ],
-                        'agent_id',
+                        [
+                            'attribute' => 'agent_id',
+                            'value' => function ($model) {
+                                if ($model->agent)
+                                    return $model->agent->username;
+                                else
+                                    return '总租户';
+                            }
+                        ],
                         'app_id',
                         'app_secret',
                         'created_at:date',

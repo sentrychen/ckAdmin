@@ -23,7 +23,7 @@ use common\widgets\ActiveForm;
                 }
                 ?>
                 <div class="hr-line-dashed"></div>
-                <?= $form->field($model, 'agent_id')->dropDownList(Agent::getAgentTreeList(Agent::STATUS_NORMAL), $temp) ?>
+                <?= $form->field($model, 'agent_id')->dropDownList(\yii\helpers\ArrayHelper::map(Agent::find()->where(['parent_id' => 0, 'status' => Agent::STATUS_NORMAL])->asArray()->all(), 'id', 'username'), $temp) ?>
 
                 <div class="hr-line-dashed"></div>
                 <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>

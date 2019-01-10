@@ -2,6 +2,7 @@
 
 namespace common\models;
 
+use common\helpers\Util;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 
@@ -36,6 +37,7 @@ class Tenant extends \yii\db\ActiveRecord
         return [
             [['name'], 'required'],
             [['agent_id', 'created_at', 'updated_at'], 'integer'],
+            [['agent_id'], 'unique', 'message' => '该代理已经被其它租户绑定了'],
             [['name', 'app_name'], 'string', 'max' => 64],
             [['app_logo', 'app_id', 'app_secret'], 'string', 'max' => 255],
         ];
@@ -77,4 +79,20 @@ class Tenant extends \yii\db\ActiveRecord
             'updated_at' => '更新日期',
         ];
     }
+
+    public function beforeSave($insert)
+    {
+        Util::handleModelSingleFileUpload($this, 'app_logo', $insert, '@uploads/tenants/');
+        if ($insert) {
+            if (!$this->agent) $this->agent_id = 0;
+            elseif ($this->agent->parent_id != 0) {
+                return false;
+            }
+            $this->app_id = md5(Yii::$app->security->generateRandomKey(32));
+            $this->app_secret = Yii::$app->security->generateRandomString(32);
+        }
+        return parent::beforeSave($insert);
+
+    }
+
 }
