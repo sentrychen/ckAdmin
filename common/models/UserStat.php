@@ -22,6 +22,7 @@ use yii\behaviors\TimestampBehavior;
  * @property string $deposit_amount
  * @property int $withdrawal_number 取款次数
  * @property string $withdrawal_amount 取款总额
+ * @property string $profit 赢输总额
  * @property int $bet_number 投注次数
  * @property string $bet_amount 投注总额
  */
@@ -50,7 +51,7 @@ class UserStat extends \yii\db\ActiveRecord
         return [
             [['user_id'], 'required'],
             [['user_id', 'last_login_at', 'last_logout_at', 'log_id', 'login_number', 'relate_number', 'online_duration', 'deposit_number', 'withdrawal_number', 'bet_number'], 'integer'],
-            [['available_amount', 'frozen_amount', 'deposit_amount', 'withdrawal_amount', 'bet_amount'], 'number'],
+            [['available_amount', 'frozen_amount', 'deposit_amount', 'withdrawal_amount', 'bet_amount', 'profit'], 'number'],
             [['last_login_ip'], 'string', 'max' => 64],
             [['user_id'], 'unique'],
         ];
@@ -79,6 +80,7 @@ class UserStat extends \yii\db\ActiveRecord
             'withdrawal_amount' => '取款总额(' . $chart . ')',
             'bet_number' => '投注次数',
             'bet_amount' => '投注总额(' . $chart . ')',
+            'profit' => '赢输(' . $chart . ')',
         ];
     }
 

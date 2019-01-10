@@ -161,7 +161,14 @@ $this->params['breadcrumbs'][] = '会员列表';
                             },
                             'footer' => '<span class="label label-default">' . Util::formatMoney($totals['account_xima_amount'], false) . '</span>'
                         ],
-
+                        [
+                            'attribute' => 'userStat.profit',
+                            'format' => 'raw',
+                            'value' => function ($model) {
+                                return Util::formatMoney(isset($model->userStat->profit) ? $model->userStat->profit : 0, false);
+                            },
+                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['userStat_profit'], false) . '</span>'
+                        ],
                         [
                             'class' => DateColumn::class,
                             'attribute' => 'created_at',

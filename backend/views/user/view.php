@@ -130,6 +130,13 @@ use common\helpers\Util;
         'userStat.withdrawal_amount:currency',
         'userStat.bet_number',
         'userStat.bet_amount:currency',
+        'userStat.profit:currency',
+        [
+            'attribute' => 'userStat.profit',
+            'value' => function ($model) {
+                return Util::formatMoney($model->userStat->profit);
+            }
+        ],
         'account.available_amount:currency',
         'account.frozen_amount:currency',
         'account.xima_amount:currency',

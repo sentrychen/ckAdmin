@@ -95,6 +95,10 @@ class UserSearch extends User
                 'asc' => [UserStat::tableName() . '.bet_amount' => SORT_ASC],
                 'desc' => [UserStat::tableName() . '.bet_amount' => SORT_DESC],
             ],
+            'userStat.profit' => [
+                'asc' => [UserStat::tableName() . '.profit' => SORT_ASC],
+                'desc' => [UserStat::tableName() . '.profit' => SORT_DESC],
+            ],
             'account.available_amount' => [
                 'asc' => [UserAccount::tableName() . '.available_amount' => SORT_ASC],
                 'desc' => [UserAccount::tableName() . '.available_amount' => SORT_DESC],

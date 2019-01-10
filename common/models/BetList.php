@@ -405,6 +405,7 @@ class BetList extends \yii\db\ActiveRecord
                 $userStat = UserStat::findOne($this->user_id);
                 $userStat->bet_number += 1;
                 $userStat->bet_amount += $amount;
+                $userStat->profit += (float)$this->profit;
                 if (!$userStat->save(false))
                     throw new dbException('保存会员统计记录失败！');
 
@@ -412,7 +413,7 @@ class BetList extends \yii\db\ActiveRecord
                 if ($game) {
                     $game->bet_num += 1;
                     $game->bet_amount += $amount;
-                    $game->profit += $lost_profit - $win_profit;
+                    $game->profit += -(float)$this->profit;;
                     $game->save(false);
                 }
 
