@@ -186,11 +186,11 @@ class SiteController extends Controller
             $data['winLost'][$month][1] = 0;
             foreach($platForm as $k => $pf) {
                 $platform_id = $pf->id;
-                $model = PlatformDaily::getBetData($platform_id,$startDate,$endDate,$month);
+                $model = PlatformDaily::getBetData($platform_id, $startDate, $endDate);
                 $dbo = $model['dbo']?$model['dbo']:0;
                 $dpa = $model['dpa']?$model['dpa']:0;
                 $dla = $model['dla']?$model['dla']:0;
-                $one_winL = $dpa-$dla;
+                $one_winL = $dla - $dpa;
                 $all_winL += $one_winL;
                 $data['bet'][$month][] = $dbo;
                 $data['winLost'][$month][] = $one_winL;

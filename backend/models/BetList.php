@@ -30,7 +30,7 @@ class BetList extends \common\models\BetList
                 ->asArray()->one();
         $data['amount'] = $result['amount']?$result['amount']:0;
         $data['num'] = $result['num']?$result['num']:0;
-        $data['profit'] = $result['profit']?$result['profit']:0;
+        $data['profit'] = -(float)$result['profit'];
         return $data;
     }
 }
