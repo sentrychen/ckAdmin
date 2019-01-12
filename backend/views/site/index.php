@@ -151,7 +151,9 @@ $this->title = yii::t('app', 'Backend Manage System');
                             ?>
                             <li>
                                 <div class="text-center link-block">
-                                    <a class="J_menuItem" title="消息列表" href="<?= Url::toRoute(['message/index']) ?>">
+                                    <a class="J_menuItem" title="消息列表"
+                                       onclick="$(this).closest('li.dropdown').removeClass('open');"
+                                       href="<?= Url::toRoute(['site/list-message']) ?>">
                                         <i class="fa fa-envelope"></i> <strong> 查看所有消息</strong>
                                     </a>
                                     <?php
@@ -194,7 +196,8 @@ $this->title = yii::t('app', 'Backend Manage System');
                             ?>
                             <li>
                                 <div class="text-center link-block">
-                                    <a class="J_menuItem" href="<?= Url::toRoute(['notice/index']) ?>">
+                                    <a class="J_menuItem" onclick="$(this).closest('li.dropdown').removeClass('open');"
+                                       href="<?= Url::toRoute(['site/list-notice']) ?>">
                                         <i class="fa fa-bell"></i> <strong>查看所有公告 </strong>
                                     </a>
                                 </div>
@@ -255,28 +258,27 @@ $this->title = yii::t('app', 'Backend Manage System');
 <script type="text/javascript">
     $(function () {
         $('.message-title').click(function () {
-            var $this = $(this);
+            let $this = $(this);
             let id = $(this).attr('data-id');
-            $.get('<?=Url::to(['site/read-message'])?>?ids=' + id, function (data) {
-                if (data && data.code === 0) {
-                    layer.alert(data.data.content, {
-                        skin: 'layui-layer-lan',
-                        title: data.data.title,
-                        shadeClose: true,
-                        btn: null
-                    });
-                    $this.next().remove();
-                    $this.remove();
-                    let cnt = $('#message-count').text();
-                    cnt--;
-                    if (cnt > 0) {
-                        $('#message-count').text(cnt);
-                    } else {
-                        $('#message-count').html('');
-                        $('.msg-item').remove();
-                    }
-                }
+            layer.open({
+                type: 2,
+                title: null,
+                shadeClose: true,
+                shade: 0.8,
+                area: ['300px', '300px'],
+                content: "<?=Url::to(['message-info'])?>?id=" + id
             });
+            $this.next().remove();
+            $this.remove();
+            let cnt = $('#message-count').text();
+            cnt--;
+            if (cnt > 0) {
+                $('#message-count').text(cnt);
+            } else {
+                $('#message-count').html('');
+                $('.msg-item').remove();
+            }
+
         });
     });
 
@@ -316,7 +318,7 @@ $this->title = yii::t('app', 'Backend Manage System');
         });
     }
 
-    setInterval(getNotice, 10000);
+    //setInterval(getNotice, 1000000);
 </script>
 <?php JsBlock::end() ?>
 </html>

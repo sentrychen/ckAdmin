@@ -48,7 +48,7 @@ class NoticeSearch extends Notice
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
+    public function search($params, $user_id = null)
     {
         $query = Notice::find();
 
@@ -76,6 +76,10 @@ class NoticeSearch extends Notice
             'is_deleted' => $this->is_deleted?1:0,
             'user_type' => $this->user_type,
         ]);
+        if ($user_id) {
+            $query->andWhere(['>', 'expire_at', time()]);
+            $query->andWhere(['user_type' => [self::OBJ_ADMIN, self::OBJ_ALL]]);
+        }
 
         $query->andFilterWhere(['or', ['like', 'title', $this->keyword], ['like', 'content', $this->keyword]]);
         $this->trigger(SearchEvent::BEFORE_SEARCH, new SearchEvent(['query' => $query]));

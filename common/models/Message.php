@@ -44,6 +44,7 @@ class Message extends \yii\db\ActiveRecord
     const LEVEL_HIGH = 3;
 
     public $ids;
+    public $is_read;
 
     /**
      * {@inheritdoc}
@@ -251,18 +252,18 @@ class Message extends \yii\db\ActiveRecord
 
         $no_deleted = Constants::YesNo_No;
         $on = MessageFlag::tableName() . '.message_id=' . Message::tableName() . '.id and ' . MessageFlag::tableName() . '.user_id=' . $user_id . ' and ' . MessageFlag::tableName() . '.user_type=' . $user_type;
-        $query = Message::find()->leftJoin(MessageFlag::tableName(), $on)
+        $query = Message::find()->select([Message::tableName() . '.*', MessageFlag::tableName() . '.is_read'])->leftJoin(MessageFlag::tableName(), $on)
             ->where([Message::tableName() . '.user_type' => $user_type]);
-        if ($is_read === Constants::YesNo_Yes) {
-            $query->andWhere([MessageFlag::tableName() . '.is_deleted' => $no_deleted, 'is_read' => $is_read]);
-        } elseif ($is_read === Constants::YesNo_No) {
-            $query->andWhere(['or', [MessageFlag::tableName() . '.is_deleted' => $no_deleted, 'is_read' => $is_read],
-                ['notify_obj' => Message::SEND_ALL, MessageFlag::tableName() . '.id' => null]]);
-        } else {
+
+        if (is_null($is_read) || $is_read == '') {
             $query->andWhere(['or', [MessageFlag::tableName() . '.is_deleted' => $no_deleted],
                 ['notify_obj' => Message::SEND_ALL, MessageFlag::tableName() . '.id' => null]]);
+        } elseif ($is_read == Constants::YesNo_Yes) {
+            $query->andWhere([MessageFlag::tableName() . '.is_deleted' => $no_deleted, 'is_read' => $is_read]);
+        } else {
+            $query->andWhere(['or', [MessageFlag::tableName() . '.is_deleted' => $no_deleted, 'is_read' => $is_read],
+                ['notify_obj' => Message::SEND_ALL, MessageFlag::tableName() . '.id' => null]]);
         }
-
         return $query;
     }
 

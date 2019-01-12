@@ -25,7 +25,6 @@ use common\libs\Constants;
     <?= $form->field($model, 'keyword')->label('关键词')->textInput() ?>
 
     <?= $form->field($model, 'user_type')->dropDownList(Notice::getUserTypes()) ?>
-    <?= $form->field($model, 'is_deleted')->label('状态')->dropDownList(Notice::getStatus(), ['prompt' => null]) ?>
     <?= $form->field($model, 'created_at')->dateRange() ?>
     <?= $form->searchButtons() ?>
     <?php SearchForm::end(); ?>

@@ -26,7 +26,7 @@ class MessageSearch extends Message
     {
         return [
 
-            [['keyword', 'user_type', 'is_deleted', 'created_at'], 'safe'],
+            [['keyword', 'is_read', 'user_type', 'is_deleted', 'created_at'], 'safe'],
         ];
     }
 
@@ -84,6 +84,29 @@ class MessageSearch extends Message
 
         $query->andFilterWhere(['or', ['like', 'title', $this->keyword], ['like', 'content', $this->keyword]]);
         $this->trigger(SearchEvent::BEFORE_SEARCH, new SearchEvent(['query' => $query]));
+        return $dataProvider;
+    }
+
+    public function searchByUser($params, $user_id)
+    {
+        $this->load($params);
+
+        $query = Message::queryUserMessages(self::OBJ_ADMIN, $user_id, $this->is_read);
+
+        // add conditions that should always apply here
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'sort' => [
+                'defaultOrder' => [
+                    'created_at' => SORT_DESC,
+                ],
+            ]
+        ]);
+
+
+        $query->andFilterWhere(['or', ['like', 'title', $this->keyword], ['like', 'content', $this->keyword]]);
+
         return $dataProvider;
     }
 }

@@ -10,30 +10,28 @@ namespace backend\controllers;
 
 use api\components\RestHttpException;
 use backend\models\BetList;
-use backend\models\MessageFlag;
-use backend\models\PlatformAccount;
-use backend\models\User;
-use common\libs\Constants;
 use backend\models\Daily;
-use backend\models\PlatformDaily;
-use backend\models\Platform;
-use backend\models\Message;
-use common\models\Notice;
-use backend\models\UserDeposit;
-use backend\models\UserWithdraw;
-use backend\models\UserLoginLog;
-use yii;
-use Exception;
-
 use backend\models\form\LoginForm;
+use backend\models\Message;
+use backend\models\Platform;
+use backend\models\PlatformDaily;
+use backend\models\search\MessageSearch;
+use backend\models\search\NoticeSearch;
+use backend\models\User;
+use backend\models\UserDeposit;
+use backend\models\UserLoginLog;
+use backend\models\UserWithdraw;
+use common\helpers\Util;
+use common\models\Notice;
+use Exception;
+use yii;
 use yii\base\UserException;
-use yii\db\Query;
+use yii\captcha\CaptchaAction;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
-use yii\web\HttpException;
-use yii\captcha\CaptchaAction;
 use yii\helpers\BaseJson;
-use common\helpers\Util;
+use yii\web\BadRequestHttpException;
+use yii\web\HttpException;
 use yii\web\Response;
 
 /**
@@ -47,7 +45,7 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'except' =>['login', 'captcha', 'language'],
+                'except' => ['login', 'captcha', 'language'],
                 'rules' => [
                     [
                         'allow' => true,
@@ -77,7 +75,7 @@ class SiteController extends Controller
             'foreColor' => 0xffffff,//字体颜色
             'offset' => 13,//设置字符偏移量
         ];
-        if( YII_ENV_TEST ) $captcha = array_merge($captcha, ['fixedVerifyCode'=>'testme']);
+        if (YII_ENV_TEST) $captcha = array_merge($captcha, ['fixedVerifyCode' => 'testme']);
         return [
             'captcha' => $captcha,
         ];
@@ -124,13 +122,38 @@ class SiteController extends Controller
             'actUser' => $activeUser,
             'userDeposit' => $userDeposit,
             'useWithdraw' => $useWithdraw,
-            'useBet'=> $useBet,
+            'useBet' => $useBet,
             'userSum' => BaseJson::encode($userSum['user']),
             'userDw' => BaseJson::encode($userSum['dw']),
             'bet' => BaseJson::encode($platform['bet']),
             'winLost' => BaseJson::encode($platform['winLost']),
 
         ]);
+    }
+
+    public function actionListNotice()
+    {
+        $searchModel = new NoticeSearch();
+        $dataProvider = $searchModel->search(yii::$app->getRequest()->getQueryParams(), Yii::$app->getUser()->getId());
+
+        return $this->render('notice', ['dataProvider' => $dataProvider, 'searchModel' => $searchModel]);
+    }
+
+    public function actionListMessage()
+    {
+        $searchModel = new MessageSearch();
+        $dataProvider = $searchModel->searchByUser(yii::$app->getRequest()->getQueryParams(), Yii::$app->getUser()->getId());
+        return $this->render('message', ['dataProvider' => $dataProvider, 'searchModel' => $searchModel]);
+    }
+
+    public function actionMessageInfo($id)
+    {
+
+        $model = Message::readMessage(Message::OBJ_ADMIN, Yii::$app->getUser()->getId(), $id);
+        if (!$model) {
+            throw new BadRequestHttpException('消息不存在');
+        }
+        return $this->render('message-info', ['model' => current($model)]);
     }
 
     /**
@@ -148,7 +171,7 @@ class SiteController extends Controller
             return ['code' => 1, 'message' => '消息不存在'];
         }
 
-        return ['code' => 0, 'data' => current($models)];
+        return ['code' => 0];
     }
 
     /**
@@ -166,7 +189,7 @@ class SiteController extends Controller
             return ['code' => 1, 'message' => '消息不存在'];
         }
 
-        return ['code' => 0, 'data' => current($models)];
+        return ['code' => 0];
 
     }
 
@@ -180,21 +203,21 @@ class SiteController extends Controller
         $data['user'] = ['0' => ['用户', '新增用户', '活跃用户', '首存用户']];
         $data['dw'] = ['0' => ['存取款', '存款', '取款']];
 
-        foreach($month_arr as $m){
-            $year = date('Y',time());
-            $count = date("t",strtotime("{$year}-{$m}"));
+        foreach ($month_arr as $m) {
+            $year = date('Y', time());
+            $count = date("t", strtotime("{$year}-{$m}"));
             $dayCount = $count - 1;
-            $startDate = $year.$m.'01';
+            $startDate = $year . $m . '01';
             $month = (int)$m;
-            $endDate = date('Ymd',strtotime("{$startDate}+{$dayCount} day"));
-            $result = Daily::getSumData($startDate,$endDate);
-            $dnu = $result['dnu']?$result['dnu']:0;
-            $dau = $result['dau']?$result['dau']:0;
-            $ndu = $result['ndu']?$result['ndu']:0;
-            $dda = $result['dda']?$result['dda']:0;
-            $dwa = $result['dwa']?$result['dwa']:0;
-            $data['user'][] = ["{$month}月",$dnu,$dau,$ndu];
-            $data['dw'][] = ["{$month}月",$dda,$dwa];
+            $endDate = date('Ymd', strtotime("{$startDate}+{$dayCount} day"));
+            $result = Daily::getSumData($startDate, $endDate);
+            $dnu = $result['dnu'] ? $result['dnu'] : 0;
+            $dau = $result['dau'] ? $result['dau'] : 0;
+            $ndu = $result['ndu'] ? $result['ndu'] : 0;
+            $dda = $result['dda'] ? $result['dda'] : 0;
+            $dwa = $result['dwa'] ? $result['dwa'] : 0;
+            $data['user'][] = ["{$month}月", $dnu, $dau, $ndu];
+            $data['dw'][] = ["{$month}月", $dda, $dwa];
         }
         return $data;
     }
@@ -206,29 +229,29 @@ class SiteController extends Controller
     public function getPlatFDailySum()
     {
         $month_arr = Util::getMonth();
-        $year = date('Y',time());
+        $year = date('Y', time());
         $platForm = Platform::getPlatfromName();
         $data['bet'] = ['0' => ['平台游戏']];
-        $data['winLost'] = ['0' => ['平台游戏','输赢']];
-        foreach($platForm as $k => $pf) {
+        $data['winLost'] = ['0' => ['平台游戏', '输赢']];
+        foreach ($platForm as $k => $pf) {
             $name = $pf->name;
             $data['bet'][0][] = $data['winLost'][0][] = $name;
         }
-        foreach($month_arr as $n => $m){
-            $count = date("t",strtotime("{$year}-{$m}"));
+        foreach ($month_arr as $n => $m) {
+            $count = date("t", strtotime("{$year}-{$m}"));
             $dayCount = $count - 1;
-            $startDate = $year.$m.'01';
+            $startDate = $year . $m . '01';
             $month = (int)$m;
-            $endDate = date('Ymd',strtotime("{$startDate}+{$dayCount} day"));
-            $data['bet'][$month][] = $data['winLost'][$month][] = $month.'月';
+            $endDate = date('Ymd', strtotime("{$startDate}+{$dayCount} day"));
+            $data['bet'][$month][] = $data['winLost'][$month][] = $month . '月';
             $all_winL = 0;
             $data['winLost'][$month][1] = 0;
-            foreach($platForm as $k => $pf) {
+            foreach ($platForm as $k => $pf) {
                 $platform_id = $pf->id;
                 $model = PlatformDaily::getBetData($platform_id, $startDate, $endDate);
-                $dbo = $model['dbo']?$model['dbo']:0;
-                $dpa = $model['dpa']?$model['dpa']:0;
-                $dla = $model['dla']?$model['dla']:0;
+                $dbo = $model['dbo'] ? $model['dbo'] : 0;
+                $dpa = $model['dpa'] ? $model['dpa'] : 0;
+                $dla = $model['dla'] ? $model['dla'] : 0;
                 $one_winL = $dla - $dpa;
                 $all_winL += $one_winL;
                 $data['bet'][$month][] = $dbo;
@@ -248,7 +271,7 @@ class SiteController extends Controller
      */
     public function actionLogin()
     {
-        if (! Yii::$app->getUser()->getIsGuest()) {
+        if (!Yii::$app->getUser()->getIsGuest()) {
             return $this->goHome();
         }
 

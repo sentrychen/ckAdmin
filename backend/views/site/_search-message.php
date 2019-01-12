@@ -20,12 +20,10 @@ use common\libs\Constants;
 /* @var $form common\widgets\SearchForm */
 ?>
 <div class="toolbar-searchs">
-    <?php $form = SearchForm::begin([]); ?>
+    <?php $form = SearchForm::begin(['action' => ['list-message']]); ?>
 
     <?= $form->field($model, 'keyword')->label('关键词')->textInput() ?>
-
-    <?= $form->field($model, 'user_type')->dropDownList(Message::getUserTypes()) ?>
-    <?= $form->field($model, 'created_at')->dateRange() ?>
-    <?= $form->searchButtons() ?>
+    <?= $form->field($model, 'is_read')->label('已读')->dropDownList(Constants::getYesNoItems()) ?>
+    <?= $form->searchButtons(['list-message']) ?>
     <?php SearchForm::end(); ?>
 </div>
