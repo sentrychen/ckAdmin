@@ -205,8 +205,8 @@ $this->params['breadcrumbs'][] = '会员列表';
 <?php JsBlock::begin() ?>
     <script type="text/javascript">
         function sendMessage() {
-        var chk_value = [];
-        var num = $('input[name="selection[]"]:checked').length;
+            let chk_value = [];
+            let num = $('input[name="selection[]"]:checked').length;
         if(num == false){
             layer.alert('请先选择要操作的记录!',{icon:2});
             return false;

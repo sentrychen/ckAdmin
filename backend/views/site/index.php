@@ -15,6 +15,7 @@ use backend\models\Menu;
 use common\helpers\{
     FileDependencyHelper, StringHelper
 };
+use common\widgets\JsBlock;
 use yii\caching\FileDependency;
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -34,7 +35,7 @@ $this->title = yii::t('app', 'Backend Manage System');
     <?= Html::csrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
-    <link rel="icon" href="<?= yii::$app->getRequest()->getHostInfo() ?>/favicon.ico" type="image/x-icon"/>
+    <link rel="icon" href="<?= yii::$app->getRequest()->getBaseUrl() ?>/favicon.ico" type="image/x-icon"/>
 </head>
 <body class="fixed-sidebar full-height-layout gray-bg" style="overflow:hidden">
 <?php $this->beginBody() ?>
@@ -118,7 +119,8 @@ $this->title = yii::t('app', 'Backend Manage System');
                     <li class="dropdown hidden-xs">
                         <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#" title="未读消息">
                             <i class="fa fa-envelope"></i> <span
-                                    class="label label-danger"><?= $counts['MESSAGE']['count'] ? $counts['MESSAGE']['count'] : '' ?></span>
+                                    class="label label-danger"
+                                    id="message-count"><?= $counts['MESSAGE']['count'] ? $counts['MESSAGE']['count'] : '' ?></span>
                             消息
                         </a>
                         <ul class="dropdown-menu dropdown-messages">
@@ -128,20 +130,22 @@ $this->title = yii::t('app', 'Backend Manage System');
                             foreach ($counts['MESSAGE']['data'] as $message) {
 
                                 ?>
-                                <li class="m-t-xs">
+                                <li class="m-t-xs message-title msg-item" data-id="<?= $message->id ?>"
+                                    style="cursor:pointer">
                                     <div class="dropdown-messages-box">
                                         <div class="media-body" style="padding:0 10px;">
-                                            <small class="pull-right text-muted"><?= yii::$app->getFormatter()->asRelativeTime($message->created_at) ?></small>
-                                            <strong class="<?= $levelTexts[$message->level] ?>"
-                                                    title="<?= Html::encode($message->title) ?>"><i
-                                                        class="fa <?= $levelIcons[$message->level] ?>"></i> <?= Html::encode(StringHelper::truncate($message->title, 16)) ?>
-                                            </strong>
-                                            <div><?= StringHelper::truncate($message->content, 60, '...', 'UTF-8', true) ?></div>
-                                            <small class="text-muted"><?= yii::$app->getFormatter()->asDate($message->created_at) ?></small>
+                                            <small class="pull-right"
+                                                   style="color:#bbb;"><?= yii::$app->getFormatter()->asRelativeTime($message->created_at) ?></small>
+                                            <div style="padding-bottom: 3px;">
+                                                <i class="fa <?= $levelIcons[$message->level] ?> <?= $levelTexts[$message->level] ?>"> </i>
+                                                <strong title="<?= Html::encode($message->title) ?>">
+                                                    <?= StringHelper::truncate(strip_tags($message->title), 16, '...', 'UTF-8') ?>
+                                                </strong></div>
+                                            <small style="padding-left:16px;color:#bbb;"><?= StringHelper::truncate(strip_tags($message->content), 16, '...', 'UTF-8') ?></small>
                                         </div>
                                     </div>
                                 </li>
-                                <li class="divider"></li>
+                                <li class="divider msg-item"></li>
                                 <?php
                             }
                             ?>
@@ -150,6 +154,15 @@ $this->title = yii::t('app', 'Backend Manage System');
                                     <a class="J_menuItem" title="消息列表" href="<?= Url::toRoute(['message/index']) ?>">
                                         <i class="fa fa-envelope"></i> <strong> 查看所有消息</strong>
                                     </a>
+                                    <?php
+                                    if ($counts['MESSAGE']['count'] > 0) {
+                                        ?>
+                                        <a class="msg-item" title="标记所有消息为已读" href="javascript:readAllMessage()">
+                                            <i class="fa fa-check-square-o"></i> <strong> 标记所有为已读</strong>
+                                        </a>
+                                        <?php
+                                    }
+                                    ?>
                                 </div>
                             </li>
                         </ul>
@@ -168,8 +181,9 @@ $this->title = yii::t('app', 'Backend Manage System');
                                 <li class="m-t-xs">
                                     <div class="dropdown-messages-box">
                                         <div class="media-body" style="padding:0 10px;">
-                                            <small class="pull-right text-muted"><?= yii::$app->getFormatter()->asRelativeTime($notice->created_at) ?></small>
-                                            <strong><?= yii::$app->getFormatter()->asDate($notice->created_at) ?></strong>
+                                            <div style="padding-bottom:3px">
+                                                <small style="color:#bbb;"><?= yii::$app->getFormatter()->asRelativeTime($notice->created_at) ?></small>
+                                            </div>
                                             <div class="<?= $topClass[$notice->set_top] ?>"><?= StringHelper::truncate($notice->content, 60, '...', 'UTF-8', true) ?></div>
                                         </div>
                                     </div>
@@ -182,7 +196,6 @@ $this->title = yii::t('app', 'Backend Manage System');
                                 <div class="text-center link-block">
                                     <a class="J_menuItem" href="<?= Url::toRoute(['notice/index']) ?>">
                                         <i class="fa fa-bell"></i> <strong>查看所有公告 </strong>
-
                                     </a>
                                 </div>
                             </li>
@@ -238,9 +251,37 @@ $this->title = yii::t('app', 'Backend Manage System');
     <!--右侧边栏开始-->
     <?php $this->endBody() ?>
 </body>
-<script>
+<?php JsBlock::begin() ?>
+<script type="text/javascript">
+    $(function () {
+        $('.message-title').click(function () {
+            var $this = $(this);
+            let id = $(this).attr('data-id');
+            $.get('<?=Url::to(['site/read-message'])?>?ids=' + id, function (data) {
+                if (data && data.code === 0) {
+                    layer.alert(data.data.content, {
+                        skin: 'layui-layer-lan',
+                        title: data.data.title,
+                        shadeClose: true,
+                        btn: null
+                    });
+                    $this.next().remove();
+                    $this.remove();
+                    let cnt = $('#message-count').text();
+                    cnt--;
+                    if (cnt > 0) {
+                        $('#message-count').text(cnt);
+                    } else {
+                        $('#message-count').html('');
+                        $('.msg-item').remove();
+                    }
+                }
+            });
+        });
+    });
+
     function reloadIframe() {
-        var current_iframe = $("iframe:visible");
+        let current_iframe = $("iframe:visible");
         current_iframe[0].contentWindow.location.reload();
         return false;
     }
@@ -249,14 +290,22 @@ $this->title = yii::t('app', 'Backend Manage System');
         window.top.location = window.location;
     }
 
+    function readAllMessage() {
+        $.get('<?=Url::to(['site/read-message'])?>', function (data) {
+            if (data && data.code === 0) {
+                $('#message-count').text('');
+                $('.msg-item').remove();
+            }
+        });
+    }
+
     function getNotice() {
-        return true;
         $.getJSON('<?=Url::to(['site/notice'])?>', function (res) {
-            var content = "";
+            let content = '';
             $.each(res, function (i, v) {
                 content += "<br>" + v.message;
             });
-            if (content != '') {
+            if (content !== '') {
                 $('#audio')[0].play();
                 layer.msg(content, {
                     title: '消息通知',
@@ -267,7 +316,8 @@ $this->title = yii::t('app', 'Backend Manage System');
         });
     }
 
-    setInterval(getNotice, 10000);
+    setInterval(getNotice, 1000000);
 </script>
+<?php JsBlock::end() ?>
 </html>
 <?php $this->endPage() ?>

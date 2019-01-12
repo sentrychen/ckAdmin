@@ -26,6 +26,7 @@ use yii\db\Exception as dbException;
  * @property int $bingo_amount 押中金额
  * @property string $game_result 开奖结果
  * @property string $bet_record 投注点
+ * @property string $bet_record_amount 投注点额度
  * @property int $profit 赢输
  * @property int $amount_before 投注前余额
  * @property int $amount_after 投注后余额
@@ -71,7 +72,7 @@ class BetList extends \yii\db\ActiveRecord
             [['username', 'platform_username', 'game_type'], 'string', 'max' => 64],
             [['table_no', 'period_boot', 'period_round'], 'string', 'max' => 32],
             [['game_result,player_cards,banker_cards'], 'string', 'max' => 128],
-            [['bet_record'], 'string', 'max' => 255],
+            [['bet_record', 'bet_record_amount'], 'string', 'max' => 255],
         ];
     }
 
@@ -97,6 +98,7 @@ class BetList extends \yii\db\ActiveRecord
             'bingo_amount' => '押中(' . $chart . ')',
             'game_result' => '开奖结果',
             'bet_record' => '投注点',
+            'bet_record_amount' => '投注点额度',
             'profit' => '赢输(' . $chart . ')',
             'amount_before' => '投注前余额(' . $chart . ')',
             'amount_after' => '投注后余额(' . $chart . ')',

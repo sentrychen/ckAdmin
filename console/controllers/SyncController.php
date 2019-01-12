@@ -215,12 +215,14 @@ class SyncController extends \yii\console\Controller
                         $model->game_result = $resultTypes[$row['gamePlayName']][$row['win']] ?? $row['win'];
                         $scores = explode(',', $row['score']);
                         $betRecords = [];
+                        $amounts = [];
                         $model->bingo_amount = 0;
                         foreach ($scores as $id => $score) {
                             if ($score > 0){
                                 $bet = $betTypes[$row['gamePlayName']][$id] ?? false;
                                 if ($bet){
                                     $betRecords[] = $bet;
+                                    $amounts[] = $scores;
                                     if (strpos($model->game_result.',',$bet.',') !==false){
                                         $model->bingo_amount += (int) $score;
                                     }
@@ -230,6 +232,7 @@ class SyncController extends \yii\console\Controller
 
                         }
                         $model->bet_record = implode(',', $betRecords);
+                        $model->bet_record_amount = implode(',', $amounts);
                         $model->profit = $row['betResult'];
                         $model->amount_before = $row['beforeAmount'];
                         $model->amount_after = $row['afterAmount'];

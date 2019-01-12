@@ -8,7 +8,9 @@
 
 namespace backend\controllers;
 
+use api\components\RestHttpException;
 use backend\models\BetList;
+use backend\models\MessageFlag;
 use backend\models\PlatformAccount;
 use backend\models\User;
 use common\libs\Constants;
@@ -129,6 +131,43 @@ class SiteController extends Controller
             'winLost' => BaseJson::encode($platform['winLost']),
 
         ]);
+    }
+
+    /**
+     * 阅读消息,$ids 为空阅读全部消息
+     * @param null $ids
+     * @return mixed|string
+     * @throws RestHttpException
+     */
+    public function actionReadMessage($ids = null)
+    {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        if (null !== $ids) $ids = explode(',', $ids);
+        $models = Message::readMessage(Message::OBJ_ADMIN, Yii::$app->getUser()->getId(), $ids);
+        if (!$models) {
+            return ['code' => 1, 'message' => '消息不存在'];
+        }
+
+        return ['code' => 0, 'data' => current($models)];
+    }
+
+    /**
+     * 阅读消息,$ids 为空删除全部消息
+     * @param null $ids
+     * @return mixed|string
+     * @throws RestHttpException
+     */
+    public function actionDeleteMessage($ids = null)
+    {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        if (null !== $ids) $ids = explode(',', $ids);
+        $models = Message::deleteMessage(Message::OBJ_ADMIN, Yii::$app->getUser()->getId(), $ids);
+        if (!$models) {
+            return ['code' => 1, 'message' => '消息不存在'];
+        }
+
+        return ['code' => 0, 'data' => current($models)];
+
     }
 
     /*
