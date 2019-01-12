@@ -255,7 +255,7 @@ class Message extends \yii\db\ActiveRecord
         $query = Message::find()->select([Message::tableName() . '.*', MessageFlag::tableName() . '.is_read'])->leftJoin(MessageFlag::tableName(), $on)
             ->where([Message::tableName() . '.user_type' => $user_type]);
 
-        if (is_null($is_read) || $is_read == '') {
+        if (is_null($is_read) || $is_read === '') {
             $query->andWhere(['or', [MessageFlag::tableName() . '.is_deleted' => $no_deleted],
                 ['notify_obj' => Message::SEND_ALL, MessageFlag::tableName() . '.id' => null]]);
         } elseif ($is_read == Constants::YesNo_Yes) {
