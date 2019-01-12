@@ -316,7 +316,7 @@ $this->title = yii::t('app', 'Backend Manage System');
         });
     }
 
-    setInterval(getNotice, 1000000);
+    setInterval(getNotice, 10000);
 </script>
 <?php JsBlock::end() ?>
 </html>
