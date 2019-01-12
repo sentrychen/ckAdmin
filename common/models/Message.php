@@ -283,7 +283,7 @@ class Message extends \yii\db\ActiveRecord
             if (!$flag) {
                 $flag = new MessageFlag(['message_id' => $model->id, 'user_id' => $user_id, 'user_type' => $user_type]);
             }
-            if ($flag->is_read == Constants::YesNo_No) {
+            if ($flag->is_read != Constants::YesNo_Yes) {
                 $flag->is_read = Constants::YesNo_Yes;
                 $flag->read_at = time();
             }
