@@ -302,7 +302,7 @@ class Message extends \yii\db\ActiveRecord
     public static function deleteMessage($user_type, $user_id = null, $ids = null)
     {
         if ($user_id == null) $user_id = Yii::$app->getUser()->getId();
-        $models = self::queryUserMessages($user_type, $user_id)->andFilterWhere(['id' => $ids])->all();
+        $models = self::queryUserMessages($user_type, $user_id)->andFilterWhere([Message::tableName() . 'id' => $ids])->all();
         foreach ($models as $model) {
             $flag = MessageFlag::findOne(['message_id' => $model->id, 'user_id' => $user_id, 'user_type' => $user_type]);
             if (!$flag) {
