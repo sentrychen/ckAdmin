@@ -222,7 +222,7 @@ class SyncController extends \yii\console\Controller
                                 $bet = $betTypes[$row['gamePlayName']][$id] ?? false;
                                 if ($bet){
                                     $betRecords[] = $bet;
-                                    $amounts[] = $scores;
+                                    $amounts[] = $score;
                                     if (strpos($model->game_result.',',$bet.',') !==false){
                                         $model->bingo_amount += (int) $score;
                                     }
