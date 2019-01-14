@@ -113,7 +113,7 @@ class SiteController extends Controller
             'userSum' => BaseJson::encode($userSum['user']),
             'userDw' => BaseJson::encode($userSum['dw']),
             'bet' => BaseJson::encode($platform['bet']),
-            'winLost' => BaseJson::encode($platform['winLost']),
+            'winLost' => BaseJson::encode($platform['wl']),
 
         ]);
     }
@@ -254,21 +254,21 @@ class SiteController extends Controller
 
         $platForm = Platform::getPlatfromName();
         $data['bet'] = [0 => ['平台游戏']];
-        $data['winLost'] = [0 => ['平台游戏', '损益']];
+        $data['wl'] = [0 => ['平台游戏', '损益']];
         foreach ($platForm as $k => $pf) {
             $name = $pf->name;
-            $data['bet'][0][] = $data['winLost'][0][] = $name;
+            $data['bet'][0][] = $data['wl'][0][] = $name;
         }
         $i = 1;
         foreach ($dateRanges as $k => $v) {
             if ($type == 'day') {
-                $startDate = $endDate = date('Y-m-d', $k);
+                $startDate = $endDate = date('Ymd', $k);
             } else {
-                $startDate = date('Y-m-01', $k);
-                $endDate = date('Y-m', $k) . '-' . date('t', $k);
+                $startDate = date('Ym', $k) . '01';
+                $endDate = date('Ym', $k) . '31';
             }
-            $data['bet'][$i][0] = $data['winLost'][$i][0] = $v;
-            $data['winLost'][$i][1] = 0;
+            $data['bet'][$i][0] = $data['wl'][$i][0] = $v;
+            $data['wl'][$i][1] = 0;
             $profit = 0;
             foreach ($platForm as $p) {
                 $daily = PlatformDaily::getBetData($p->id, $startDate, $endDate);
@@ -276,10 +276,10 @@ class SiteController extends Controller
                 $dpa = $daily['dpa'] ? $daily['dpa'] : 0;
                 $dla = $daily['dla'] ? $daily['dla'] : 0;
                 $data['bet'][$i][] = $dbo;
-                $data['winLost'][$i][] = $dla - $dpa;
+                $data['wl'][$i][] = $dla - $dpa;
                 $profit += $dla - $dpa;
             }
-            $data['winLost'][$i][1] = $profit;
+            $data['wl'][$i][1] = $profit;
             $i++;
         }
         return $data;

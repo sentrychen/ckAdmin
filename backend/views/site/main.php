@@ -237,8 +237,6 @@ EchartAsset::register($this);
         </div>
     </div>
 
-</div>
-<div class="row">
     <div class="col-sm-6">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
@@ -365,8 +363,15 @@ EchartAsset::register($this);
         xAxis: {type: 'category', boundaryGap: false},
         yAxis: {},
         series: [
-            {type: 'line'},
-            {type: 'line'},
+            <?php
+            $bet = json_decode($bet, true);
+            if (isset($bet[0])) {
+                for ($i = 1; $i < count($bet[0]); $i++) {
+                    echo "{type: 'line'},";
+                }
+            }
+
+            ?>
         ]
     };
     let wlOption = {
@@ -394,9 +399,15 @@ EchartAsset::register($this);
         yAxis: {},
         series: [
             {type: 'line'},
-            {type: 'bar', stack: 'game'},
-            {type: 'bar', stack: 'game'},
+            <?php
+            $winLost = json_decode($winLost, true);
+            if (isset($winLost[0])) {
+                for ($i = 2; $i < count($winLost[0]); $i++) {
+                    echo "{type: 'bar', stack: 'game'},";
+                }
+            }
 
+            ?>
         ]
     };
     userChart.setOption(userOption);
@@ -432,6 +443,7 @@ EchartAsset::register($this);
             let $this = $(this);
             let chart = $this.parent('.btn-group').attr('id').substr(6);
             let type = ($(this).index() == 0 ) ? 'day' : 'month';
+
             $.get('<?=Url::to(['site/load-chart-data'])?>?chart=' + chart + '&type=' + type, function (res) {
                 if (res) {
                     $this.siblings('.active').removeClass('active');
