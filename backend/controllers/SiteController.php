@@ -121,7 +121,7 @@ class SiteController extends Controller
     public function actionLoadSumData()
     {
         Yii::$app->response->format = Response::FORMAT_JSON;
-        $type = Yii::$app->request->get('type');
+        $field = Yii::$app->request->get('field');
         $tab = Yii::$app->request->get('tab');
         if ($tab == '1') {
             $strDate = date('Y-m-d', strtotime('this week'));
@@ -133,7 +133,7 @@ class SiteController extends Controller
         $data = [];
         $statics = Daily::getSumData($strDate);
 
-        switch ($type) {
+        switch ($field) {
             case 'user':
                 $data[] = $statics['dnu'];
                 $data[] = UserStat::find()->where(['>=', 'last_login_at', strtotime($strDate)])->count();
@@ -161,9 +161,127 @@ class SiteController extends Controller
         }
         if (!empty($data)) {
             $data[0] = number_format($data[0]);
-            $data[1] = number_format($data[1], $type == 'user' ? 0 : 2);
+            $data[1] = number_format($data[1], $field == 'user' ? 0 : 2);
         }
 
+        return $data;
+    }
+
+    public function actionLoadChartData()
+    {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        $type = Yii::$app->request->get('type');
+        $chart = Yii::$app->request->get('chart');
+        if ($chart == 'user' || $chart == 'dw') {
+            $data = $this->getDailySum($type);
+        } else {
+            $data = $this->getPlatFDailySum($type);
+        }
+
+        return $data[$chart] ?? [];
+
+    }
+
+
+    /**
+     * @param $type
+     * @return array
+     */
+    private function _getDateRange($type)
+    {
+        $date_arr = [];
+        if ($type == 'month') {
+            $t = strtotime(date('Y-m-01'));
+            for ($i = 0; $i < 12; $i++) {
+                $date_arr[$t] = date('n', $t) == 1 ? date('y年n月', $t) : date('n月', $t);
+                $t = strtotime('-1 month', $t);
+            }
+
+        } else {
+            $t = time();
+            for ($i = 0; $i < 30; $i++) {
+                $date_arr[$t] = date('n/j', $t);
+                $t -= 24 * 3600;
+            }
+        }
+        return array_reverse($date_arr, true);
+    }
+
+    /**
+     * 后台首页用户统计图数据
+     * @param string $type
+     * @return array
+     */
+    public function getDailySum($type = 'day')
+    {
+
+        $dateRanges = $this->_getDateRange($type);
+        $data['user'] = ['0' => ['用户', '新增用户', '活跃用户', '首存用户']];
+        $data['dw'] = ['0' => ['存取款', '存款', '取款']];
+
+        foreach ($dateRanges as $k => $v) {
+            if ($type == 'day') {
+                $startDate = $endDate = date('Y-m-d', $k);
+            } else {
+                $startDate = date('Y-m-01', $k);
+                $endDate = date('Y-m', $k) . '-' . date('t', $k);
+            }
+
+            $result = Daily::getSumData($startDate, $endDate);
+            $dnu = $result['dnu'] ? $result['dnu'] : 0;
+            $dau = $result['dau'] ? $result['dau'] : 0;
+            if ($type == 'month') {
+                $dau = UserStat::find()->where(['between', 'last_login_at', strtotime($startDate), strtotime($endDate) + 86399])->count();
+            }
+            $ndu = $result['ndu'] ? $result['ndu'] : 0;
+            $dda = $result['dda'] ? $result['dda'] : 0;
+            $dwa = $result['dwa'] ? $result['dwa'] : 0;
+            $data['user'][] = [$v, $dnu, $dau, $ndu];
+            $data['dw'][] = [$v, $dda, $dwa];
+        }
+        return $data;
+    }
+
+    /**
+     * 后台首页投注统计图数据
+     * @param string $type
+     * @return array
+     */
+    public function getPlatFDailySum($type = 'day')
+    {
+
+        $dateRanges = $this->_getDateRange($type);
+
+        $platForm = Platform::getPlatfromName();
+        $data['bet'] = [0 => ['平台游戏']];
+        $data['winLost'] = [0 => ['平台游戏', '损益']];
+        foreach ($platForm as $k => $pf) {
+            $name = $pf->name;
+            $data['bet'][0][] = $data['winLost'][0][] = $name;
+        }
+        $i = 1;
+        foreach ($dateRanges as $k => $v) {
+            if ($type == 'day') {
+                $startDate = $endDate = date('Y-m-d', $k);
+            } else {
+                $startDate = date('Y-m-01', $k);
+                $endDate = date('Y-m', $k) . '-' . date('t', $k);
+            }
+            $data['bet'][$i][0] = $data['winLost'][$i][0] = $v;
+            $data['winLost'][$i][1] = 0;
+            $profit = 0;
+            foreach ($platForm as $p) {
+                $daily = PlatformDaily::getBetData($p->id, $startDate, $endDate);
+                $dbo = $daily['dbo'] ? $daily['dbo'] : 0;
+                $dpa = $daily['dpa'] ? $daily['dpa'] : 0;
+                $dla = $daily['dla'] ? $daily['dla'] : 0;
+                $data['bet'][$i][] = $dbo;
+                $data['winLost'][$i][] = $dla - $dpa;
+                $profit += $dla - $dpa;
+            }
+            $data['winLost'][$i][1] = $profit;
+            $i++;
+        }
         return $data;
     }
 
@@ -233,76 +351,6 @@ class SiteController extends Controller
 
     }
 
-    /*
-     * 后台首页用户统计图数据
-     * @return array
-     */
-    public function getDailySum()
-    {
-        $month_arr = Util::getMonth();
-        $data['user'] = ['0' => ['用户', '新增用户', '活跃用户', '首存用户']];
-        $data['dw'] = ['0' => ['存取款', '存款', '取款']];
-
-        foreach ($month_arr as $m) {
-            $year = date('Y', time());
-            $count = date("t", strtotime("{$year}-{$m}"));
-            $dayCount = $count - 1;
-            $startDate = $year . $m . '01';
-            $month = (int)$m;
-            $endDate = date('Ymd', strtotime("{$startDate}+{$dayCount} day"));
-            $result = Daily::getSumData($startDate, $endDate);
-            $dnu = $result['dnu'] ? $result['dnu'] : 0;
-            $dau = $result['dau'] ? $result['dau'] : 0;
-            $ndu = $result['ndu'] ? $result['ndu'] : 0;
-            $dda = $result['dda'] ? $result['dda'] : 0;
-            $dwa = $result['dwa'] ? $result['dwa'] : 0;
-            $data['user'][] = ["{$month}月", $dnu, $dau, $ndu];
-            $data['dw'][] = ["{$month}月", $dda, $dwa];
-        }
-        return $data;
-    }
-
-    /*
-     * 后台首页投注统计图数据
-     * @return array
-     */
-    public function getPlatFDailySum()
-    {
-        $month_arr = Util::getMonth();
-        $year = date('Y', time());
-        $platForm = Platform::getPlatfromName();
-        $data['bet'] = ['0' => ['平台游戏']];
-        $data['winLost'] = ['0' => ['平台游戏', '输赢']];
-        foreach ($platForm as $k => $pf) {
-            $name = $pf->name;
-            $data['bet'][0][] = $data['winLost'][0][] = $name;
-        }
-        foreach ($month_arr as $n => $m) {
-            $count = date("t", strtotime("{$year}-{$m}"));
-            $dayCount = $count - 1;
-            $startDate = $year . $m . '01';
-            $month = (int)$m;
-            $endDate = date('Ymd', strtotime("{$startDate}+{$dayCount} day"));
-            $data['bet'][$month][] = $data['winLost'][$month][] = $month . '月';
-            $all_winL = 0;
-            $data['winLost'][$month][1] = 0;
-            foreach ($platForm as $k => $pf) {
-                $platform_id = $pf->id;
-                $model = PlatformDaily::getBetData($platform_id, $startDate, $endDate);
-                $dbo = $model['dbo'] ? $model['dbo'] : 0;
-                $dpa = $model['dpa'] ? $model['dpa'] : 0;
-                $dla = $model['dla'] ? $model['dla'] : 0;
-                $one_winL = $dla - $dpa;
-                $all_winL += $one_winL;
-                $data['bet'][$month][] = $dbo;
-                $data['winLost'][$month][] = $one_winL;
-            }
-            $data['winLost'][$month][1] = $all_winL;
-        }
-
-
-        return $data;
-    }
 
     /**
      * 管理员登陆

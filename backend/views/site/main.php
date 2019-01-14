@@ -196,13 +196,13 @@ EchartAsset::register($this);
         </div>
     </div>
 </div>
-<div class="row">
+<div class="row" id="chart-box">
     <div class="col-sm-6">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
                 <h5>用户</h5>
                 <div class="pull-right">
-                    <div class="btn-group">
+                    <div class="btn-group" id="chart-user">
                         <button type="button" class="btn btn-xs btn-white active">天</button>
                         <button type="button" class="btn btn-xs btn-white">月</button>
                     </div>
@@ -222,7 +222,7 @@ EchartAsset::register($this);
             <div class="ibox-title">
                 <h5>存取款</h5>
                 <div class="pull-right">
-                    <div class="btn-group">
+                    <div class="btn-group" id="chart-dw">
                         <button type="button" class="btn btn-xs btn-white active">天</button>
                         <button type="button" class="btn btn-xs btn-white">月</button>
                     </div>
@@ -244,7 +244,7 @@ EchartAsset::register($this);
             <div class="ibox-title">
                 <h5>平台投注</h5>
                 <div class="pull-right">
-                    <div class="btn-group">
+                    <div class="btn-group" id="chart-bet">
                         <button type="button" class="btn btn-xs btn-white active">天</button>
                         <button type="button" class="btn btn-xs btn-white">月</button>
                     </div>
@@ -261,9 +261,9 @@ EchartAsset::register($this);
     <div class="col-sm-6">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <h5>赢输</h5>
+                <h5>平台损益</h5>
                 <div class="pull-right">
-                    <div class="btn-group">
+                    <div class="btn-group" id="chart-wl">
                         <button type="button" class="btn btn-xs btn-white active">天</button>
                         <button type="button" class="btn btn-xs btn-white">月</button>
                     </div>
@@ -403,27 +403,48 @@ EchartAsset::register($this);
     dwChart.setOption(dwOption);
     betChart.setOption(betOption);
     wlChart.setOption(wlOption);
-    window.onresize = function () {
+
+    window.addEventListener("resize", () => {
         userChart.resize();
         dwChart.resize();
         betChart.resize();
         wlChart.resize();
-    };
+    });
+    var charts = {'user': userChart, 'dw': dwChart, 'bet': betChart, 'wl': wlChart};
     $(function () {
         $('#statics-box').find('button.btn-white').click(function () {
             if ($(this).hasClass('active')) return false;
             let $this = $(this);
-            let type = $this.parent('.btn-group').attr('id').substr(4);
+            let field = $this.parent('.btn-group').attr('id').substr(4);
             let tab = $(this).index();
-            $.get('<?=Url::to(['site/load-sum-data'])?>?type=' + type + '&tab=' + tab, function (res) {
+            $.get('<?=Url::to(['site/load-sum-data'])?>?field=' + field + '&tab=' + tab, function (res) {
                 if (res.length) {
                     $this.siblings('.active').removeClass('active');
                     $this.addClass('active');
-                    $('#' + type + '-data1').text(res[0]);
-                    $('#' + type + '-data2').text(res[1]);
+                    $('#' + field + '-data1').text(res[0]);
+                    $('#' + field + '-data2').text(res[1]);
                 }
             });
         });
+
+        $('#chart-box').find('button.btn-white').click(function () {
+            if ($(this).hasClass('active')) return false;
+            let $this = $(this);
+            let chart = $this.parent('.btn-group').attr('id').substr(6);
+            let type = ($(this).index() == 0 ) ? 'day' : 'month';
+            $.get('<?=Url::to(['site/load-chart-data'])?>?chart=' + chart + '&type=' + type, function (res) {
+                if (res) {
+                    $this.siblings('.active').removeClass('active');
+                    $this.addClass('active');
+                    charts[chart].setOption({
+                        dataset: {
+                            source: res
+                        }
+                    });
+                }
+            });
+        });
+
     });
 
 </script>
