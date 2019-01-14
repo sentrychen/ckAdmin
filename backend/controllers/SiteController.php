@@ -137,29 +137,33 @@ class SiteController extends Controller
 
         switch ($type) {
             case 'user':
-                $data[] = (int)$statics['dnu'];
-                $data[] = (int)UserStat::find()->where(['>=', 'last_login_at', strtotime($strDate)])->count();
+                $data[] = $statics['dnu'];
+                $data[] = UserStat::find()->where(['>=', 'last_login_at', strtotime($strDate)])->count();
                 break;
             case 'firstpay':
-                $data[] = (int)$statics['ndu'];
-                $data[] = number_format($statics['nda'], 2);
+                $data[] = $statics['ndu'];
+                $data[] = $statics['nda'];
                 break;
             case 'deposit':
-                $data[] = (int)UserDeposit::find()->select('user_id')->where(['status' => UserDeposit::STATUS_CHECKED])->andWhere(['>=', 'created_at', strtotime($strDate)])->distinct()->count();
-                $data[] = number_format($statics['dda'], 2);
+                $data[] = UserDeposit::find()->select('user_id')->where(['status' => UserDeposit::STATUS_CHECKED])->andWhere(['>=', 'created_at', strtotime($strDate)])->distinct()->count();
+                $data[] = $statics['dda'];
                 break;
             case 'withdraw':
-                $data[] = (int)UserWithdraw::find()->select('user_id')->where(['status' => UserWithdraw::STATUS_CHECKED])->andWhere(['>=', 'created_at', strtotime($strDate)])->distinct()->count();
-                $data[] = number_format($statics['dwa'], 2);
+                $data[] = UserWithdraw::find()->select('user_id')->where(['status' => UserWithdraw::STATUS_CHECKED])->andWhere(['>=', 'created_at', strtotime($strDate)])->distinct()->count();
+                $data[] = $statics['dwa'];
                 break;
             case 'profit':
-                $data[] = (int)$statics['dbo'];
-                $data[] = number_format($statics['dla'] - $statics['dpa'], 2);
+                $data[] = $statics['dbo'];
+                $data[] = $statics['dla'] - $statics['dpa'];
                 break;
             case 'bet':
-                $data[] = (int)BetList::find()->select('user_id')->where(['>=', 'bet_at', strtotime($strDate)])->distinct()->count();
-                $data[] = number_format($statics['dba'], 2);
+                $data[] = BetList::find()->select('user_id')->where(['>=', 'bet_at', strtotime($strDate)])->distinct()->count();
+                $data[] = $statics['dba'];
                 break;
+        }
+        if (!empty($data)) {
+            $data[0] = number_format($data[0]);
+            $data[1] = number_format($data[2], $type == 'user' ? 0 : 2);
         }
 
         return $data;
