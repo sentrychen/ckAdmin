@@ -20,6 +20,7 @@ use backend\models\search\NoticeSearch;
 use backend\models\User;
 use backend\models\UserDeposit;
 use backend\models\UserLoginLog;
+use backend\models\UserStat;
 use backend\models\UserWithdraw;
 use common\helpers\Util;
 use common\models\Notice;
@@ -106,29 +107,62 @@ class SiteController extends Controller
      */
     public function actionMain()
     {
-
-        // $comments = BackendComment::getRecentComments(6);
-        $userCount = User::getUserCount('-30 day');
-        $statics = Daily::getSumData('-30 day');
-        $activeUser = UserLoginLog::getActiveUser('-30 day');
-        $userDeposit = UserDeposit::getUserDeposit('-30 day');
-        $useBet = BetList::getUserBet('-30 day');
-        $useWithdraw = UserWithdraw::getUserWithdraw('-30 day');
+        $statics = Daily::getSumData('today');
         $userSum = $this->getDailySum();
         $platform = $this->getPlatFDailySum();
         return $this->render('main', [
             'statics' => $statics,
-            'userCount' => $userCount,
-            'actUser' => $activeUser,
-            'userDeposit' => $userDeposit,
-            'useWithdraw' => $useWithdraw,
-            'useBet' => $useBet,
             'userSum' => BaseJson::encode($userSum['user']),
             'userDw' => BaseJson::encode($userSum['dw']),
             'bet' => BaseJson::encode($platform['bet']),
             'winLost' => BaseJson::encode($platform['winLost']),
 
         ]);
+    }
+
+    public function actionLoadSumData()
+    {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        $type = Yii::$app->request->get('type');
+        $tab = Yii::$app->request->get('tab');
+        if ($tab == '1') {
+            $strDate = date('Y-m-d', strtotime('this week'));
+        } elseif ($tab == '2') {
+            $strDate = date('Y-m-01');;
+        } else {
+            $strDate = date('Y-m-d');
+        }
+        $data = [];
+        $statics = Daily::getSumData($strDate);
+
+        switch ($type) {
+            case 'user':
+                $data[] = (int)$statics['dnu'];
+                $data[] = (int)UserStat::find()->where(['>=', 'last_login_at', strtotime($strDate)])->count();
+                break;
+            case 'firstpay':
+                $data[] = (int)$statics['ndu'];
+                $data[] = number_format($statics['nda'], 2);
+                break;
+            case 'deposit':
+                $data[] = (int)UserDeposit::find()->select('user_id')->where(['status' => UserDeposit::STATUS_CHECKED])->andWhere(['>=', 'created_at', strtotime($strDate)])->distinct()->count();
+                $data[] = number_format($statics['dda'], 2);
+                break;
+            case 'withdraw':
+                $data[] = (int)UserWithdraw::find()->select('user_id')->where(['status' => UserWithdraw::STATUS_CHECKED])->andWhere(['>=', 'created_at', strtotime($strDate)])->distinct()->count();
+                $data[] = number_format($statics['dwa'], 2);
+                break;
+            case 'profit':
+                $data[] = (int)$statics['dbo'];
+                $data[] = number_format($statics['dla'] - $statics['dpa'], 2);
+                break;
+            case 'bet':
+                $data[] = (int)BetList::find()->select('user_id')->where(['>=', 'bet_at', strtotime($strDate)])->distinct()->count();
+                $data[] = number_format($statics['dba'], 2);
+                break;
+        }
+
+        return $data;
     }
 
     public function actionListNotice()
@@ -176,12 +210,16 @@ class SiteController extends Controller
 
     /**
      * 阅读消息,$ids 为空删除全部消息
-     * @param null $ids
      * @return mixed|string
      * @throws RestHttpException
      */
-    public function actionDeleteMessage($ids = null)
+    public function actionDeleteMessage()
     {
+        $ids = yii::$app->getRequest()->get('ids', null);
+        $param = yii::$app->getRequest()->post('id', null);
+        if ($param !== null) {
+            $ids = $param;
+        }
         Yii::$app->response->format = Response::FORMAT_JSON;
         if (null !== $ids) $ids = explode(',', $ids);
         $models = Message::deleteMessage(Message::OBJ_ADMIN, Yii::$app->getUser()->getId(), $ids);

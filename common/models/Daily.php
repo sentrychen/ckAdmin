@@ -48,6 +48,7 @@ class Daily extends \yii\db\ActiveRecord
         return $data;
     }
 
+
     /**
      * {@inheritdoc}
      */
