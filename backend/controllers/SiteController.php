@@ -17,9 +17,7 @@ use backend\models\Platform;
 use backend\models\PlatformDaily;
 use backend\models\search\MessageSearch;
 use backend\models\search\NoticeSearch;
-use backend\models\User;
 use backend\models\UserDeposit;
-use backend\models\UserLoginLog;
 use backend\models\UserStat;
 use backend\models\UserWithdraw;
 use common\helpers\Util;
@@ -163,7 +161,7 @@ class SiteController extends Controller
         }
         if (!empty($data)) {
             $data[0] = number_format($data[0]);
-            $data[1] = number_format($data[2], $type == 'user' ? 0 : 2);
+            $data[1] = number_format($data[1], $type == 'user' ? 0 : 2);
         }
 
         return $data;
