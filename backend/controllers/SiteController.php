@@ -118,6 +118,32 @@ class SiteController extends Controller
         ]);
     }
 
+    public function actionLoadRuntimeData()
+    {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+
+        $t = strtotime('-24 hours');
+        $arr = BetList::find()->select('(bet_at - bet_at mod 60) as bet_at_m,sum(bet_amount) as bet_amount,sum(profit) as profit')
+            ->where(['>=', 'bet_at', $t])->groupBy('bet_at_m')->orderBy(['bet_at_m' => SORT_ASC])->asArray()->all();
+        $data = [];
+        $m = $t - $t % 60;
+        foreach ($arr as $a) {
+            while ($m < $a['bet_at_m']) {
+                $data[] = [date('H:i', $m), 0, 0];
+                $m += 60;
+            }
+            $data[] = [date('H:i', $a['bet_at_m']), $a['bet_amount'], -$a['profit']];
+            $m = $a['bet_at_m'] + 60;
+        }
+        $now = time();
+        while ($m < $now) {
+            $data[] = [date('H:i', $m), 0, 0];
+            $m += 60;
+        }
+        return $data;
+
+    }
+
     public function actionLoadSumData()
     {
         Yii::$app->response->format = Response::FORMAT_JSON;

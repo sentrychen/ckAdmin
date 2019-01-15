@@ -196,6 +196,22 @@ EchartAsset::register($this);
         </div>
     </div>
 </div>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>实时投注统计（分钟）</h5>
+            </div>
+            <div class="ibox-content">
+                <div class="flot-chart">
+                    <div class="flot-chart-content" id="flot-runtime-chart"></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
 <div class="row" id="chart-box">
     <div class="col-sm-6">
         <div class="ibox float-e-margins">
@@ -280,10 +296,81 @@ EchartAsset::register($this);
 <?php JsBlock::begin() ?>
 <script type="text/javascript">
 
+    let runtimeChart = echarts.init(document.getElementById('flot-runtime-chart'));
     let userChart = echarts.init(document.getElementById('flot-user-chart'));
     let dwChart = echarts.init(document.getElementById('flot-dw-chart'), 'light');
     let betChart = echarts.init(document.getElementById('flot-bet-chart'));
     let wlChart = echarts.init(document.getElementById('flot-wl-chart'), 'light');
+
+    let runtimeOption = {
+        legend: {},
+        color: ['#005eaa', '#c12e34', '#ca8622', '#bda29a', '#6e7074', '#546570', '#c4ccd3'],
+        grid: {
+            top: 40,
+            left: 10,
+            right: 10,
+            bottom: 10,
+            containLabel: true
+        },
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'cross',
+                animation: false,
+                label: {
+                    backgroundColor: '#6a7985'
+                }
+            }
+        },
+        dataset: {
+            dimensions: ['投注时间', '投注额', '损益'],
+            source: [['00:00', 0, 0]]
+        },
+        xAxis: {
+            type: 'category',
+            boundaryGap: false,
+            splitLine: {
+                show: false
+            },
+            axisLine: {onZero: false},
+        },
+        yAxis: {
+            splitLine: {
+                show: false
+            },
+            boundaryGap: true,
+        },
+        series: [
+            {
+                type: 'line',
+
+                showSymbol: false,
+                hoverAnimation: false,
+                lineStyle: {
+                    normal: {
+                        width: 0.2
+                    }
+                },
+                areaStyle: {
+                    opacity: 0.5
+                },
+            },
+            {
+                type: 'line',
+                showSymbol: false,
+                hoverAnimation: false,
+                lineStyle: {
+                    normal: {
+                        width: 0.2
+                    }
+                },
+                areaStyle: {
+                    opacity: 0.5
+                }
+            },
+        ]
+    };
+
     let userOption = {
         legend: {},
         grid: {
@@ -410,17 +497,35 @@ EchartAsset::register($this);
             ?>
         ]
     };
+    runtimeChart.setOption(runtimeOption);
     userChart.setOption(userOption);
     dwChart.setOption(dwOption);
     betChart.setOption(betOption);
     wlChart.setOption(wlOption);
 
     window.addEventListener("resize", () => {
+        runtimeChart.resize();
         userChart.resize();
         dwChart.resize();
         betChart.resize();
         wlChart.resize();
     });
+
+    function loadRuntime() {
+        $.get('<?=Url::to(['site/load-runtime-data'])?>', function (res) {
+            if (res) {
+                runtimeChart.setOption({
+                    dataset: {
+                        source: res
+                    }
+                });
+            }
+        });
+    }
+
+    setInterval(loadRuntime, 60000);
+    loadRuntime();
+
     var charts = {'user': userChart, 'dw': dwChart, 'bet': betChart, 'wl': wlChart};
     $(function () {
         $('#statics-box').find('button.btn-white').click(function () {
