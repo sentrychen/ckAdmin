@@ -262,10 +262,10 @@ $this->title = yii::t('app', 'Backend Manage System');
             let id = $(this).attr('data-id');
             layer.open({
                 type: 2,
-                title: null,
+                title: '<i class="fa fa-envelope"> </i> 站内消息',
                 shadeClose: true,
                 shade: 0.8,
-                area: ['300px', '300px'],
+                area: ['400px', '300px'],
                 content: "<?=Url::to(['message-info'])?>?id=" + id
             });
             $this.next().remove();

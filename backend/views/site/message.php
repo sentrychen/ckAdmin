@@ -100,9 +100,10 @@ $this->params['breadcrumbs'][] = '站内消息';
         function showMessage(id) {
             layer.open({
                 type: 2,
-                title: null,
+                title: '<i class="fa fa-envelope"> </i> 站内消息',
                 shadeClose: true,
                 shade: 0.8,
+                area: ['400px', '300px'],
                 content: "<?=Url::to(['message-info'])?>?id=" + id
             });
         }

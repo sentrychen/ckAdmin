@@ -8,6 +8,7 @@ use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
+use yii\helpers\HtmlPurifier;
 
 /**
  * This is the model class for table "{{%message}}".
@@ -101,11 +102,6 @@ class Message extends \yii\db\ActiveRecord
         ];
     }
 
-    public function beforeSave($insert)
-    {
-
-        return parent::beforeSave($insert);
-    }
 
     /**
      * @param null $key
@@ -213,6 +209,14 @@ class Message extends \yii\db\ActiveRecord
 
         return $message->save();
     }
+
+    public function beforeSave($insert)
+    {
+        $this->content = nl2br(HtmlPurifier::process($this->content));
+
+        return parent::beforeSave($insert);
+    }
+
 
     public function afterSave($insert, $changedAttributes)
     {

@@ -6,16 +6,14 @@ use yii\helpers\Html;
 /* @var $model backend\models\Message */
 $levels = ['default', 'info', 'warning', 'danger'];
 ?>
-<div>
-    <div class="panel panel-<?= $levels[$model->level] ?>">
-        <div class="panel-heading">
-            <h3 class="panel-title"><?= strip_tags($model->title) ?></h3>
-        </div>
-        <div class="panel-body">
-            <?= Html::encode($model->content) ?>
-            <br/>
-            <small class="pull-right"><?= yii::$app->getFormatter()->asDate($model->created_at) ?></small>
+<div class="well well-sm">
+    <strong><?= strip_tags($model->title) ?></strong>
 
-        </div>
+</div>
+<div class="panel panel-<?= $levels[$model->level] ?>">
+    <div class="panel-body" style="height:130px;">
+        <?= Html::encode($model->content) ?>
     </div>
+    <small class="pull-right"
+           style="padding: 5px;"><?= yii::$app->getFormatter()->asDate($model->created_at) ?> <?= $model->sender_name ?></small>
 </div>

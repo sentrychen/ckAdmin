@@ -12,10 +12,12 @@
  * @var $searchModel backend\models\search\AgentSearch
  */
 
+use common\grid\CheckboxColumn;
 use common\grid\DateColumn;
 use common\grid\GridView;
 use common\grid\StatusColumn;
 use backend\models\Agent;
+use common\widgets\JsBlock;
 use yii\helpers\Url;
 use yii\helpers\Html;
 use common\widgets\Bar;
@@ -33,7 +35,17 @@ $this->params['breadcrumbs'][] = '代理列表';
             <div class="ibox-content">
                 <div class="toolbar clearfix">
                     <?= Bar::widget([
-                        'template' => '{refresh} {create} ',
+                        'template' => '{refresh} {create} {message}',
+                        'buttons' => [
+                            'message' => function () {
+                                return Html::a('<i class="fa fa-send"></i> 发消息', 'javascript:void(0);', [
+                                    'title' => '发消息给选中的代理',
+                                    'data-pjax' => '0',
+                                    'onclick' => 'sendMessage()',
+                                    'class' => 'btn btn-success btn-sm',
+                                ]);
+                            },
+                        ]
                     ]) ?>
                     <?=$this->render('_search', ['model' => $searchModel]); ?>
                 </div>
@@ -43,7 +55,7 @@ $this->params['breadcrumbs'][] = '代理列表';
                     'showFooter' => true,
                     'footerRowOptions' => ['style' => 'font-weight:bold;'],
                     'columns' => [
-
+                        ['class' => CheckboxColumn::className()],
                         [
                             'attribute' => 'username',
                             'format' => 'raw',
@@ -188,3 +200,28 @@ $this->params['breadcrumbs'][] = '代理列表';
         </div>
     </div>
 </div>
+<?php JsBlock::begin() ?>
+    <script type="text/javascript">
+        function sendMessage() {
+            let chk_value = [];
+            let num = $('input[name="selection[]"]:checked').length;
+            if (num == false) {
+                layer.alert('请先选择要操作的记录!', {icon: 2});
+                return false;
+            }
+            $('input[name="selection[]"]:checked').each(function () {
+                chk_value.push($(this).val());
+            });
+            var ids = chk_value.join(',');
+            layer.open({
+                type: 2,
+                title: '发送消息',
+                shadeClose: true,
+                shade: 0.8,
+                area: ['801px', '550px'],
+                content: "<?=Url::to(['message'])?>?ids=" + ids
+            });
+        }
+
+    </script>
+<?php JsBlock::end() ?>

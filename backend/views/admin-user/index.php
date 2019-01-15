@@ -14,6 +14,7 @@
 
 use common\grid\DateColumn;
 use common\grid\GridView;
+use common\widgets\JsBlock;
 use yii\helpers\Url;
 use yii\helpers\Html;
 use common\widgets\Bar;
@@ -40,7 +41,17 @@ $this->params['breadcrumbs'][] = yii::t('app', 'Admin Users');
             <?= $this->render('/widgets/_ibox-title') ?>
             <div class="ibox-content">
                 <?= Bar::widget([
-                    'template' => '{refresh} {create} {delete}'
+                    'template' => '{refresh} {create} {message}',
+                    'buttons' => [
+                        'message' => function () {
+                            return Html::a('<i class="fa fa-send"></i> 发消息', 'javascript:void(0);', [
+                                'title' => '发消息给选中的管理员',
+                                'data-pjax' => '0',
+                                'onclick' => 'sendMessage()',
+                                'class' => 'btn btn-success btn-sm',
+                            ]);
+                        },
+                    ]
                 ]) ?>
                 <?= GridView::widget([
                     'dataProvider' => $dataProvider,
@@ -94,3 +105,29 @@ $this->params['breadcrumbs'][] = yii::t('app', 'Admin Users');
         </div>
     </div>
 </div>
+
+<?php JsBlock::begin() ?>
+    <script type="text/javascript">
+        function sendMessage() {
+            let chk_value = [];
+            let num = $('input[name="selection[]"]:checked').length;
+            if (num == false) {
+                layer.alert('请先选择要操作的记录!', {icon: 2});
+                return false;
+            }
+            $('input[name="selection[]"]:checked').each(function () {
+                chk_value.push($(this).val());
+            });
+            var ids = chk_value.join(',');
+            layer.open({
+                type: 2,
+                title: '发送消息',
+                shadeClose: true,
+                shade: 0.8,
+                area: ['801px', '550px'],
+                content: "<?=Url::to(['message'])?>?ids=" + ids
+            });
+        }
+
+    </script>
+<?php JsBlock::end() ?>

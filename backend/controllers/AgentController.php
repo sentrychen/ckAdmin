@@ -8,6 +8,7 @@
 
 namespace backend\controllers;
 
+use backend\models\Message;
 use backend\actions\ViewAction;
 use yii;
 use backend\models\Agent;
@@ -60,5 +61,38 @@ class AgentController extends Controller
                 'modelClass' => Agent::class,
             ],
         ];
+    }
+
+    public function actionMessage($ids)
+    {
+        $model = new Message(['ids' => $ids, 'user_type' => Message::OBJ_AGENT, 'notify_obj' => Message::SEND_MULTI]);
+
+        //$model->scenario = 'create';
+        if (yii::$app->getRequest()->getIsPost()) {
+
+            $model->sender_id = yii::$app->getUser()->getId();
+            $model->sender_name = yii::$app->getUser()->getIdentity()->username;
+            if ($model->load(yii::$app->getRequest()->post()) && $model->save()) {
+                yii::$app->getSession()->setFlash('success', yii::t('app', 'Success'));
+                // return ['status'=>'succ'];
+                return $this->render('message-ok', [
+                    'model' => $model
+                ]);
+            } else {
+                $errors = $model->getErrors();
+                $err = '';
+                foreach ($errors as $v) {
+                    $err .= $v[0] . '<br>';
+                }
+                //throw new UnprocessableEntityHttpException($err);
+                //return ['status'=>'fail'];
+            }
+        } else {
+            $model->level = Message::LEVEL_LOW;
+        }
+        $model->loadDefaultValues();
+        return $this->render('message', [
+            'model' => $model
+        ]);
     }
 }
