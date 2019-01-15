@@ -12,7 +12,7 @@ $levels = ['default', 'info', 'warning', 'danger'];
 </div>
 <div class="panel panel-<?= $levels[$model->level] ?>">
     <div class="panel-body" style="height:130px;">
-        <?= Html::encode($model->content) ?>
+        <?= $model->content ?>
     </div>
     <small class="pull-right"
            style="padding: 5px;"><?= yii::$app->getFormatter()->asDate($model->created_at) ?> <?= $model->sender_name ?></small>
