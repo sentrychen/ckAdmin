@@ -14,7 +14,8 @@ $config = [
             'class' => feehi\cdn\DummyTarget::class,//不使用cdn
         ],
         'cache' => [//缓存组件
-            'class' => yii\caching\DummyCache::class,//不使用缓存
+            //'class' => yii\caching\DummyCache::class,//不使用缓存
+            'class' => yii\redis\Cache::class,
         ],
         'log' => [//此项具体详细配置，请访问http://wiki.feehi.com/index.php?title=Yii2_log
             'traceLevel' => YII_DEBUG ? 3 : 0,
