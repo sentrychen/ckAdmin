@@ -240,7 +240,7 @@ EchartAsset::register($this);
     <div class="col-sm-6">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <h5>平台投注</h5>
+                <h5>平台投注额</h5>
                 <div class="pull-right">
                     <div class="btn-group" id="chart-bet">
                         <button type="button" class="btn btn-xs btn-white active">天</button>
