@@ -24,8 +24,8 @@ try {
     $config = $config['components']['redis'];
 
     $redis = new Redis();
-    $timeout = $config['dataTimeout'] ?? 2;
-    $redis->connect($config['hostname'], $config['port'], $timeout);
+    //$timeout = $config['dataTimeout'] ?? 2;
+    $redis->pconnect($config['hostname'], $config['port']);
 
     if (isset($config['password'])) {
         $redis->auth($config['password']);
@@ -49,7 +49,7 @@ try {
     if ($sys_notices)
         $notices[] = json_decode($sys_notices);
     $redis->setex('uid:notices:' . $uid, $params['user.noticeExpire'], '');
-    $redis->close();
+    //$redis->close();
     exitCode(0, $notices);
 } catch (Exception $e) {
     exitCode(3);
