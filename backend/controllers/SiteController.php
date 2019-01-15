@@ -272,10 +272,10 @@ class SiteController extends Controller
             $profit = 0;
             foreach ($platForm as $p) {
                 $daily = PlatformDaily::getBetData($p->id, $startDate, $endDate);
-                $dbo = $daily['dba'] ? $daily['dba'] : 0;
+                $dba = $daily['dba'] ? $daily['dba'] : 0;
                 $dpa = $daily['dpa'] ? $daily['dpa'] : 0;
                 $dla = $daily['dla'] ? $daily['dla'] : 0;
-                $data['bet'][$i][] = $dbo;
+                $data['bet'][$i][] = $dba;
                 $data['wl'][$i][] = $dla - $dpa;
                 $profit += $dla - $dpa;
             }

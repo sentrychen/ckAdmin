@@ -136,7 +136,7 @@ class PlatformDaily extends \yii\db\ActiveRecord
     public static function getBetData($platform_id,$startDate='',$endDate='')
     {
         $result = static::find()
-            ->select('sum(dbo) as dbo, sum(dpa) as dpa, sum(dla) as dla')
+            ->select('sum(dbo) as dbo,sum(dba) as dba, sum(dpa) as dpa, sum(dla) as dla')
             ->where(['platform_id'=>$platform_id])
             ->andFilterWhere(['between', 'ymd', $startDate, $endDate])->asArray()->one();
 
