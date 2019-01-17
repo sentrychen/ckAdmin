@@ -17,6 +17,7 @@ use common\grid\DateColumn;
 use common\grid\GridView;
 use common\grid\StatusColumn;
 use backend\models\Agent;
+use common\libs\Constants;
 use common\widgets\JsBlock;
 use yii\helpers\Url;
 use yii\helpers\Html;
@@ -190,8 +191,18 @@ $this->params['breadcrumbs'][] = '代理列表';
                         ],
                         [
                             'class' => ActionColumn::class,
-                            'width' => '80',
-                            'template' => '{view} {update}',
+                            'width' => '150',
+                            'template' => yii::$app->option->agent_change_amount == Constants::YesNo_Yes ? '{view} {update} {change-amount}' : '{view} {update}',
+                            'buttons' => [
+                                'change-amount' => function ($url, $model, $key) {
+                                    return Html::a('<i class="fa fa-credit-card"></i> 上下分', Url::to(['change-amount', 'agent_id' => $model->id]), [
+                                        'title' => '代理额度调整',
+                                        'data-pjax' => '0',
+                                        'class' => 'btn btn-warning btn-sm',
+                                    ]);
+                                },
+
+                            ],
                         ],
 
                     ]

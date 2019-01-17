@@ -205,7 +205,7 @@ $this->title = yii::t('app', 'Backend Manage System');
                         </ul>
                     </li>
                     <li class="hidden-xs">
-                        <a href="<?= yii::$app->params['site']['url'] ?>" target='_blank' title="进入代理后台"><i
+                        <a href="/agent" target='_blank' title="进入代理后台"><i
                                     class="fa fa-ship"></i> 代理</a>
                     </li>
                     <li>

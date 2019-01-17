@@ -17,7 +17,6 @@ class SettingWebsiteForm extends \common\models\Options
 {
     public $website_title;
 
-    public $website_logo;
 
     public $website_email;
 
@@ -48,7 +47,6 @@ class SettingWebsiteForm extends \common\models\Options
     {
         return [
             'website_title' => '平台名称',
-            'website_logo' => '平台图标',
             'website_email' => yii::t('app', 'Website Email'),
             'website_icp' => yii::t('app', 'Icp Sn'),
             'website_statics_script' => yii::t('app', 'Statics Script'),
@@ -71,7 +69,6 @@ class SettingWebsiteForm extends \common\models\Options
             [
                 [
                     'website_title',
-                    'website_logo',
                     'website_email',
                     'website_icp',
                     'website_statics_script',

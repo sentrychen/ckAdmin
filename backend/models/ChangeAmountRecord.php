@@ -7,4 +7,5 @@ use Yii;
 class ChangeAmountRecord extends \common\models\ChangeAmountRecord
 {
 
+
 }

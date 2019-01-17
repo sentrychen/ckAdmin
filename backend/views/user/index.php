@@ -194,7 +194,7 @@ $this->params['breadcrumbs'][] = '会员列表';
                                 },
 
                             ],
-                            'template' => '{report} {update} {change-amount} {change-money}',
+                            'template' => '{report} {update} {change-amount}',
                         ],
                     ]
                 ]); ?>

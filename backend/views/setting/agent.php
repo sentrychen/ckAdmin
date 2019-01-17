@@ -40,6 +40,8 @@ $this->params['breadcrumbs'][] = '代理设置';
                 <div class="hr-line-dashed"></div>
                 <?= $form->field($model, 'agent_xima_rate')->textInput(['afterAddon' => '%','value'=>$model->agent_xima_rate * 100]) ?>
                 <div class="hr-line-dashed"></div>
+                <?= $form->field($model, 'agent_change_amount')->radioList(Constants::getYesNoItems()) ?>
+                <div class="hr-line-dashed"></div>
                 <?= $form->field($model, 'agent_backend_url') ?>
                 <div class="hr-line-dashed"></div>
                 <?= $form->field($model, 'agent_user_reg_url') ?>

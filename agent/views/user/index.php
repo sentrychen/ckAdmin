@@ -16,9 +16,10 @@ use agent\models\User;
 use common\grid\ActionColumn;
 use common\grid\DateColumn;
 use common\grid\GridView;
+use common\helpers\Util;
+use common\libs\Constants;
 use common\widgets\Bar;
 use yii\helpers\Html;
-use common\helpers\Util;
 use yii\helpers\Url;
 
 $this->title = '会员';
@@ -87,16 +88,16 @@ $this->params['breadcrumbs'][] = '会员列表';
                         [
                             'attribute' => 'account.available_amount',
                             'format' => 'raw',
-                            'value' => function($model){
-                                return Util::formatMoney(isset($model->account->available_amount)?$model->account->available_amount:0,false);
+                            'value' => function ($model) {
+                                return Util::formatMoney(isset($model->account->available_amount) ? $model->account->available_amount : 0, false);
                             },
                             'footer' => '<span class="label label-default">' . Util::formatMoney($totals['account_available_amount'], false) . '</span>'
                         ],
                         [
                             'attribute' => 'userStat.bet_amount',
                             'format' => 'raw',
-                            'value' => function($model){
-                                return Util::formatMoney(isset($model->userStat->bet_amount)?$model->userStat->bet_amount:0,false);
+                            'value' => function ($model) {
+                                return Util::formatMoney(isset($model->userStat->bet_amount) ? $model->userStat->bet_amount : 0, false);
                             },
                             'footer' => '<span class="label label-default">' . Util::formatMoney($totals['userStat_bet_amount'], false) . '</span>'
                         ],
@@ -118,8 +119,8 @@ $this->params['breadcrumbs'][] = '会员列表';
                         [
                             'attribute' => 'account.xima_amount',
                             'format' => 'raw',
-                            'value' => function($model){
-                                return Util::formatMoney(isset($model->account->xima_amount)?$model->account->xima_amount:0,false);
+                            'value' => function ($model) {
+                                return Util::formatMoney(isset($model->account->xima_amount) ? $model->account->xima_amount : 0, false);
                             },
                             'footer' => '<span class="label label-default">' . Util::formatMoney($totals['account_available_amount'], false) . '</span>'
                         ],
@@ -133,8 +134,20 @@ $this->params['breadcrumbs'][] = '会员列表';
                         ],
                         [
                             'class' => ActionColumn::class,
-                            'template' => '{update}',
+                            'template' => yii::$app->option->agent_change_amount == Constants::YesNo_Yes ? '{update} {change-amount}' : '{update}',
+                            'width' => 120,
                             'buttons' => [
+
+                                'change-amount' => function ($url, $model, $key) {
+                                    if ($model->invite_agent_id == yii::$app->getUser()->getId()) {
+                                        return Html::a('<i class="fa fa-credit-card"></i> 上下分', Url::to(['change-amount', 'user_id' => $model->id]), [
+                                            'title' => '会员额度调整',
+                                            'data-pjax' => '0',
+                                            'class' => 'btn btn-warning btn-sm',
+                                        ]);
+                                    } else
+                                        return '';
+                                },
                                 'update' => function ($url, $model, $key, $index, $gridView) {
                                     if ($model->invite_agent_id == yii::$app->getUser()->getId())
                                         return Html::a('<i class="fa fa-pencil"></i> ' . Yii::t('app', 'Update'), $url, [

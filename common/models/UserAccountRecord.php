@@ -39,9 +39,9 @@ class UserAccountRecord extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'switch', 'amount', 'after_amount'], 'required'],
+            [['user_id', 'switch', 'amount'], 'required'],
             [['user_id', 'switch', 'trade_type_id', 'amount', 'after_amount', 'updated_at', 'created_at'], 'integer'],
-            [['amount', 'after_amount'], 'number'],
+            [['amount', 'after_amount'], 'number', 'min' => 0],
             [['trade_no', 'remark'], 'string', 'max' => 255],
         ];
     }

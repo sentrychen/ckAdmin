@@ -8,15 +8,17 @@
 
 namespace backend\controllers;
 
-use backend\models\Message;
-use backend\actions\ViewAction;
-use yii;
-use backend\models\Agent;
-use backend\models\search\AgentSearch;
 use backend\actions\CreateAction;
-use backend\actions\UpdateAction;
 use backend\actions\IndexAction;
 use backend\actions\SortAction;
+use backend\actions\UpdateAction;
+use backend\actions\ViewAction;
+use backend\models\Agent;
+use backend\models\AgentAccountRecord;
+use backend\models\Message;
+use backend\models\search\AgentSearch;
+use common\libs\Constants;
+use yii;
 
 class AgentController extends Controller
 {
@@ -36,9 +38,9 @@ class AgentController extends Controller
                     ];
                 }
                 */
-                'data' =>$this->_getGridViewData(AgentSearch::class,[
+                'data' => $this->_getGridViewData(AgentSearch::class, [
                     'account.available_amount', 'account.total_amount', 'account.bet_amount'
-                ]) ,
+                ]),
             ],
 
             'view' => [
@@ -92,6 +94,51 @@ class AgentController extends Controller
         }
         $model->loadDefaultValues();
         return $this->render('message', [
+            'model' => $model
+        ]);
+    }
+
+
+    public function actionChangeAmount($agent_id)
+    {
+        if (Yii::$app->option->agent_change_amount != Constants::YesNo_Yes)
+            throw new yii\base\InvalidConfigException('系统禁止给代理上下分');
+        $model = new AgentAccountRecord();
+        $model->agent_id = $agent_id;
+        if (yii::$app->getRequest()->getIsPost()) {
+            if ($model->load(yii::$app->getRequest()->post()) && $model->validate()) {
+                //$model->trade_no = Yii::$app->getUser()->getId();
+                $account = $model->agent->account;
+                if ($model->switch == AgentAccountRecord::SWITCH_IN) {
+                    $model->trade_type_id = AgentAccountRecord::TRADE_TYPE_ADMINADD;
+                    $model->name = '管理员上分';
+                    $account->available_amount += (float)$model->amount;
+                } else {
+                    $model->name = '管理员下分';
+                    $model->trade_type_id = AgentAccountRecord::TRADE_TYPE_ADMINREDUCE;
+                    if ($account->available_amount >= $model->amount)
+                        $account->available_amount -= (float)$model->amount;
+                    else
+                        $model->addError('amount', '下分额度不能超出代理现有可用额度');
+                }
+                $model->after_amount = $account->available_amount;
+
+                if (!$model->hasErrors() && $model->save(false) && $account->save(false)) {
+                    yii::$app->getSession()->setFlash('success', yii::t('app', 'Success'));
+                    return $this->redirect(['index']);
+                }
+
+            }
+            $errors = $model->getErrors();
+            $err = '';
+            foreach ($errors as $v) {
+                $err .= $v[0] . '<br>';
+            }
+            yii::$app->getSession()->setFlash('error', $err);
+
+        }
+        $model->loadDefaultValues();
+        return $this->render('change-amount', [
             'model' => $model
         ]);
     }

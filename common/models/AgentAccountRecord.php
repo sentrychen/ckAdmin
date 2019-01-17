@@ -29,6 +29,10 @@ class AgentAccountRecord extends \yii\db\ActiveRecord
     const TRADE_TYPE_REBATE = 1;
     const TRADE_TYPE_XIMA = 2;
     const TRADE_TYPE_WITHDRAW = 3;
+    const TRADE_TYPE_ADDAMOUNT = 4;
+    const TRADE_TYPE_REDUCEAMOUNT = 5;
+    const TRADE_TYPE_ADMINADD = 6;
+    const TRADE_TYPE_ADMINREDUCE = 7;
     /**
      * {@inheritdoc}
      */
@@ -54,7 +58,7 @@ class AgentAccountRecord extends \yii\db\ActiveRecord
         return [
             [['agent_id'], 'required'],
             [['agent_id', 'switch', 'updated_at', 'created_at'], 'integer'],
-            [['amount', 'after_amount'], 'number'],
+            [['amount', 'after_amount'], 'number', 'min' => 0],
             [['name', 'remark'], 'string', 'max' => 255],
         ];
     }
@@ -95,6 +99,10 @@ class AgentAccountRecord extends \yii\db\ActiveRecord
             static::TRADE_TYPE_REBATE => '返佣',
             static::TRADE_TYPE_XIMA => '洗码',
             static::TRADE_TYPE_WITHDRAW => '取款',
+            static::TRADE_TYPE_ADDAMOUNT => '用户上分',
+            static::TRADE_TYPE_REDUCEAMOUNT => '用户下分',
+            static::TRADE_TYPE_ADMINADD => '人工增加',
+            static::TRADE_TYPE_ADMINREDUCE => '人工减少',
         ];
         return $ary[$key] ?? $ary;
     }

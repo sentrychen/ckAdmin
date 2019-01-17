@@ -193,6 +193,8 @@ class Constants
     const TRADE_TYPE_ADMINADD = 5;
     const TRADE_TYPE_ADMINREDUCE = 6;
     const TRADE_TYPE_XIMASETTLE = 7;
+    const TRADE_TYPE_AGENTADD = 8;
+    const TRADE_TYPE_AGENTREDUCE = 9;
 
     public static function getTradeTypeItems($key = null)
     {
@@ -202,9 +204,12 @@ class Constants
             self::TRADE_TYPE_WITHDRAW => '取款',
             self::TRADE_TYPE_ADDAMOUNT => '上分',
             self::TRADE_TYPE_REDUCEAMOUNT => '下分',
-            self::TRADE_TYPE_ADMINADD => '人工增加',
-            self::TRADE_TYPE_ADMINREDUCE => '人工减少',
+            self::TRADE_TYPE_ADMINADD => '管理增加',
+            self::TRADE_TYPE_ADMINREDUCE => '管理减少',
             self::TRADE_TYPE_XIMASETTLE => '洗码结算',
+            self::TRADE_TYPE_AGENTADD => '代理增加',
+            self::TRADE_TYPE_AGENTREDUCE => '代理减少',
+
         ];
         return self::getItems($items, $key);
     }

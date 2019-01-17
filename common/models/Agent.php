@@ -203,15 +203,16 @@ class Agent extends ActiveRecord
         }
     }
 
-    public static function getStatuses()
+    public static function getStatuses($key = null)
     {
-        return [
+        $items = [
             self::STATUS_NORMAL => '正常',
             self::STATUS_FROZEN => '冻结',
             self::STATUS_LOCKED => '锁定',
             self::STATUS_DISABLED => '注销'
 
         ];
+        return isset($key) ? $items[$key] ?? null : $items;
     }
 
     /**
