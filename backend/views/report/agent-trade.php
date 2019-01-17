@@ -68,7 +68,6 @@ $this->params['breadcrumbs'][] = '代理交易记录';
                             'value' => function($model){
                                 return Util::formatMoney($model->after_amount,false);
                             },
-                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['after_amount'], false) . '</span>'
                         ],
                         'remark',
                         [

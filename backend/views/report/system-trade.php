@@ -64,7 +64,6 @@ use common\helpers\Util;
                             'value' => function($model){
                                 return Util::formatMoney($model->after_amount,false);
                             },
-                            'footer' => '<span class="label label-default">' . Util::formatMoney($totals['after_amount'], false) . '</span>'
                         ],
                         [
                             'attribute' => 'remark',
