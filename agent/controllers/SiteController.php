@@ -10,12 +10,12 @@ namespace agent\controllers;
 
 use agent\models\Agent;
 use agent\models\AgentAccountRecord;
-use agent\models\AgentXimaRecord;
 use agent\models\BetList;
 use agent\models\Message;
 use agent\models\Notice;
-use agent\models\Rebate;
-use backend\models\Platform;
+use agent\models\Platform;
+use agent\models\search\MessageSearch;
+use agent\models\search\NoticeSearch;
 use common\helpers\Util;
 use dosamigos\qrcode\QrCode;
 use yii;
@@ -24,13 +24,14 @@ use Exception;
 use agent\models\form\LoginForm;
 use agent\models\User;
 use yii\base\UserException;
-use yii\db\Query;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\helpers\Url;
+use yii\web\BadRequestHttpException;
 use yii\web\HttpException;
 use yii\captcha\CaptchaAction;
 use yii\helpers\BaseJson;
+use yii\web\Response;
 
 /**
  * Site controller
@@ -316,6 +317,73 @@ class SiteController extends \yii\web\Controller
                 'exception' => $exception,
             ]);
         }
+    }
+
+
+    public function actionListNotice()
+    {
+        $searchModel = new NoticeSearch();
+        $dataProvider = $searchModel->search(yii::$app->getRequest()->getQueryParams(), Yii::$app->getUser()->getId());
+
+        return $this->render('notice', ['dataProvider' => $dataProvider, 'searchModel' => $searchModel]);
+    }
+
+    public function actionListMessage()
+    {
+        $searchModel = new MessageSearch();
+        $dataProvider = $searchModel->searchByUser(yii::$app->getRequest()->getQueryParams(), Yii::$app->getUser()->getId());
+        return $this->render('message', ['dataProvider' => $dataProvider, 'searchModel' => $searchModel]);
+    }
+
+    public function actionMessageInfo($id)
+    {
+
+        $model = Message::readMessage(Message::OBJ_AGENT, Yii::$app->getUser()->getId(), $id);
+        if (!$model) {
+            throw new BadRequestHttpException('消息不存在');
+        }
+        return $this->render('message-info', ['model' => current($model)]);
+    }
+
+    /**
+     * 阅读消息,$ids 为空阅读全部消息
+     * @param null $ids
+     * @return mixed|string
+     * @throws RestHttpException
+     */
+    public function actionReadMessage($ids = null)
+    {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        if (null !== $ids) $ids = explode(',', $ids);
+        $models = Message::readMessage(Message::OBJ_AGENT, Yii::$app->getUser()->getId(), $ids);
+        if (!$models) {
+            return ['code' => 1, 'message' => '消息不存在'];
+        }
+
+        return ['code' => 0];
+    }
+
+    /**
+     * 阅读消息,$ids 为空删除全部消息
+     * @return mixed|string
+     * @throws []
+     */
+    public function actionDeleteMessage()
+    {
+        $ids = yii::$app->getRequest()->get('ids', null);
+        $param = yii::$app->getRequest()->post('id', null);
+        if ($param !== null) {
+            $ids = $param;
+        }
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        if (null !== $ids) $ids = explode(',', $ids);
+        $models = Message::deleteMessage(Message::OBJ_ADMIN, Yii::$app->getUser()->getId(), $ids);
+        if (!$models) {
+            return ['code' => 1, 'message' => '消息不存在'];
+        }
+
+        return ['code' => 0];
+
     }
 
 }

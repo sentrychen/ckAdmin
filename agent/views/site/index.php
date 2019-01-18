@@ -98,7 +98,8 @@ $this->title = yii::t('app', 'Backend Manage System');
                     <li class="dropdown hidden-xs">
                         <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#" title="未读消息">
                             <i class="fa fa-envelope"></i> <span
-                                    class="label label-danger"><?= $counts['MESSAGE']['count'] ? $counts['MESSAGE']['count'] : '' ?></span>
+                                    class="label label-danger"
+                                    id="message-count"><?= $counts['MESSAGE']['count'] ? $counts['MESSAGE']['count'] : '' ?></span>
                             消息
                         </a>
                         <ul class="dropdown-menu dropdown-messages">
@@ -108,28 +109,41 @@ $this->title = yii::t('app', 'Backend Manage System');
                             foreach ($counts['MESSAGE']['data'] as $message) {
 
                                 ?>
-                                <li class="m-t-xs">
+                                <li class="m-t-xs message-title msg-item" data-id="<?= $message->id ?>"
+                                    style="cursor:pointer">
                                     <div class="dropdown-messages-box">
                                         <div class="media-body" style="padding:0 10px;">
-                                            <small class="pull-right text-muted"><?= yii::$app->getFormatter()->asRelativeTime($message->created_at) ?></small>
-                                            <strong class="<?= $levelTexts[$message->level] ?>"
-                                                    title="<?= Html::encode($message->title) ?>"><i
-                                                        class="fa <?= $levelIcons[$message->level] ?>"></i> <?= Html::encode(StringHelper::truncate($message->title, 16)) ?>
-                                            </strong>
-                                            <div><?= StringHelper::truncate($message->content, 60, '...', 'UTF-8', true) ?></div>
-                                            <small class="text-muted"><?= yii::$app->getFormatter()->asDate($message->created_at) ?></small>
+                                            <small class="pull-right"
+                                                   style="color:#bbb;"><?= yii::$app->getFormatter()->asRelativeTime($message->created_at) ?></small>
+                                            <div style="padding-bottom: 3px;">
+                                                <i class="fa <?= $levelIcons[$message->level] ?> <?= $levelTexts[$message->level] ?>"> </i>
+                                                <strong title="<?= Html::encode($message->title) ?>">
+                                                    <?= StringHelper::truncate(strip_tags($message->title), 16, '...', 'UTF-8') ?>
+                                                </strong></div>
+                                            <small style="padding-left:16px;color:#bbb;"><?= StringHelper::truncate(strip_tags($message->content), 16, '...', 'UTF-8') ?></small>
                                         </div>
                                     </div>
                                 </li>
-                                <li class="divider"></li>
+                                <li class="divider msg-item"></li>
                                 <?php
                             }
                             ?>
                             <li>
                                 <div class="text-center link-block">
-                                    <a class="J_menuItem" title="消息列表" href="<?= Url::toRoute(['message/index']) ?>">
+                                    <a class="J_menuItem" title="消息列表"
+                                       onclick="$(this).closest('li.dropdown').removeClass('open');"
+                                       href="<?= Url::toRoute(['site/list-message']) ?>">
                                         <i class="fa fa-envelope"></i> <strong> 查看所有消息</strong>
                                     </a>
+                                    <?php
+                                    if ($counts['MESSAGE']['count'] > 0) {
+                                        ?>
+                                        <a class="msg-item" title="标记所有消息为已读" href="javascript:readAllMessage()">
+                                            <i class="fa fa-check-square-o"></i> <strong> 标记所有为已读</strong>
+                                        </a>
+                                        <?php
+                                    }
+                                    ?>
                                 </div>
                             </li>
                         </ul>
@@ -148,8 +162,9 @@ $this->title = yii::t('app', 'Backend Manage System');
                                 <li class="m-t-xs">
                                     <div class="dropdown-messages-box">
                                         <div class="media-body" style="padding:0 10px;">
-                                            <small class="pull-right text-muted"><?= yii::$app->getFormatter()->asRelativeTime($notice->created_at) ?></small>
-                                            <strong><?= yii::$app->getFormatter()->asDate($notice->created_at) ?></strong>
+                                            <div style="padding-bottom:3px">
+                                                <small style="color:#bbb;"><?= yii::$app->getFormatter()->asRelativeTime($notice->created_at) ?></small>
+                                            </div>
                                             <div class="<?= $topClass[$notice->set_top] ?>"><?= StringHelper::truncate($notice->content, 60, '...', 'UTF-8', true) ?></div>
                                         </div>
                                     </div>
@@ -160,9 +175,9 @@ $this->title = yii::t('app', 'Backend Manage System');
                             ?>
                             <li>
                                 <div class="text-center link-block">
-                                    <a class="J_menuItem" href="<?= Url::toRoute(['notice/index']) ?>">
+                                    <a class="J_menuItem" onclick="$(this).closest('li.dropdown').removeClass('open');"
+                                       href="<?= Url::toRoute(['site/list-notice']) ?>">
                                         <i class="fa fa-bell"></i> <strong>查看所有公告 </strong>
-
                                     </a>
                                 </div>
                             </li>
@@ -318,6 +333,40 @@ $this->title = yii::t('app', 'Backend Manage System');
     <?php $this->endBody() ?>
 </body>
 <script>
+    $(function () {
+        $('.message-title').click(function () {
+            let $this = $(this);
+            let id = $(this).attr('data-id');
+            layer.open({
+                type: 2,
+                title: '<i class="fa fa-envelope"> </i> 站内消息',
+                shadeClose: true,
+                shade: 0.8,
+                area: ['400px', '300px'],
+                content: "<?=Url::to(['message-info'])?>?id=" + id
+            });
+            $this.next().remove();
+            $this.remove();
+            let cnt = $('#message-count').text();
+            cnt--;
+            if (cnt > 0) {
+                $('#message-count').text(cnt);
+            } else {
+                $('#message-count').html('');
+                $('.msg-item').remove();
+            }
+
+        });
+    });
+
+    function readAllMessage() {
+        $.get('<?=Url::to(['site/read-message'])?>', function (data) {
+            if (data && data.code === 0) {
+                $('#message-count').text('');
+                $('.msg-item').remove();
+            }
+        });
+    }
     function reloadIframe() {
         var current_iframe = $("iframe:visible");
         current_iframe[0].contentWindow.location.reload();

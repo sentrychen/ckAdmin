@@ -424,8 +424,9 @@ class BetList extends \yii\db\ActiveRecord
                 Yii::error($e->getMessage());
                 //回滚
                 $tr->rollBack();
-                $this->setAttributes($changedAttributes);
-                $this->save(false);
+                $this->delete();
+                //$this->setAttributes($changedAttributes);
+                //$this->save(false);
             }
         }
     }

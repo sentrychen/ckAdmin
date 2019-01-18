@@ -136,7 +136,7 @@ class SiteController extends Controller
             $m = $a['bet_at_m'] + 60;
         }
         $now = time();
-        while ($m < $now) {
+        while ($m < $now - 60) {
             $data[] = [date('H:i', $m), 0, 0];
             $m += 60;
         }
