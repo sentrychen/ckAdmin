@@ -44,7 +44,7 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'except' => ['login', 'captcha', 'language'],
+                'except' => ['login', 'captcha', 'language', 'notice'],
                 'rules' => [
                     [
                         'allow' => true,
@@ -417,8 +417,10 @@ class SiteController extends Controller
      */
     public function actionNotice()
     {
+
         Yii::$app->response->format = Response::FORMAT_JSON;
         $uid = Yii::$app->getUser()->getId();
+        if (!$uid) return [];
         $notices = Yii::$app->redis->get('admin:notices:' . $uid);
         if ($notices)
             $notices = json_decode($notices);
