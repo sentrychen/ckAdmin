@@ -185,7 +185,7 @@ EchartAsset::register($this);
                         </div>
                     </div>
                     <div class="col-md-7">
-                        <h1 class="no-margins" id="withdraw-data2"><?= Util::formatMoney($statics['dpa'], false) ?></h1>
+                        <h1 class="no-margins" id="withdraw-data2"><?= Util::formatMoney($statics['dwa'], false) ?></h1>
                         <div class="font-bold text-warning">
                             <small>取款额度(￥)</small>
                         </div>
