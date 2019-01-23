@@ -1,6 +1,7 @@
 <?php
 
 use common\helpers\Util;
+use common\libs\Constants;
 use common\widgets\Bar;
 use common\grid\CheckboxColumn;
 use common\grid\ActionColumn;
@@ -48,6 +49,12 @@ $this->params['breadcrumbs'][] = '租户管理';
                                     return $model->agent->username;
                                 else
                                     return '总租户';
+                            }
+                        ],
+                        [
+                            'attribute' => 'open_register',
+                            'value' => function ($model) {
+                                return Constants::getYesNoItems($model->open_register);
                             }
                         ],
                         'app_id',

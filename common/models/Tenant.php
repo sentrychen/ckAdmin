@@ -16,6 +16,13 @@ use yii\behaviors\TimestampBehavior;
  * @property int $agent_id 租户所属代理
  * @property string $app_id 应用ID
  * @property string $app_secret 应用秘钥
+ * @property string $android_current_version 当前安卓版本
+ * @property string $android_require_version 安卓最低要求版本
+ * @property string $android_download_url 安卓下载链接
+ * @property string $ios_current_version ios当前版本
+ * @property string $ios_require_version ios最低要求版本
+ * @property string $ios_download_url  ios下载链接
+ * @property int $open_register 是否开放注册 0 否，1是
  * @property int $created_at 创建日期
  * @property int $updated_at 更新日期
  */
@@ -36,10 +43,12 @@ class Tenant extends \yii\db\ActiveRecord
     {
         return [
             [['name'], 'required'],
-            [['agent_id', 'created_at', 'updated_at'], 'integer'],
+            [['agent_id', 'open_register', 'created_at', 'updated_at'], 'integer'],
             [['agent_id'], 'unique', 'message' => '该代理已经被其它租户绑定了'],
-            [['name', 'app_name'], 'string', 'max' => 64],
-            [['app_logo', 'app_id', 'app_secret'], 'string', 'max' => 255],
+            [['name', 'app_name', 'android_current_version', 'android_require_version', 'ios_require_version', 'ios_current_version'], 'string', 'max' => 64],
+            [['app_logo', 'app_id', 'app_secret', 'android_download_url', 'ios_download_url'], 'string', 'max' => 255],
+            [['android_download_url'], 'url'],
+            [['ios_download_url'], 'match', 'pattern' => '/^itms-services:\/\/\?action=download-manifest&url=https:\/\/.+\.plist$/', 'message' => '请输入itms-services开头的URL'],
         ];
     }
 
@@ -75,6 +84,13 @@ class Tenant extends \yii\db\ActiveRecord
             'agent_id' => '租户所属代理',
             'app_id' => '应用ID',
             'app_secret' => '应用秘钥',
+            'android_current_version' => '安卓当前版本',
+            'android_require_version' => '安卓最低要求版本',
+            'android_download_url' => '安卓下载链接',
+            'ios_current_version' => 'iOS当前版本',
+            'ios_require_version' => 'iOS最低要求版本',
+            'ios_download_url' => 'iOS下载链接',
+            'open_register' => '是否开放注册',
             'created_at' => '创建日期',
             'updated_at' => '更新日期',
         ];

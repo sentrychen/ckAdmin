@@ -34,9 +34,20 @@ use common\widgets\ActiveForm;
 
                 <?= $form->field($model, 'app_logo')->imgInput(['style' => "max-width:200px;max-height:150px"]); ?>
                 <div class="hr-line-dashed"></div>
-
-
-
+                <?= $form->field($model, 'android_current_version')->textInput(['maxlength' => true]) ?>
+                <div class="hr-line-dashed"></div>
+                <?= $form->field($model, 'android_require_version')->textInput(['maxlength' => true]) ?>
+                <div class="hr-line-dashed"></div>
+                <?= $form->field($model, 'android_download_url')->textInput(['maxlength' => true]) ?>
+                <div class="hr-line-dashed"></div>
+                <?= $form->field($model, 'ios_current_version')->textInput(['maxlength' => true]) ?>
+                <div class="hr-line-dashed"></div>
+                <?= $form->field($model, 'ios_require_version')->textInput(['maxlength' => true]) ?>
+                <div class="hr-line-dashed"></div>
+                <?= $form->field($model, 'ios_download_url')->textInput(['maxlength' => true]) ?>
+                <div class="hr-line-dashed"></div>
+                <?= $form->field($model, 'open_register')->radioList(\common\libs\Constants::getYesNoItems()) ?>
+                <div class="hr-line-dashed"></div>
                 <?= $form->defaultButtons() ?>
                 <?php ActiveForm::end(); ?>
             </div>
