@@ -9,6 +9,7 @@
 namespace api\controllers;
 use api\components\RestHttpException;
 use api\models\BetList;
+use api\models\Platform;
 use yii\data\ActiveDataProvider;
 use common\helpers\Util;
 use Yii;
@@ -33,6 +34,12 @@ class BetController extends ActiveController
         if(isset($request['startDate']) && $request['startDate']!='') {
             $model->andFilterWhere(Util::getBetweenDate('bet_at',$request));
         }
+        if (!empty($request['platform_code'])) {
+            $platform = Platform::findByCode($request['platform_code']);
+            $model->andWhere(['platform_id' => ($platform ? $platform->id : 0)]);
+        }
+        if (!empty($request['game_type']))
+            $model->andWhere(['game_type' => $request['game_type']]);
         $model->orderBy('id desc');
 
         if(!empty($request))

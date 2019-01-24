@@ -10,6 +10,7 @@ namespace api\controllers;
 
 use api\models\Platform;
 use api\models\PlatformGame;
+use common\models\GameType;
 use Yii;
 use yii\data\ActiveDataProvider;
 
@@ -44,5 +45,17 @@ class GameController extends ActiveController
                 'params' => $request,
             ],
         ]);
+    }
+
+
+    /*
+     * 游戏类型列表
+     * @return obj
+     *
+     */
+    public function actionTypes()
+    {
+
+        return GameType::find()->all();
     }
 }
